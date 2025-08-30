@@ -24,7 +24,9 @@ import { UpdateProductModal } from './UpdateProductModal';
 import { useUpdateProductModal } from '../hooks';
 import { BreadcrumbItem, TemplateHeader } from '@/ui/components/templates/TemplateHeader';
 import { UpdateLotModal } from '@/features/lot/ui/UpdateLotModal';
+import { RegisterLotModal } from '@/features/lot/ui/RegisterLotModal';
 import { useUpdateLotModal } from '@/features/lot/hooks/useUpdateLotModal';
+import { useRegisterLotModal } from '@/features/lot/hooks/useRegisterLotModal';
 
 interface Props {
     product: ProductEntity;
@@ -33,8 +35,10 @@ interface Props {
 export function ProductDetailsView({ product }: Props) {
     const { handleOpenUpdateProductModal } = useUpdateProductModal();
     const { handleOpenUpdateLotModal } = useUpdateLotModal();
+    const { handleOpenRegisterLotModal } = useRegisterLotModal();
+    
     const handleAddLot = () => {
-        // Agregar nuevo lote
+        handleOpenRegisterLotModal(product.productId.toString());
     };
 
     const handleAddLotUnitPurchase = (lotId: string) => {
@@ -128,6 +132,7 @@ export function ProductDetailsView({ product }: Props) {
 
             {/* Lote del producto */}
             <UpdateLotModal />
+            <RegisterLotModal />
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
                     <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">

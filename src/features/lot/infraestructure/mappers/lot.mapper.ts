@@ -27,8 +27,8 @@ export class LotMapper {
             purchasePrice: dto.purchasePrice,
             purchaseUnit: dto.purchaseUnit,
             receivedDate: dto.receivedDate.toJSON(),
-            expirationDate: dto.expirationDate?.toJSON(),
-            manufacturingDate: dto.manufacturingDate?.toJSON()
+            expirationDate: dto.expirationDate? dto.expirationDate?.toJSON(): undefined,
+            manufacturingDate: dto.manufacturingDate? dto.manufacturingDate?.toJSON(): undefined,
         }
 
         return httpDto;

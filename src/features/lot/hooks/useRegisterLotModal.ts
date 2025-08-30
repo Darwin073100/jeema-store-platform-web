@@ -1,17 +1,15 @@
-import { LotEntity } from "../domain/entities/lot.entity";
-import { useLotStore } from "../infraestructure/lot.store";
 import * as yup from 'yup';
 import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { UpdateLotDTO } from "../application/dtos/update-lot.dto";
-import { updateLotAction } from "../actions/update-lot.action";
+import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
+import { registerLotAction } from "../actions/register-lot.action";
+import { useRegisterLotModalStore } from "../infraestructure/register-lot-modal.store";
 
-// Schema de validación Yup para actualizar un lote
-export const updateLotSchema = yup.object().shape({
-
+// Schema de validación Yup para registrar un lote
+export const registerLotSchema = yup.object().shape({
     lotNumber: yup
         .string()
         .required('El número de lote es obligatorio.')
@@ -21,12 +19,14 @@ export const updateLotSchema = yup.object().shape({
     purchasePrice: yup
         .number()
         .required('El precio de compra es obligatorio.')
+        .positive('El precio de compra debe ser mayor a cero.')
         .test('max-decimals', 'El precio de compra debe ser un número con hasta 4 decimales.', 
               value => value === undefined || Number(value.toFixed(4)) === value),
 
     initialQuantity: yup
         .number()
         .required('La cantidad inicial es obligatoria.')
+        .positive('La cantidad inicial debe ser mayor a cero.')
         .test('max-decimals', 'La cantidad inicial debe ser un número con hasta 3 decimales.', 
               value => value === undefined || Number(value.toFixed(3)) === value),
 
@@ -56,7 +56,7 @@ export const updateLotSchema = yup.object().shape({
               value => Boolean(value && !isNaN(Date.parse(value))))
 });
 
-export type FormData = yup.InferType<typeof updateLotSchema>;
+export type RegisterFormData = yup.InferType<typeof registerLotSchema>;
 
 // Función auxiliar para formatear fechas para inputs tipo date
 const formatDateForInput = (date: Date | string | null | undefined): string => {
@@ -66,94 +66,95 @@ const formatDateForInput = (date: Date | string | null | undefined): string => {
     return dateObj.toISOString().split('T')[0];
 };
 
-const useUpdateLotModal = () => {
+const useRegisterLotModal = () => {
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { lot, setLot, openModal, setOpenModal } = useLotStore();
+    
+    // Usar el store global para el estado del modal
+    const { 
+        openModal, 
+        selectedProductId, 
+        handleOpenRegisterLotModal, 
+        handleCloseRegisterLotModal,
+        setSelectedProductId,
+    } = useRegisterLotModalStore();
 
-    const { register, handleSubmit, reset, setValue, watch,clearErrors, formState: { errors } } = useForm<FormData>({
-        resolver: yupResolver(updateLotSchema) as any,
+    const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm<RegisterFormData>({
+        resolver: yupResolver(registerLotSchema) as any,
         mode: 'onChange',
     });
 
+    // Configurar valores por defecto cuando se abre el modal
     useEffect(() => {
-        if (lot && openModal) {
+        if (openModal && selectedProductId) {
             reset({
-                lotNumber: lot.lotNumber,
-                purchasePrice: lot.purchasePrice,
-                initialQuantity: lot.initialQuantity,
-                purchaseUnit: lot.purchaseUnit,
-                expirationDate: lot.expirationDate ? formatDateForInput(lot.expirationDate) : '',
-                manufacturingDate: lot.manufacturingDate ? formatDateForInput(lot.manufacturingDate) : '',
-                receivedDate: formatDateForInput(lot.receivedDate),
+                lotNumber: '',
+                purchasePrice: 0,
+                initialQuantity: 0,
+                purchaseUnit: ForSaleEnum.PC,
+                expirationDate: '',
+                manufacturingDate: '',
+                receivedDate: formatDateForInput(new Date()),
             });
         }
-    }, [lot, openModal, reset]);
-    const handleOpenUpdateLotModal = (lot: LotEntity) => {
-        setLot(lot);
-        console.log(lot)
-        setOpenModal(true);
-    }
+    }, [openModal, selectedProductId, reset]);
 
-    const handleCloseUpdateLotModal = () => {
-        setOpenModal(false);
-    }
-
-    const resetFormUpdateLot = () => {
-        setLot(null);
+    const resetFormRegisterLot = () => {
+        setSelectedProductId('');
         reset({
-            expirationDate: '',
-            initialQuantity: 0,
             lotNumber: '',
-            manufacturingDate: '',
             purchasePrice: 0,
+            initialQuantity: 0,
+            purchaseUnit: ForSaleEnum.PC,
+            expirationDate: '',
+            manufacturingDate: '',
             receivedDate: '',
-            purchaseUnit: ForSaleEnum.PC
         });
-        clearErrors(['expirationDate', 'initialQuantity','lotNumber', 'manufacturingDate',
-            'purchasePrice','purchaseUnit', 'receivedDate'
+        clearErrors(['lotNumber', 'purchasePrice', 'initialQuantity', 
+            'purchaseUnit', 'expirationDate', 'manufacturingDate', 'receivedDate'
         ]);
         setFloatMessageState({});
     }
 
-    const onSubmit = async (data: FormData)=>{
-        if(!lot) return;
+    const handleCloseModal = () => {
+        handleCloseRegisterLotModal();
+        resetFormRegisterLot();
+    }
 
+    const onSubmit = async (data: RegisterFormData) => {
         setFloatMessageState({});
         setIsLoading(true);
 
         try {
-            const updateData: UpdateLotDTO = {
-                lotId: lot.lotId,
-                initialQuantity: data.initialQuantity,
+            const registerData: RegisterLotDTO = {
+                productId: selectedProductId,
                 lotNumber: data.lotNumber,
-                productId: lot.productId,
                 purchasePrice: data.purchasePrice,
+                initialQuantity: data.initialQuantity,
                 purchaseUnit: data.purchaseUnit,
                 receivedDate: new Date(data.receivedDate),
                 expirationDate: data.expirationDate ? new Date(data.expirationDate) : null,
                 manufacturingDate: data.manufacturingDate ? new Date(data.manufacturingDate) : null
             }
-            console.log(lot);
-            console.log(updateData);
-            const result = await updateLotAction(updateData);
 
-            if(result.ok){
+            const result = await registerLotAction(registerData);
+
+            if (result.ok) {
                 setFloatMessageState({
                     summary: '¡Correcto!',
                     isActive: true,
                     type: 'green',
-                    description: '¡Lote modificado exitosamente!'
+                    description: '¡Lote registrado exitosamente!'
                 });
 
                 setTimeout(() => {
                     setFloatMessageState({});
-                    handleCloseUpdateLotModal();
+                    handleCloseModal();
                 }, 2000);
             } else {
                 const errorMessage = Array.isArray(result?.error) 
                     ? result.error.join(', ') 
-                    : result?.error?.message || 'Error al actualizar el lote';
+                    : result?.error?.message || 'Error al registrar el lote';
                 
                 setFloatMessageState({
                     description: errorMessage,
@@ -168,7 +169,7 @@ const useUpdateLotModal = () => {
             }
         } catch (error) {
             setFloatMessageState({
-                description: 'Error inesperado al actualizar el producto',
+                description: 'Error inesperado al registrar el lote',
                 summary: '¡Error!',
                 isActive: true,
                 type: 'red'
@@ -183,11 +184,10 @@ const useUpdateLotModal = () => {
     }
 
     return {
-        lot,
-        setLot,
         openModal,
-        handleOpenUpdateLotModal,
-        handleCloseUpdateLotModal,
+        selectedProductId,
+        handleOpenRegisterLotModal,
+        handleCloseRegisterLotModal: handleCloseModal,
         // Form functions
         register,
         handleSubmit,
@@ -196,7 +196,7 @@ const useUpdateLotModal = () => {
         watch,
         clearErrors,
         errors,
-        resetFormUpdateLot,
+        resetFormRegisterLot,
         onSubmit,
         // UI states
         floatMessageState,
@@ -204,4 +204,4 @@ const useUpdateLotModal = () => {
     }
 }
 
-export { useUpdateLotModal };
+export { useRegisterLotModal };

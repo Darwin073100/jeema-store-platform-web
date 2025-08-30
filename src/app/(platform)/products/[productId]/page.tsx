@@ -6,6 +6,10 @@ import Link from "next/link";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
 import { ProductDetailsView } from "@/features/product/ui/ProductDetailsView";
 
+// Configurar la página para que no se cachée y siempre obtenga datos frescos
+export const revalidate = 0; // Revalidar en cada request
+export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
+
 export const metadata: Metadata = {
     title: 'Detalles del Producto'
 }
