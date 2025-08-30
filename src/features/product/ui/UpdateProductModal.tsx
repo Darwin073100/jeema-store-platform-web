@@ -7,7 +7,6 @@ import { Modal } from '@/ui/components/modals/Modal';
 import { IoClose } from 'react-icons/io5';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/ui/components/loadings/Spinner';
-import { MdCleaningServices } from 'react-icons/md';
 import { LabelInput } from '@/ui/components/labels';
 import { useUpdateProductModal } from '../hooks';
 import { FloatMessage } from '@/ui/components/messages/FloatMessage';
@@ -33,17 +32,6 @@ const UpdateProductModal = () => {
         errors,
         resetFormUpdateProduct
     } = useUpdateProductModal();
-
-    // Debug: verificar datos
-    console.log('Estado en UpdateProductModal:', {
-        isOpenProductModal,
-        categoriesCount: categories?.length || 0,
-        brandsCount: brands?.length || 0,
-        seasonsCount: seasons?.length || 0,
-        categories: categories?.slice(0, 2), // Solo primeros 2 para debug
-        brands: brands?.slice(0, 2),
-        seasons: seasons?.slice(0, 2)
-    });
 
     // Preparar opciones para los SelectMenu
     const categoryOptions = categories?.length > 0 ? categories.map(category => ({

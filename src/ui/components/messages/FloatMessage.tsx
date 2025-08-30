@@ -21,7 +21,7 @@ export const FloatMessage = ({ summary = 'Massage', description = 'Message Descr
     return (
         <>
             {isVisible && (
-                <div className={clsx(`fixed right-4 top-4 bg-${type}-500 text-white p-3 rounded-md transition-all`)}>
+                <div className={clsx(`fixed right-4 top-4 bg-${type}-500 text-white p-3 rounded-md transition-all z-[9999]`)}>
                     <div className="flex justify-between items-center gap-8 font-bold">
                         <span>{summary}</span>
                         <button className={clsx(`cursor-pointer rounded-full hover:bg-${type}-200`)} onClick={() => setIsVisible(false)}>

@@ -19,10 +19,10 @@ export async function updateProductAction(dto:UpdateProductDTO){
         revalidatePath('/products');
     }
 
-    // Invalidar el caché de la página de productos para que se actualicen los datos
-    if (result?.ok) {
-        revalidatePath('/products');
-    }
+    // // Invalidar el caché de la página de productos para que se actualicen los datos
+    // if (result?.ok) {
+    //     revalidatePath('/products');
+    // }
 
     return {
         ...result
