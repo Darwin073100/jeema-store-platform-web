@@ -1,7 +1,8 @@
 import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 
-export interface RegisterLotDTO {
-    productId: string;
+export interface UpdateLotDTO {
+    lotId: bigint;
+    productId: bigint;
     lotNumber: string;
     purchasePrice: number;
     purchaseUnit: ForSaleEnum;
@@ -9,5 +10,4 @@ export interface RegisterLotDTO {
     expirationDate?: Date | null;
     manufacturingDate?: Date | null;
     receivedDate: Date;
-    
 }

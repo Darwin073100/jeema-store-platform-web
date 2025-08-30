@@ -8,5 +8,8 @@ export async function registerLotAction(dto: RegisterLotDTO){
     const registerLotUseCase = new RegisterLotUseCase(lotFetchRepositoryImpl);
 
     const result = await registerLotUseCase.execute(dto);
-    return result;
+    
+    return {
+        ...result
+    };
 }
