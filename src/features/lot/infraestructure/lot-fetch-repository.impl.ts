@@ -7,6 +7,9 @@ import { UpdateLotDTO } from "../application/dtos/update-lot.dto";
 import { LotMapper } from "./mappers/lot.mapper";
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
+import { AddLotUnitPurchaseDTO } from "../application/dtos/add-lot-unit-purchase.dto";
+import { LotUnitPurchaseEntity } from "../domain/entities/lot-unit-purchase.entity";
+import { UpdateLotUnitPurchaseDTO } from "../application/dtos/update-lot-unit-purchase.dto";
 
 export class LotFetchRepositoryImpl implements LotRepository {
 
@@ -25,6 +28,38 @@ export class LotFetchRepositoryImpl implements LotRepository {
             return Result.success(result.data)
         } catch (error: any) {
             return this.handleError(error, 'Save Lot');
+        }
+    }
+
+    async addPurchaseUnit(dto: AddLotUnitPurchaseDTO): Promise<Result<LotUnitPurchaseEntity, ErrorEntity>> {
+        try {
+            const httpDto = LotMapper.toAddLotUnitPurchaseHttpDTO(dto);
+            const result = await this.httpClient.post<LotUnitPurchaseEntity>(
+                this.apiConfig.getEndpointUrl(`/lots/${httpDto.lotId}/unit-purchases`),
+                {
+                    ...httpDto,
+                    lotId: undefined
+                }
+            );
+            return Result.success(result.data)
+        } catch (error) {
+            return this.handleError(error, 'Add purchase unit');
+        }
+    }
+    
+    async updatePurchaseUnit(dto: UpdateLotUnitPurchaseDTO): Promise<Result<LotUnitPurchaseEntity, ErrorEntity>> {
+        try {
+            const httpDto = LotMapper.toUpdateLotUnitPurchaseHttpDTO(dto);
+            const result = await this.httpClient.patch<LotUnitPurchaseEntity>(
+                this.apiConfig.getEndpointUrl(`/lots/${httpDto.lotId}/unit-purchases`),
+                {
+                    ...httpDto,
+                    lotId: undefined
+                }
+            );
+            return Result.success(result.data)
+        } catch (error) {
+            return this.handleError(error, 'Update purchase unit');
         }
     }
     

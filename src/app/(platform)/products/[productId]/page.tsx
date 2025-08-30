@@ -1,7 +1,6 @@
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
 import { Metadata } from "next";
 import { Button } from "@/ui/components/buttons";
-import { IoArrowBack } from "react-icons/io5";
 import Link from "next/link";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
 import { ProductDetailsView } from "@/features/product/ui/ProductDetailsView";
