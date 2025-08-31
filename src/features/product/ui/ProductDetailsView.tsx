@@ -27,6 +27,9 @@ import { UpdateLotModal } from '@/features/lot/ui/UpdateLotModal';
 import { RegisterLotModal } from '@/features/lot/ui/RegisterLotModal';
 import { useUpdateLotModal } from '@/features/lot/hooks/useUpdateLotModal';
 import { useRegisterLotModal } from '@/features/lot/hooks/useRegisterLotModal';
+import { useRegisterLotUnitPurchaseModal } from '@/features/lot/hooks/useRegisterLotUnitPurchaseModal';
+import { Button } from '@/ui/components/buttons';
+import { RegisterLotUnitPurchaseModal } from '@/features/lot/ui/RegisterLotUnitPurchaseModal';
 
 interface Props {
     product: ProductEntity;
@@ -36,13 +39,15 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenUpdateProductModal } = useUpdateProductModal();
     const { handleOpenUpdateLotModal } = useUpdateLotModal();
     const { handleOpenRegisterLotModal } = useRegisterLotModal();
+    const { handleSelectedLotUnitPurchase } = useRegisterLotUnitPurchaseModal();
     
     const handleAddLot = () => {
         handleOpenRegisterLotModal(product.productId.toString());
     };
 
-    const handleAddLotUnitPurchase = (lotId: string) => {
+    const handleAddLotUnitPurchase = (lotId: bigint) => {
         // Agregar lot-unit-purchase para lote
+        handleSelectedLotUnitPurchase(lotId);
     };
 
     const handleAddInventory = (lotId: string) => {
@@ -190,13 +195,14 @@ export function ProductDetailsView({ product }: Props) {
                                 </div>
 
                                 {/* Unidades de compra */}
+                                <RegisterLotUnitPurchaseModal/>
                                 {lot.lotUnitPurchases && lot.lotUnitPurchases.length > 0 && (
                                     <div className="mb-4">
                                         <div className="flex justify-between items-center mb-3">
                                             <h4 className="font-medium text-gray-700">Unidades de compra</h4>
-                                            <ActionButton variant="add" onClick={() => handleAddLotUnitPurchase(lot.lotId.toString())}>
+                                            <Button color='blue' type='button' onClick={() => handleAddLotUnitPurchase(lot.lotId)}>
                                                 <HiPlus className="w-4 h-4" />
-                                            </ActionButton>
+                                            </Button>
                                         </div>
                                         <div className="bg-gray-50 rounded-lg p-4">
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">

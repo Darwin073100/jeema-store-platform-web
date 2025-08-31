@@ -1,15 +1,15 @@
 import { ErrorEntity } from "@/shared/features/error.entity";
 import { Result } from "@/shared/features/result";
-import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
-import { LotEntity } from "../domain/entities/lot.entity";
-import { LotRepository } from "../domain/repositories/lot.repository";
-import { UpdateLotDTO } from "../application/dtos/update-lot.dto";
-import { LotMapper } from "./mappers/lot.mapper";
+import { RegisterLotDTO } from "../../application/dtos/register-lot.dto";
+import { LotEntity } from "../../domain/entities/lot.entity";
+import { LotRepository } from "../../domain/repositories/lot.repository";
+import { UpdateLotDTO } from "../../application/dtos/update-lot.dto";
+import { LotMapper } from "../mappers/lot.mapper";
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
-import { AddLotUnitPurchaseDTO } from "../application/dtos/add-lot-unit-purchase.dto";
-import { LotUnitPurchaseEntity } from "../domain/entities/lot-unit-purchase.entity";
-import { UpdateLotUnitPurchaseDTO } from "../application/dtos/update-lot-unit-purchase.dto";
+import { AddLotUnitPurchaseDTO } from "../../application/dtos/add-lot-unit-purchase.dto";
+import { LotUnitPurchaseEntity } from "../../domain/entities/lot-unit-purchase.entity";
+import { UpdateLotUnitPurchaseDTO } from "../../application/dtos/update-lot-unit-purchase.dto";
 
 export class LotFetchRepositoryImpl implements LotRepository {
 

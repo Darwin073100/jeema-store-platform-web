@@ -1,6 +1,6 @@
 
 import { create } from "zustand";
-import { LotEntity } from "../domain/entities/lot.entity";
+import { LotEntity } from "../../domain/entities/lot.entity";
 
 type State = {
     searchCharacter: string,

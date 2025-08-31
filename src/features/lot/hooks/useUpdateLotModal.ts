@@ -1,5 +1,5 @@
 import { LotEntity } from "../domain/entities/lot.entity";
-import { useLotStore } from "../infraestructure/lot.store";
+import { useLotStore } from "../infraestructure/store/lot.store";
 import * as yup from 'yup';
 import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 import { yupResolver } from "@hookform/resolvers/yup";

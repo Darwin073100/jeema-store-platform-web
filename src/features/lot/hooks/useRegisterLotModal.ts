@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
 import { registerLotAction } from "../actions/register-lot.action";
-import { useRegisterLotModalStore } from "../infraestructure/register-lot-modal.store";
+import { useRegisterLotModalStore } from "../infraestructure/store/register-lot-modal.store";
 
 // Schema de validación Yup para registrar un lote
 export const registerLotSchema = yup.object().shape({

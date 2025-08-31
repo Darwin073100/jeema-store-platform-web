@@ -16,4 +16,5 @@ export * from './application/dtos/update-lot.dto';
 export * from './domain/entities/lot.entity';
 
 // Store
-export * from './infraestructure/lot.store';
+export * from './infraestructure/store/lot.store';
+export * from './infraestructure/store/register-lot-modal.store'
