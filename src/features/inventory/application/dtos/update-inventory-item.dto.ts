@@ -1,7 +1,8 @@
 import { LocationEnum } from "../../domain/enums/location.enum";
 
-export interface RegisterInventoryItemDTO {
-    inventoryId           : bigint;
+export interface UpdateInventoryItemDTO {
+    inventoryItemId      : bigint;
+    inventoryId          : bigint;
     location             : LocationEnum;
     quantityOnHan        : number;
     lastStockedAt        : Date;
