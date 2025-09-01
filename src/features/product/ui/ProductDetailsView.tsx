@@ -30,6 +30,9 @@ import { useRegisterLotModal } from '@/features/lot/hooks/useRegisterLotModal';
 import { useRegisterLotUnitPurchaseModal } from '@/features/lot/hooks/useRegisterLotUnitPurchaseModal';
 import { Button } from '@/ui/components/buttons';
 import { RegisterLotUnitPurchaseModal } from '@/features/lot/ui/RegisterLotUnitPurchaseModal';
+import { useUpdateLotUnitPurchaseModal } from '@/features/lot/hooks/useUpdateLotUnitPurchaseModal';
+import { LotUnitPurchaseEntity } from '@/features/lot/domain/entities/lot-unit-purchase.entity';
+import { UpdateLotUnitPurchaseModal } from '@/features/lot/ui/UpdateLotUnitPurchaseModal';
 
 interface Props {
     product: ProductEntity;
@@ -39,7 +42,8 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenUpdateProductModal } = useUpdateProductModal();
     const { handleOpenUpdateLotModal } = useUpdateLotModal();
     const { handleOpenRegisterLotModal } = useRegisterLotModal();
-    const { handleSelectedLotUnitPurchase } = useRegisterLotUnitPurchaseModal();
+    const { handleSelectedLotUnitPurchase: handleSelectedLotId } = useRegisterLotUnitPurchaseModal();
+    const { handleSelectedLotUnitPurchase } = useUpdateLotUnitPurchaseModal();
     
     const handleAddLot = () => {
         handleOpenRegisterLotModal(product.productId.toString());
@@ -47,8 +51,12 @@ export function ProductDetailsView({ product }: Props) {
 
     const handleAddLotUnitPurchase = (lotId: bigint) => {
         // Agregar lot-unit-purchase para lote
-        handleSelectedLotUnitPurchase(lotId);
+        handleSelectedLotId(lotId);
     };
+
+    const handleUpdateLotUnitPurchase = (lotUnitPurchase: LotUnitPurchaseEntity)=>{
+        handleSelectedLotUnitPurchase(lotUnitPurchase);
+    }
 
     const handleAddInventory = (lotId: string) => {
         // Agregar inventario para lote
@@ -173,6 +181,11 @@ export function ProductDetailsView({ product }: Props) {
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                                     <InfoCard
+                                        label="Unidad báse"
+                                        value={`${lot.purchaseUnit.toUpperCase()}`}
+                                        icon={<TbPackage className="w-4 h-4" />}
+                                    />
+                                    <InfoCard
                                         label="Precio de compra"
                                         value={`$${lot.purchasePrice}`}
                                         icon={<TbCurrencyDollar className="w-4 h-4" />}
@@ -206,8 +219,13 @@ export function ProductDetailsView({ product }: Props) {
                                         </div>
                                         <div className="bg-gray-50 rounded-lg p-4">
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                                                <UpdateLotUnitPurchaseModal />
                                                 {lot.lotUnitPurchases.map((unitPurchase) => (
-                                                    <div key={unitPurchase.lotUnitPurchaseId} className="space-y-2">
+                                                    <div key={unitPurchase.lotUnitPurchaseId} className="border border-gray-300 rounded-2xl p-4 space-y-2">
+                                                        <Button color='yellow' onClick={()=> handleUpdateLotUnitPurchase(unitPurchase)}>
+                                                            <HiPencil className="w-4 h-4" /> 
+                                                            Editar
+                                                        </Button>
                                                         <InfoCard
                                                             label="Unidad"
                                                             value={unitPurchase.unit}

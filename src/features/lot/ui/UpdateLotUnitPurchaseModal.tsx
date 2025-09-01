@@ -8,22 +8,20 @@ import { FloatMessage } from '@/ui/components/messages';
 import React from 'react'
 import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { MdCleaningServices } from 'react-icons/md';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
-import { useRegisterLotUnitPurchaseModal } from '../hooks/useRegisterLotUnitPurchaseModal';
+import { useUpdateLotUnitPurchaseModal } from '../hooks/useUpdateLotUnitPurchaseModal';
 
-const RegisterLotUnitPurchaseModal = () => {
+const UpdateLotUnitPurchaseModal = () => {
     const {
-        handlecloseSaveIsOpenModal, 
-        saveIsOpenModal,
+        handlecloseUpdateIsOpenModal, 
+        updateIsOpenModal,
         register,
         handleSubmit,
         onSubmit,
         errors,
-        resetFormRegisterLotUnitPurchase,
         floatMessageState,
         isLoading
-    } = useRegisterLotUnitPurchaseModal();
+    } = useUpdateLotUnitPurchaseModal();
 
     // Opciones para el select de unidad de compra
     const purchaseUnitOptions = Object.values(ForSaleEnum).map(unit => ({
@@ -33,14 +31,14 @@ const RegisterLotUnitPurchaseModal = () => {
 
     return (
         <>
-            <Modal isOpen={saveIsOpenModal} onClose={handlecloseSaveIsOpenModal}>
+            <Modal isOpen={updateIsOpenModal} onClose={handlecloseUpdateIsOpenModal}>
                 <div className='w-full max-w-2xl max-h-[90dvh] mx-4 text-gray-700 bg-white rounded-lg shadow-xl overflow-hidden flex flex-col'>
                     {/* Header fijo */}
                     <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-white">
                         <h2 className="text-lg font-semibold text-gray-900">
-                            Registrar nueva unidad de compra para el lote
+                            Actualizar una unidad de compra para el lote
                         </h2>
-                        <RoundedButton color='red' onClick={handlecloseSaveIsOpenModal}>
+                        <RoundedButton color='red' onClick={handlecloseUpdateIsOpenModal}>
                             <IoClose />
                         </RoundedButton>
                     </div>
@@ -92,31 +90,22 @@ const RegisterLotUnitPurchaseModal = () => {
                             <div className="flex justify-end gap-3 flex-wrap pt-4">
                                 <Button
                                     type="submit"
+                                    color='blue'
                                     className='flex justify-center items-center min-w-[120px]'
                                     disabled={isLoading}
                                 >
                                     {isLoading ? <Spinner /> : (
                                         <>
-                                            Registrar
+                                            Actualizar
                                             <HiSave className="ml-2" />
                                         </>
                                     )}
-                                </Button>
-                                <Button 
-                                    type="button"
-                                    color="yellow" 
-                                    className="flex items-center"
-                                    onClick={resetFormRegisterLotUnitPurchase}
-                                    disabled={isLoading}
-                                >
-                                    <MdCleaningServices className="mr-2" />
-                                    Limpiar campos
                                 </Button>
                                 <Button
                                     type="button"
                                     color="gray"
                                     className="flex items-center"
-                                    onClick={handlecloseSaveIsOpenModal}
+                                    onClick={handlecloseUpdateIsOpenModal}
                                     disabled={isLoading}
                                 >
                                     <IoClose className="mr-2" />
@@ -142,4 +131,4 @@ const RegisterLotUnitPurchaseModal = () => {
     )
 }
 
-export { RegisterLotUnitPurchaseModal };
+export { UpdateLotUnitPurchaseModal };

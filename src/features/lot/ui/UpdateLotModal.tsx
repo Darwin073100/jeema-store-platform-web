@@ -8,7 +8,6 @@ import { FloatMessage } from '@/ui/components/messages';
 import React from 'react'
 import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { MdCleaningServices } from 'react-icons/md';
 import { useUpdateLotModal } from '../hooks/useUpdateLotModal';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 
@@ -21,7 +20,6 @@ const UpdateLotModal = () => {
         handleSubmit,
         onSubmit,
         errors,
-        resetFormUpdateLot,
         floatMessageState,
         isLoading
     } = useUpdateLotModal();
@@ -132,16 +130,6 @@ const UpdateLotModal = () => {
                                             <HiSave className="ml-2" />
                                         </>
                                     )}
-                                </Button>
-                                <Button 
-                                    type="button"
-                                    color="yellow" 
-                                    className="flex items-center"
-                                    onClick={resetFormUpdateLot}
-                                    disabled={isLoading}
-                                >
-                                    <MdCleaningServices className="mr-2" />
-                                    Limpiar campos
                                 </Button>
                                 <Button
                                     type="button"
