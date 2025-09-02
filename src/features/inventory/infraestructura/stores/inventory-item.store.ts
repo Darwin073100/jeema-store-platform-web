@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { InventoryResponseDTO } from "../domain/entities/inventory-response.dto";
-import { useEffect } from "react";
+import { InventoryResponseDTO } from "../../domain/entities/inventory-response.dto";
 
 type State = {
     searchCharacter: string,

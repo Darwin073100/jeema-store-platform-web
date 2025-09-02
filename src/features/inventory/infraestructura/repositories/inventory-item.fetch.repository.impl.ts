@@ -1,8 +1,8 @@
 import { ErrorEntity } from "@/shared/features/error.entity";
 import { Result } from "@/shared/features/result";
-import { InventoryResponseDTO } from "../domain/entities/inventory-response.dto";
-import { InventoryItemRepository } from "../domain/repositories/inventory-item.repository";
-import { RegisterInventoryItemDTO } from "../application/dtos/register-inventory-item.dto";
+import { InventoryResponseDTO } from "../../domain/entities/inventory-response.dto";
+import { InventoryItemRepository } from "../../domain/repositories/inventory-item.repository";
+import { RegisterInventoryItemDTO } from "../../application/dtos/register-inventory-item.dto";
 
 export class InventoryItemFetchRepositoryImpl implements InventoryItemRepository {
     private readonly URL = `${process.env.URL_EDYOF_PLATFORM_API}${process.env.PREFIX_EDYOF_PLATFORM_API}/inventory-items`;

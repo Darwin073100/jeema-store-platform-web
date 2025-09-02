@@ -1,3 +1,4 @@
+'use server'
 import { revalidatePath } from "next/cache";
 import { InventoryRepositoryFactory } from "../infraestructura/factories/inventory-repository.factory";
 import { UpdateInventoryUseCase } from "../application/use-case/update-inventory.use-case";
@@ -9,8 +10,9 @@ export async function updateInventoryAction(dto: UpdateInventoryDTO){
 
     const result = await updateInventoryUseCase.execute(dto);
     
-    revalidatePath('/products');
-
+    if(!!result.ok){
+        revalidatePath('/products');
+    }
     return {
         ...result
     }

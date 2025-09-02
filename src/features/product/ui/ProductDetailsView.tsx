@@ -33,6 +33,8 @@ import { RegisterLotUnitPurchaseModal } from '@/features/lot/ui/RegisterLotUnitP
 import { useUpdateLotUnitPurchaseModal } from '@/features/lot/hooks/useUpdateLotUnitPurchaseModal';
 import { LotUnitPurchaseEntity } from '@/features/lot/domain/entities/lot-unit-purchase.entity';
 import { UpdateLotUnitPurchaseModal } from '@/features/lot/ui/UpdateLotUnitPurchaseModal';
+import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal';
+import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventoryModal';
 
 interface Props {
     product: ProductEntity;
@@ -44,6 +46,7 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenRegisterLotModal } = useRegisterLotModal();
     const { handleSelectedLotUnitPurchase: handleSelectedLotId } = useRegisterLotUnitPurchaseModal();
     const { handleSelectedLotUnitPurchase } = useUpdateLotUnitPurchaseModal();
+    const { handleOpenModalInventory } = useRegisterInventoryModal();
     
     const handleAddLot = () => {
         handleOpenRegisterLotModal(product.productId.toString());
@@ -58,7 +61,9 @@ export function ProductDetailsView({ product }: Props) {
         handleSelectedLotUnitPurchase(lotUnitPurchase);
     }
 
-    const handleAddInventory = (lotId: string) => {
+    const handleAddInventory = (branchOfficeId: bigint, productId: bigint, lotId: bigint ) => {
+        console.log({branchOfficeId,productId,lotId});
+        handleOpenModalInventory(branchOfficeId, productId, lotId);
         // Agregar inventario para lote
     };
 
@@ -254,6 +259,7 @@ export function ProductDetailsView({ product }: Props) {
                                 )}
 
                                 {/* Inventario */}
+                                <RegisterInventoryModal/>
                                 {lot.inventories && lot.inventories.length > 0 && (
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center">
@@ -261,7 +267,7 @@ export function ProductDetailsView({ product }: Props) {
                                                 <TbBuildingWarehouse className="w-5 h-5" />
                                                 Inventario
                                             </h4>
-                                            <ActionButton variant="add" onClick={() => handleAddInventory(lot.lotId.toString())}>
+                                            <ActionButton variant="add" onClick={() => handleAddInventory(BigInt(0),product.productId,lot.lotId)}>
                                                 <HiPlus className="w-4 h-4" />
                                                 Agregar inventario
                                             </ActionButton>

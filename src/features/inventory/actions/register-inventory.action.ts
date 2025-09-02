@@ -1,3 +1,4 @@
+'use server'
 import { revalidatePath } from "next/cache";
 import { RegisterInventoryDTO } from "../application/dtos/register-inventory.dto";
 import { RegisterInventoryUseCase } from "../application/use-case/register-inventory.use-case";
@@ -9,7 +10,9 @@ export async function registerInventoryAction(dto: RegisterInventoryDTO){
 
     const result = await registerInventoryUseCase.execute(dto);
     
-    revalidatePath('/products');
+    if(!!result.ok){
+        revalidatePath('/products');
+    }
 
     return {
         ...result
