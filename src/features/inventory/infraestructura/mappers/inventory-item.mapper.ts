@@ -3,7 +3,7 @@ import { UpdateInventoryItemDTO } from "../../application/dtos/update-inventory-
 import { RegisterInventoryItemHttpDTO } from "../dtos/register-inventory-item.http.dto";
 import { UpdateInventoryItemHttpDTO } from "../dtos/update-inventory-item.http.dto";
 
-export class InventoryMapper {
+export class InventoryItemMapper {
     static toUpdateInventoryItemHttpDTO(dto: UpdateInventoryItemDTO){
         const httpDto: UpdateInventoryItemHttpDTO = {
             inventoryItemId: dto.inventoryItemId.toString(),

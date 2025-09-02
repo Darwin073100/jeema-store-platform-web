@@ -1,12 +1,12 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { RegisterInventoryItemDTO } from "../application/dtos/register-inventory-item.dto";
-import { RegisterInventoryItemUseCase } from "../application/use-case/register-inventory-item.use-case";
 import { InventoryItemRepositoryFactory } from "../infraestructura/factories/inventory-item-repository.factory";
+import { UpdateInventoryItemDTO } from "../application/dtos/update-inventory-item.dto";
+import { UpdateInventoryItemUseCase } from "../application/use-case/update-inventory-item.use-case";
 
-export async function registerInventoryItemAction(dto: RegisterInventoryItemDTO){
+export async function updateInventoryItemAction(dto: UpdateInventoryItemDTO){
     const inventoryFetchRepositoryImpl = InventoryItemRepositoryFactory.create();
-    const registerInventoryItemUseCase = new RegisterInventoryItemUseCase(inventoryFetchRepositoryImpl);
+    const registerInventoryItemUseCase = new UpdateInventoryItemUseCase(inventoryFetchRepositoryImpl);
 
     const result = await registerInventoryItemUseCase.execute(dto);
 

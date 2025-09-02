@@ -1,7 +1,7 @@
 import { LocationEnum } from "../enums/location.enum";
 import { InventoryResponseDTO } from "./inventory-response.dto";
 
-export interface InventoryItemResponseDTO{
+export interface InventoryItemEntity{
     inventoryItemId      : bigint;
     inventoryId          : bigint;
     location             : LocationEnum;

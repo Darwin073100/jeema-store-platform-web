@@ -1,6 +1,6 @@
 import { LotEntity } from "../../../lot/domain/entities/lot.entity";
 import { ProductEntity } from "../../../product/domain/entities/product.entity";
-import { InventoryItemResponseDTO } from "./inventory-item-response.dto";
+import { InventoryItemEntity } from "./inventory-item-response.dto";
 
 export interface InventoryResponseDTO{
     inventoryId       : bigint;
@@ -19,5 +19,5 @@ export interface InventoryResponseDTO{
     deletedAt?        : Date|null;
     product?          : ProductEntity|null,
     lot?              : LotEntity | null,
-    inventoryItems?   : InventoryItemResponseDTO[] | null
+    inventoryItems?   : InventoryItemEntity[] | null
 }

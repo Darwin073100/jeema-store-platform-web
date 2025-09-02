@@ -4,9 +4,9 @@ import { formatDate } from '@/shared/lib/utils/date-formatter';
 import { Breadcrumb } from '@/ui/components/navigation/Breadcrumb';
 import { InfoCard } from '@/ui/components/cards/InfoCard';
 import { ActionButton } from '@/ui/components/buttons/ActionButton';
-import { 
-    HiPlus, 
-    HiPencil, 
+import {
+    HiPlus,
+    HiPencil,
     HiTrash,
     HiOutlineTag,
     HiOutlineQrcode,
@@ -14,11 +14,11 @@ import {
     HiOutlineCalendar,
     HiOutlineLocationMarker
 } from 'react-icons/hi';
-import { 
-    TbPackage, 
-    TbBoxMultiple, 
-    TbBuildingWarehouse, 
-    TbCurrencyDollar 
+import {
+    TbPackage,
+    TbBoxMultiple,
+    TbBuildingWarehouse,
+    TbCurrencyDollar
 } from 'react-icons/tb';
 import { UpdateProductModal } from './UpdateProductModal';
 import { useUpdateProductModal } from '../hooks';
@@ -35,6 +35,10 @@ import { LotUnitPurchaseEntity } from '@/features/lot/domain/entities/lot-unit-p
 import { UpdateLotUnitPurchaseModal } from '@/features/lot/ui/UpdateLotUnitPurchaseModal';
 import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal';
 import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventoryModal';
+import { useUpdateInventoryModal } from '@/features/inventory/hooks/useUpdateInventoryModal';
+import { InventoryEntity } from '@/features/inventory/domain/entities/inventory.entity';
+import { HiPencilSquare } from 'react-icons/hi2';
+import { UpdateInventoryModal } from '@/features/inventory/ui/UpdateInventoryModal';
 
 interface Props {
     product: ProductEntity;
@@ -46,8 +50,9 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenRegisterLotModal } = useRegisterLotModal();
     const { handleSelectedLotUnitPurchase: handleSelectedLotId } = useRegisterLotUnitPurchaseModal();
     const { handleSelectedLotUnitPurchase } = useUpdateLotUnitPurchaseModal();
-    const { handleOpenModalInventory } = useRegisterInventoryModal();
-    
+    // const { handleOpenModalInventory } = useRegisterInventoryModal();
+    const { handleOpenModalInventory } = useUpdateInventoryModal();
+
     const handleAddLot = () => {
         handleOpenRegisterLotModal(product.productId.toString());
     };
@@ -57,13 +62,17 @@ export function ProductDetailsView({ product }: Props) {
         handleSelectedLotId(lotId);
     };
 
-    const handleUpdateLotUnitPurchase = (lotUnitPurchase: LotUnitPurchaseEntity)=>{
+    const handleUpdateLotUnitPurchase = (lotUnitPurchase: LotUnitPurchaseEntity) => {
         handleSelectedLotUnitPurchase(lotUnitPurchase);
     }
 
-    const handleAddInventory = (branchOfficeId: bigint, productId: bigint, lotId: bigint ) => {
-        console.log({branchOfficeId,productId,lotId});
-        handleOpenModalInventory(branchOfficeId, productId, lotId);
+    // const handleAddInventory = (branchOfficeId: bigint, productId: bigint, lotId: bigint ) => {
+    //     console.log({branchOfficeId,productId,lotId});
+    //     handleOpenModalInventory(branchOfficeId, productId, lotId);
+    //     // Agregar inventario para lote
+    // };
+    const handleAddInventory = (selectedInventory: InventoryEntity) => {
+        handleOpenModalInventory(selectedInventory);
         // Agregar inventario para lote
     };
 
@@ -78,8 +87,8 @@ export function ProductDetailsView({ product }: Props) {
 
     return (
         <TemplateHeader title={product.name} detail='Detalles del producto' breadcrumbItems={breadcrumbItems}>
-                        <div className="flex gap-2">
-                <ActionButton variant="edit" size="md" onClick={()=> handleOpenUpdateProductModal(product)}>
+            <div className="flex gap-2">
+                <ActionButton variant="edit" size="md" onClick={() => handleOpenUpdateProductModal(product)}>
                     <HiPencil className="w-4 h-4" />
                     Editar
                 </ActionButton>
@@ -88,7 +97,7 @@ export function ProductDetailsView({ product }: Props) {
                     Eliminar
                 </ActionButton>
             </div>
-            <UpdateProductModal/>
+            <UpdateProductModal />
             {/* Información del producto */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="border-b border-gray-200 px-6 py-4">
@@ -162,7 +171,7 @@ export function ProductDetailsView({ product }: Props) {
                         Agregar nuevo lote
                     </ActionButton>
                 </div>
-                
+
                 {product.lots && product.lots.length > 0 ? (
                     <div className="p-6 space-y-6">
                         {product.lots.map((lot, index) => (
@@ -175,7 +184,7 @@ export function ProductDetailsView({ product }: Props) {
                                         Lote #{lot.lotNumber}
                                     </h3>
                                     <div className="flex gap-2">
-                                        <ActionButton variant="edit" onClick={()=> handleOpenUpdateLotModal(lot)}>
+                                        <ActionButton variant="edit" onClick={() => handleOpenUpdateLotModal(lot)}>
                                             <HiPencil className="w-4 h-4" />
                                         </ActionButton>
                                         <ActionButton variant="delete">
@@ -183,7 +192,7 @@ export function ProductDetailsView({ product }: Props) {
                                         </ActionButton>
                                     </div>
                                 </div>
-                                
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                                     <InfoCard
                                         label="Unidad báse"
@@ -213,7 +222,7 @@ export function ProductDetailsView({ product }: Props) {
                                 </div>
 
                                 {/* Unidades de compra */}
-                                <RegisterLotUnitPurchaseModal/>
+                                <RegisterLotUnitPurchaseModal />
                                 {lot.lotUnitPurchases && lot.lotUnitPurchases.length > 0 && (
                                     <div className="mb-4">
                                         <div className="flex justify-between items-center mb-3">
@@ -227,8 +236,8 @@ export function ProductDetailsView({ product }: Props) {
                                                 <UpdateLotUnitPurchaseModal />
                                                 {lot.lotUnitPurchases.map((unitPurchase) => (
                                                     <div key={unitPurchase.lotUnitPurchaseId} className="border border-gray-300 rounded-2xl p-4 space-y-2">
-                                                        <Button color='yellow' onClick={()=> handleUpdateLotUnitPurchase(unitPurchase)}>
-                                                            <HiPencil className="w-4 h-4" /> 
+                                                        <Button color='yellow' onClick={() => handleUpdateLotUnitPurchase(unitPurchase)}>
+                                                            <HiPencil className="w-4 h-4" />
                                                             Editar
                                                         </Button>
                                                         <InfoCard
@@ -259,7 +268,8 @@ export function ProductDetailsView({ product }: Props) {
                                 )}
 
                                 {/* Inventario */}
-                                <RegisterInventoryModal/>
+                                {/* <RegisterInventoryModal /> */}
+                                <UpdateInventoryModal />
                                 {lot.inventories && lot.inventories.length > 0 && (
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center">
@@ -267,15 +277,15 @@ export function ProductDetailsView({ product }: Props) {
                                                 <TbBuildingWarehouse className="w-5 h-5" />
                                                 Inventario
                                             </h4>
-                                            <ActionButton variant="add" onClick={() => handleAddInventory(BigInt(0),product.productId,lot.lotId)}>
-                                                <HiPlus className="w-4 h-4" />
-                                                Agregar inventario
-                                            </ActionButton>
                                         </div>
-                                        
+
                                         {lot.inventories.map((inventory) => (
                                             <div key={inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
-                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                                            <ActionButton variant="edit" onClick={() => handleAddInventory(inventory)}>
+                                                <HiPencilSquare className="w-4 h-4" />
+                                                Modificar
+                                            </ActionButton>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
                                                     <InfoCard
                                                         label="Precio de menudeo"
                                                         value={`$${inventory.salePriceOne}`}
@@ -326,7 +336,7 @@ export function ProductDetailsView({ product }: Props) {
                                                                 <HiPlus className="w-4 h-4" />
                                                             </ActionButton>
                                                         </div>
-                                                        
+
                                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                                             {inventory.inventoryItems.map((item) => (
                                                                 <div key={item.inventoryItemId} className="bg-white rounded-lg p-4 border border-gray-200">
@@ -344,7 +354,7 @@ export function ProductDetailsView({ product }: Props) {
                                                                             </ActionButton>
                                                                         </div>
                                                                     </div>
-                                                                    
+
                                                                     <div className="space-y-2 text-sm">
                                                                         <div className="flex justify-between">
                                                                             <span className="text-gray-600">Stock:</span>
