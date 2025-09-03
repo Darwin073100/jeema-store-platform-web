@@ -5,7 +5,7 @@ import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
 import { SelectMenu, TextInput } from '@/ui/components/inputs';
 import { Modal } from '@/ui/components/modals/Modal';
 import { IoClose } from 'react-icons/io5';
-import { HiSave } from 'react-icons/hi';
+import { HiPencil, HiSave } from 'react-icons/hi';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { LabelInput } from '@/ui/components/labels';
 import { useUpdateProductModal } from '../hooks';
@@ -167,8 +167,8 @@ const UpdateProductModal = () => {
                             >
                                 {isLoading ? <Spinner /> : (
                                     <>
-                                        Actualizar
-                                        <HiSave className="ml-2" />
+                                        Guardar cambios
+                                        <HiPencil className="w-3 h-3" />
                                     </>
                                 )}
                             </Button>

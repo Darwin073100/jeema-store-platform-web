@@ -46,14 +46,15 @@ export class ProductMapper{
             saleQuantityMany: dto.saleQuantityMany,
             minStockBranch: dto.minStockBranch,
             maxStockBranch: dto.maxStockBranch,
+            internalBarCode: dto.internalBarCode,
             
             // Inventory Items array
             inventoryItems: dto.inventoryItems?.map(item => ({
                 location: item.location,
                 quantityOnHand: item.quantityOnHand,
                 lastStockedAt: item.lastStockedAt.toJSON(),
-                purchasePriceAtStock: item.purchasePriceAtStock,
-                internalBarCode: item.internalBarCode
+                purchasePriceAtStock: item.purchasePriceAtStock
+
             })) || null
         };
         return result;

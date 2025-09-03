@@ -6,7 +6,7 @@ import { Spinner } from '@/ui/components/loadings/Spinner';
 import { Modal } from '@/ui/components/modals';
 import { FloatMessage } from '@/ui/components/messages';
 import React from 'react'
-import { HiSave } from 'react-icons/hi';
+import { HiPencil, HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { useUpdateLotModal } from '../hooks/useUpdateLotModal';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
@@ -126,8 +126,8 @@ const UpdateLotModal = () => {
                                 >
                                     {isLoading ? <Spinner /> : (
                                         <>
-                                            Actualizar
-                                            <HiSave className="ml-2" />
+                                            Guardar cambios
+                                            <HiPencil className="w-3 h-3" />
                                         </>
                                     )}
                                 </Button>

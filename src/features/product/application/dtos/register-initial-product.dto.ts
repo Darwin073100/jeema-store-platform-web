@@ -8,7 +8,6 @@ export interface InventoryItemDTO {
     quantityOnHand: number;
     lastStockedAt: Date;
     purchasePriceAtStock: number;
-    internalBarCode: string;
 }
 
 export interface RegisterInitialProductDTO {
@@ -44,6 +43,7 @@ export interface RegisterInitialProductDTO {
     salePriceSpecial?: number | null;
     minStockBranch?: number | null;
     maxStockBranch?: number | null;
+    internalBarCode?: string|null;
     
     // Inventory Items array
     inventoryItems?: InventoryItemDTO[] | null;

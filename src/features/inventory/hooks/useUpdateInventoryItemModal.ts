@@ -27,11 +27,7 @@ const registerFormData = yup.object().shape({
         .default(() => new Date()),
     purchasePriceAtStock: yup
         .number()
-        .typeError('Asegurate de ingresar la información correcta.'),
-    internalBarCode: yup
-        .string()
-        .required('El codigo de barra interno es obligatorio.')
-        .typeError('Asegurate de ingresar la información correcta.'),
+        .typeError('Asegurate de ingresar la información correcta.')
 });
 
 type RegisterFormData = yup.InferType<typeof registerFormData>;
@@ -52,7 +48,6 @@ const useUpdateInventoryItemModal = () => {
     useEffect(()=>{
         if( updateOpenModal ){
             reset({
-                internalBarCode: inventoryItem?.internalBarCode ?? '',
                 lastStockedAt: inventoryItem?.lastStockedAt,
                 location: inventoryItem?.location,
                 purchasePriceAtStock: inventoryItem?.purchasePriceAtStock,
@@ -65,14 +60,13 @@ const useUpdateInventoryItemModal = () => {
         setInventoryItem(null)
 
         reset({
-            internalBarCode: '',
             lastStockedAt: new Date(),
             location: LocationEnum.SALE,
             purchasePriceAtStock: 0,
             quantityOnHand: 0,
         });
         clearErrors([
-            'internalBarCode', 'lastStockedAt', 'location', 'purchasePriceAtStock', 'quantityOnHand'
+            'lastStockedAt', 'location', 'purchasePriceAtStock', 'quantityOnHand'
         ]);
         setFloatMessageState({});
     }
@@ -95,7 +89,7 @@ const useUpdateInventoryItemModal = () => {
                 purchasePriceAtStock: data.purchasePriceAtStock ?? 0,
                 location: data.location,
                 quantityOnHan: data.quantityOnHand,
-                internalBarCode: data.internalBarCode
+                internalBarCode: inventoryItem?.internalBarCode
             }
 
             const result = await updateInventoryItemAction(registerInventoryItemDto);

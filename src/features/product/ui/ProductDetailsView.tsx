@@ -12,7 +12,8 @@ import {
     HiOutlineQrcode,
     HiOutlineCube,
     HiOutlineCalendar,
-    HiOutlineLocationMarker
+    HiOutlineLocationMarker,
+    HiOutlineTicket
 } from 'react-icons/hi';
 import {
     TbPackage,
@@ -165,6 +166,13 @@ export function ProductDetailsView({ product }: Props) {
                             label="Última Actualización"
                             value={formatDate(product.updatedAt)}
                             icon={<HiOutlineCalendar className="w-4 h-4" />}
+                        />
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 mt-4">
+                        <InfoCard
+                            label="Descripción del producto"
+                            value={product.description}
+                            icon={<HiOutlineTicket className="w-4 h-4" />}
                         />
                     </div>
                 </div>
@@ -384,10 +392,6 @@ export function ProductDetailsView({ product }: Props) {
                                                                         <div className="flex justify-between">
                                                                             <span className="text-gray-600">Precio de compra:</span>
                                                                             <span className="font-medium">${item.purchasePriceAtStock}</span>
-                                                                        </div>
-                                                                        <div className="flex justify-between">
-                                                                            <span className="text-gray-600">Código de barra I.:</span>
-                                                                            <span className="font-mono text-xs">{item.internalBarCode}</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>

@@ -25,11 +25,7 @@ const registerFormData = yup.object().shape({
         .default(() => new Date()),
     purchasePriceAtStock: yup
         .number()
-        .typeError('Asegurate de ingresar la información correcta.'),
-    internalBarCode: yup
-        .string()
-        .required('El codigo de barra interno es obligatorio.')
-        .typeError('Asegurate de ingresar la información correcta.'),
+        .typeError('Asegurate de ingresar la información correcta.')
         
 });
 
@@ -51,7 +47,6 @@ const useRegisterInventoryItemModal = () => {
     useEffect(()=>{
         if( saveOpenModal ){
             reset({
-                internalBarCode: '',
                 lastStockedAt: new Date(),
                 location: LocationEnum.SALE,
                 purchasePriceAtStock: 0,
@@ -64,14 +59,13 @@ const useRegisterInventoryItemModal = () => {
         setSelectedInventoryId(null);
 
         reset({
-            internalBarCode: '',
             lastStockedAt: new Date(),
             location: LocationEnum.SALE,
             purchasePriceAtStock: 0,
             quantityOnHand: 0,
         });
         clearErrors([
-            'internalBarCode', 'lastStockedAt', 'location', 'purchasePriceAtStock', 'quantityOnHand'
+            'lastStockedAt', 'location', 'purchasePriceAtStock', 'quantityOnHand'
         ]);
         setFloatMessageState({});
     }
@@ -93,7 +87,7 @@ const useRegisterInventoryItemModal = () => {
                 purchasePriceAtStock: data.purchasePriceAtStock ?? 0,
                 location: data.location,
                 quantityOnHan: data.quantityOnHand,
-                internalBarCode: data.internalBarCode
+                internalBarCode: undefined,
             }
 
             const result = await registerInventoryItemAction(registerInventoryItemDto);

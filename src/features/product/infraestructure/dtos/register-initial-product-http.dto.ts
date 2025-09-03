@@ -6,7 +6,6 @@ export interface InventoryItemHttpDTO {
     quantityOnHand: number;
     lastStockedAt: string;
     purchasePriceAtStock: number;
-    internalBarCode: string;
 }
 
 export interface RegisterInitialProductHttpDTO {
@@ -42,6 +41,7 @@ export interface RegisterInitialProductHttpDTO {
     salePriceSpecial?: number | null;
     minStockBranch?: number | null;
     maxStockBranch?: number | null;
+    internalBarCode?: string|null;
     
     // Inventory Items array
     inventoryItems?: InventoryItemHttpDTO[] | null;

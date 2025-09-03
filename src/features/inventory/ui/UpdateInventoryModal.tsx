@@ -6,7 +6,7 @@ import { Spinner } from '@/ui/components/loadings/Spinner';
 import { Modal } from '@/ui/components/modals';
 import { FloatMessage } from '@/ui/components/messages';
 import React from 'react'
-import { HiSave } from 'react-icons/hi';
+import { HiPencil, HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { useUpdateInventoryModal } from '../hooks/useUpdateInventoryModal';
 
@@ -125,7 +125,7 @@ const UpdateInventoryModal = () => {
                                     {isLoading ? <Spinner /> : (
                                         <>
                                             Guardar cambios
-                                            <HiSave className="ml-2" />
+                                            <HiPencil className="w-3 h-3" />
                                         </>
                                     )}
                                 </Button>

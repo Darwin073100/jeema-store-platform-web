@@ -57,15 +57,6 @@ const RegisterInventoryItemModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Código de barra interno *" />
-                                    <TextInput
-                                        placeholder="Código de barra interno"
-                                        error={!!errors.internalBarCode}
-                                        errorMessage={errors.internalBarCode?.message}
-                                        {...register('internalBarCode', { valueAsNumber: true })}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
                                     <LabelInput value="Unidades en este stock *" />
                                     <TextInput
                                         type='number'

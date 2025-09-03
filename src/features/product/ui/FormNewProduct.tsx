@@ -16,6 +16,7 @@ import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { ForSaleEnum } from '../domain/enums/for-sale.enum';
+import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
 
 interface Props {
     categoryList: CategoryEntity[],
@@ -60,10 +61,20 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
         text: item.toString()
     }));
 
-    const forSaleOptions = Object.values(ForSaleEnum).map(item => ({
-        value: item.toString(),
-        text: item.toString()
-    }));
+    // const forSaleOptions = Object.values(ForSaleEnum).map(item => ({
+    //     value: item.toString(),
+    //     text: item.toString()
+    // }));
+    const forSaleOptions = [
+        { value: ForSaleEnum.PC, text: 'PC - Pieza' },
+        { value: ForSaleEnum.KG, text: 'KG - Kilogramo' },
+        { value: ForSaleEnum.L, text: 'L - Litro' },
+        { value: ForSaleEnum.M, text: 'M - Metro' },
+        { value: ForSaleEnum.DOC, text: 'DOC - Docena' },
+        { value: ForSaleEnum.PAQUETE, text: 'PAQ - Paquete' },
+        { value: ForSaleEnum.CAJA, text: 'CAJA - Caja' },
+        { value: ForSaleEnum.SET, text: 'SET - Conjunto o Kit' },
+    ];
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -273,18 +284,16 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                 <span className="text-sm font-medium text-gray-500">
                                                     Unidad de compra #{index + 1}
                                                 </span>
-                                                {lotUnitPurchases.length > 1 && (
-                                                    <button
+                                                    <RoundedButton
                                                         type="button"
+                                                        color='red'
                                                         onClick={() => removeLotUnitPurchase(index)}
-                                                        className="text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full p-1 transition-colors"
                                                         title="Eliminar unidad de compra"
                                                     >
                                                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                                                         </svg>
-                                                    </button>
-                                                )}
+                                                    </RoundedButton>
                                             </div>
                                             
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -405,7 +414,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                 )}
                                             </div>
                                             
-                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                                 <div>
                                                     <LabelInput value="Ubicación *" />
                                                     <SelectMenu
@@ -431,36 +440,6 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         errorMessage={errors.inventoryItems?.[index]?.quantityOnHand?.message}
                                                         placeholder="0"
                                                     />
-                                                </div>
-
-                                                <div>
-                                                    <div className="flex flex-col">
-                                                        <div className='flex'>
-                                                            <LabelInput value="Código de barras interno *  " />
-                                                            <Button 
-                                                                type='button' 
-                                                                size="sm" 
-                                                                color="yellow" 
-                                                                onClick={() => handleBarCodeMatch(index)}
-                                                                className="whitespace-nowrap"
-                                                            >
-                                                                <TbExchange className="w-4 h-4" />
-                                                                User codigo universal
-                                                            </Button>
-                                                        </div>
-                                                        <div className="flex flex-col">
-                                                            <TextInput
-                                                                type="text"
-                                                                value={item.internalBarCode}
-                                                                onChange={(e) =>
-                                                                    updateInventoryItem(index, "internalBarCode", e.target.value)
-                                                                }
-                                                                error={!!(errors.inventoryItems?.[index]?.internalBarCode)}
-                                                                errorMessage={errors.inventoryItems?.[index]?.internalBarCode?.message}
-                                                                placeholder="Código interno"
-                                                            />
-                                                        </div>
-                                                    </div>
                                                 </div>
 
                                                 <div>
@@ -532,7 +511,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                             </div>
 
                             {/* Sección de Stocks */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
                                 <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
                                     <h4 className="font-medium text-orange-800 mb-3">📉 Stock Mínimo en Sucursal</h4>
                                     <LabelInput value="Stock mínimo en esta sucursal *" />
@@ -554,7 +533,34 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         errorMessage={errors.maxStockBranch?.message}
                                         type='number'
                                         placeholder="Cantidad máxima"
-                                    />
+                                        />
+                                </div>
+                                <div className='bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200'>
+                                    <div className="flex flex-col">
+                                            <h4 className="font-medium text-indigo-800 mb-3">𝄃𝄃𝄂𝄂𝄀 Código de barra interno</h4>
+                                        <div className='flex gap-4'>
+                                            <LabelInput value="Código de barras interno *  " />
+                                            <Button 
+                                                type='button' 
+                                                size="sm" 
+                                                color="yellow" 
+                                                onClick={() => handleBarCodeMatch()}
+                                                className="whitespace-nowrap"
+                                            >
+                                                <TbExchange className="w-4 h-4" />
+                                                User codigo universal
+                                            </Button>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <TextInput
+                                            {...register('internalBarCode')}
+                                            error={!!errors.internalBarCode}
+                                            errorMessage={errors.internalBarCode?.message}
+                                                type="text"
+                                                placeholder="Código interno"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

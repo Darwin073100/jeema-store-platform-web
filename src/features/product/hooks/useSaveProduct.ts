@@ -56,7 +56,7 @@ const schema = yup.object({
     salePriceSpecial: yup.number().required('El precio de venta especial es obligatorio.').positive('El número debe ser positivo.').typeError('Asegurate de ingresar la información correcta.'),
     minStockBranch: yup.number().required('El stock mínimo por sucursal es obligatorio.').positive('El número debe ser positivo.').typeError('Asegurate de ingresar la información correcta.'),
     maxStockBranch: yup.number().optional().notRequired().default(0).positive('El numero debe ser positivo').typeError('Asegurate de ingresar la información correcta.'),
-    
+    internalBarCode: yup.string().required('El codigo de barra interno es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
     // LotUnitPurchases validation
     lotUnitPurchases: yup.array().of(
         yup.object({
@@ -73,14 +73,13 @@ const schema = yup.object({
             location: yup.string().required('La ubicacion del producto es obligatorio.'),
             quantityOnHand: yup.number().required('El stock para la ubicación asignada es obligatorio.').positive('La cantidad debe ser positiva.').typeError('Asegurate de ingresar la información correcta.'),
             lastStockedAt: yup.date().required().default(() => new Date()),
-            purchasePriceAtStock: yup.number().typeError('Asegurate de ingresar la información correcta.'),
-            internalBarCode: yup.string().required('El codigo de barra interno es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
+            purchasePriceAtStock: yup.number().typeError('Asegurate de ingresar la información correcta.')
         })
     ).optional().notRequired()
 }).required();
 
 type FormData = yup.InferType<typeof schema>;
-
+type LotUnitPurchaseType = {purchasePrice: number, purchaseQuantity: number, unit: string, unitsInPurchaseUnit: number}
 interface Props {
 }
 
@@ -96,22 +95,18 @@ const useSaveProduct = () => {
         defaultValues: {
             expirationDate: new Date(),
             manufacturingDate: new Date(),
-            lotUnitPurchases: [
-                { purchasePrice: 0, purchaseQuantity: 0, unit: "", unitsInPurchaseUnit: 0 }
-            ],
+            lotUnitPurchases: [],
             inventoryItems: [
-                { internalBarCode: "", lastStockedAt: new Date(), location: '', purchasePriceAtStock: 0, quantityOnHand: 0 }
+                { lastStockedAt: new Date(), location: '', purchasePriceAtStock: 0, quantityOnHand: 0 }
             ]
         }
     });
 
     useEffect(() => {
         const defaultInventoryItems = [
-            {internalBarCode: "", lastStockedAt: new Date(), location: '', purchasePriceAtStock: 0, quantityOnHand: 0 }
+            { lastStockedAt: new Date(), location: '', purchasePriceAtStock: 0, quantityOnHand: 0 }
         ];
-        const defaultLotUnitPurchases = [
-            { purchasePrice: 0, purchaseQuantity: 0, unit: "", unitsInPurchaseUnit: 0 }
-        ];
+        const defaultLotUnitPurchases: LotUnitPurchaseType[] = [];
         
         reset({
             // sku: uuidv4(),
@@ -126,12 +121,10 @@ const useSaveProduct = () => {
         setLotUnitPurchases(defaultLotUnitPurchases);
     }, [reset, establishment, branchOffice]);
 
-    const [lotUnitPurchases, setLotUnitPurchases] = useState([
-        { purchasePrice: 0, purchaseQuantity: 0, unit: "", unitsInPurchaseUnit: 0 },
-    ]);
+    const [lotUnitPurchases, setLotUnitPurchases] = useState<LotUnitPurchaseType[]>([]);
 
     const [inventoryItems, setInventoryItems] = useState([
-        { location: "", quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0, internalBarCode: "" },
+        { location: "", quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0 },
     ]);
 
     const addLotUnitPurchase = () => {
@@ -182,11 +175,7 @@ const useSaveProduct = () => {
     const universalBarCode = watch('universalBarCode');
     const handleBarCodeMatch = (index: number = 0) => {
         // Set internal bar code in the specified inventory item (default to first one)
-        setValue(`inventoryItems.${index}.internalBarCode`, universalBarCode || '');
-        // Also update the state
-        if (inventoryItems.length > index) {
-            updateInventoryItem(index, 'internalBarCode', universalBarCode || '');
-        }
+        setValue(`internalBarCode`, universalBarCode || '');
     }
 
     const resetFormProduct = () => {
@@ -245,12 +234,12 @@ const useSaveProduct = () => {
             salePriceOne: data.salePriceOne,
             salePriceSpecial: data.salePriceSpecial,
             saleQuantityMany: data.saleQuantityMany,
+            internalBarCode: data.internalBarCode,
             inventoryItems: data.inventoryItems?.map(item => ({
                 location: item.location,
                 quantityOnHand: item.quantityOnHand,
                 lastStockedAt: item.lastStockedAt,
-                purchasePriceAtStock: item.purchasePriceAtStock ?? 0,
-                internalBarCode: item.internalBarCode
+                purchasePriceAtStock: item.purchasePriceAtStock ?? 0
             })) || []
         }
 

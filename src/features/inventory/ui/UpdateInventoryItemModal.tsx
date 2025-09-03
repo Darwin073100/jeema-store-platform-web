@@ -6,10 +6,8 @@ import { LabelInput } from '@/ui/components/labels';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { Modal } from '@/ui/components/modals';
 import { FloatMessage } from '@/ui/components/messages';
-import { HiSave } from 'react-icons/hi';
+import { HiPencil, HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { MdCleaningServices } from 'react-icons/md';
-import { useRegisterInventoryItemModal } from '../hooks/useRegisterInventoryItemModal';
 import { LocationEnum } from '../domain/enums/location.enum';
 import { useUpdateInventoryItemModal } from '../hooks/useUpdateInventoryItemModal';
 
@@ -57,15 +55,6 @@ const UpdateInventoryItemModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Código de barra interno *" />
-                                    <TextInput
-                                        placeholder="Código de barra interno"
-                                        error={!!errors.internalBarCode}
-                                        errorMessage={errors.internalBarCode?.message}
-                                        {...register('internalBarCode', { valueAsNumber: true })}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
                                     <LabelInput value="Unidades en este stock *" />
                                     <TextInput
                                         type='number'
@@ -99,7 +88,7 @@ const UpdateInventoryItemModal = () => {
                                     {isLoading ? <Spinner /> : (
                                         <>
                                             Guardar cambios
-                                            <HiSave className="ml-2" />
+                                            <HiPencil className="w-3 h-3" />
                                         </>
                                     )}
                                 </Button>
