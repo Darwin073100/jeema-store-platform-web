@@ -39,6 +39,11 @@ import { useUpdateInventoryModal } from '@/features/inventory/hooks/useUpdateInv
 import { InventoryEntity } from '@/features/inventory/domain/entities/inventory.entity';
 import { HiPencilSquare } from 'react-icons/hi2';
 import { UpdateInventoryModal } from '@/features/inventory/ui/UpdateInventoryModal';
+import { useRegisterInventoryItemModal } from '@/features/inventory/hooks/useRegisterInventoryItemModal';
+import { RegisterInventoryItemModal } from '@/features/inventory/ui/RegisterInventoryItemModal';
+import { useUpdateInventoryItemModal } from '@/features/inventory/hooks/useUpdateInventoryItemModal';
+import { InventoryItemEntity } from '@/features/inventory/domain/entities/inventory-item-response.dto';
+import { UpdateInventoryItemModal } from '@/features/inventory/ui/UpdateInventoryItemModal';
 
 interface Props {
     product: ProductEntity;
@@ -52,6 +57,8 @@ export function ProductDetailsView({ product }: Props) {
     const { handleSelectedLotUnitPurchase } = useUpdateLotUnitPurchaseModal();
     // const { handleOpenModalInventory } = useRegisterInventoryModal();
     const { handleOpenModalInventory } = useUpdateInventoryModal();
+    const { handleOpenModalInventoryItem } = useRegisterInventoryItemModal();
+    const { handleOpenModalUpdateInventoryItem } = useUpdateInventoryItemModal();
 
     const handleAddLot = () => {
         handleOpenRegisterLotModal(product.productId.toString());
@@ -76,9 +83,14 @@ export function ProductDetailsView({ product }: Props) {
         // Agregar inventario para lote
     };
 
-    const handleAddInventoryItem = (inventoryId: string) => {
+    const handleAddInventoryItem = (inventoryId: bigint) => {
+        handleOpenModalInventoryItem(inventoryId);
         // Agregar item de inventario para inventario
     };
+
+    const handlerSelectedInventoryItemModal = (inventoryItem: InventoryItemEntity)=> {
+        handleOpenModalUpdateInventoryItem(inventoryItem);
+    }
 
     const breadcrumbItems: BreadcrumbItem[] = [
         { label: 'Productos', href: '/products' },
@@ -325,6 +337,7 @@ export function ProductDetailsView({ product }: Props) {
                                                 </div>
 
                                                 {/* Ubicación: Ventas */}
+                                                <RegisterInventoryItemModal/>
                                                 {inventory.inventoryItems && inventory.inventoryItems.length > 0 && (
                                                     <div>
                                                         <div className="flex justify-between items-center mb-3">
@@ -332,12 +345,13 @@ export function ProductDetailsView({ product }: Props) {
                                                                 <HiOutlineLocationMarker className="w-5 h-5" />
                                                                 Ubicación: Ventas
                                                             </h5>
-                                                            <ActionButton variant="add" onClick={() => handleAddInventoryItem(inventory.inventoryId.toString())}>
+                                                            <ActionButton variant="add" onClick={() => handleAddInventoryItem(inventory.inventoryId)}>
                                                                 <HiPlus className="w-4 h-4" />
                                                             </ActionButton>
                                                         </div>
 
                                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                            <UpdateInventoryItemModal/>
                                                             {inventory.inventoryItems.map((item) => (
                                                                 <div key={item.inventoryItemId} className="bg-white rounded-lg p-4 border border-gray-200">
                                                                     <div className="flex justify-between items-start mb-3">
@@ -346,7 +360,7 @@ export function ProductDetailsView({ product }: Props) {
                                                                             <span className="font-medium text-gray-800">{item.location}</span>
                                                                         </div>
                                                                         <div className="flex gap-1">
-                                                                            <ActionButton variant="edit">
+                                                                            <ActionButton variant="edit" onClick={()=> handlerSelectedInventoryItemModal(item)}>
                                                                                 <HiPencil className="w-3 h-3" />
                                                                             </ActionButton>
                                                                             <ActionButton variant="delete">

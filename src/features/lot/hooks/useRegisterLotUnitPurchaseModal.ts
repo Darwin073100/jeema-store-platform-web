@@ -87,7 +87,7 @@ const useRegisterLotUnitPurchaseModal = () => {
                 purchasePrice: data.purchasePrice,
                 purchaseQuantity: data.purchaseQuantity,
                 unitsInPurchaseUnit: data.unitsInPurchaseUnit,
-                unit: data.unit as ForSaleEnum
+                unit: data.unit
             }
             const result = await registerLotUniPurchaseAction(addLotUnitPurchase);
 

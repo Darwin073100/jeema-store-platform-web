@@ -4,7 +4,7 @@ export interface UpdateInventoryItemHttpDTO {
     inventoryItemId      : string;
     inventoryId          : string;
     location             : LocationEnum;
-    quantityOnHan        : number;
+    quantityOnHand       : number;
     lastStockedAt        : string;
     purchasePriceAtStock : number;
     internalBarCode?     : string | null;
