@@ -9,6 +9,10 @@ import { registerInventoryAction } from "../actions/register-inventory.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 
 const registerFormData = yup.object().shape({
+    internalBarCode: yup
+            .string()
+            .required('El codigo de barra interno es obligatorio.')
+            .typeError('Asegurate de ingresar la información correcta.'),
     salePriceOne     : yup
             .number()
             .required('El precio de venta por menudeo es obligatorio.')
@@ -65,6 +69,7 @@ const useRegisterInventoryModal = () => {
     useEffect(()=>{
         if( saveOpenModal ){
             reset({
+                internalBarCode: '',
                 salePriceOne: 0,
                 salePriceMany: 0,
                 saleQuantityMany: 0,
@@ -81,6 +86,7 @@ const useRegisterInventoryModal = () => {
         setSelectedProductId(null);
 
         reset({
+            internalBarCode: '',
             salePriceOne: 0,
             salePriceMany: 0,
             saleQuantityMany: 0,
@@ -89,7 +95,7 @@ const useRegisterInventoryModal = () => {
             maxStockBranch: 0
         });
         clearErrors([
-            'maxStockBranch', 'minStockBranch', 'salePriceOne', 
+            'maxStockBranch', 'minStockBranch', 'salePriceOne', 'internalBarCode',
             'salePriceMany', 'saleQuantityMany', 'salePriceSpecial'
         ]);
         setFloatMessageState({});
@@ -113,6 +119,7 @@ const useRegisterInventoryModal = () => {
                 productId: selectedProductId ?? BigInt(0),
                 lotId: selectedLotId ?? BigInt(0),
                 isSellable: true,
+                internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,
                 salePriceMany: data.salePriceMany,
                 salePriceSpecial: data.salePriceSpecial,

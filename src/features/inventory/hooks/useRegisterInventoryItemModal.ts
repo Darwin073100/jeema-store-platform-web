@@ -30,6 +30,7 @@ const registerFormData = yup.object().shape({
         .string()
         .required('El codigo de barra interno es obligatorio.')
         .typeError('Asegurate de ingresar la información correcta.'),
+        
 });
 
 type RegisterFormData = yup.InferType<typeof registerFormData>;

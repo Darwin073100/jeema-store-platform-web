@@ -4,6 +4,7 @@ export interface UpdateInventoryDTO {
     lotId                : bigint;
     branchOfficeId       : bigint;
     isSellable           : boolean;
+    internalBarCode?     : string | null;
     salePriceOne?        : number | null;
     salePriceMany?       : number | null;
     saleQuantityMany?    : number | null;

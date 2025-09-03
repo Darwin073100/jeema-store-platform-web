@@ -18,7 +18,8 @@ import {
     TbPackage,
     TbBoxMultiple,
     TbBuildingWarehouse,
-    TbCurrencyDollar
+    TbCurrencyDollar,
+    TbCode
 } from 'react-icons/tb';
 import { UpdateProductModal } from './UpdateProductModal';
 import { useUpdateProductModal } from '../hooks';
@@ -298,6 +299,12 @@ export function ProductDetailsView({ product }: Props) {
                                                 Modificar
                                             </ActionButton>
                                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
+                                                    <InfoCard
+                                                        label="Codigo de barra interno"
+                                                        value={`${inventory.internalBarCode}`}
+                                                        icon={<TbCode className="w-4 h-4" />}
+                                                        className="bg-white"
+                                                    />
                                                     <InfoCard
                                                         label="Precio de menudeo"
                                                         value={`$${inventory.salePriceOne}`}

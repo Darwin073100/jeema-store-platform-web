@@ -30,6 +30,7 @@ export class InventoryMapper {
             branchOfficeId: dto.branchOfficeId.toString(),
             productId: dto.productId.toString(),
             isSellable: dto.isSellable,
+            internalBarCode: dto.internalBarCode,
             maxStockBranch: dto.maxStockBranch,
             minStockBranch: dto.minStockBranch,
             salePriceMany: dto.salePriceMany,

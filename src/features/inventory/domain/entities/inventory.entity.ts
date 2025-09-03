@@ -8,6 +8,7 @@ export interface InventoryEntity{
     lotId             : bigint;
     branchOfficeId    : bigint;
     isSellable        : boolean;
+    internalBarCode?  : string | null;
     salePriceOne?     : number | null;
     salePriceMany?    : number | null;
     saleQuantityMany? : number | null;

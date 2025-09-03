@@ -32,6 +32,7 @@ export class InventoryFetchRepository implements InventoryRepository {
                 this.apiConfig.getEndpointUrl('/inventories'),
                 httpDto
             );
+            console.log(httpDto);
             return Result.success(result.data);
         } catch (error) {
             return this.handleError(error, 'Update Inventory');

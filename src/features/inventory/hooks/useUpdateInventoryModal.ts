@@ -1,11 +1,8 @@
 import { useForm } from "react-hook-form";
-import { useRegisterInventoryStore } from "../infraestructura/stores/register-inventory.store";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { RegisterInventoryDTO } from "../application/dtos/register-inventory.dto";
-import { registerInventoryAction } from "../actions/register-inventory.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { useUpdateInventoryStore } from "../infraestructura/stores/update-inventory.store";
 import { InventoryEntity } from "../domain/entities/inventory.entity";
@@ -13,6 +10,10 @@ import { UpdateInventoryDTO } from "../application/dtos/update-inventory.dto";
 import { updateInventoryAction } from "../actions/update-inventory.action";
 
 const registerFormData = yup.object().shape({
+    internalBarCode: yup
+            .string()
+            .required('El codigo de barra interno es obligatorio.')
+            .typeError('Asegurate de ingresar la información correcta.'),
     salePriceOne     : yup
             .number()
             .required('El precio de venta por menudeo es obligatorio.')
@@ -70,6 +71,7 @@ const useUpdateInventoryModal = () => {
     useEffect(()=>{
         if( updateOpenModal ){
             reset({
+                internalBarCode: inventory?.internalBarCode ?? '',
                 salePriceOne: inventory?.salePriceOne ?? 0,
                 salePriceMany: inventory?.salePriceMany ?? 0,
                 saleQuantityMany: inventory?.saleQuantityMany ?? 0,
@@ -86,6 +88,7 @@ const useUpdateInventoryModal = () => {
         setSelectedProductId(null);
 
         reset({
+            internalBarCode: '',
             salePriceOne: 0,
             salePriceMany: 0,
             saleQuantityMany: 0,
@@ -94,7 +97,7 @@ const useUpdateInventoryModal = () => {
             maxStockBranch: 0
         });
         clearErrors([
-            'maxStockBranch', 'minStockBranch', 'salePriceOne', 
+            'maxStockBranch', 'minStockBranch', 'salePriceOne', 'internalBarCode',
             'salePriceMany', 'saleQuantityMany', 'salePriceSpecial'
         ]);
         setFloatMessageState({});
@@ -117,6 +120,7 @@ const useUpdateInventoryModal = () => {
                 productId: inventory?.productId ?? BigInt(0),
                 lotId: inventory?.lotId ?? BigInt(0),
                 isSellable: inventory?.isSellable ?? true,
+                internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,
                 salePriceMany: data.salePriceMany,
                 salePriceSpecial: data.salePriceSpecial,
