@@ -1,7 +1,7 @@
 'use client'
 import { ProductEntity } from '../domain/entities/product.entity';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
-import { Breadcrumb } from '@/ui/components/navigation/Breadcrumb';
+import Barcode from 'react-barcode';
 import { InfoCard } from '@/ui/components/cards/InfoCard';
 import { ActionButton } from '@/ui/components/buttons/ActionButton';
 import {
@@ -127,11 +127,21 @@ export function ProductDetailsView({ product }: Props) {
                             value={product.name}
                             icon={<HiOutlineTag className="w-4 h-4" />}
                         />
-                        <InfoCard
-                            label="Código de barra U."
-                            value={product.universalBarCode}
-                            icon={<HiOutlineQrcode className="w-4 h-4" />}
-                        />
+                        <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
+                            <div className="flex items-center gap-1 mb-1">
+                                <span className="text-gray-600"> <HiOutlineQrcode/> </span>
+                                <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                                    Código de barra interno
+                                </label>
+                            </div>
+                            <div className="text-gray-900 font-semibold">
+                                <Barcode 
+                                    value={product.universalBarCode?? ''} 
+                                    width={1} 
+                                    height={50} 
+                                    fontSize={16}/>
+                            </div>
+                        </div>
                         <InfoCard
                             label="SKU"
                             value={product.sku || 'No asignado'}
@@ -240,6 +250,11 @@ export function ProductDetailsView({ product }: Props) {
                                         value={lot.manufacturingDate ? formatDate(lot.manufacturingDate) : 'No especificada'}
                                         icon={<HiOutlineCalendar className="w-4 h-4" />}
                                     />
+                                    <InfoCard
+                                        label="Fecha de caducidad"
+                                        value={lot.expirationDate ? formatDate(lot.expirationDate) : 'No especificada'}
+                                        icon={<HiOutlineCalendar className="w-4 h-4" />}
+                                    />
                                 </div>
 
                                 {/* Unidades de compra */}
@@ -307,12 +322,21 @@ export function ProductDetailsView({ product }: Props) {
                                                 Modificar
                                             </ActionButton>
                                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
-                                                    <InfoCard
-                                                        label="Codigo de barra interno"
-                                                        value={`${inventory.internalBarCode}`}
-                                                        icon={<TbCode className="w-4 h-4" />}
-                                                        className="bg-white"
-                                                    />
+                                                    <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
+                                                        <div className="flex items-center gap-1 mb-1">
+                                                            <span className="text-gray-600"> <HiOutlineQrcode/> </span>
+                                                            <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                                                                Código de barra interno
+                                                            </label>
+                                                        </div>
+                                                        <div className="text-gray-900 font-semibold">
+                                                            <Barcode 
+                                                                value={inventory.internalBarCode?? ''} 
+                                                                width={1} 
+                                                                height={50} 
+                                                                fontSize={16}/>
+                                                        </div>
+                                                    </div>
                                                     <InfoCard
                                                         label="Precio de menudeo"
                                                         value={`$${inventory.salePriceOne}`}
