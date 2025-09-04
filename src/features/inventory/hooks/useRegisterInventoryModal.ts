@@ -7,6 +7,7 @@ import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterInventoryDTO } from "../application/dtos/register-inventory.dto";
 import { registerInventoryAction } from "../actions/register-inventory.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
+import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 
 const registerFormData = yup.object().shape({
     internalBarCode: yup
@@ -53,8 +54,8 @@ const registerFormData = yup.object().shape({
 type RegisterFormData = yup.InferType<typeof registerFormData>;
 
 const useRegisterInventoryModal = () => {
-    const { handleTrueSaveOpenModal, handleFalseSaveOpenModal, inventory, saveOpenModal, setInventory,
-        selectedBranchOfficeId, selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId
+    const { handleTrueSaveOpenModal, handleFalseSaveOpenModal, saveOpenModal, setSelectedProduct, selectedProduct,
+         selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId
     } = useRegisterInventoryStore();
     const { branchOffice } = useWorkspace();
     
@@ -78,7 +79,7 @@ const useRegisterInventoryModal = () => {
                 maxStockBranch: 0
             });
         }
-    }, [reset, saveOpenModal, selectedBranchOfficeId, selectedLotId, selectedProductId]);
+    }, [reset, saveOpenModal, selectedLotId, selectedProductId]);
 
     const resetFormRegisterInventory = ()=> {
         setSelectedBranchOfficeId(null);
@@ -101,11 +102,18 @@ const useRegisterInventoryModal = () => {
         setFloatMessageState({});
     }
 
-    const handleOpenModalInventory = (branchOfficeId: bigint, productId: bigint, lotId: bigint)=> {
-        setSelectedBranchOfficeId(branchOfficeId);
+    const handleRegisterOpenModalInventory = ( lotId: bigint, selectedProd: ProductEntity)=> {
         setSelectedLotId(lotId);
-        setSelectedProductId(productId)
+        setSelectedProductId(selectedProd.productId);
+        setSelectedProduct(selectedProd);
         handleTrueSaveOpenModal();
+    }
+
+    const handleUseUniversalBarCodeToLocal = ()=> {
+        if( !selectedProduct ) return;
+        reset({
+            internalBarCode: selectedProduct?.universalBarCode ?? undefined
+        });
     }
 
     const onSubmit = async (data: RegisterFormData) => {
@@ -175,7 +183,8 @@ const useRegisterInventoryModal = () => {
 
     return {
         handleFalseSaveOpenModal,
-        handleOpenModalInventory,
+        handleRegisterOpenModalInventory,
+        handleUseUniversalBarCodeToLocal,
         saveOpenModal,
         register,
         handleSubmit,

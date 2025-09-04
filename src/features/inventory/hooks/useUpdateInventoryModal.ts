@@ -8,6 +8,7 @@ import { useUpdateInventoryStore } from "../infraestructura/stores/update-invent
 import { InventoryEntity } from "../domain/entities/inventory.entity";
 import { UpdateInventoryDTO } from "../application/dtos/update-inventory.dto";
 import { updateInventoryAction } from "../actions/update-inventory.action";
+import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 
 const registerFormData = yup.object().shape({
     internalBarCode: yup
@@ -55,10 +56,9 @@ type RegisterFormData = yup.InferType<typeof registerFormData>;
 
 const useUpdateInventoryModal = () => {
     const { handleTrueUpdateOpenModal, handleFalseUpdateOpenModal, inventory, updateOpenModal, setInventory,
-        selectedBranchOfficeId, selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId
+        selectedBranchOfficeId, selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId,
+        selectedProduct, setSelectedProduct
     } = useUpdateInventoryStore();
-
-    const { branchOffice } = useWorkspace();
     
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ floatMessageState, setFloatMessageState ] = useState<FloatMessageType>({});
@@ -103,9 +103,17 @@ const useUpdateInventoryModal = () => {
         setFloatMessageState({});
     }
 
-    const handleOpenModalInventory = (selectedInv: InventoryEntity)=> {
-        setInventory(selectedInv)
+    const handleOpenModalInventory = (selectedInv: InventoryEntity, selectedProd: ProductEntity)=> {
+        setInventory(selectedInv);
+        setSelectedProduct(selectedProd);
         handleTrueUpdateOpenModal();
+    }
+
+    const handleUseUniversalBarCodeToLocal = ()=> {
+        if( !selectedProduct ) return;
+        reset({
+            internalBarCode: selectedProduct?.universalBarCode ?? inventory?.internalBarCode ?? undefined
+        });
     }
 
     const onSubmit = async (data: RegisterFormData) => {
@@ -189,7 +197,8 @@ const useUpdateInventoryModal = () => {
         onSubmit,
         // UI states
         floatMessageState,
-        isLoading
+        isLoading,
+        handleUseUniversalBarCodeToLocal
     }
 }
 

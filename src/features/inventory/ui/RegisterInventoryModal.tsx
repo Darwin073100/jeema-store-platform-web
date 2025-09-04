@@ -11,10 +11,12 @@ import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { useRegisterInventoryModal } from '../hooks/useRegisterInventoryModal';
+import { HiMiniSwatch } from 'react-icons/hi2';
 
 const RegisterInventoryModal = () => {
     const {
         handleFalseSaveOpenModal, 
+        handleUseUniversalBarCodeToLocal,
         saveOpenModal,
         register,
         handleSubmit,
@@ -47,6 +49,25 @@ const RegisterInventoryModal = () => {
                     <div className="flex-1 overflow-y-auto">
                         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="md:col-span-2">
+                                    <div className='flex gap-4'>
+                                        <LabelInput value="Código de barra interno *" />
+                                        <Button 
+                                            color='yellow'
+                                            size='sm'
+                                            type='button' 
+                                            onClick={()=> handleUseUniversalBarCodeToLocal()}>
+                                            <HiMiniSwatch/> 
+                                            Usar código del producto
+                                        </Button>
+                                    </div>
+                                    <TextInput
+                                        placeholder="Codigo de barra interno *"
+                                        error={!!errors.internalBarCode}
+                                        errorMessage={errors.internalBarCode?.message}
+                                        {...register('internalBarCode')}
+                                    />
+                                </div>
                                 <div className="md:col-span-2">
                                     <LabelInput value="Precio de venta por menudeo *" />
                                     <TextInput

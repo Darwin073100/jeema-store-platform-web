@@ -18,6 +18,7 @@ export class InventoryMapper {
             minStockBranch: dto.minStockBranch,
             salePriceMany: dto.salePriceMany,
             salePriceOne: dto.salePriceOne,
+            internalBarCode: dto.internalBarCode,
             salePriceSpecial: dto.salePriceSpecial,
             saleQuantityMany: dto.saleQuantityMany
         }

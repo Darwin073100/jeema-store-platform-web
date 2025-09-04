@@ -49,6 +49,8 @@ import { DeleteLotModal } from '@/features/lot/ui/DeleteLotModal';
 import { useDeleteLotModal } from '@/features/lot/hooks/useDeleteLotModal';
 import { useDeleteProductModal } from '../hooks/useDeleteProductModal';
 import { DeleteProductModal } from './DeleteProductModal';
+import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal';
+import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventoryModal';
 
 interface Props {
     product: ProductEntity;
@@ -60,7 +62,7 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenRegisterLotModal } = useRegisterLotModal();
     const { handleSelectedLotUnitPurchase: handleSelectedLotId } = useRegisterLotUnitPurchaseModal();
     const { handleSelectedLotUnitPurchase } = useUpdateLotUnitPurchaseModal();
-    // const { handleOpenModalInventory } = useRegisterInventoryModal();
+    const { handleRegisterOpenModalInventory } = useRegisterInventoryModal();
     const { handleOpenModalInventory } = useUpdateInventoryModal();
     const { handleOpenModalInventoryItem } = useRegisterInventoryItemModal();
     const { handleOpenModalUpdateInventoryItem } = useUpdateInventoryItemModal();
@@ -88,8 +90,8 @@ export function ProductDetailsView({ product }: Props) {
     //     handleOpenModalInventory(branchOfficeId, productId, lotId);
     //     // Agregar inventario para lote
     // };
-    const handleAddInventory = (selectedInventory: InventoryEntity) => {
-        handleOpenModalInventory(selectedInventory);
+    const handleAddInventory = (selectedInventory: InventoryEntity, selectProd: ProductEntity) => {
+        handleOpenModalInventory(selectedInventory, selectProd);
         // Agregar inventario para lote
     };
 
@@ -323,19 +325,34 @@ export function ProductDetailsView({ product }: Props) {
 
                                     {/* Inventario */}
                                     {/* <RegisterInventoryModal /> */}
-                                    <UpdateInventoryModal />
+                                    <div className="flex justify-between items-center">
+                                        <h4 className="font-medium text-gray-700 flex items-center gap-2">
+                                            <TbBuildingWarehouse className="w-5 h-5" />
+                                            Inventario
+                                        </h4>
+                                        {
+                                            lot.inventories && lot.inventories.length < 1 && (
+                                                <Button color='blue' onClick={()=> handleRegisterOpenModalInventory(lot.lotId, product)}>
+                                                    <HiPlus className="w-4 h-4" />
+                                                    Agregar control de inventario
+                                                </Button>
+                                            )
+                                        }
+                                    </div>
+                                    {
+                                        lot.inventories && lot.inventories.length < 1 && (
+                                            <span className='text-gray-700 border border-gray-300 rounded-xl p-4 block mt-4'>
+                                                No se encontro inventario...
+                                            </span>
+                                        )
+                                    }
+                                    <RegisterInventoryModal/>
                                     {lot.inventories && lot.inventories.length > 0 && (
                                         <div className="space-y-4">
-                                            <div className="flex justify-between items-center">
-                                                <h4 className="font-medium text-gray-700 flex items-center gap-2">
-                                                    <TbBuildingWarehouse className="w-5 h-5" />
-                                                    Inventario
-                                                </h4>
-                                            </div>
-
+                                            <UpdateInventoryModal product={product} />
                                             {lot.inventories.map((inventory) => (
                                                 <div key={inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
-                                                <Button color='yellow' onClick={() => handleAddInventory(inventory)}>
+                                                <Button color='yellow' onClick={() => handleAddInventory(inventory, product)}>
                                                     <HiPencil className="w-4 h-4" />
                                                     Modificar
                                                 </Button>

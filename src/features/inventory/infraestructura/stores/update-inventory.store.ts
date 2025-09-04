@@ -1,13 +1,16 @@
 import { create } from "zustand";
 import { InventoryEntity } from "../../domain/entities/inventory.entity";
+import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 
 type State = {
     updateOpenModal: boolean,
     selectedBranchOfficeId: bigint | null, 
     selectedProductId: bigint | null, 
+    selectedProduct: ProductEntity | null,
     selectedLotId: bigint | null,
     setSelectedBranchOfficeId: (id: bigint | null) => void, 
     setSelectedProductId: (id: bigint | null) => void, 
+    setSelectedProduct: (product: ProductEntity | null) => void, 
     setSelectedLotId: (id: bigint | null) => void, 
     handleTrueUpdateOpenModal: ()=> void,
     handleFalseUpdateOpenModal: ()=> void,
@@ -21,6 +24,7 @@ export const useUpdateInventoryStore = create<State>()((set, get)=>({
     selectedBranchOfficeId: null,
     selectedLotId: null,
     selectedProductId: null,
+    selectedProduct: null,
     setSelectedBranchOfficeId(id) {
         set(()=> ({selectedBranchOfficeId: id}))
     },
@@ -29,6 +33,9 @@ export const useUpdateInventoryStore = create<State>()((set, get)=>({
     },
     setSelectedProductId(id) {
         set(()=>({selectedProductId: id}))
+    },
+    setSelectedProduct(product) {
+        set(()=>({selectedProduct: product}))
     },
     setInventory(payload) {
         set(()=> ({inventory: payload}))

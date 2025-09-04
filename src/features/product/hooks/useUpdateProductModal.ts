@@ -44,7 +44,7 @@ const useUpdateProductModal = () => {
     const [brands, setBrands] = useState<BrandEntity[]>([]);
     const [seasons, setSeasons] = useState<SeasonEntity[]>([]);
     const { product, setProduct } = useProductStore();
-    const { isOpenProductModal, setOpenProductModal } = useProductStore();
+    const { isOpenProductModal, setOpenProductModal,  } = useProductStore();
 
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm<FormData>({
         resolver: yupResolver(schema) as any,

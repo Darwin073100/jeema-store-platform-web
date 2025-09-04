@@ -6,11 +6,13 @@ import { Spinner } from '@/ui/components/loadings/Spinner';
 import { Modal } from '@/ui/components/modals';
 import { FloatMessage } from '@/ui/components/messages';
 import React from 'react'
-import { HiPencil, HiSave } from 'react-icons/hi';
+import { HiPencil, HiSave, HiTranslate } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { useUpdateInventoryModal } from '../hooks/useUpdateInventoryModal';
+import { ProductEntity } from '@/features/product/domain/entities/product.entity';
+import { HiMiniSwatch } from 'react-icons/hi2';
 
-const UpdateInventoryModal = () => {
+const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
     const {
         handleFalseUpdateOpenModal, 
         updateOpenModal,
@@ -19,7 +21,8 @@ const UpdateInventoryModal = () => {
         onSubmit,
         errors,
         floatMessageState,
-        isLoading
+        isLoading,
+        handleUseUniversalBarCodeToLocal
     } = useUpdateInventoryModal();
 
     return (
@@ -39,7 +42,17 @@ const UpdateInventoryModal = () => {
                         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Código de barra interno *" />
+                                    <div className='flex gap-4'>
+                                        <LabelInput value="Código de barra interno *" />
+                                        <Button 
+                                            color='yellow'
+                                            size='sm'
+                                            type='button' 
+                                            onClick={()=> handleUseUniversalBarCodeToLocal()}>
+                                            <HiMiniSwatch/> 
+                                            Usar código del producto
+                                        </Button>
+                                    </div>
                                     <TextInput
                                         placeholder="Precio de venta por menudeo *"
                                         error={!!errors.internalBarCode}
