@@ -75,7 +75,32 @@ export class LotFetchRepositoryImpl implements LotRepository {
         } catch (error: any) {
             return this.handleError(error, 'Update Lot');
         }
-        
+    }
+    async deleteLot(lotId: bigint): Promise<Result<any, ErrorEntity>|undefined> {
+        try {
+            const httpLotId = lotId.toString();
+            const result = await this.httpClient.delete<any>(
+                this.apiConfig.getEndpointUrl(`/lots/${httpLotId}`)
+            )
+
+            return Result.success(result.data)
+        } catch (error: any) {
+            return this.handleError(error, 'Delete Lot');
+        }
+    }
+    async deleteLotUnitPurchase(lotId: bigint, lotUnitPurchaseId: bigint): Promise<Result<any, ErrorEntity>|undefined> {
+        try {
+            const httpLotId = lotId.toString();
+            const httpLotUnitPurchaseId = lotUnitPurchaseId.toString();
+
+            const result = await this.httpClient.delete<any>(
+                this.apiConfig.getEndpointUrl(`/lots/${httpLotId}/unit-purchases/${httpLotUnitPurchaseId}`)
+            )
+
+            return Result.success(result.data)
+        } catch (error: any) {
+            return this.handleError(error, 'Delete Lot Unit Purchase');
+        }
     }
 
     /**

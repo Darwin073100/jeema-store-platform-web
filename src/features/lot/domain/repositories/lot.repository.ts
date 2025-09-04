@@ -8,8 +8,10 @@ import { UpdateLotUnitPurchaseDTO } from "../../application/dtos/update-lot-unit
 import { AddLotUnitPurchaseDTO } from "../../application/dtos/add-lot-unit-purchase.dto";
 
 export interface LotRepository{
-    save(dto: RegisterLotDTO):Promise<Result<LotEntity, ErrorEntity>>
-    update(dto: UpdateLotDTO):Promise<Result<LotEntity, ErrorEntity>>
-    addPurchaseUnit(dto: AddLotUnitPurchaseDTO):Promise<Result<LotUnitPurchaseEntity, ErrorEntity>>
-    updatePurchaseUnit(dto: UpdateLotUnitPurchaseDTO): Promise<Result<LotUnitPurchaseEntity, ErrorEntity>>
+    save(dto: RegisterLotDTO):Promise<Result<LotEntity, ErrorEntity>>;
+    update(dto: UpdateLotDTO):Promise<Result<LotEntity, ErrorEntity>>;
+    addPurchaseUnit(dto: AddLotUnitPurchaseDTO):Promise<Result<LotUnitPurchaseEntity, ErrorEntity>>;
+    updatePurchaseUnit(dto: UpdateLotUnitPurchaseDTO): Promise<Result<LotUnitPurchaseEntity, ErrorEntity>>;
+    deleteLot(lotId: bigint): Promise<Result<any, ErrorEntity>|undefined>;
+    deleteLotUnitPurchase(lotId: bigint, lotUnitPurchaseId: bigint): Promise<Result<any, ErrorEntity>|undefined>;
 }

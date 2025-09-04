@@ -54,6 +54,19 @@ export class InventoryItemFetchRepositoryImpl implements InventoryItemRepository
         }
     }
 
+    async deleteById(inventoryItemId: bigint): Promise<Result<any, ErrorEntity> | undefined>{
+        try {
+            const httpId = inventoryItemId.toString();
+            const result = await this.httpClient.delete<any>(
+                this.apiConfig.getEndpointUrl(`inventory-items/${httpId}`)
+            );
+
+            return Result.success(result.data);
+        } catch (error) {
+            this.handleError(error, 'Delete Inventory Item');
+        }
+    }
+
     /**
      * Manejo centralizado de errores
      */

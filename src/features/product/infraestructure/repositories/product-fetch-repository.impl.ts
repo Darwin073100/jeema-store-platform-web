@@ -55,6 +55,18 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return this.handleError(error, 'update product');
         }
     }
+    async delete(productId: bigint): Promise<Result<any, ErrorEntity>|undefined> {
+        try {
+            const httpId = productId.toString();
+            const response = await this.httpClient.delete<any>(
+                this.apiConfig.getEndpointUrl(`/products/${httpId}`)
+            );
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Delete product');
+        }
+    }
     
     async saveProductWithLotAndInventory(dto: RegisterInitialProductDTO): Promise<Result<ProductEntity, ErrorEntity>> {
         try {

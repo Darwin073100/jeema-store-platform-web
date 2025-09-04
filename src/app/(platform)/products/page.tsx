@@ -74,7 +74,7 @@ export default async function ProductsPage() {
                     <ProductActionsBar />
                     <ProductSearch />
                     <h1 className="text-xl">Lista de productos</h1>
-                    <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <div className="w-full bg-gray-100 border border-gray-400 text-red-700 px-4 py-3 rounded">
                         Error al cargar los productos. Por favor, recarga la página.
                     </div>
                     <TableProduct productList={[]} />

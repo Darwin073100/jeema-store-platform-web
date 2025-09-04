@@ -3,7 +3,6 @@ import { ProductEntity } from '../domain/entities/product.entity';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import Barcode from 'react-barcode';
 import { InfoCard } from '@/ui/components/cards/InfoCard';
-import { ActionButton } from '@/ui/components/buttons/ActionButton';
 import {
     HiPlus,
     HiPencil,
@@ -20,7 +19,6 @@ import {
     TbBoxMultiple,
     TbBuildingWarehouse,
     TbCurrencyDollar,
-    TbCode
 } from 'react-icons/tb';
 import { UpdateProductModal } from './UpdateProductModal';
 import { useUpdateProductModal } from '../hooks';
@@ -35,17 +33,22 @@ import { RegisterLotUnitPurchaseModal } from '@/features/lot/ui/RegisterLotUnitP
 import { useUpdateLotUnitPurchaseModal } from '@/features/lot/hooks/useUpdateLotUnitPurchaseModal';
 import { LotUnitPurchaseEntity } from '@/features/lot/domain/entities/lot-unit-purchase.entity';
 import { UpdateLotUnitPurchaseModal } from '@/features/lot/ui/UpdateLotUnitPurchaseModal';
-import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal';
-import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventoryModal';
 import { useUpdateInventoryModal } from '@/features/inventory/hooks/useUpdateInventoryModal';
 import { InventoryEntity } from '@/features/inventory/domain/entities/inventory.entity';
-import { HiPencilSquare } from 'react-icons/hi2';
 import { UpdateInventoryModal } from '@/features/inventory/ui/UpdateInventoryModal';
 import { useRegisterInventoryItemModal } from '@/features/inventory/hooks/useRegisterInventoryItemModal';
 import { RegisterInventoryItemModal } from '@/features/inventory/ui/RegisterInventoryItemModal';
 import { useUpdateInventoryItemModal } from '@/features/inventory/hooks/useUpdateInventoryItemModal';
 import { InventoryItemEntity } from '@/features/inventory/domain/entities/inventory-item-response.dto';
 import { UpdateInventoryItemModal } from '@/features/inventory/ui/UpdateInventoryItemModal';
+import { DeleteInventoryItemModal } from '@/features/inventory/ui/DeleteInventoryItemModal';
+import { useDeleteInventoryItemModal } from '@/features/inventory/hooks/useDeleteInventoryItemModal';
+import { DeleteLotUnitPurchaseModal } from '@/features/lot/ui/DeleteLotUnitPurchaseModal';
+import { useDeleteLotUnitPurchaseModal } from '@/features/lot/hooks/useDeleteLotUnitPurchaseModal';
+import { DeleteLotModal } from '@/features/lot/ui/DeleteLotModal';
+import { useDeleteLotModal } from '@/features/lot/hooks/useDeleteLotModal';
+import { useDeleteProductModal } from '../hooks/useDeleteProductModal';
+import { DeleteProductModal } from './DeleteProductModal';
 
 interface Props {
     product: ProductEntity;
@@ -61,6 +64,11 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenModalInventory } = useUpdateInventoryModal();
     const { handleOpenModalInventoryItem } = useRegisterInventoryItemModal();
     const { handleOpenModalUpdateInventoryItem } = useUpdateInventoryItemModal();
+    const { handleOpenModalDeleteInventoryItem } = useDeleteInventoryItemModal();
+    const { handleOpenModalDeleteLotUnitPurchase } = useDeleteLotUnitPurchaseModal();
+    const { handleOpenModalDeleteLot } = useDeleteLotModal();
+    const { handleOpenModalDeleteProduct } = useDeleteProductModal();
+
 
     const handleAddLot = () => {
         handleOpenRegisterLotModal(product.productId.toString());
@@ -106,12 +114,13 @@ export function ProductDetailsView({ product }: Props) {
                     <HiPencil className="w-4 h-4" />
                     Modificar
                 </Button>
-                <Button color='red' >
+                <Button color='red' onClick={()=> handleOpenModalDeleteProduct(product)}>
                     <HiTrash className="w-4 h-4" />
                     Eliminar
                 </Button>
             </div>
             <UpdateProductModal />
+            <DeleteProductModal />
             {/* Información del producto */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="border-b border-gray-200 px-6 py-4">
@@ -189,7 +198,6 @@ export function ProductDetailsView({ product }: Props) {
             </div>
 
             {/* Lote del producto */}
-            <UpdateLotModal />
             <RegisterLotModal />
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
@@ -204,232 +212,246 @@ export function ProductDetailsView({ product }: Props) {
                 </div>
 
                 {product.lots && product.lots.length > 0 ? (
-                    <div className="p-6 space-y-6">
-                        {product.lots.map((lot, index) => (
-                            <div key={lot.lotId} className="border border-gray-200 rounded-lg p-4">
-                                <div className="flex justify-between items-center mb-4">
-                                    <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-                                        <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
-                                            {index + 1}
-                                        </span>
-                                        Lote #{lot.lotNumber}
-                                    </h3>
-                                    <div className="flex gap-2">
-                                        <Button color='yellow' onClick={() => handleOpenUpdateLotModal(lot)}>
-                                            <HiPencil className="w-4 h-4" /> Modificar
-                                        </Button>
-                                        <Button color='red'>
-                                            <HiTrash className="w-4 h-4" /> Eliminar
-                                        </Button>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                                    <InfoCard
-                                        label="Unidad báse"
-                                        value={`${lot.purchaseUnit.toUpperCase()}`}
-                                        icon={<TbPackage className="w-4 h-4" />}
-                                    />
-                                    <InfoCard
-                                        label="Precio de compra"
-                                        value={`$${lot.purchasePrice}`}
-                                        icon={<TbCurrencyDollar className="w-4 h-4" />}
-                                    />
-                                    <InfoCard
-                                        label="Cantidad comprada"
-                                        value={lot.initialQuantity.toString()}
-                                        icon={<TbBoxMultiple className="w-4 h-4" />}
-                                    />
-                                    <InfoCard
-                                        label="Fecha de ingreso"
-                                        value={formatDate(lot.receivedDate)}
-                                        icon={<HiOutlineCalendar className="w-4 h-4" />}
-                                    />
-                                    <InfoCard
-                                        label="Fecha de fabricación"
-                                        value={lot.manufacturingDate ? formatDate(lot.manufacturingDate) : 'No especificada'}
-                                        icon={<HiOutlineCalendar className="w-4 h-4" />}
-                                    />
-                                    <InfoCard
-                                        label="Fecha de caducidad"
-                                        value={lot.expirationDate ? formatDate(lot.expirationDate) : 'No especificada'}
-                                        icon={<HiOutlineCalendar className="w-4 h-4" />}
-                                    />
-                                </div>
-
-                                {/* Unidades de compra */}
-                                    <RegisterLotUnitPurchaseModal />
-                                    <div className="flex items-center mb-3 gap-4">
-                                        <h4 className="font-medium text-gray-700">Unidades de compra</h4>
-                                        <Button color='blue' type='button' onClick={() => handleAddLotUnitPurchase(lot.lotId)}>
-                                            <HiPlus className="w-4 h-4" /> Agregar unidad
-                                        </Button>
-                                    </div>
-                                {lot.lotUnitPurchases && lot.lotUnitPurchases.length > 0 && (
-                                    <div className="mb-4">
-                                        <div className="bg-gray-50 rounded-lg p-4">
-                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                                                <UpdateLotUnitPurchaseModal />
-                                                {lot.lotUnitPurchases.map((unitPurchase) => (
-                                                    <div key={unitPurchase.lotUnitPurchaseId} className="border border-gray-300 rounded-2xl p-4 space-y-2">
-                                                        <Button color='yellow' onClick={() => handleUpdateLotUnitPurchase(unitPurchase)}>
-                                                            <HiPencil className="w-4 h-4" />
-                                                            Modificar
-                                                        </Button>
-                                                        <InfoCard
-                                                            label="Unidad"
-                                                            value={unitPurchase.unit}
-                                                            className="bg-white"
-                                                        />
-                                                        <InfoCard
-                                                            label="Cantidad comprada"
-                                                            value={unitPurchase.purchaseQuantity.toString()}
-                                                            className="bg-white"
-                                                        />
-                                                        <InfoCard
-                                                            label="Costo de la unidad"
-                                                            value={`$${unitPurchase.purchasePrice}`}
-                                                            className="bg-white"
-                                                        />
-                                                        <InfoCard
-                                                            label="Unidades base en esta unidad"
-                                                            value={unitPurchase.unitsInPurchaseUnit.toString()}
-                                                            className="bg-white"
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Inventario */}
-                                {/* <RegisterInventoryModal /> */}
-                                <UpdateInventoryModal />
-                                {lot.inventories && lot.inventories.length > 0 && (
-                                    <div className="space-y-4">
-                                        <div className="flex justify-between items-center">
-                                            <h4 className="font-medium text-gray-700 flex items-center gap-2">
-                                                <TbBuildingWarehouse className="w-5 h-5" />
-                                                Inventario
-                                            </h4>
-                                        </div>
-
-                                        {lot.inventories.map((inventory) => (
-                                            <div key={inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
-                                            <Button color='yellow' onClick={() => handleAddInventory(inventory)}>
-                                                <HiPencil className="w-4 h-4" />
-                                                Modificar
+                    <>
+                        <UpdateLotModal />
+                        <DeleteLotModal />
+                        <div className="p-6 space-y-6">
+                            {product.lots.map((lot, index) => (
+                                <div key={lot.lotId} className="border border-gray-200 rounded-lg p-4">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                                            <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                                                {index + 1}
+                                            </span>
+                                            Lote #{lot.lotNumber}
+                                        </h3>
+                                        <div className="flex gap-2">
+                                            <Button color='yellow' onClick={() => handleOpenUpdateLotModal(lot)}>
+                                                <HiPencil className="w-4 h-4" /> Modificar
                                             </Button>
-                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
-                                                    <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
-                                                        <div className="flex items-center gap-1 mb-1">
-                                                            <span className="text-gray-600"> <HiOutlineQrcode/> </span>
-                                                            <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                                                                Código de barra interno
-                                                            </label>
-                                                        </div>
-                                                        <div className="text-gray-900 font-semibold">
-                                                            <Barcode 
-                                                                value={inventory.internalBarCode?? ''} 
-                                                                width={1} 
-                                                                height={50} 
-                                                                fontSize={16}/>
-                                                        </div>
-                                                    </div>
-                                                    <InfoCard
-                                                        label="Precio de menudeo"
-                                                        value={`$${inventory.salePriceOne}`}
-                                                        icon={<TbCurrencyDollar className="w-4 h-4" />}
-                                                        className="bg-white"
-                                                    />
-                                                    <InfoCard
-                                                        label="Stock mínimo"
-                                                        value={(inventory.minStockBranch ?? 0).toString()}
-                                                        icon={<TbBoxMultiple className="w-4 h-4" />}
-                                                        className="bg-white"
-                                                    />
-                                                    <InfoCard
-                                                        label="Stock máximo"
-                                                        value={(inventory.maxStockBranch ?? 0).toString()}
-                                                        icon={<TbBoxMultiple className="w-4 h-4" />}
-                                                        className="bg-white"
-                                                    />
-                                                    <InfoCard
-                                                        label="Precio especial"
-                                                        value={`$${inventory.salePriceSpecial}`}
-                                                        icon={<TbCurrencyDollar className="w-4 h-4" />}
-                                                        className="bg-white"
-                                                    />
-                                                    <InfoCard
-                                                        label="Unidades para mayoreo"
-                                                        value={(inventory.saleQuantityMany ?? 0).toString()}
-                                                        icon={<TbBoxMultiple className="w-4 h-4" />}
-                                                        className="bg-white"
-                                                    />
-                                                    <InfoCard
-                                                        label="Precio de mayoreo"
-                                                        value={`$${inventory.salePriceMany}`}
-                                                        icon={<TbCurrencyDollar className="w-4 h-4" />}
-                                                        className="bg-white"
-                                                    />
-                                                </div>
-
-                                                {/* Ubicación: Ventas */}
-                                                <RegisterInventoryItemModal/>
-                                                {inventory.inventoryItems && inventory.inventoryItems.length > 0 && (
-                                                    <div>
-                                                        <div className="flex justify-between items-center mb-3">
-                                                            <h5 className="font-medium text-gray-700 flex items-center gap-2">
-                                                                <HiOutlineLocationMarker className="w-5 h-5" />
-                                                                Ubicación: Ventas
-                                                            </h5>
-                                                            <Button onClick={() => handleAddInventoryItem(inventory.inventoryId)}>
-                                                                <HiPlus className="w-4 h-4" /> Agregar ubicación
-                                                            </Button>
-                                                        </div>
-
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                                            <UpdateInventoryItemModal/>
-                                                            {inventory.inventoryItems.map((item) => (
-                                                                <div key={item.inventoryItemId} className="bg-white rounded-lg p-4 border border-gray-200">
-                                                                    <div className="flex justify-between items-start mb-3">
-                                                                        <div className="flex items-center gap-2">
-                                                                            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                                                            <span className="font-medium text-gray-800">{item.location}</span>
-                                                                        </div>
-                                                                        <div className="flex gap-1">
-                                                                            <Button color='yellow' onClick={()=> handlerSelectedInventoryItemModal(item)}>
-                                                                                <HiPencil className="w-3 h-3" /> Modificar
-                                                                            </Button>
-                                                                            <Button color='red'>
-                                                                                <HiTrash className="w-3 h-3" /> Eliminar
-                                                                            </Button>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div className="space-y-2 text-sm">
-                                                                        <div className="flex justify-between">
-                                                                            <span className="text-gray-600">Stock:</span>
-                                                                            <span className="font-medium">{item.quantityOnHan}</span>
-                                                                        </div>
-                                                                        <div className="flex justify-between">
-                                                                            <span className="text-gray-600">Precio de compra:</span>
-                                                                            <span className="font-medium">${item.purchasePriceAtStock}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
+                                            <Button color='red' onClick={()=> handleOpenModalDeleteLot(lot.lotId)}>
+                                                <HiTrash className="w-4 h-4" /> Eliminar
+                                            </Button>
+                                        </div>
                                     </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                        <InfoCard
+                                            label="Unidad báse"
+                                            value={`${lot.purchaseUnit.toUpperCase()}`}
+                                            icon={<TbPackage className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Precio de compra"
+                                            value={`$${lot.purchasePrice}`}
+                                            icon={<TbCurrencyDollar className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Cantidad comprada"
+                                            value={lot.initialQuantity.toString()}
+                                            icon={<TbBoxMultiple className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Fecha de ingreso"
+                                            value={formatDate(lot.receivedDate)}
+                                            icon={<HiOutlineCalendar className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Fecha de fabricación"
+                                            value={lot.manufacturingDate ? formatDate(lot.manufacturingDate) : 'No especificada'}
+                                            icon={<HiOutlineCalendar className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Fecha de caducidad"
+                                            value={lot.expirationDate ? formatDate(lot.expirationDate) : 'No especificada'}
+                                            icon={<HiOutlineCalendar className="w-4 h-4" />}
+                                        />
+                                    </div>
+
+                                    {/* Unidades de compra */}
+                                        <RegisterLotUnitPurchaseModal />
+                                        <div className="flex items-center mb-3 gap-4">
+                                            <h4 className="font-medium text-gray-700">Unidades de compra</h4>
+                                            <Button color='blue' type='button' onClick={() => handleAddLotUnitPurchase(lot.lotId)}>
+                                                <HiPlus className="w-4 h-4" /> Agregar unidad
+                                            </Button>
+                                        </div>
+                                    {lot.lotUnitPurchases && lot.lotUnitPurchases.length > 0 && (
+                                        <div className="mb-4">
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                                                    <UpdateLotUnitPurchaseModal />
+                                                    <DeleteLotUnitPurchaseModal />
+                                                    {lot.lotUnitPurchases.map((unitPurchase) => (
+                                                        <div key={unitPurchase.lotUnitPurchaseId} className="border border-gray-300 rounded-2xl p-4 space-y-2">
+                                                            <div className='flex justify-between gap-2'>
+                                                                <Button color='yellow' onClick={() => handleUpdateLotUnitPurchase(unitPurchase)}>
+                                                                    <HiPencil className="w-4 h-4" />
+                                                                    Modificar
+                                                                </Button>
+                                                                <Button color='red' onClick={() => handleOpenModalDeleteLotUnitPurchase(lot.lotId, unitPurchase.lotUnitPurchaseId)}>
+                                                                    <HiTrash className="w-4 h-4" />
+                                                                    Eliminar
+                                                                </Button>
+                                                            </div>
+                                                            <InfoCard
+                                                                label="Unidad"
+                                                                value={unitPurchase.unit}
+                                                                className="bg-white"
+                                                            />
+                                                            <InfoCard
+                                                                label="Cantidad comprada"
+                                                                value={unitPurchase.purchaseQuantity.toString()}
+                                                                className="bg-white"
+                                                            />
+                                                            <InfoCard
+                                                                label="Costo de la unidad"
+                                                                value={`$${unitPurchase.purchasePrice}`}
+                                                                className="bg-white"
+                                                            />
+                                                            <InfoCard
+                                                                label="Unidades base en esta unidad"
+                                                                value={unitPurchase.unitsInPurchaseUnit.toString()}
+                                                                className="bg-white"
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Inventario */}
+                                    {/* <RegisterInventoryModal /> */}
+                                    <UpdateInventoryModal />
+                                    {lot.inventories && lot.inventories.length > 0 && (
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between items-center">
+                                                <h4 className="font-medium text-gray-700 flex items-center gap-2">
+                                                    <TbBuildingWarehouse className="w-5 h-5" />
+                                                    Inventario
+                                                </h4>
+                                            </div>
+
+                                            {lot.inventories.map((inventory) => (
+                                                <div key={inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
+                                                <Button color='yellow' onClick={() => handleAddInventory(inventory)}>
+                                                    <HiPencil className="w-4 h-4" />
+                                                    Modificar
+                                                </Button>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
+                                                        <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
+                                                            <div className="flex items-center gap-1 mb-1">
+                                                                <span className="text-gray-600"> <HiOutlineQrcode/> </span>
+                                                                <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                                                                    Código de barra interno
+                                                                </label>
+                                                            </div>
+                                                            <div className="text-gray-900 font-semibold">
+                                                                <Barcode 
+                                                                    value={inventory.internalBarCode?? ''} 
+                                                                    width={1} 
+                                                                    height={50} 
+                                                                    fontSize={16}/>
+                                                            </div>
+                                                        </div>
+                                                        <InfoCard
+                                                            label="Precio de menudeo"
+                                                            value={`$${inventory.salePriceOne}`}
+                                                            icon={<TbCurrencyDollar className="w-4 h-4" />}
+                                                            className="bg-white"
+                                                        />
+                                                        <InfoCard
+                                                            label="Stock mínimo"
+                                                            value={(inventory.minStockBranch ?? 0).toString()}
+                                                            icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                            className="bg-white"
+                                                        />
+                                                        <InfoCard
+                                                            label="Stock máximo"
+                                                            value={(inventory.maxStockBranch ?? 0).toString()}
+                                                            icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                            className="bg-white"
+                                                        />
+                                                        <InfoCard
+                                                            label="Precio especial"
+                                                            value={`$${inventory.salePriceSpecial}`}
+                                                            icon={<TbCurrencyDollar className="w-4 h-4" />}
+                                                            className="bg-white"
+                                                        />
+                                                        <InfoCard
+                                                            label="Unidades para mayoreo"
+                                                            value={(inventory.saleQuantityMany ?? 0).toString()}
+                                                            icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                            className="bg-white"
+                                                        />
+                                                        <InfoCard
+                                                            label="Precio de mayoreo"
+                                                            value={`$${inventory.salePriceMany}`}
+                                                            icon={<TbCurrencyDollar className="w-4 h-4" />}
+                                                            className="bg-white"
+                                                        />
+                                                    </div>
+
+                                                    {/* Ubicación: Ventas */}
+                                                    <RegisterInventoryItemModal/>
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <h5 className="font-medium text-gray-700 flex items-center gap-2">
+                                                            <HiOutlineLocationMarker className="w-5 h-5" />
+                                                            Ubicación: Ventas
+                                                        </h5>
+                                                        <Button onClick={() => handleAddInventoryItem(inventory.inventoryId)}>
+                                                            <HiPlus className="w-4 h-4" /> Agregar ubicación
+                                                        </Button>
+                                                    </div>
+                                                    {inventory.inventoryItems && inventory.inventoryItems.length > 0 && (
+                                                        <div>
+
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                                {inventory.inventoryItems.map((item) => (
+                                                                <>
+                                                                    <UpdateInventoryItemModal/>
+                                                                    <DeleteInventoryItemModal/>
+                                                                    <div key={item.inventoryItemId} className="bg-white rounded-lg p-4 border border-gray-200">
+                                                                        <div className="flex justify-between items-start mb-3">
+                                                                            <div className="flex items-center gap-2">
+                                                                                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                                                                <span className="font-medium text-gray-800">{item.location}</span>
+                                                                            </div>
+                                                                            <div className="flex gap-1">
+                                                                                <Button color='yellow' onClick={()=> handlerSelectedInventoryItemModal(item)}>
+                                                                                    <HiPencil className="w-3 h-3" /> Modificar
+                                                                                </Button>
+                                                                                <Button color='red' onClick={()=> handleOpenModalDeleteInventoryItem(item.inventoryItemId)}>
+                                                                                    <HiTrash className="w-3 h-3"  /> Eliminar
+                                                                                </Button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="space-y-2 text-sm">
+                                                                            <div className="flex justify-between">
+                                                                                <span className="text-gray-600">Stock:</span>
+                                                                                <span className="font-medium">{item.quantityOnHan}</span>
+                                                                            </div>
+                                                                            <div className="flex justify-between">
+                                                                                <span className="text-gray-600">Precio de compra:</span>
+                                                                                <span className="font-medium">${item.purchasePriceAtStock}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 ) : (
                     <div className="p-6">
                         <div className="text-center py-12">

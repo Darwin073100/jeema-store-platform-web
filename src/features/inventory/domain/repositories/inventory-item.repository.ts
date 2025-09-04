@@ -9,4 +9,5 @@ export interface InventoryItemRepository{
     save(dto: RegisterInventoryItemDTO): Promise<Result<InventoryItemEntity, ErrorEntity>>;
     update(dto: UpdateInventoryItemDTO): Promise<Result<InventoryItemEntity, ErrorEntity>>
     viewAllInventoryItem():Promise<Result<{inventoryItems:InventoryResponseDTO[]},ErrorEntity>>;
+    deleteById(inventoryItemId: bigint): Promise<Result<any, ErrorEntity> | undefined>;
 }
