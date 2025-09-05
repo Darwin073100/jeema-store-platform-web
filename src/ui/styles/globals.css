@@ -28,3 +28,28 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Configuracion CSS para imprimir los codigos de barra */
+/* Oculta todo lo que no sea el contenido de impresión */
+@media print {
+  @page {
+    size: 88mm auto; /* Establece el ancho a 88mm y la altura automática */
+    margin: 0;       /* Elimina los márgenes predeterminados de la impresora */
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .printable-content, .printable-content * {
+    visibility: visible;
+  }
+
+  .printable-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 88mm;
+  }
+}
+

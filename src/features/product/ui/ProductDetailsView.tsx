@@ -51,6 +51,7 @@ import { useDeleteProductModal } from '../hooks/useDeleteProductModal';
 import { DeleteProductModal } from './DeleteProductModal';
 import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal';
 import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventoryModal';
+import { ImPrinter } from 'react-icons/im';
 
 interface Props {
     product: ProductEntity;
@@ -71,6 +72,10 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenModalDeleteLot } = useDeleteLotModal();
     const { handleOpenModalDeleteProduct } = useDeleteProductModal();
 
+
+    const handlePrint = () => {
+        window.print();
+    };
 
     const handleAddLot = () => {
         handleOpenRegisterLotModal(product.productId.toString());
@@ -142,7 +147,7 @@ export function ProductDetailsView({ product }: Props) {
                             <div className="flex items-center gap-1 mb-1">
                                 <span className="text-gray-600"> <HiOutlineQrcode/> </span>
                                 <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                                    Código de barra interno
+                                    Código de barra universal
                                 </label>
                             </div>
                             <div className="text-gray-900 font-semibold">
@@ -358,18 +363,26 @@ export function ProductDetailsView({ product }: Props) {
                                                 </Button>
                                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
                                                         <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
-                                                            <div className="flex items-center gap-1 mb-1">
+                                                            <div className="flex items-center gap-2 mb-1">
                                                                 <span className="text-gray-600"> <HiOutlineQrcode/> </span>
                                                                 <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
                                                                     Código de barra interno
                                                                 </label>
+                                                                <Button 
+                                                                    title='Imprimir código de barras' 
+                                                                    onClick={()=> handlePrint()}>
+                                                                    <ImPrinter />
+                                                                </Button>
                                                             </div>
                                                             <div className="text-gray-900 font-semibold">
-                                                                <Barcode 
-                                                                    value={inventory.internalBarCode?? ''} 
-                                                                    width={1} 
-                                                                    height={50} 
-                                                                    fontSize={16}/>
+                                                                <div className='printable-content'>
+                                                                    <Barcode 
+                                                                        value={inventory.internalBarCode?? ''} 
+                                                                        width={1} 
+                                                                        height={50} 
+                                                                        fontSize={16}/>
+                                                                </div>
+                                                                    
                                                             </div>
                                                         </div>
                                                         <InfoCard
