@@ -189,7 +189,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                         <div className="p-4 lg:p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 lg:gap-6">
                                 <div>
-                                    <LabelInput value="Unidad de medida *" htmlFor='purchaseUnit' />
+                                    <LabelInput value="Unidad base *" htmlFor='purchaseUnit' />
                                     <SelectMenu id='purchaseUnit'
                                         {...register('purchaseUnit')}
                                         error={!!errors.purchaseUnit}
@@ -199,9 +199,9 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Precio de compra *" />
+                                    <LabelInput value="Precio de compra*" />
                                     <TextInput
-                                        {...register('purchasePrice')}
+                                        {...register('purchasePrice', { valueAsNumber: true })}
                                         error={!!errors.purchasePrice}
                                         errorMessage={errors.purchasePrice?.message}
                                         type='number'
@@ -210,13 +210,13 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Stock inicial *" />
+                                    <LabelInput value="Stock comprado *" />
                                     <TextInput
                                         {...register('initialQuantity')}
                                         error={!!errors.initialQuantity}
                                         errorMessage={errors.initialQuantity?.message}
                                         type='number'
-                                        placeholder="Cantidad inicial"
+                                        placeholder="Stock comprado"
                                     />
                                 </div>
                                 
@@ -231,7 +231,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Fecha de fabricación" />
+                                    <LabelInput value="Fecha de fabricación (Opcional)" />
                                     <TextInput
                                         {...register('manufacturingDate')}
                                         error={!!errors.manufacturingDate}
@@ -241,7 +241,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Fecha de caducidad" />
+                                    <LabelInput value="Fecha de caducidad (Opcional)" />
                                     <TextInput
                                         {...register('expirationDate')}
                                         error={!!errors.expirationDate}
@@ -298,34 +298,6 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                             
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                                 <div>
-                                                    <LabelInput value="Precio de compra *" />
-                                                    <TextInput
-                                                        type="number"
-                                                        value={item.purchasePrice}
-                                                        onChange={(e) =>
-                                                            updateLotUnitPurchase(index, "purchasePrice", Number(e.target.value))
-                                                        }
-                                                        error={!!(errors.lotUnitPurchases?.[index]?.purchasePrice)}
-                                                        errorMessage={errors.lotUnitPurchases?.[index]?.purchasePrice?.message}
-                                                        placeholder="0.00"
-                                                    />
-                                                </div>
-
-                                                <div>
-                                                    <LabelInput value="Cantidad *" />
-                                                    <TextInput
-                                                        type="number"
-                                                        value={item.purchaseQuantity}
-                                                        onChange={(e) =>
-                                                            updateLotUnitPurchase(index, "purchaseQuantity", Number(e.target.value))
-                                                        }
-                                                        error={!!(errors.lotUnitPurchases?.[index]?.purchaseQuantity)}
-                                                        errorMessage={errors.lotUnitPurchases?.[index]?.purchaseQuantity?.message}
-                                                        placeholder="0"
-                                                    />
-                                                </div>
-
-                                                <div>
                                                     <LabelInput value="Unidad *" />
                                                     <SelectMenu
                                                         items={forSaleOptions}
@@ -337,9 +309,8 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         errorMessage={errors.lotUnitPurchases?.[index]?.unit?.message}
                                                     />
                                                 </div>
-
                                                 <div>
-                                                    <LabelInput value="Unidades compradas *" />
+                                                    <LabelInput value="Unidades base en esta unidad *" />
                                                     <TextInput
                                                         type="number"
                                                         value={item.unitsInPurchaseUnit}
@@ -351,6 +322,36 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         placeholder="0"
                                                     />
                                                 </div>
+                                                <div>
+                                                    <LabelInput value="Cantidad comprada de esta unidad *" />
+                                                    <TextInput
+                                                        type="number"
+                                                        value={item.purchaseQuantity}
+                                                        onChange={(e) =>
+                                                            updateLotUnitPurchase(index, "purchaseQuantity", Number(e.target.value))
+                                                        }
+                                                        error={!!(errors.lotUnitPurchases?.[index]?.purchaseQuantity)}
+                                                        errorMessage={errors.lotUnitPurchases?.[index]?.purchaseQuantity?.message}
+                                                        placeholder="0"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <LabelInput value="Precio de compra de esta unidad *" />
+                                                    <TextInput
+                                                        type="number"
+                                                        value={item.purchasePrice}
+                                                        onChange={(e) =>
+                                                            updateLotUnitPurchase(index, "purchasePrice", Number(e.target.value))
+                                                        }
+                                                        error={!!(errors.lotUnitPurchases?.[index]?.purchasePrice)}
+                                                        errorMessage={errors.lotUnitPurchases?.[index]?.purchasePrice?.message}
+                                                        placeholder="0.00"
+                                                        step='0.01'
+                                                    />
+                                                </div>
+
+
+
                                             </div>
                                         </div>
                                     ))}
@@ -414,7 +415,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                 )}
                                             </div>
                                             
-                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                                                 <div>
                                                     <LabelInput value="Ubicación *" />
                                                     <SelectMenu
@@ -429,7 +430,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                 </div>
 
                                                 <div>
-                                                    <LabelInput value="Cantidad en ubicación *" />
+                                                    <LabelInput value="Cantidad de stock en esta ubicación *" />
                                                     <TextInput
                                                         type="number"
                                                         value={item.quantityOnHand}
@@ -442,7 +443,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                     />
                                                 </div>
 
-                                                <div>
+                                                {/* <div>
                                                     <LabelInput value="Precio de compra en stock *" />
                                                     <TextInput
                                                         type="number"
@@ -454,7 +455,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         errorMessage={errors.inventoryItems?.[index]?.purchasePriceAtStock?.message}
                                                         placeholder="0.00"
                                                     />
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     ))}
@@ -462,7 +463,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                             </div>
 
                             {/* Sección de Precios de Venta */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 lg:gap-6 mb-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6 mb-6">
                                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
                                     <h4 className="font-medium text-blue-800 mb-3">💰 Precio de Menudeo</h4>
                                     <LabelInput value="Precio de venta por menudeo *" />
@@ -497,7 +498,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                     </div>
                                 </div>
                                 
-                                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+                                {/* <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
                                     <h4 className="font-medium text-purple-800 mb-3">⭐ Precio Especial</h4>
                                     <LabelInput value="Precio especial *" />
                                     <TextInput
@@ -507,7 +508,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         type="number"
                                         placeholder="0.00"
                                     />
-                                </div>
+                                </div> */}
                             </div>
 
                             {/* Sección de Stocks */}

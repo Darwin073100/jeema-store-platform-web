@@ -1,9 +1,10 @@
 'use client'
 import React, { useState } from 'react'
 import { HiHome } from 'react-icons/hi'
-import { HiMiniShoppingBag, HiMiniShoppingCart, HiMiniUserGroup, HiRocketLaunch } from 'react-icons/hi2'
-import { IoAddSharp } from 'react-icons/io5'
+import { HiMiniShoppingBag, HiMiniShoppingCart } from 'react-icons/hi2'
+import { SiOnlyoffice } from "react-icons/si";
 import { SideLink } from './SideLink'
+import { FaProductHunt } from 'react-icons/fa';
 
 export const SideBar = () => {
     const [hover, setHover] = useState<string>('sm:hidden');
@@ -22,8 +23,8 @@ export const SideBar = () => {
         <SideLink hover={hover} Icon={HiHome} href='/' value='Home'/>
         <SideLink hover={hover} Icon={HiMiniShoppingCart} href='/sale' value='Ventas'/>
         <SideLink hover={hover} Icon={HiMiniShoppingBag} href='#' value='Clientes'/>
-        <SideLink hover={hover} Icon={IoAddSharp} href='/branch-office' value='Sucursales'/>
-        <SideLink hover={hover} Icon={HiRocketLaunch} href='/products' value='Productos'/>
+        <SideLink hover={hover} Icon={SiOnlyoffice} href='/branch-office' value='Suc.'/>
+        <SideLink hover={hover} Icon={FaProductHunt} href='/products' value='Productos'/>
     </form>
   )
 }

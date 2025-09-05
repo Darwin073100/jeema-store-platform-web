@@ -11,7 +11,7 @@ import { RegisterInitialProductDTO } from '../application/dtos/register-initial-
 import { useWorkspace } from '@/shared/hooks/useAuth';
 import { ForSaleEnum } from '../domain/enums/for-sale.enum';
 
-const schema = yup.object({
+const schema = yup.object().shape({
     // Establishment and Branch Office
     establishmentId: yup.string().required('El ID del establecimiento es obligatorio.'),
     branchOfficeId: yup.string().required('El ID de la sucursal es obligatorio.'),
@@ -54,7 +54,6 @@ const schema = yup.object({
     salePriceOne: yup.number().required('El precio de venta por menudeo es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
     salePriceMany: yup.number().required('El precio de venta por mayoreo es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
     saleQuantityMany: yup.number().required('La cantidad de producto por mayoreo es obligatorio.').positive('El número debe ser positivo.').typeError('Asegurate de ingresar la información correcta.'),
-    salePriceSpecial: yup.number().required('El precio de venta especial es obligatorio.').positive('El número debe ser positivo.').typeError('Asegurate de ingresar la información correcta.'),
     minStockBranch: yup.number().required('El stock mínimo por sucursal es obligatorio.').positive('El número debe ser positivo.').typeError('Asegurate de ingresar la información correcta.'),
     maxStockBranch: yup.number().optional().notRequired().default(0).positive('El numero debe ser positivo').typeError('Asegurate de ingresar la información correcta.'),
     internalBarCode: yup.string().required('El codigo de barra interno es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
@@ -115,7 +114,29 @@ const useSaveProduct = () => {
             establishmentId: establishment?.establishmentId || '',
             branchOfficeId: branchOffice?.branchOfficeId || '',
             inventoryItems: defaultInventoryItems,
-            lotUnitPurchases: defaultLotUnitPurchases
+            lotUnitPurchases: defaultLotUnitPurchases,
+            brandId: '',
+            categoryId: '',
+            description: '',
+            expirationDate: new Date(),
+            imageUrl: null,
+            initialQuantity: 0,
+            internalBarCode: '',
+            isSellable: true,
+            universalBarCode: '',
+            manufacturingDate: new Date(),
+            maxStockBranch: 0,
+            minStockBranch: 0,
+            minStockGlobal: 0,
+            name: '',
+            purchasePrice: 0,
+            purchaseUnit: '',
+            receivedDate: new Date(),
+            salePriceMany: 0,
+            salePriceOne: 0,
+            saleQuantityMany: 0,
+            seasonId: '',
+            unitOfMeasure: ''
         });
         
         setInventoryItems(defaultInventoryItems);
@@ -188,12 +209,37 @@ const useSaveProduct = () => {
         setInventoryItems(defaultInventoryItems);
         
         reset({
+            lotNumber: new Date().getDate().toString(),
+            establishmentId: establishment?.establishmentId || '',
+            branchOfficeId: branchOffice?.branchOfficeId || '',
+            inventoryItems: defaultInventoryItems,
             lotUnitPurchases: defaultLotUnitPurchases,
-            inventoryItems: defaultInventoryItems
+            brandId: '',
+            categoryId: '',
+            description: '',
+            expirationDate: new Date(),
+            imageUrl: null,
+            initialQuantity: 0,
+            internalBarCode: '',
+            isSellable: true,
+            universalBarCode: '',
+            manufacturingDate: new Date(),
+            maxStockBranch: 0,
+            minStockBranch: 0,
+            minStockGlobal: 0,
+            name: '',
+            purchasePrice: 0,
+            purchaseUnit: '',
+            receivedDate: new Date(),
+            salePriceMany: 0,
+            salePriceOne: 0,
+            saleQuantityMany: 0,
+            seasonId: '',
+            unitOfMeasure: ''          
         });
         clearErrors(['brandId', 'categoryId', 'seasonId', 'brandId', 'unitOfMeasure', 'minStockGlobal',
             'universalBarCode', 'imageUrl', 'name', 'description', 'purchasePrice', 'receivedDate',
-            'salePriceOne', 'salePriceMany', 'salePriceSpecial',
+            'salePriceOne', 'salePriceMany',
             'saleQuantityMany', 'minStockBranch', 'maxStockBranch', 'lotUnitPurchases', 'inventoryItems']);
     }
 
@@ -233,7 +279,7 @@ const useSaveProduct = () => {
             minStockBranch: data.minStockBranch,
             salePriceMany: data.salePriceMany,
             salePriceOne: data.salePriceOne,
-            salePriceSpecial: data.salePriceSpecial,
+            salePriceSpecial: undefined,
             saleQuantityMany: data.saleQuantityMany,
             internalBarCode: data.internalBarCode,
             inventoryItems: data.inventoryItems?.map(item => ({
