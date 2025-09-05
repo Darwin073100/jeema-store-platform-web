@@ -1,5 +1,6 @@
 import { LocationEnum } from "../enums/location.enum";
 import { InventoryResponseDTO } from "./inventory-response.dto";
+import { InventoryEntity } from "./inventory.entity";
 
 export interface InventoryItemEntity{
     inventoryItemId      : bigint;
@@ -12,5 +13,5 @@ export interface InventoryItemEntity{
     createdAt            : Date;
     updatedAt?           : Date|null;
     deletedAt?           : Date|null;
-    inventory?           : InventoryResponseDTO|null;
+    inventory?           : InventoryEntity|null;
 }

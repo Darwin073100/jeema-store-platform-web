@@ -11,13 +11,6 @@ import { updateLotAction } from "../actions/update-lot.action";
 
 // Schema de validación Yup para actualizar un lote
 export const updateLotSchema = yup.object().shape({
-
-    lotNumber: yup
-        .string()
-        .required('El número de lote es obligatorio.')
-        .test('is-string', 'El número de lote debe ser una cadena de texto.', 
-              value => typeof value === 'string'),
-
     purchasePrice: yup
         .number()
         .required('El precio de compra es obligatorio.')
@@ -79,7 +72,6 @@ const useUpdateLotModal = () => {
     useEffect(() => {
         if (lot && openModal) {
             reset({
-                lotNumber: lot.lotNumber,
                 purchasePrice: lot.purchasePrice,
                 initialQuantity: lot.initialQuantity,
                 purchaseUnit: lot.purchaseUnit,
@@ -104,13 +96,12 @@ const useUpdateLotModal = () => {
         reset({
             expirationDate: '',
             initialQuantity: 0,
-            lotNumber: '',
             manufacturingDate: '',
             purchasePrice: 0,
             receivedDate: '',
             purchaseUnit: ForSaleEnum.PC
         });
-        clearErrors(['expirationDate', 'initialQuantity','lotNumber', 'manufacturingDate',
+        clearErrors(['expirationDate', 'initialQuantity', 'manufacturingDate',
             'purchasePrice','purchaseUnit', 'receivedDate'
         ]);
         setFloatMessageState({});
@@ -126,7 +117,7 @@ const useUpdateLotModal = () => {
             const updateData: UpdateLotDTO = {
                 lotId: lot.lotId,
                 initialQuantity: data.initialQuantity,
-                lotNumber: data.lotNumber,
+                lotNumber: lot.lotNumber,
                 productId: lot.productId,
                 purchasePrice: data.purchasePrice,
                 purchaseUnit: data.purchaseUnit,

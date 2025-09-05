@@ -5,9 +5,8 @@ import { useMemo } from "react";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductStore } from "@/features/product/infraestructure/stores/product.store";
 import { LotEntity } from "@/features/lot/domain/entities/lot.entity";
-import { InventoryResponseDTO } from "../domain/entities/inventory-response.dto";
-import { ProductWithLotInventoryItemDTO } from "@/features/product/application/dtos/product-with-lot-inventory-item.dto";
 import { useRouter } from "next/navigation";
+import { InventoryEntity } from "../domain/entities/inventory.entity";
 
 interface TableProductProps {
     productList: ProductEntity[];
@@ -27,26 +26,35 @@ export function TableProduct({ productList = [] }: TableProductProps) {
     }
 
     // Memoiza el mapeo de productos con lotes e inventario
-    const productsWhitLots: ProductWithLotInventoryItemDTO[] = useMemo(() => {
+    const productsWhitLots: ProductEntity[] = useMemo(() => {
         if (!productList || !Array.isArray(productList)) return [];
         
         return productList.flatMap((product: ProductEntity) => {
             // Verificar que el producto existe y tiene lotes
-            if (!product || !product.lots || !Array.isArray(product.lots)) {
-                return [];
+            if (!product || !product.lots || !Array.isArray(product.lots) || product.lots.length < 1) {
+                return [{
+                    ...product
+                }];
             }
             
             return product.lots.flatMap((lot: LotEntity) => {
                 // Verificar que el lote existe y tiene inventarios
-                if (!lot || !lot.inventories || !Array.isArray(lot.inventories)) {
-                    return [];
+                console.log(product)
+                console.log(lot)
+                if (!lot || !lot.inventories || !Array.isArray(lot.inventories)|| lot.inventories.length < 1) {
+                    return [
+                        {
+                    ...product,
+                    lots: [lot]
+                }];
                 }
                 
-                return lot.inventories.map((inventory: InventoryResponseDTO) => ({
+                let finalResult = lot.inventories.map((inventory: InventoryEntity) => ({
                     ...product,
-                    lot: [lot],
+                    lots: [lot],
                     inventories: inventory
                 }));
+                return finalResult;
             });
         });
     }, [productList]);
@@ -96,7 +104,7 @@ export function TableProduct({ productList = [] }: TableProductProps) {
                             <td className="px-6 py-4">{item?.name || '-'}</td>
                             <td className="px-6 py-4">{item?.inventories?.inventoryItems?.[0]?.quantityOnHan || 0}</td>
                             <td className="px-6 py-4">{item?.inventories?.inventoryItems?.[0]?.location || '-'}</td>
-                            <td className="px-6 py-4">${item?.lot?.[0]?.purchasePrice || '0.00'}</td>
+                            <td className="px-6 py-4">${item?.lots?.[0]?.purchasePrice || '0.00'}</td>
                             <td className="px-6 py-4">${item?.inventories?.salePriceOne || '0.00'}</td>
                             <td className="px-6 py-4">${item?.inventories?.salePriceMany || '0.00'}</td>
                             <td className="px-6 py-4">{item?.category?.name || '-'}</td>

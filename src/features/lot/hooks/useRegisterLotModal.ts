@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { v4 as UUID } from 'uuid'
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
@@ -10,12 +11,6 @@ import { useRegisterLotModalStore } from "../infraestructure/store/register-lot-
 
 // Schema de validación Yup para registrar un lote
 export const registerLotSchema = yup.object().shape({
-    lotNumber: yup
-        .string()
-        .required('El número de lote es obligatorio.')
-        .test('is-string', 'El número de lote debe ser una cadena de texto.', 
-              value => typeof value === 'string'),
-
     purchasePrice: yup
         .number()
         .required('El precio de compra es obligatorio.')
@@ -88,7 +83,6 @@ const useRegisterLotModal = () => {
     useEffect(() => {
         if (openModal && selectedProductId) {
             reset({
-                lotNumber: '',
                 purchasePrice: 0,
                 initialQuantity: 0,
                 purchaseUnit: ForSaleEnum.PC,
@@ -102,7 +96,6 @@ const useRegisterLotModal = () => {
     const resetFormRegisterLot = () => {
         setSelectedProductId('');
         reset({
-            lotNumber: '',
             purchasePrice: 0,
             initialQuantity: 0,
             purchaseUnit: ForSaleEnum.PC,
@@ -110,7 +103,7 @@ const useRegisterLotModal = () => {
             manufacturingDate: '',
             receivedDate: '',
         });
-        clearErrors(['lotNumber', 'purchasePrice', 'initialQuantity', 
+        clearErrors(['purchasePrice', 'initialQuantity', 
             'purchaseUnit', 'expirationDate', 'manufacturingDate', 'receivedDate'
         ]);
         setFloatMessageState({});
@@ -128,7 +121,7 @@ const useRegisterLotModal = () => {
         try {
             const registerData: RegisterLotDTO = {
                 productId: selectedProductId,
-                lotNumber: data.lotNumber,
+                lotNumber: UUID(),
                 purchasePrice: data.purchasePrice,
                 initialQuantity: data.initialQuantity,
                 purchaseUnit: data.purchaseUnit,

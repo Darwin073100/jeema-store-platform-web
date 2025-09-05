@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useForm } from 'react-hook-form';
+import {v4 as UUID} from 'uuid'
 import { registerInitialProductAction } from '../actions/register-initial-product.action';
 import { RegisterInitialProductDTO } from '../application/dtos/register-initial-product.dto';
 import { useWorkspace } from '@/shared/hooks/useAuth';
@@ -35,7 +36,7 @@ const schema = yup.object({
     imageUrl: yup.string().notRequired().optional().nullable(),
     
     // Lot
-    lotNumber: yup.string().default(`LOT-${new Date().getTime()}`),
+    lotNumber: yup.string().default(UUID()),
     purchasePrice: yup.number().positive('El precio debe ser un número positivo').required('El precio de compra es requerido.').typeError('Asegurate de ingresar la información correcta.'),
     initialQuantity: yup.number().positive('La cantidad de producto inicial es obligatoria.').typeError('Asegurate de ingresar la información correcta.'),
     expirationDate: yup.date()
