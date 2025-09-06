@@ -95,7 +95,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                         <div className="p-4 lg:p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                                 <div className="md:col-span-2 lg:col-span-3 xl:col-span-4">
-                                    <LabelInput value="Nombre del producto *" />
+                                    <LabelInput required='yes' value="Nombre del producto" />
                                     <TextInput
                                         {...register('name')}
                                         error={!!errors.name}
@@ -105,7 +105,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Código de barras universal *" />
+                                    <LabelInput required='yes' value="Código de barras universal" />
                                     <TextInput
                                         {...register('universalBarCode')}
                                         error={!!errors.universalBarCode}
@@ -115,7 +115,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Stock Mínimo Global *" />
+                                    <LabelInput required='yes' value="Stock Mínimo Global" />
                                     <TextInput
                                         {...register('minStockGlobal')}
                                         error={!!errors.minStockGlobal}
@@ -126,7 +126,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Categoría *" htmlFor='category' />
+                                    <LabelInput required='yes' value="Categoría" htmlFor='category' />
                                     <SelectMenu id='category'
                                         {...register('categoryId')}
                                         error={!!errors.categoryId}
@@ -136,7 +136,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Marca *" htmlFor='brand' />
+                                    <LabelInput required='yes' value="Marca" htmlFor='brand' />
                                     <SelectMenu id='brand'
                                         {...register('brandId')}
                                         error={!!errors.brandId}
@@ -146,7 +146,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Temporada *" htmlFor='season' />
+                                    <LabelInput required='yes' value="Temporada" htmlFor='season' />
                                     <SelectMenu id='season'
                                         {...register('seasonId')}
                                         error={!!errors.seasonId}
@@ -156,7 +156,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Unidad de medida para ventas *" htmlFor='unitOfMeasure' />
+                                    <LabelInput required='yes' value="Unidad de medida para ventas" htmlFor='unitOfMeasure' />
                                     <SelectMenu id='unitOfMeasure'
                                         {...register('unitOfMeasure')}
                                         error={!!errors.unitOfMeasure}
@@ -166,7 +166,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div className="md:col-span-2 xl:col-span-2">
-                                    <LabelInput value="Descripción del producto" />
+                                    <LabelInput value="Descripción del producto" required='no' />
                                     <TextInput
                                         {...register('description')}
                                         error={!!errors.description}
@@ -189,7 +189,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                         <div className="p-4 lg:p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 lg:gap-6">
                                 <div>
-                                    <LabelInput value="Unidad base *" htmlFor='purchaseUnit' />
+                                    <LabelInput required='yes' value="Unidad base" htmlFor='purchaseUnit' />
                                     <SelectMenu id='purchaseUnit'
                                         {...register('purchaseUnit')}
                                         error={!!errors.purchaseUnit}
@@ -199,7 +199,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Precio de compra*" />
+                                    <LabelInput value="Precio de compra" required='yes' />
                                     <TextInput
                                         {...register('purchasePrice', { valueAsNumber: true })}
                                         error={!!errors.purchasePrice}
@@ -210,7 +210,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Stock comprado *" />
+                                    <LabelInput required='yes' value="Stock comprado" />
                                     <TextInput
                                         {...register('initialQuantity')}
                                         error={!!errors.initialQuantity}
@@ -221,7 +221,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Fecha de ingreso al establecimiento *" />
+                                    <LabelInput required='yes' value="Fecha de ingreso al establecimiento" />
                                     <TextInput
                                         {...register('receivedDate')}
                                         error={!!errors.receivedDate}
@@ -231,7 +231,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Fecha de fabricación (Opcional)" />
+                                    <LabelInput value="Fecha de fabricación" required='no' />
                                     <TextInput
                                         {...register('manufacturingDate')}
                                         error={!!errors.manufacturingDate}
@@ -241,7 +241,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 </div>
                                 
                                 <div>
-                                    <LabelInput value="Fecha de caducidad (Opcional)" />
+                                    <LabelInput value="Fecha de caducidad" required='no'/>
                                     <TextInput
                                         {...register('expirationDate')}
                                         error={!!errors.expirationDate}
@@ -298,7 +298,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                             
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                                 <div>
-                                                    <LabelInput value="Unidad *" />
+                                                    <LabelInput value="Unidad" required='yes' />
                                                     <SelectMenu
                                                         items={forSaleOptions}
                                                         value={item.unit}
@@ -310,7 +310,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <LabelInput value="Unidades base en esta unidad *" />
+                                                    <LabelInput value="Unidades base en esta unidad" required='yes' />
                                                     <TextInput
                                                         type="number"
                                                         value={item.unitsInPurchaseUnit}
@@ -323,7 +323,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <LabelInput value="Cantidad comprada de esta unidad *" />
+                                                    <LabelInput value="Cantidad comprada de esta unidad" required='yes' />
                                                     <TextInput
                                                         type="number"
                                                         value={item.purchaseQuantity}
@@ -336,7 +336,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <LabelInput value="Precio de compra de esta unidad *" />
+                                                    <LabelInput value="Precio de compra de esta unidad" required='yes' />
                                                     <TextInput
                                                         type="number"
                                                         value={item.purchasePrice}
@@ -417,7 +417,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                             
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                                                 <div>
-                                                    <LabelInput value="Ubicación *" />
+                                                    <LabelInput value="Ubicación" required='yes' />
                                                     <SelectMenu
                                                         items={locationOptions}
                                                         value={item.location}
@@ -430,7 +430,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                 </div>
 
                                                 <div>
-                                                    <LabelInput value="Cantidad de stock en esta ubicación *" />
+                                                    <LabelInput value="Cantidad de stock en esta ubicación" required='yes' />
                                                     <TextInput
                                                         type="number"
                                                         value={item.quantityOnHand}
@@ -466,7 +466,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6 mb-6">
                                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
                                     <h4 className="font-medium text-blue-800 mb-3">💰 Precio de Menudeo</h4>
-                                    <LabelInput value="Precio de venta por menudeo *" />
+                                    <LabelInput value="Precio de venta por menudeo" required='yes' />
                                     <TextInput
                                         {...register('salePriceOne')}
                                         error={!!errors.salePriceOne}
@@ -478,7 +478,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 
                                 <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
                                     <h4 className="font-medium text-green-800 mb-3">📦 Precio de Mayoreo</h4>
-                                    <LabelInput value="Precio de venta por mayoreo *" />
+                                    <LabelInput value="Precio de venta por mayoreo" required='yes' />
                                     <TextInput
                                         {...register('salePriceMany')}
                                         error={!!errors.salePriceMany}
@@ -487,7 +487,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         placeholder="0.00"
                                     />
                                     <div className="mt-3">
-                                        <LabelInput value="Cantidad para mayoreo *" />
+                                        <LabelInput value="Cantidad para mayoreo" required='yes' />
                                         <TextInput
                                             {...register('saleQuantityMany')}
                                             error={!!errors.saleQuantityMany}
@@ -515,7 +515,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
                                 <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
                                     <h4 className="font-medium text-orange-800 mb-3">📉 Stock Mínimo en Sucursal</h4>
-                                    <LabelInput value="Stock mínimo en esta sucursal *" />
+                                    <LabelInput value="Stock mínimo en esta sucursal" required='yes' />
                                     <TextInput
                                         {...register('minStockBranch')}
                                         error={!!errors.minStockBranch}
@@ -527,7 +527,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 
                                 <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 rounded-lg border border-indigo-200">
                                     <h4 className="font-medium text-indigo-800 mb-3">📈 Stock Máximo en Sucursal</h4>
-                                    <LabelInput value="Stock máximo en la sucursal *" />
+                                    <LabelInput value="Stock máximo en la sucursal" required='yes' />
                                     <TextInput
                                         {...register('maxStockBranch')}
                                         error={!!errors.maxStockBranch}
@@ -540,7 +540,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                     <div className="flex flex-col">
                                             <h4 className="font-medium text-indigo-800 mb-3">𝄃𝄃𝄂𝄂𝄀 Código de barra interno</h4>
                                         <div className='flex gap-4'>
-                                            <LabelInput value="Código de barras interno *  " />
+                                            <LabelInput value="Código de barras int." required='yes' />
                                             <Button 
                                                 type='button' 
                                                 size="sm" 
@@ -549,7 +549,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                 className="whitespace-nowrap"
                                             >
                                                 <TbExchange className="w-4 h-4" />
-                                                User codigo universal
+                                                Usar código universal
                                             </Button>
                                         </div>
                                         <div className="flex flex-col">
