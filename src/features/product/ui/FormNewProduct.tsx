@@ -117,7 +117,8 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 <div>
                                     <LabelInput required='yes' value="Stock Mínimo Global" />
                                     <TextInput
-                                        {...register('minStockGlobal')}
+                                        {...register('minStockGlobal',{ valueAsNumber: true })}
+                                        step='0.001'
                                         error={!!errors.minStockGlobal}
                                         errorMessage={errors.minStockGlobal?.message}
                                         type='number'
@@ -201,11 +202,12 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                 <div>
                                     <LabelInput value="Precio de compra" required='yes' />
                                     <TextInput
-                                        {...register('purchasePrice', { valueAsNumber: true })}
+                                        type='number'
+                                        step="0.01"
+                                        placeholder="0.00"
                                         error={!!errors.purchasePrice}
                                         errorMessage={errors.purchasePrice?.message}
-                                        type='number'
-                                        placeholder="0.00"
+                                        {...register('purchasePrice', { valueAsNumber: true })}
                                     />
                                 </div>
                                 
@@ -213,6 +215,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                     <LabelInput required='yes' value="Stock comprado" />
                                     <TextInput
                                         {...register('initialQuantity')}
+                                        step='0.001'
                                         error={!!errors.initialQuantity}
                                         errorMessage={errors.initialQuantity?.message}
                                         type='number'
@@ -320,6 +323,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         error={!!(errors.lotUnitPurchases?.[index]?.unitsInPurchaseUnit)}
                                                         errorMessage={errors.lotUnitPurchases?.[index]?.unitsInPurchaseUnit?.message}
                                                         placeholder="0"
+                                                        step='0.001'
                                                     />
                                                 </div>
                                                 <div>
@@ -333,6 +337,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         error={!!(errors.lotUnitPurchases?.[index]?.purchaseQuantity)}
                                                         errorMessage={errors.lotUnitPurchases?.[index]?.purchaseQuantity?.message}
                                                         placeholder="0"
+                                                        step='0.001'
                                                     />
                                                 </div>
                                                 <div>
@@ -402,16 +407,16 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                     Ubicación #{index + 1}
                                                 </span>
                                                 {inventoryItems.length > 1 && (
-                                                    <button
+                                                    <Button
+                                                        color='red'
                                                         type="button"
                                                         onClick={() => removeInventoryItem(index)}
-                                                        className="text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full p-1 transition-colors"
                                                         title="Eliminar ubicación"
                                                     >
                                                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                                                         </svg>
-                                                    </button>
+                                                    </Button>
                                                 )}
                                             </div>
                                             
@@ -439,7 +444,8 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         }
                                                         error={!!(errors.inventoryItems?.[index]?.quantityOnHand)}
                                                         errorMessage={errors.inventoryItems?.[index]?.quantityOnHand?.message}
-                                                        placeholder="0"
+                                                        placeholder="0.000"
+                                                        step='0.001'
                                                     />
                                                 </div>
 
@@ -473,6 +479,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         errorMessage={errors.salePriceOne?.message}
                                         type='number'
                                         placeholder="0.00"
+                                        step='0.01'
                                     />
                                 </div>
                                 
@@ -485,6 +492,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         errorMessage={errors.salePriceMany?.message}
                                         type='number'
                                         placeholder="0.00"
+                                        step='0.01'
                                     />
                                     <div className="mt-3">
                                         <LabelInput value="Cantidad para mayoreo" required='yes' />
@@ -493,7 +501,8 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                             error={!!errors.saleQuantityMany}
                                             errorMessage={errors.saleQuantityMany?.message}
                                             type="number"
-                                            placeholder="Cantidad mínima"
+                                            placeholder="Cantidad por mayoreo"
+                                            step='0.01'
                                         />
                                     </div>
                                 </div>
@@ -520,8 +529,9 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         {...register('minStockBranch')}
                                         error={!!errors.minStockBranch}
                                         errorMessage={errors.minStockBranch?.message}
-                                        type='number'
                                         placeholder="Cantidad mínima"
+                                        type='number'
+                                        step='0.001'
                                     />
                                 </div>
                                 
@@ -534,6 +544,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         errorMessage={errors.maxStockBranch?.message}
                                         type='number'
                                         placeholder="Cantidad máxima"
+                                        step='0.001'
                                         />
                                 </div>
                                 <div className='bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200'>

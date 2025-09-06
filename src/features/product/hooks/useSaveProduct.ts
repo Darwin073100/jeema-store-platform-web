@@ -11,7 +11,7 @@ import { RegisterInitialProductDTO } from '../application/dtos/register-initial-
 import { useWorkspace } from '@/shared/hooks/useAuth';
 import { ForSaleEnum } from '../domain/enums/for-sale.enum';
 
-const schema = yup.object().shape({
+export const schema = yup.object().shape({
     // Establishment and Branch Office
     establishmentId: yup.string().required('El ID del establecimiento es obligatorio.'),
     branchOfficeId: yup.string().required('El ID de la sucursal es obligatorio.'),
@@ -37,8 +37,18 @@ const schema = yup.object().shape({
     
     // Lot
     lotNumber: yup.string().default(UUID()),
-    purchasePrice: yup.number().positive('El precio debe ser un número positivo').required('El precio de compra es requerido.').typeError('Asegurate de ingresar la información correcta.'),
-    initialQuantity: yup.number().positive('La cantidad de producto inicial es obligatoria.').typeError('Asegurate de ingresar la información correcta.'),
+    purchasePrice: yup
+            .number()
+            .required('El precio de compra es obligatorio.')
+            .typeError('Asegurate de ingresar la información correcta.')
+            .test('max-decimals', 'El precio de compra debe ser un número con hasta 4 decimales.', 
+                  value => value === undefined || Number(value.toFixed(4)) === value),
+    initialQuantity: yup
+            .number()
+            .required('La cantidad inicial es obligatoria.')
+            .typeError('Asegurate de ingresar la información correcta.')
+            .test('max-decimals', 'La cantidad inicial debe ser un número con hasta 3 decimales.', 
+                  value => value === undefined || Number(value.toFixed(3)) === value),
     expirationDate: yup.date()
         .transform((value, originalValue) => originalValue === '' ? null : value)
         .optional().notRequired().nullable(),
@@ -129,7 +139,7 @@ const useSaveProduct = () => {
             minStockBranch: 0,
             minStockGlobal: 0,
             name: '',
-            purchasePrice: 0,
+            purchasePrice: 0.0,
             purchaseUnit: '',
             receivedDate: new Date(),
             salePriceMany: 0,
