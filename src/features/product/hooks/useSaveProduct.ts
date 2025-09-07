@@ -183,6 +183,26 @@ const useSaveProduct = () => {
 
     // Inventory Items functions
     const addInventoryItem = () => {
+        // Calcular el stock total usado
+        const totalUsedStock = inventoryItems.reduce((sum, item) => sum + Number(item.quantityOnHand), 0);
+        const totalInitialStock = Number(initialQuantityWatch);
+        const availableStock = totalInitialStock - totalUsedStock;
+
+        if (availableStock <= 0) {
+            setFloatMessageState({
+                description: 'No hay stock disponible para agregar una nueva ubicación',
+                summary: '¡Stock Agotado!',
+                isActive: true,
+                type: 'red'
+            });
+
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            
+            return;
+        }
+
         const newInventoryItems = [
             ...inventoryItems,
             { location: "", quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0, internalBarCode: "" },
@@ -207,16 +227,52 @@ const useSaveProduct = () => {
     const initialQuantityWatch = watch('initialQuantity');
     const inventoryItemsWatch = watch('inventoryItems');
     const handleInitialQuantityToquantityOnHand = (index: number = 0) => {
+        if (!inventoryItemsWatch) return;
 
-        if(!inventoryItemsWatch) return;
-
+        // Calcular el stock total usado hasta el momento
         let usedStockInInventoryItem = 0;
-        for(let i = 0; i < inventoryItemsWatch?.length; i++){
-            usedStockInInventoryItem = usedStockInInventoryItem + Number(inventoryItemsWatch[i].quantityOnHand);
+        for (let i = 0; i < inventoryItemsWatch?.length; i++) {
+            if (i !== index) { // Excluimos el ítem actual del cálculo
+                usedStockInInventoryItem += Number(inventoryItemsWatch[i].quantityOnHand);
+            }
         }
-        usedStockInInventoryItem = Number(initialQuantityWatch) - usedStockInInventoryItem;
 
-        updateInventoryItem(index, 'quantityOnHand', usedStockInInventoryItem);
+        // Calcular stock disponible
+        const totalInitialStock = Number(initialQuantityWatch);
+        const availableStock = totalInitialStock - usedStockInInventoryItem;
+
+        if (availableStock <= 0) {
+            setFloatMessageState({
+                description: 'No hay stock disponible para asignar a esta ubicación',
+                summary: '¡Stock Agotado!',
+                isActive: true,
+                type: 'red'
+            });
+
+            // Limpiar el mensaje después de 4 segundos
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+
+            return;
+        }
+
+        // Actualizar el stock en la ubicación actual
+        updateInventoryItem(index, 'quantityOnHand', availableStock);
+
+        // Si este era el último stock disponible, mostrar mensaje
+        if (availableStock === totalInitialStock - usedStockInInventoryItem) {
+            setFloatMessageState({
+                description: `Se ha asignado el stock restante (${availableStock}) a esta ubicación`,
+                summary: '¡Stock Asignado!',
+                isActive: true,
+                type: 'green'
+            });
+
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+        }
     }
     const universalBarCode = watch('universalBarCode');
     const handleBarCodeMatch = (index: number = 0) => {
