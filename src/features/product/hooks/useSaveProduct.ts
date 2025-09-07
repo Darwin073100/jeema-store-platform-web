@@ -204,10 +204,29 @@ const useSaveProduct = () => {
         setValue('inventoryItems', updated);
     };
 
+    const initialQuantityWatch = watch('initialQuantity');
+    const inventoryItemsWatch = watch('inventoryItems');
+    const handleInitialQuantityToquantityOnHand = (index: number = 0) => {
+
+        if(!inventoryItemsWatch) return;
+
+        let usedStockInInventoryItem = 0;
+        for(let i = 0; i < inventoryItemsWatch?.length; i++){
+            usedStockInInventoryItem = usedStockInInventoryItem + Number(inventoryItemsWatch[i].quantityOnHand);
+        }
+        usedStockInInventoryItem = Number(initialQuantityWatch) - usedStockInInventoryItem;
+
+        updateInventoryItem(index, 'quantityOnHand', usedStockInInventoryItem);
+    }
     const universalBarCode = watch('universalBarCode');
     const handleBarCodeMatch = (index: number = 0) => {
         // Set internal bar code in the specified inventory item (default to first one)
         setValue(`internalBarCode`, universalBarCode || '');
+    }
+    const minStockGlobal = watch('minStockGlobal');
+    const handleStockGlobalToBranch = () => {
+        // Set internal bar code in the specified inventory item (default to first one)
+        setValue(`minStockBranch`, minStockGlobal || 0);
     }
 
     const resetFormProduct = () => {
@@ -340,6 +359,8 @@ const useSaveProduct = () => {
         register,
         errors,
         handleBarCodeMatch,
+        handleStockGlobalToBranch,
+        handleInitialQuantityToquantityOnHand,
         updateLotUnitPurchase,
         removeLotUnitPurchase,
         addLotUnitPurchase,
