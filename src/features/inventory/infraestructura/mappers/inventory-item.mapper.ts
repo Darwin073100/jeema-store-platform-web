@@ -10,8 +10,8 @@ export class InventoryItemMapper {
             inventoryId: dto.inventoryId.toString(),
             lastStockedAt: dto.lastStockedAt.toJSON(),
             location: dto.location,
-            purchasePriceAtStock: dto.purchasePriceAtStock,
-            quantityOnHand: dto.quantityOnHan,
+            purchasePriceAtStock: Number(dto.purchasePriceAtStock),
+            quantityOnHand: Number(dto.quantityOnHan),
             internalBarCode: dto.internalBarCode ?? undefined
         }
         return httpDto;

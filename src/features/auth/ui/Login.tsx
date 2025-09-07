@@ -18,49 +18,51 @@ const Login = () => {
 
     return (
         <main className="py-4 flex flex-col h-screen items-center justify-center gap-4">
-            <div className="flex flex-col items-center gap-4">
-                <Image
-                    className="rounded-full"
-                    src={logo} alt="logotipo"
-                    width={200} height={200} />
-                <h1 className="text-4xl text-gray-500">Inicio de sesión</h1>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="w-96 bg-white p-8 rounded-2xl flex flex-col gap-2 shadow-2xl ">
-                    <div>
-                        <LabelInput value="Correo electrónico" />
-                        <TextInput
-                            {...register('email')}
-                            error={!!errors.email}
-                            errorMessage={errors.email?.message} 
-                            placeholder="Correo electrónico" />
-                    </div>
-                    <div>
-                        <LabelInput value="Contraseña" />
-                        <TextInput 
-                            {...register('password')}
-                            error={!!errors.password}
-                            errorMessage={errors.password?.message}
-                            placeholder="Contraseña" type="password" />
+            <div className='bg-white shadow-xl rounded-xl pt-8'>
+                <div className="flex flex-col items-center gap-4">
+                    <Image
+                        className="rounded-xl shadow"
+                        src={logo} alt="logotipo"
+                        width={150} height={150} />
+                    <h1 className="text-3xl text-gray-500">Inicio de sesión</h1>
+                </div>
+                <form onSubmit={handleSubmit(onSubmit)} >
+                    <div className="w-96 p-8 flex flex-col gap-4">
+                        <div>
+                            <LabelInput value="Correo electrónico" />
+                            <TextInput
+                                {...register('email')}
+                                error={!!errors.email}
+                                errorMessage={errors.email?.message} 
+                                placeholder="Correo electrónico" />
+                        </div>
+                        <div>
+                            <LabelInput value="Contraseña" />
+                            <TextInput 
+                                {...register('password')}
+                                error={!!errors.password}
+                                errorMessage={errors.password?.message}
+                                placeholder="Contraseña" type="password" />
 
-                        <div className="flex w-full justify-end">
-                            <Link href={"#"} className="text-blue-500 hover:underline">
-                                ¿Olvidaste tu contraseña?
-                            </Link>
+                            <div className="flex w-full justify-end">
+                                <Link href={"#"} className="text-blue-500 hover:underline">
+                                    ¿Olvidaste tu contraseña?
+                                </Link>
+                            </div>
+                        </div>
+                        <div>
+                            <Button  className='w-full flex justify-center items-center'>
+                                {isLoading ? <Spinner /> : 
+                                    <>
+                                        Iniciar
+                                        <IoMdArrowRoundForward />
+                                    </>
+                                }
+                            </Button>
                         </div>
                     </div>
-                    <div>
-                        <Button  className='w-full flex justify-center items-center'>
-                            {isLoading ? <Spinner /> : 
-                                <>
-                                    Iniciar
-                                    <IoMdArrowRoundForward />
-                                </>
-                            }
-                        </Button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <FloatMessage
                 key={floatMessageState.summary}
                 description={floatMessageState.description}

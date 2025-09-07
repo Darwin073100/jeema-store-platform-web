@@ -42,7 +42,9 @@ export class InventoryItemFetchRepositoryImpl implements InventoryItemRepository
 
     async update(dto: UpdateInventoryItemDTO): Promise<Result<InventoryItemEntity, ErrorEntity>> {
         try {
+            console.log(dto)
             const httpDto = InventoryItemMapper.toUpdateInventoryItemHttpDTO(dto);
+            console.log(httpDto);
             const result = await this.httpClient.patch<InventoryItemEntity>(
                 this.apiConfig.getEndpointUrl('/inventory-items'),
                 httpDto
@@ -50,6 +52,7 @@ export class InventoryItemFetchRepositoryImpl implements InventoryItemRepository
             return Result.success(result.data);
 
         } catch (error: any) {
+            console.log(error)
             return this.handleError(error, 'Update Inventory Item')
         }
     }

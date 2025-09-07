@@ -20,13 +20,6 @@ const registerFormData = yup.object().shape({
         .number()
         .required('El stock para la ubicación asignada es obligatorio.')
         .positive('La cantidad debe ser positiva.')
-        .typeError('Asegurate de ingresar la información correcta.'),
-    lastStockedAt: yup
-        .date()
-        .required()
-        .default(() => new Date()),
-    purchasePriceAtStock: yup
-        .number()
         .typeError('Asegurate de ingresar la información correcta.')
 });
 
@@ -48,9 +41,7 @@ const useUpdateInventoryItemModal = () => {
     useEffect(()=>{
         if( updateOpenModal ){
             reset({
-                lastStockedAt: inventoryItem?.lastStockedAt,
                 location: inventoryItem?.location,
-                purchasePriceAtStock: inventoryItem?.purchasePriceAtStock,
                 quantityOnHand: inventoryItem?.quantityOnHan,
             });
         }
@@ -60,13 +51,11 @@ const useUpdateInventoryItemModal = () => {
         setInventoryItem(null)
 
         reset({
-            lastStockedAt: new Date(),
             location: LocationEnum.SALE,
-            purchasePriceAtStock: 0,
             quantityOnHand: 0,
         });
         clearErrors([
-            'lastStockedAt', 'location', 'purchasePriceAtStock', 'quantityOnHand'
+            'location', 'quantityOnHand'
         ]);
         setFloatMessageState({});
     }
@@ -85,12 +74,13 @@ const useUpdateInventoryItemModal = () => {
             const registerInventoryItemDto: UpdateInventoryItemDTO = {
                 inventoryItemId: inventoryItem?.inventoryItemId ?? BigInt(0),
                 inventoryId: inventoryItem?.inventoryId ?? BigInt(0),
-                lastStockedAt: data.lastStockedAt,
-                purchasePriceAtStock: data.purchasePriceAtStock ?? 0,
+                lastStockedAt: inventoryItem?.lastStockedAt? new Date(inventoryItem.lastStockedAt): new Date(),
+                purchasePriceAtStock: inventoryItem?.purchasePriceAtStock ?? 0,
                 location: data.location,
                 quantityOnHan: data.quantityOnHand,
                 internalBarCode: inventoryItem?.internalBarCode
             }
+            console.log(registerInventoryItemDto);
 
             const result = await updateInventoryItemAction(registerInventoryItemDto);
             if (result.ok) {

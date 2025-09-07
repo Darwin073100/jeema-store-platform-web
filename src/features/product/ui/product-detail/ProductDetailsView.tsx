@@ -1,5 +1,5 @@
 'use client'
-import { ProductEntity } from '../domain/entities/product.entity';
+import { ProductEntity } from '../../domain/entities/product.entity';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import Barcode from 'react-barcode';
 import { InfoCard } from '@/ui/components/cards/InfoCard';
@@ -21,7 +21,7 @@ import {
     TbCurrencyDollar,
 } from 'react-icons/tb';
 import { UpdateProductModal } from './UpdateProductModal';
-import { useUpdateProductModal } from '../hooks';
+import { useUpdateProductModal } from '../../hooks';
 import { BreadcrumbItem, TemplateHeader } from '@/ui/components/templates/TemplateHeader';
 import { UpdateLotModal } from '@/features/lot/ui/UpdateLotModal';
 import { RegisterLotModal } from '@/features/lot/ui/RegisterLotModal';
@@ -47,7 +47,7 @@ import { DeleteLotUnitPurchaseModal } from '@/features/lot/ui/DeleteLotUnitPurch
 import { useDeleteLotUnitPurchaseModal } from '@/features/lot/hooks/useDeleteLotUnitPurchaseModal';
 import { DeleteLotModal } from '@/features/lot/ui/DeleteLotModal';
 import { useDeleteLotModal } from '@/features/lot/hooks/useDeleteLotModal';
-import { useDeleteProductModal } from '../hooks/useDeleteProductModal';
+import { useDeleteProductModal } from '../../hooks/useDeleteProductModal';
 import { DeleteProductModal } from './DeleteProductModal';
 import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal';
 import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventoryModal';
@@ -158,14 +158,14 @@ export function ProductDetailsView({ product }: Props) {
                                     fontSize={16} />
                             </div>
                         </div>
-                        <InfoCard
+                        {/* <InfoCard
                             label="SKU"
                             value={product.sku || 'No asignado'}
                             icon={<HiOutlineTag className="w-4 h-4" />}
-                        />
+                        /> */}
                         <InfoCard
                             label="Unidad de medida para ventas"
-                            value={product.unitOfMeasure}
+                            value={product.unitOfMeasure.toUpperCase()}
                             icon={<HiOutlineCube className="w-4 h-4" />}
                         />
                         <InfoCard
@@ -404,12 +404,6 @@ export function ProductDetailsView({ product }: Props) {
                                                             className="bg-white"
                                                         />
                                                         <InfoCard
-                                                            label="Precio especial"
-                                                            value={`$${inventory.salePriceSpecial}`}
-                                                            icon={<TbCurrencyDollar className="w-4 h-4" />}
-                                                            className="bg-white"
-                                                        />
-                                                        <InfoCard
                                                             label="Unidades para mayoreo"
                                                             value={(inventory.saleQuantityMany ?? 0).toString()}
                                                             icon={<TbBoxMultiple className="w-4 h-4" />}
@@ -442,11 +436,11 @@ export function ProductDetailsView({ product }: Props) {
                                                                 <>
                                                                     <UpdateInventoryItemModal/>
                                                                     <DeleteInventoryItemModal/>
-                                                                    <div key={item.inventoryItemId} className="bg-white rounded-lg p-4 border border-gray-200">
-                                                                        <div className="flex justify-between items-start mb-3">
+                                                                    <div key={item.inventoryItemId} className="w-60 bg-white rounded-lg p-4 border border-gray-200">
+                                                                        <div className="flex flex-col justify-center items-center mb-3">
                                                                             <div className="flex items-center gap-2">
                                                                                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                                                                <span className="font-medium text-gray-800">{item.location}</span>
+                                                                                <span className="text-2xl font-bold text-gray-800">{item.location.toUpperCase()}</span>
                                                                             </div>
                                                                             <div className="flex gap-1">
                                                                                 <Button color='yellow' onClick={()=> handlerSelectedInventoryItemModal(item)}>
@@ -459,13 +453,9 @@ export function ProductDetailsView({ product }: Props) {
                                                                         </div>
 
                                                                         <div className="space-y-2 text-sm">
-                                                                            <div className="flex justify-between">
-                                                                                <span className="text-gray-600">Stock:</span>
-                                                                                <span className="font-medium">{item.quantityOnHan}</span>
-                                                                            </div>
-                                                                            <div className="flex justify-between">
-                                                                                <span className="text-gray-600">Precio de compra:</span>
-                                                                                <span className="font-medium">${item.purchasePriceAtStock}</span>
+                                                                            <div className="flex flex-col justify-center items-center">
+                                                                                <span className="text-xl text-gray-600">Stock:</span>
+                                                                                <span className={`text-4xl font-medium`}>{item.quantityOnHan}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>

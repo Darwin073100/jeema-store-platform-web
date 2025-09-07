@@ -11,6 +11,8 @@ import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterLotModal } from '../hooks/useRegisterLotModal';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
+import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
+import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
 
 const RegisterLotModal = () => {
     const {
@@ -26,11 +28,7 @@ const RegisterLotModal = () => {
         isLoading
     } = useRegisterLotModal();
 
-    // Opciones para el select de unidad de compra
-    const purchaseUnitOptions = Object.values(ForSaleEnum).map(unit => ({
-        value: unit,
-        text: unit.charAt(0).toUpperCase() + unit.slice(1)
-    }));
+    const lotDescription = useLotDescriptionInputs;
 
     return (
         <>
@@ -58,7 +56,10 @@ const RegisterLotModal = () => {
                                     />
                                 </div> */}
                                 <div className="md:col-span-1">
-                                    <LabelInput value="Precio de compra *" />
+                                    <LabelInput 
+                                        value="Precio de compra"
+                                        description={lotDescription.purchasePrice}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -69,27 +70,36 @@ const RegisterLotModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-1">
-                                    <LabelInput value="Cantidad inicial *" />
+                                    <LabelInput 
+                                        value="Cantidad comprada"
+                                        description={lotDescription.initialQuantity}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.001"
-                                        placeholder="Cantidad inicial"
+                                        placeholder="Cantidad comprada"
                                         error={!!errors.initialQuantity}
                                         errorMessage={errors.initialQuantity?.message}
                                         {...register('initialQuantity', { valueAsNumber: true })}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Unidad de compra *" />
+                                    <LabelInput 
+                                        value="Unidad de compra"
+                                        description={lotDescription.purchaseUnit}
+                                        required='yes' />
                                     <SelectMenu
-                                        items={purchaseUnitOptions}
+                                        items={forSaleObject}
                                         error={!!errors.purchaseUnit}
                                         errorMessage={errors.purchaseUnit?.message}
                                         {...register('purchaseUnit')}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Fecha de recepción *" />
+                                    <LabelInput 
+                                        value="Fecha de recepción"
+                                        description={lotDescription.receivedDate}
+                                        required='yes' />
                                     <TextInput
                                         type='date'
                                         placeholder="Fecha de recepción"
@@ -99,7 +109,10 @@ const RegisterLotModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-1">
-                                    <LabelInput value="Fecha de fabricación (opcional)" />
+                                    <LabelInput 
+                                        value="Fecha de fabricación"
+                                        description={lotDescription.manufacturingDate}
+                                        required='no' />
                                     <TextInput
                                         type='date'
                                         placeholder="Fecha de fabricación"
@@ -109,7 +122,10 @@ const RegisterLotModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-1">
-                                    <LabelInput value="Fecha de caducidad (opcional)" />
+                                    <LabelInput 
+                                        value="Fecha de caducidad"
+                                        description={lotDescription.expirationDate}
+                                        required='no' />
                                     <TextInput
                                         type='date'
                                         placeholder="Fecha de caducidad"

@@ -12,6 +12,7 @@ import { MdCleaningServices } from 'react-icons/md';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { useRegisterInventoryModal } from '../hooks/useRegisterInventoryModal';
 import { HiMiniSwatch } from 'react-icons/hi2';
+import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
 
 const RegisterInventoryModal = () => {
     const {
@@ -27,11 +28,7 @@ const RegisterInventoryModal = () => {
         isLoading
     } = useRegisterInventoryModal();
 
-    // Opciones para el select de unidad de compra
-    const purchaseUnitOptions = Object.values(ForSaleEnum).map(unit => ({
-        value: unit,
-        text: unit.charAt(0).toUpperCase() + unit.slice(1)
-    }));
+    const inventoryDescription = useInventoryDescriptionInput;
 
     return (
         <>
@@ -51,7 +48,10 @@ const RegisterInventoryModal = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
                                     <div className='flex gap-4'>
-                                        <LabelInput value="Código de barra interno *" />
+                                        <LabelInput 
+                                            value="Código de barra interno"
+                                            description={inventoryDescription.internalBarCode}
+                                            required='yes' />
                                         <Button 
                                             color='yellow'
                                             size='sm'
@@ -62,14 +62,17 @@ const RegisterInventoryModal = () => {
                                         </Button>
                                     </div>
                                     <TextInput
-                                        placeholder="Codigo de barra interno *"
+                                        placeholder="Codigo de barra interno"
                                         error={!!errors.internalBarCode}
                                         errorMessage={errors.internalBarCode?.message}
                                         {...register('internalBarCode')}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Precio de venta por menudeo *" />
+                                    <LabelInput 
+                                        value="Precio de venta por menudeo"
+                                        description={inventoryDescription.salePriceOne}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -80,7 +83,10 @@ const RegisterInventoryModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Precio de venta por mayoreo *" />
+                                    <LabelInput 
+                                        value="Precio de venta por mayoreo"
+                                        description={inventoryDescription.salePriceMany}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -91,7 +97,10 @@ const RegisterInventoryModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Unidades para la venta de mayoreo *" />
+                                    <LabelInput 
+                                        value="Unidades para la venta de mayoreo"
+                                        description={inventoryDescription.saleQuantityMany}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -101,8 +110,11 @@ const RegisterInventoryModal = () => {
                                         {...register('saleQuantityMany', { valueAsNumber: true })}
                                     />
                                 </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Precio especial de venta *" />
+                                {/* <div className="md:col-span-2">
+                                    <LabelInput 
+                                        value="Precio especial de venta"
+                                        description={inventoryDescription.salePriceSpecial}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -111,9 +123,12 @@ const RegisterInventoryModal = () => {
                                         errorMessage={errors.salePriceSpecial?.message}
                                         {...register('salePriceSpecial', { valueAsNumber: true })}
                                     />
-                                </div>
+                                </div> */}
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Stock mínimo en esta sucursal *" />
+                                    <LabelInput 
+                                        value="Stock mínimo en esta sucursal"
+                                        description={inventoryDescription.minStockBranch}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -124,7 +139,10 @@ const RegisterInventoryModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Stock máximo en esta sucursal *" />
+                                    <LabelInput 
+                                        value="Stock máximo en esta sucursal"
+                                        description={inventoryDescription.maxStockBranch}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"

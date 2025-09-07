@@ -5,7 +5,7 @@ import { Modal } from '@/ui/components/modals';
 import { FloatMessage } from '@/ui/components/messages';
 import { IoClose } from 'react-icons/io5';
 import { HiTrash } from 'react-icons/hi';
-import { useDeleteProductModal } from '../hooks/useDeleteProductModal';
+import { useDeleteProductModal } from '../../hooks/useDeleteProductModal';
 
 const DeleteProductModal = () => {
     const {

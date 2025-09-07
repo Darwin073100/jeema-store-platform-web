@@ -10,6 +10,7 @@ import { HiPencil, HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { LocationEnum } from '../domain/enums/location.enum';
 import { useUpdateInventoryItemModal } from '../hooks/useUpdateInventoryItemModal';
+import { useInventoryItemDescripctionInput } from '../hooks/useInventoryItemSecripctionInput';
 
 const UpdateInventoryItemModal = () => {
     const {
@@ -29,6 +30,8 @@ const UpdateInventoryItemModal = () => {
         text: loc.charAt(0).toUpperCase() + loc.slice(1)
     }));
 
+    const inventoryItemDescription = useInventoryItemDescripctionInput;
+
     return (
         <>
             <Modal isOpen={updateOpenModal} onClose={handleFalseUpdateOpenModal}>
@@ -46,7 +49,10 @@ const UpdateInventoryItemModal = () => {
                         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Ubicación del stock *" />
+                                    <LabelInput 
+                                        value="Ubicación del stock"
+                                        description={inventoryItemDescription.location}
+                                        required='yes' />
                                     <SelectMenu
                                     items={ locationOptions }
                                         error={!!errors.location}
@@ -55,7 +61,10 @@ const UpdateInventoryItemModal = () => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Unidades en este stock *" />
+                                    <LabelInput 
+                                        value="Unidades en este stock"
+                                        required='yes'
+                                        description={inventoryItemDescription.quantityOnHan} />
                                     <TextInput
                                         type='number'
                                         step="0.001"
@@ -63,17 +72,6 @@ const UpdateInventoryItemModal = () => {
                                         error={!!errors.quantityOnHand}
                                         errorMessage={errors.quantityOnHand?.message}
                                         {...register('quantityOnHand')}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Precio en el que entra al stock *" />
-                                    <TextInput
-                                        type='number'
-                                        step="0.001"
-                                        placeholder="Precio en el que entra al stock"
-                                        error={!!errors.purchasePriceAtStock}
-                                        errorMessage={errors.purchasePriceAtStock?.message}
-                                        {...register('purchasePriceAtStock', { valueAsNumber: true })}
                                     />
                                 </div>
                                 

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { Button } from "@/ui/components/buttons";
 import Link from "next/link";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
-import { ProductDetailsView } from "@/features/product/ui/ProductDetailsView";
+import { ProductDetailsView } from "@/features/product/ui/product-detail/ProductDetailsView";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request

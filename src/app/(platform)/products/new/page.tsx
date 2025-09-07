@@ -1,7 +1,7 @@
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
 import { viewAllBrandsAction } from "@/features/brand/actions/view-all-brands.action";
 import { ViewAllCategoriesAction } from "@/features/category/actions/view-all-categories.action";
-import { FormNewProduct } from "@/features/product/ui/FormNewProduct";
+import { FormNewProductAndInventory } from "@/features/product/ui/save-product-and-inventory/FormNewProductAndInventory";
 import { viewAllSeasonsAction } from "@/features/season/actions/view-all-seasons.action";
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
 
@@ -20,7 +20,7 @@ export default async function () {
     return (
         <ProtectedRoute>
             <TemplateHeader title="Alta de productos e inventario" detail="Da de alta un producto con lote inicial e inventario." breadcrumbItems={breadcrumbItems}>
-                <FormNewProduct
+                <FormNewProductAndInventory
                     brandList={brandItems}
                     seasonList={seasonItems}
                     categoryList={categoryItems} />

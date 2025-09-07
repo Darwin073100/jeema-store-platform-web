@@ -18,7 +18,7 @@ export const SelectMenu = ({ error = false, errorMessage, items ,...props }: Pro
         <>
         <select className={
                         clsx(
-                            `mt-1 block w-full rounded-lg bg-white border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-blue-600`,
+                            `mt-1 block w-full rounded-xl text-lg bg-white border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-blue-600`,
                             props.className,
                             error && 'outline-red-600 focus:outline-red-600'
                         )

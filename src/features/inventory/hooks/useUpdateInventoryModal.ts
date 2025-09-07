@@ -33,11 +33,6 @@ const registerFormData = yup.object().shape({
             .positive('La cantidad para vender por mayoreo debe ser positivo')
             .typeError('Asegurate de ingresar la información correcta.')
             .default(0),
-    salePriceSpecial : yup
-            .number()
-            .positive('El precio especial de venta debe ser positivo')
-            .typeError('Asegurate de ingresar la información correcta.')
-            .default(0),
     minStockBranch   : yup
             .number()
             .required('El stock mínimo es obligatorio.')
@@ -75,7 +70,6 @@ const useUpdateInventoryModal = () => {
                 salePriceOne: inventory?.salePriceOne ?? 0,
                 salePriceMany: inventory?.salePriceMany ?? 0,
                 saleQuantityMany: inventory?.saleQuantityMany ?? 0,
-                salePriceSpecial: inventory?.salePriceSpecial ?? 0,
                 minStockBranch: inventory?.minStockBranch ?? 0,
                 maxStockBranch: inventory?.maxStockBranch ?? 0
             });
@@ -92,13 +86,12 @@ const useUpdateInventoryModal = () => {
             salePriceOne: 0,
             salePriceMany: 0,
             saleQuantityMany: 0,
-            salePriceSpecial: 0,
             minStockBranch: 0,
             maxStockBranch: 0
         });
         clearErrors([
             'maxStockBranch', 'minStockBranch', 'salePriceOne', 'internalBarCode',
-            'salePriceMany', 'saleQuantityMany', 'salePriceSpecial'
+            'salePriceMany', 'saleQuantityMany'
         ]);
         setFloatMessageState({});
     }
@@ -131,7 +124,7 @@ const useUpdateInventoryModal = () => {
                 internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,
                 salePriceMany: data.salePriceMany,
-                salePriceSpecial: data.salePriceSpecial,
+                salePriceSpecial: inventory?.salePriceSpecial,
                 saleQuantityMany: data.saleQuantityMany,
                 maxStockBranch: data.maxStockBranch,
                 minStockBranch: data.minStockBranch

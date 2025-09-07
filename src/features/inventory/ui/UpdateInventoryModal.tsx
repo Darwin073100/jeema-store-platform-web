@@ -11,6 +11,7 @@ import { IoClose } from 'react-icons/io5';
 import { useUpdateInventoryModal } from '../hooks/useUpdateInventoryModal';
 import { ProductEntity } from '@/features/product/domain/entities/product.entity';
 import { HiMiniSwatch } from 'react-icons/hi2';
+import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
 
 const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
     const {
@@ -24,6 +25,8 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
         isLoading,
         handleUseUniversalBarCodeToLocal
     } = useUpdateInventoryModal();
+
+    const inventoryDescription = useInventoryDescriptionInput;
 
     return (
         <>
@@ -43,7 +46,10 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
                                     <div className='flex gap-4'>
-                                        <LabelInput value="Código de barra interno *" />
+                                        <LabelInput 
+                                            value="Código de barra interno"
+                                            description={inventoryDescription.internalBarCode}
+                                            required='yes' />
                                         <Button 
                                             color='yellow'
                                             size='sm'
@@ -54,14 +60,17 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                         </Button>
                                     </div>
                                     <TextInput
-                                        placeholder="Precio de venta por menudeo *"
+                                        placeholder="Codigo de barra interno"
                                         error={!!errors.internalBarCode}
                                         errorMessage={errors.internalBarCode?.message}
                                         {...register('internalBarCode')}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Precio de venta por menudeo *" />
+                                    <LabelInput 
+                                        value="Precio de venta por menudeo"
+                                        description={inventoryDescription.salePriceOne}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -72,7 +81,10 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Precio de venta por mayoreo *" />
+                                    <LabelInput 
+                                        value="Precio de venta por mayoreo"
+                                        description={inventoryDescription.salePriceMany}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -83,7 +95,10 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Unidades para la venta de mayoreo *" />
+                                    <LabelInput 
+                                        value="Unidades para la venta de mayoreo"
+                                        description={inventoryDescription.saleQuantityMany}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -94,18 +109,10 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Precio especial de venta *" />
-                                    <TextInput
-                                        type='number'
-                                        step="0.0001"
-                                        placeholder="Precio especial de venta"
-                                        error={!!errors.salePriceSpecial}
-                                        errorMessage={errors.salePriceSpecial?.message}
-                                        {...register('salePriceSpecial', { valueAsNumber: true })}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Stock mínimo en esta sucursal *" />
+                                    <LabelInput 
+                                        value="Stock mínimo en esta sucursal"
+                                        description={inventoryDescription.minStockBranch}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -116,7 +123,10 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Stock máximo en esta sucursal *" />
+                                    <LabelInput 
+                                        value="Stock máximo en esta sucursal"
+                                        description={inventoryDescription.maxStockBranch}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"

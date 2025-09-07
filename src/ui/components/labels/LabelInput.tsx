@@ -37,8 +37,8 @@ export const LabelInput = ({ required, value, Icon, error = false, errorMessage,
                             onMouseLeave={() => setShowTooltip(false)}
                         />
                         {showTooltip && (
-                            <div className="absolute z-10 w-64 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg -right-2 top-6">
-                                <div className="absolute w-2 h-2 bg-gray-900 transform rotate-45 -top-1 right-3"></div>
+                            <div className="absolute z-60 w-64 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg -right-24 top-6">
+                                <div className="absolute w-2 h-2 bg-gray-900 transform rotate-45 -top-1 right-25"></div>
                                 {description}
                             </div>
                         )}

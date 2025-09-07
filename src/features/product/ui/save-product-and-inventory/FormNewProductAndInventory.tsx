@@ -10,13 +10,14 @@ import { SelectMenu, TextInput } from '@/ui/components/inputs';
 import { LabelInput } from '@/ui/components/labels';
 import React, { useEffect, useState } from 'react'
 import { TbExchange } from 'react-icons/tb';
-import { useSaveProduct } from '../hooks/useSaveProduct';
+import { useSaveProduct } from '../../hooks/useSaveProduct';
 import { FloatMessage } from '@/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
-import { ForSaleEnum } from '../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../domain/enums/for-sale.enum';
 import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
+import { forSaleObject } from '../../domain/enums/for-sale.object';
 
 interface Props {
     categoryList: CategoryEntity[],
@@ -24,7 +25,7 @@ interface Props {
     seasonList: SeasonEntity[],
 }
 
-const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
+const FormNewProductAndInventory = ({ categoryList, brandList, seasonList }: Props) => {
     const {
         errors, floatMessageState, handleSubmit, isLoading, addLotUnitPurchase, removeLotUnitPurchase,
         onSubmit, register, handleBarCodeMatch, handleStockGlobalToBranch, updateLotUnitPurchase, lotUnitPurchases,
@@ -60,21 +61,6 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
         value: item.toString(),
         text: item.toString()
     }));
-
-    // const forSaleOptions = Object.values(ForSaleEnum).map(item => ({
-    //     value: item.toString(),
-    //     text: item.toString()
-    // }));
-    const forSaleOptions = [
-        { value: ForSaleEnum.PC, text: 'PC - Pieza' },
-        { value: ForSaleEnum.KG, text: 'KG - Kilogramo' },
-        { value: ForSaleEnum.L, text: 'L - Litro' },
-        { value: ForSaleEnum.M, text: 'M - Metro' },
-        { value: ForSaleEnum.DOC, text: 'DOC - Docena' },
-        { value: ForSaleEnum.PAQUETE, text: 'PAQ - Paquete' },
-        { value: ForSaleEnum.CAJA, text: 'CAJA - Caja' },
-        { value: ForSaleEnum.SET, text: 'SET - Conjunto o Kit' },
-    ];
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -187,7 +173,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         {...register('unitOfMeasure')}
                                         error={!!errors.unitOfMeasure}
                                         errorMessage={errors.unitOfMeasure?.message}
-                                        items={forSaleOptions}
+                                        items={forSaleObject}
                                     />
                                 </div>
                                 
@@ -227,7 +213,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                         {...register('purchaseUnit')}
                                         error={!!errors.purchaseUnit}
                                         errorMessage={errors.purchaseUnit?.message}
-                                        items={forSaleOptions}
+                                        items={forSaleObject}
                                     />
                                 </div>
                                 
@@ -353,7 +339,7 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
                                                         required='yes'
                                                         description='Selecciona la unidad de compra alternativa (caja, paquete, etc.) para gestionar el producto en diferentes presentaciones.' />
                                                     <SelectMenu
-                                                        items={forSaleOptions}
+                                                        items={forSaleObject}
                                                         value={item.unit}
                                                         onChange={(e) =>
                                                             updateLotUnitPurchase(index, "unit", e.target.value)
@@ -721,4 +707,4 @@ const FormNewProduct = ({ categoryList, brandList, seasonList }: Props) => {
     )
 }
 
-export { FormNewProduct };
+export { FormNewProductAndInventory };

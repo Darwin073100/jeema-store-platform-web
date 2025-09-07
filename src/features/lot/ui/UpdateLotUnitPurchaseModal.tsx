@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button } from '@/ui/components/buttons';
 import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
 import { TextInput, SelectMenu } from '@/ui/components/inputs';
@@ -5,11 +6,11 @@ import { LabelInput } from '@/ui/components/labels';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { Modal } from '@/ui/components/modals';
 import { FloatMessage } from '@/ui/components/messages';
-import React from 'react'
-import { HiPencil, HiSave } from 'react-icons/hi';
+import { HiPencil } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { useUpdateLotUnitPurchaseModal } from '../hooks/useUpdateLotUnitPurchaseModal';
+import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
+import { useLotUnitPurchaseDescriptionInputs } from '../hooks/useLotUnitPurchaseDescriptionInputs';
 
 const UpdateLotUnitPurchaseModal = () => {
     const {
@@ -23,11 +24,7 @@ const UpdateLotUnitPurchaseModal = () => {
         isLoading
     } = useUpdateLotUnitPurchaseModal();
 
-    // Opciones para el select de unidad de compra
-    const purchaseUnitOptions = Object.values(ForSaleEnum).map(unit => ({
-        value: unit,
-        text: unit.charAt(0).toUpperCase() + unit.slice(1)
-    }));
+    const lotUnitPurchaseDescription = useLotUnitPurchaseDescriptionInputs;
 
     return (
         <>
@@ -46,16 +43,48 @@ const UpdateLotUnitPurchaseModal = () => {
                         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Número de lote *" />
+                                    <LabelInput 
+                                        value="Unidad de compra"
+                                        description={lotUnitPurchaseDescription.unit}
+                                        required='yes' />
+                                    <SelectMenu
+                                        items={forSaleObject}
+                                        error={!!errors.unit}
+                                        errorMessage={errors.unit?.message}
+                                        {...register('unit')}
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <LabelInput 
+                                        value="Unidades base en esta unidad"
+                                        description={lotUnitPurchaseDescription.unitsInPurchaseUnit}
+                                        required='yes' />
                                     <TextInput
-                                        placeholder="Cantidad comprada"
+                                        type='number'
+                                        step="0.001"
+                                        placeholder="Unidades base en esta unidad"
+                                        error={!!errors.unitsInPurchaseUnit}
+                                        errorMessage={errors.unitsInPurchaseUnit?.message}
+                                        {...register('unitsInPurchaseUnit', { valueAsNumber: true })}
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <LabelInput 
+                                        value="Cantidades compradas"
+                                        description={lotUnitPurchaseDescription.purchaseQuantity}
+                                        required='yes' />
+                                    <TextInput
+                                        placeholder="Cantidades compradas"
                                         error={!!errors.purchaseQuantity}
                                         errorMessage={errors.purchaseQuantity?.message}
                                         {...register('purchaseQuantity')}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Precio de compra *" />
+                                    <LabelInput 
+                                        value="Precio de compra"
+                                        description={lotUnitPurchaseDescription.purchasePrice}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -63,26 +92,6 @@ const UpdateLotUnitPurchaseModal = () => {
                                         error={!!errors.purchasePrice}
                                         errorMessage={errors.purchasePrice?.message}
                                         {...register('purchasePrice', { valueAsNumber: true })}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Unidad de compra *" />
-                                    <SelectMenu
-                                        items={purchaseUnitOptions}
-                                        error={!!errors.unit}
-                                        errorMessage={errors.unit?.message}
-                                        {...register('unit')}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Cantidad inicial *" />
-                                    <TextInput
-                                        type='number'
-                                        step="0.001"
-                                        placeholder="Cantidad en esta unidad"
-                                        error={!!errors.unitsInPurchaseUnit}
-                                        errorMessage={errors.unitsInPurchaseUnit?.message}
-                                        {...register('unitsInPurchaseUnit', { valueAsNumber: true })}
                                     />
                                 </div>
                             </div>

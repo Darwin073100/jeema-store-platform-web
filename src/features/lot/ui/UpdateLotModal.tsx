@@ -10,6 +10,8 @@ import { HiPencil, HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { useUpdateLotModal } from '../hooks/useUpdateLotModal';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
+import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
+import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
 
 const UpdateLotModal = () => {
     const {
@@ -24,11 +26,7 @@ const UpdateLotModal = () => {
         isLoading
     } = useUpdateLotModal();
 
-    // Opciones para el select de unidad de compra
-    const purchaseUnitOptions = Object.values(ForSaleEnum).map(unit => ({
-        value: unit,
-        text: unit.charAt(0).toUpperCase() + unit.slice(1)
-    }));
+    const lotDescription = useLotDescriptionInputs;
 
     return (
         <>
@@ -55,8 +53,11 @@ const UpdateLotModal = () => {
                                         {...register('lotNumber')}
                                     />
                                 </div> */}
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Precio de compra *" />
+                               <div className="md:col-span-1">
+                                    <LabelInput 
+                                        value="Precio de compra"
+                                        description={lotDescription.purchasePrice}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
@@ -66,28 +67,37 @@ const UpdateLotModal = () => {
                                         {...register('purchasePrice', { valueAsNumber: true })}
                                     />
                                 </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Cantidad inicial *" />
+                                <div className="md:col-span-1">
+                                    <LabelInput 
+                                        value="Cantidad comprada"
+                                        description={lotDescription.initialQuantity}
+                                        required='yes' />
                                     <TextInput
                                         type='number'
                                         step="0.001"
-                                        placeholder="Cantidad inicial"
+                                        placeholder="Cantidad comprada"
                                         error={!!errors.initialQuantity}
                                         errorMessage={errors.initialQuantity?.message}
                                         {...register('initialQuantity', { valueAsNumber: true })}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Unidad de compra *" />
+                                    <LabelInput 
+                                        value="Unidad de compra"
+                                        description={lotDescription.purchaseUnit}
+                                        required='yes' />
                                     <SelectMenu
-                                        items={purchaseUnitOptions}
+                                        items={forSaleObject}
                                         error={!!errors.purchaseUnit}
                                         errorMessage={errors.purchaseUnit?.message}
                                         {...register('purchaseUnit')}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput value="Fecha de recepción *" />
+                                    <LabelInput 
+                                        value="Fecha de recepción"
+                                        description={lotDescription.receivedDate}
+                                        required='yes' />
                                     <TextInput
                                         type='date'
                                         placeholder="Fecha de recepción"
@@ -96,8 +106,11 @@ const UpdateLotModal = () => {
                                         {...register('receivedDate')}
                                     />
                                 </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Fecha de fabricación - (opcional)" />
+                                <div className="md:col-span-1">
+                                    <LabelInput 
+                                        value="Fecha de fabricación"
+                                        description={lotDescription.manufacturingDate}
+                                        required='no' />
                                     <TextInput
                                         type='date'
                                         placeholder="Fecha de fabricación"
@@ -106,8 +119,11 @@ const UpdateLotModal = () => {
                                         {...register('manufacturingDate')}
                                     />
                                 </div>
-                                <div className="md:col-span-2">
-                                    <LabelInput value="Fecha de caducidad - (opcional)" />
+                                <div className="md:col-span-1">
+                                    <LabelInput 
+                                        value="Fecha de caducidad"
+                                        description={lotDescription.expirationDate}
+                                        required='no' />
                                     <TextInput
                                         type='date'
                                         placeholder="Fecha de caducidad"

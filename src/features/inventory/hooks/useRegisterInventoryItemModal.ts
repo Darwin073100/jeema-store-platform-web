@@ -18,15 +18,7 @@ const registerFormData = yup.object().shape({
         .number()
         .required('El stock para la ubicación asignada es obligatorio.')
         .positive('La cantidad debe ser positiva.')
-        .typeError('Asegurate de ingresar la información correcta.'),
-    lastStockedAt: yup
-        .date()
-        .required()
-        .default(() => new Date()),
-    purchasePriceAtStock: yup
-        .number()
-        .typeError('Asegurate de ingresar la información correcta.')
-        
+        .typeError('Asegurate de ingresar la información correcta.')        
 });
 
 type RegisterFormData = yup.InferType<typeof registerFormData>;
@@ -47,9 +39,7 @@ const useRegisterInventoryItemModal = () => {
     useEffect(()=>{
         if( saveOpenModal ){
             reset({
-                lastStockedAt: new Date(),
                 location: LocationEnum.SALE,
-                purchasePriceAtStock: 0,
                 quantityOnHand: 0,
             });
         }
@@ -59,13 +49,11 @@ const useRegisterInventoryItemModal = () => {
         setSelectedInventoryId(null);
 
         reset({
-            lastStockedAt: new Date(),
             location: LocationEnum.SALE,
-            purchasePriceAtStock: 0,
             quantityOnHand: 0,
         });
         clearErrors([
-            'lastStockedAt', 'location', 'purchasePriceAtStock', 'quantityOnHand'
+            'location', 'quantityOnHand'
         ]);
         setFloatMessageState({});
     }
@@ -83,8 +71,8 @@ const useRegisterInventoryItemModal = () => {
 
             const registerInventoryItemDto: RegisterInventoryItemDTO = {
                 inventoryId: selectedInventoryId ?? BigInt(0),
-                lastStockedAt: data.lastStockedAt,
-                purchasePriceAtStock: data.purchasePriceAtStock ?? 0,
+                lastStockedAt: new Date(),
+                purchasePriceAtStock:  0,
                 location: data.location,
                 quantityOnHan: data.quantityOnHand,
                 internalBarCode: undefined,

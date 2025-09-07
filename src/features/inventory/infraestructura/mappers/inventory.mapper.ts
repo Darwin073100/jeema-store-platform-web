@@ -19,7 +19,7 @@ export class InventoryMapper {
             salePriceMany: dto.salePriceMany,
             salePriceOne: dto.salePriceOne,
             internalBarCode: dto.internalBarCode,
-            salePriceSpecial: dto.salePriceSpecial,
+            salePriceSpecial: dto.salePriceSpecial ?? undefined,
             saleQuantityMany: dto.saleQuantityMany
         }
         return httpDto;
@@ -36,7 +36,7 @@ export class InventoryMapper {
             minStockBranch: dto.minStockBranch,
             salePriceMany: dto.salePriceMany,
             salePriceOne: dto.salePriceOne,
-            salePriceSpecial: dto.salePriceSpecial,
+            salePriceSpecial: Number(dto.salePriceSpecial) ?? undefined,
             saleQuantityMany: dto.saleQuantityMany
         }
         return httpDto;

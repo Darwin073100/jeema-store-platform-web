@@ -8,9 +8,11 @@ import { IoClose } from 'react-icons/io5';
 import { HiPencil, HiSave } from 'react-icons/hi';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { LabelInput } from '@/ui/components/labels';
-import { useUpdateProductModal } from '../hooks';
+import { useUpdateProductModal } from '../../hooks';
 import { FloatMessage } from '@/ui/components/messages/FloatMessage';
-import { ForSaleEnum } from '../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../domain/enums/for-sale.enum';
+import { forSaleObject } from '../../domain/enums/for-sale.object';
+import { useProductDescriptionInput } from '../../hooks/useProductDescriptionInput';
 
 interface Props {
     product: any
@@ -49,16 +51,7 @@ const UpdateProductModal = () => {
         text: season.name
     })) : [];
 
-    const unitOptions = [
-        { value: ForSaleEnum.KG, text: 'Kilogramo (kg)' },
-        { value: ForSaleEnum.L, text: 'Litro (l)' },
-        { value: ForSaleEnum.M, text: 'Metro (m)' },
-        { value: ForSaleEnum.PC, text: 'Pieza (pc)' },
-        { value: ForSaleEnum.DOC, text: 'Docena (doc)' },
-        { value: ForSaleEnum.PAQUETE, text: 'Paquete' },
-        { value: ForSaleEnum.CAJA, text: 'Caja' },
-        { value: ForSaleEnum.SET, text: 'Set' }
-    ];
+    const productDescription = useProductDescriptionInput;
 
     return (
         <Modal isOpen={isOpenProductModal} onClose={handleCloseUpdateProductModal}>
@@ -78,7 +71,10 @@ const UpdateProductModal = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="md:col-span-2">
-                                <LabelInput value="Nombre del producto *" />
+                                <LabelInput 
+                                    required='yes'
+                                    value="Nombre del producto"
+                                    description={productDescription.name} />
                                 <TextInput
                                     placeholder="Nombre del producto"
                                     {...register('name')}
@@ -87,7 +83,10 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div className="md:col-span-2">
-                                <LabelInput value="Código de barras universal *" />
+                                <LabelInput 
+                                    required='yes'
+                                    value="Código de barras universal"
+                                    description={productDescription.universalBarCode} />
                                 <TextInput
                                     placeholder="Código de barras universal"
                                     {...register('universalBarCode')}
@@ -96,9 +95,13 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div>
-                                <LabelInput value="Stock Mínimo Global *" />
+                                <LabelInput 
+                                    required='yes'
+                                    value="Stock Mínimo Global"
+                                    description={productDescription.minStockGlobal} />
                                 <TextInput
                                     type='number'
+                                    step='0.001'
                                     placeholder="Stock mínimo"
                                     {...register('minStockGlobal', { valueAsNumber: true })}
                                 />
@@ -106,7 +109,11 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div>
-                                <LabelInput value="Categoría *" htmlFor='category' />
+                                <LabelInput 
+                                required='yes'
+                                    value="Selecciona la categoría" 
+                                    htmlFor='category'
+                                    description={productDescription.categoryId} />
                                 <SelectMenu 
                                     key={`category-${categories.length}`}
                                     id='category'
@@ -117,7 +124,11 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div>
-                                <LabelInput value="Marca *" htmlFor='brand' />
+                                <LabelInput 
+                                    required='yes'
+                                    value="Selecciona la marca" 
+                                    htmlFor='brand'
+                                    description={productDescription.brandId} />
                                 <SelectMenu 
                                     key={`brand-${brands.length}`}
                                     id='brand'
@@ -128,7 +139,11 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div>
-                                <LabelInput value="Temporada *" htmlFor='season' />
+                                <LabelInput 
+                                    required='yes'
+                                    value="Selecciona la temporada" 
+                                    htmlFor='season'
+                                    description={productDescription.seasonId} />
                                 <SelectMenu 
                                     key={`season-${seasons.length}`}
                                     id='season'
@@ -139,17 +154,24 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div className="md:col-span-2">
-                                <LabelInput value="Unidad de medida para ventas *" htmlFor='unitOfMeasure' />
+                                <LabelInput 
+                                    required='yes'
+                                    value="Unidad de medida para ventas" 
+                                    htmlFor='unitOfMeasure'
+                                    description={productDescription.unitOfMeasure} />
                                 <SelectMenu 
                                     id='unitOfMeasure'
-                                    items={unitOptions}
+                                    items={forSaleObject}
                                     {...register('unitOfMeasure')}
                                 />
                                 {errors.unitOfMeasure && <p className="text-red-500 text-sm mt-1">{errors.unitOfMeasure.message}</p>}
                             </div>
                             
                             <div className="md:col-span-2">
-                                <LabelInput value="Descripción del producto" />
+                                <LabelInput 
+                                    required='no'
+                                    value="Descripción del producto"
+                                    description={productDescription.description} />
                                 <TextInput
                                     placeholder="Descripción"
                                     {...register('description')}
