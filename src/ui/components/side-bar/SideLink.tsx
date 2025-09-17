@@ -12,7 +12,7 @@ interface Props{
 
 export const SideLink = ({Icon, href, value}:Props) => {
   return (
-    <Link href={href} className="w-16 h-16 bg-white shadow-xl flex flex-col items-center justify-center transition-all duration-500 rounded-lg gap-1 hover:bg-gray-200">
+    <Link href={href} className="w-16 h-16 bg-white shadow-xl flex flex-col items-center justify-center transition-all duration-500 rounded-lg gap-1 hover:bg-blue-200">
         <span><Icon className="text-2xl"/></span>
         <span
             className={clsx(`transition-all duration-1000 max-sm:hidden text-sm`)}>
