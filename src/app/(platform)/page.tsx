@@ -11,19 +11,19 @@ const homeCards = [
   {
     title: 'Ventas',
     description: 'Vende productos a clientes',
-    to: '/sale/new-sale',
+    to: '/sale/new',
     image: Sale
   },
   {
     title: 'Inventario',
     description: 'Control de los productos',
-    to: '/sale/new-sale',
+    to: '/',
     image: Inventory
   },
   {
     title: 'Contabilidad',
     description: 'Revisa los ingresos y egresos',
-    to: '/sale/new-sale',
+    to: '/',
     image: Contability
   }
 ];
