@@ -1,13 +1,20 @@
 'use client';
 import { findInventoryByBarCodeAction } from "@/features/inventory/actions/find-inventory-by-bar-code.action";
 import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
+import { useWorkspace } from "@/shared/hooks/useAuth";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { useEffect, useRef, useState } from "react";
+import { useSaleStore } from "../infraestructure/stores/sale.store";
+import { registerSaleInitialAction } from "../actions/register-sale-initial.action";
+import { findSaleWithDetailAction } from "../actions/find-sale-by-id-with-detail.action";
 
-const useSearchInventory = () => {
+const useSale = () => {
     const [inventory, setInventory] = useState<InventoryEntity>();
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [searchValue, setSearchValue] = useState<string>('');
+    const { branchOffice, employee } = useWorkspace();
+    const { resetSale, sale, setSale, saleId, resetSaleId, setSaleId } = useSaleStore();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -45,6 +52,7 @@ const useSearchInventory = () => {
 
     const handleSearchInventory = async (barCode: string) => {
         try {
+            setIsLoading(true);
             const result = await findInventoryByBarCodeAction(barCode);
             if (!result.ok) {
                 console.log(result.error);
@@ -59,14 +67,53 @@ const useSearchInventory = () => {
                 setTimeout(() => {
                     setFloatMessageState({});
                 }, 4000);
+            } else {
+                if( !sale ){
+                    const branchOfficeId = branchOffice?.branchOfficeId? BigInt(branchOffice.branchOfficeId): BigInt(0);
+                    const employeeId = employee?.employeeId ? BigInt(employee.employeeId) :BigInt(0);
+                    const createSaleResult = await registerSaleInitialAction({
+                        branchOfficeId,
+                        employeeId,
+                        customerId: BigInt(2)
+                    });
+    
+                    if(createSaleResult?.ok){
+                        setSaleId(createSaleResult.value?.saleId ?? BigInt(0));
+                    }
+                }
+
+                setInventory(result.value);
+                await handleUpdateSaleDetails(saleId);
+                handleResetSearch();
+                console.log(inventory);
             }
-            setInventory(result.value);
-            handleResetSearch();
-            console.log(inventory);
+
         } catch (error) {
 
         }
     }
+
+    const handleUpdateSaleDetails = async (saleId: bigint)=>{
+        try {
+            const result = await findSaleWithDetailAction(saleId);
+            if(result?.ok){
+                setSale(result.value ?? null);
+            }
+        } catch (error: any) {
+            setFloatMessageState({
+                    summary: '¡Error!',
+                    description: error.message,
+                    type: 'red',
+                    isActive: true
+                });
+
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 4000);
+        }
+    }
+
+
 
 
 
@@ -79,6 +126,7 @@ const useSearchInventory = () => {
     }
 
     const handleResetSearch = ()=> {
+        setIsLoading(false);
         setSearchValue('');
     }
 
@@ -89,7 +137,8 @@ const useSearchInventory = () => {
         handleSubmit,
         floatMessageState,
         inputRef,
+        isLoading,
     }
 }
 
-export { useSearchInventory }
+export { useSale }

@@ -1,21 +1,21 @@
 'use client'
-import React, { useEffect, useRef }  from "react";
+import React from "react";
 import { Button } from "@/ui/components/buttons";
 import { TextInput } from "@/ui/components/inputs";
 import { IoIosBarcode, IoMdCheckmark } from "react-icons/io";
-import { useSearchInventory } from "../hooks/useSearchInventory";
+import { useSale } from "../hooks/useSale";
 import { FloatMessage } from "@/ui/components/messages";
+import { Spinner } from "@/ui/components/loadings/Spinner";
 
 const SaleProductSearch = () => {
-    const { handleSubmit, floatMessageState, inputRef, handleChangeSearch, searchValue } = useSearchInventory();
-
+    const { handleSubmit, floatMessageState, inputRef, handleChangeSearch, searchValue, isLoading } = useSale();
 
     return (
         <form  
             onSubmit={handleSubmit}
             className="flex gap-4 items-center w-full justify-between">
             <section className="flex bg-gradient-to-r from-blue-600 to-blue-700 w-full items-center rounded-xl shadow-md gap-4 pl-4">
-                <IoIosBarcode className="text-white text-2xl" />
+                {isLoading? <Spinner /> :<IoIosBarcode className="text-white text-2xl" />}
                 <TextInput
                     ref={inputRef}
                     autoFocus

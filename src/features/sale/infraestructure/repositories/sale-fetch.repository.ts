@@ -28,6 +28,19 @@ export class SaleFetchRepository implements SaleRepository {
             return this.handleError(error, 'Register Sale');
         }    
     }
+    async findSaleWithDetails(saleId: bigint): Promise<Result<SaleEntity, ErrorEntity>> {
+        try {
+
+            const response = await this.httpClient.get<SaleEntity>(
+                this.apiConfig.getEndpointUrl(`/sales/${saleId.toString()}/details`)
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Find sale with details');
+        }    
+    }
 
     /**
      * Manejo centralizado de errores

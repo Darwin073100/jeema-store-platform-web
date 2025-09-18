@@ -1,7 +1,11 @@
+'use client';
 import { Button } from "@/ui/components/buttons";
 import { IoIosSearch, IoIosTrash } from "react-icons/io";
+import { useSaleStore } from "../infraestructure/stores/sale.store";
+import { SaleDetailItem } from "./SaleDetailItem";
 
 const SaleProductList = () => {
+    const { sale } = useSaleStore();
     return (
         <section className="flex-1">
             <div className="flex gap-4 mb-4">
@@ -41,76 +45,9 @@ const SaleProductList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
-                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
-                                LABOTT1
-                            </th>
-                            <td className="px-6 py-2 font-bold">
-                                Lapiz Bocetto 1
-                            </td>
-                            <td className="px-6 py-2">
-                                $ 5.00
-                            </td>
-                            <td className="px-6 py-2 bg-blue-200 font-bold">
-                                2.00
-                            </td>
-                            <td className="px-6 py-2">
-                                PIEZA
-                            </td>
-                            <td className="px-6 py-2 bg-blue-200 font-bold">
-                                $ 10.00
-                            </td>
-                            <td className="px-2 py-2 flex justify-center">
-                                <Button color="red"><IoIosTrash /></Button>
-                            </td>
-                        </tr>
-                        <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
-                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
-                                LABOTT1
-                            </th>
-                            <td className="px-6 py-2 font-bold">
-                                Lapiz Bocetto 1
-                            </td>
-                            <td className="px-6 py-2">
-                                $ 5.00
-                            </td>
-                            <td className="px-6 py-2 bg-blue-200 font-bold">
-                                2.00
-                            </td>
-                            <td className="px-6 py-2">
-                                PIEZA
-                            </td>
-                            <td className="px-6 py-2 bg-blue-200 font-bold">
-                                $ 10.00
-                            </td>
-                            <td className="px-2 py-2 flex justify-center">
-                                <Button color="red"><IoIosTrash /></Button>
-                            </td>
-                        </tr>
-                        <tr className="text-sm bg-white dark:border-gray-700 border-gray-200 text-black">
-                            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
-                                LABOTT1
-                            </th>
-                            <td className="px-6 py-2 font-bold">
-                                Lapiz Bocetto 1
-                            </td>
-                            <td className="px-6 py-2">
-                                $ 5.00
-                            </td>
-                            <td className="px-6 py-2 bg-blue-200 font-bold">
-                                2.00
-                            </td>
-                            <td className="px-6 py-2">
-                                PIEZA
-                            </td>
-                            <td className="px-6 py-2 bg-blue-200 font-bold">
-                                $ 10.00
-                            </td>
-                            <td className="px-2 py-2 flex justify-center">
-                                <Button color="red"><IoIosTrash /></Button>
-                            </td>
-                        </tr>
-
+                        { sale?.saleDetails 
+                            ? sale.saleDetails.map(detail=> <SaleDetailItem saleDetail={detail}/>)
+                            : <SaleDetailItem/>}
                     </tbody>
                 </table>
             </div>
