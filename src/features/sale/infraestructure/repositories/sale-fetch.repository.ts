@@ -31,9 +31,9 @@ export class SaleFetchRepository implements SaleRepository {
         }    
     }
     async addDetailToSale(saleId: bigint, dto: AddDetailToSaleDto): Promise<Result<SaleDetailEntity, ErrorEntity>> {
+        
         try {
-            let httpDto = SaleMapper.toHttpAddDetailToSaleDTO(dto);
-            
+            let httpDto = SaleMapper.toHttpAddDetailToSaleDTO(dto);    
             const response = await this.httpClient.patch<SaleDetailEntity>(
                 this.apiConfig.getEndpointUrl(`/sales/${saleId.toString()}/details`),
                 httpDto

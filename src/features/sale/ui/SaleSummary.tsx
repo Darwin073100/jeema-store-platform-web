@@ -1,7 +1,41 @@
+'use client';
 import { Button } from "@/ui/components/buttons";
 import { IoIosCash, IoIosPerson } from "react-icons/io";
+import { useSaleStore } from "../infraestructure/stores/sale.store";
+import { useEffect, useState } from "react";
 
 const SaleSummary = () => {
+    const [total, setTotal] = useState<number>(0.00);
+    const [productQuantity, setProductQuantity] = useState<number>(0.00);
+    const { sale } = useSaleStore();
+
+    const handleMoneyFormat = (num: number)=>{
+        const format = new Intl.NumberFormat('es-MX',{
+            style: 'currency',
+            currency: 'MXN'
+        });
+        return format.format(num);
+    }
+
+    useEffect(() => {
+        if (sale?.saleDetails) {
+            // Calcular el total de la venta
+            const newTotal = sale.saleDetails.reduce((sum, item) => 
+                sum + (Number(item.subtotalItem) || 0), 0);
+            
+            // Calcular la cantidad total de productos
+            const newQuantity = sale.saleDetails.reduce((sum, item) => 
+                sum + (Number(item.quantity) || 0), 0);
+
+            // Actualizar los estados
+            setTotal(Number(newTotal.toFixed(2))); // Redondear a 2 decimales
+            setProductQuantity(Number(newQuantity.toFixed(2)));
+        } else {
+            // Resetear valores si no hay detalles
+            setTotal(0.00);
+            setProductQuantity(0.00);
+        }
+    }, [sale?.saleDetails]); // Dependencia más específica
     return (
         <section className="sticky top-4">
             <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-6 w-[400px]">
@@ -9,12 +43,12 @@ const SaleSummary = () => {
                     <div className="text-center">
                         <span className="text-gray-600 text-sm">Total a pagar</span>
                         <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                            $ 100.00
+                            {handleMoneyFormat(total)}
                         </div>
                     </div>
                     <div className="text-center">
                         <span className="text-gray-600 text-sm">Productos en venta</span>
-                        <div className="text-2xl font-semibold text-blue-700">10 unidades</div>
+                        <div className="text-2xl font-semibold text-blue-700">{ productQuantity } unidades</div>
                     </div>
                 </div>
 

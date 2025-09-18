@@ -46,7 +46,7 @@ const SaleProductList = () => {
                     </thead>
                     <tbody>
                         { sale?.saleDetails 
-                            ? sale.saleDetails.map(detail=> <SaleDetailItem saleDetail={detail}/>)
+                            ? sale.saleDetails.map(detail=> <SaleDetailItem key={detail.saleDetailId} saleDetail={detail}/>)
                             : <SaleDetailItem/>}
                     </tbody>
                 </table>

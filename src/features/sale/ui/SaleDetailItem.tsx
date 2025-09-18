@@ -15,16 +15,16 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
                 {saleDetail?.productNameAtSale ?? 'S/N'}
             </td>
             <td className="px-6 py-2">
-                $ {saleDetail?.unitPriceAtSale.toFixed(2) ?? '0.00'}
+                $ {saleDetail?.unitPriceAtSale ?? '0.00'}
             </td>
             <td className="px-6 py-2 bg-blue-200 font-bold">
-                {saleDetail?.quantity.toFixed(2) ?? '0.00'}
+                {saleDetail?.quantity ?? '0.00'}
             </td>
             <td className="px-6 py-2">
                 {saleDetail?.productUnitAtSale ?? 'S/P'}
             </td>
             <td className="px-6 py-2 bg-blue-200 font-bold">
-                $ {saleDetail?.subtotalItem.toFixed(2) ?? '0.00'}
+                $ {saleDetail?.subtotalItem ?? '0.00'}
             </td>
             <td className="px-2 py-2 flex justify-center">
                 <Button color="red"><IoIosTrash /></Button>

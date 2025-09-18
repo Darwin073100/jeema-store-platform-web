@@ -55,43 +55,102 @@ const useSale = () => {
     const handleSearchInventory = async (barCode: string) => {
         try {
             setIsLoading(true);
+            
+            // 1. Buscar el producto en el inventario
             const result = await findInventoryByBarCodeAction(barCode);
             if (!result.ok) {
-                console.log(result.error);
                 setFloatMessageState({
                     summary: '¡Error!',
                     description: result.error?.message,
                     type: 'red',
                     isActive: true
                 });
-
                 handleResetSearch();
                 setTimeout(() => {
                     setFloatMessageState({});
                 }, 4000);
-            } else {
-                setInventory(result.value);
-                if( !sale ){
-                    const branchOfficeId = branchOffice?.branchOfficeId? BigInt(branchOffice.branchOfficeId): BigInt(0);
-                    const employeeId = employee?.employeeId ? BigInt(employee.employeeId) :BigInt(0);
-                    const createSaleResult = await registerSaleInitialAction({
-                        branchOfficeId,
-                        employeeId,
-                        customerId: BigInt(2)
-                    });
-    
-                    if(createSaleResult?.ok){
-                        setSaleId(createSaleResult.value?.saleId ?? BigInt(0));
-                    }
-                }
-
-                await handleUpdateSaleDetails(saleId);
-                handleResetSearch();
-                console.log(inventory);
+                return;
             }
 
-        } catch (error) {
+            if (!result.value) {
+                throw new Error('No se encontró el producto en el inventario');
+            }
 
+            const foundInventory = result.value;
+            setInventory(foundInventory);
+
+            // 2. Asegurarse de que existe una venta activa
+            let currentSaleId = saleId;
+            
+            if (!currentSaleId || !sale) {
+                if (!branchOffice?.branchOfficeId || !employee?.employeeId) {
+                    throw new Error('No se pudo obtener la información de la sucursal o empleado');
+                }
+
+                const createSaleResult = await registerSaleInitialAction({
+                    branchOfficeId: BigInt(branchOffice.branchOfficeId),
+                    employeeId: BigInt(employee.employeeId),
+                    customerId: BigInt(2)
+                });
+
+                if (!createSaleResult?.ok || !createSaleResult.value?.saleId) {
+                    throw new Error('No se pudo crear la venta');
+                }
+
+                currentSaleId = createSaleResult.value.saleId;
+                setSaleId(currentSaleId);
+
+                // Esperar a que se actualice la venta en el store
+                await handleUpdateSaleDetails(currentSaleId);
+            }
+
+            // 3. Verificar que tenemos una venta válida
+            if (!currentSaleId) {
+                throw new Error('No se pudo inicializar la venta');
+            }
+
+            // 4. Preparar el detalle del producto
+            const existingProduct = sale?.saleDetails?.find(
+                detail => detail.productBarCodeAtSale === (foundInventory.internalBarCode || '')
+            );
+
+            const detailDto: AddDetailToSaleDto = {
+                quantity: existingProduct ? Number(existingProduct.quantity) + 1 : 1,
+                unitPriceAtSale: Number(foundInventory.salePriceOne || 0),
+                productBarCodeAtSale: foundInventory.internalBarCode || '',
+                productUnitAtSale: foundInventory.product?.unitOfMeasure || 'PIEZA',
+                notes: `Agregado el ${new Date().toLocaleString()}`
+            };
+
+            // 5. Agregar el detalle a la venta
+            const addedSuccessfully = await handleAddDetailToSale(currentSaleId, detailDto);
+            
+            if (addedSuccessfully) {
+                setFloatMessageState({
+                    summary: 'Producto agregado',
+                    description: `Se agregó ${foundInventory.product?.name} a la venta`,
+                    type: 'green',
+                    isActive: true
+                });
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 2000);
+            }
+
+            handleResetSearch();
+
+        } catch (error: any) {
+            setFloatMessageState({
+                summary: '¡Error!',
+                description: error.message || 'Error al procesar el producto',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -115,16 +174,34 @@ const useSale = () => {
         }
     }
 
-    const handleAddDetailToSale = async (saleId: bigint, dto: AddDetailToSaleDto)=> {
-        try{
+    const handleAddDetailToSale = async (saleId: bigint, dto: AddDetailToSaleDto) => {
+        try {
             const addResult = await addDetailToSaleAction(saleId, dto);
-            if(addResult?.ok){
-                await handleUpdateSaleDetails(saleId);
+            if (!addResult?.ok) {
+                console.log(addResult);
+                const errorMessage = addResult?.error?.message
+                throw new Error('Ocurrio un error al agregar el producto');
             }
-        } catch(error){
-        
+            
+            // Actualizar los detalles de la venta
+            await handleUpdateSaleDetails(saleId);
+            return true;
+        } catch (error: any) {
+            const errorMessage = typeof error.message === 'string' 
+                ? error.message 
+                : 'Error al agregar el producto a la venta';
+            
+            setFloatMessageState({
+                summary: '¡Error!',
+                description: errorMessage,
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return false;
         }
-
     }
 
 
