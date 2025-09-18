@@ -7,4 +7,5 @@ import { ErrorEntity } from "@/shared/features/error.entity";
 export interface InventoryRepository{
     save(dto: RegisterInventoryDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
     update(dto: UpdateInventoryDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
+    findByBarCode(barCode: string):Promise<Result<InventoryEntity, ErrorEntity>>
 }

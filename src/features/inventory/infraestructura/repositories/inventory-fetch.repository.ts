@@ -28,7 +28,6 @@ export class InventoryFetchRepository implements InventoryRepository {
     async update(dto: UpdateInventoryDTO):Promise<Result<InventoryEntity, ErrorEntity>> {
         try {
             const httpDto = InventoryMapper.toUpdateInventoryHttpDTO(dto);
-            console.log(httpDto);
             const result = await this.httpClient.patch<InventoryEntity>(
                 this.apiConfig.getEndpointUrl('/inventories'),
                 httpDto
@@ -36,6 +35,17 @@ export class InventoryFetchRepository implements InventoryRepository {
             return Result.success(result.data);
         } catch (error) {
             return this.handleError(error, 'Update Inventory');
+        }
+    }
+
+    async findByBarCode(barCode: string): Promise<Result<InventoryEntity, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<InventoryEntity>(
+                this.apiConfig.getEndpointUrl(`/inventories?barCode=${barCode}`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return this.handleError(error, 'Find Inventory By BarCode');
         }
     }
 
