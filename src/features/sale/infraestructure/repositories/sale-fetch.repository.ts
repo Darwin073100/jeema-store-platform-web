@@ -6,6 +6,8 @@ import { SaleRepository } from "../../domain/repositories/sale.repository";
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { SaleMapper } from "../mappers/sale.mapper";
+import { AddDetailToSaleDto } from "../../application/dtos/add-detail-to-sale.dto";
+import { SaleDetailEntity } from "../../domain/entities/sale-detail-entity";
 
 export class SaleFetchRepository implements SaleRepository {
     constructor(
@@ -26,6 +28,21 @@ export class SaleFetchRepository implements SaleRepository {
 
         } catch (error: any) {
             return this.handleError(error, 'Register Sale');
+        }    
+    }
+    async addDetailToSale(saleId: bigint, dto: AddDetailToSaleDto): Promise<Result<SaleDetailEntity, ErrorEntity>> {
+        try {
+            let httpDto = SaleMapper.toHttpAddDetailToSaleDTO(dto);
+            
+            const response = await this.httpClient.patch<SaleDetailEntity>(
+                this.apiConfig.getEndpointUrl(`/sales/${saleId.toString()}/details`),
+                httpDto
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Add detail to sale');
         }    
     }
     async findSaleWithDetails(saleId: bigint): Promise<Result<SaleEntity, ErrorEntity>> {

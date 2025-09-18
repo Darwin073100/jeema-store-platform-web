@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { registerSaleInitialAction } from "../actions/register-sale-initial.action";
 import { findSaleWithDetailAction } from "../actions/find-sale-by-id-with-detail.action";
+import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
+import { addDetailToSaleAction } from "../actions/add-detail-to-sale.action";
 
 const useSale = () => {
     const [inventory, setInventory] = useState<InventoryEntity>();
@@ -68,6 +70,7 @@ const useSale = () => {
                     setFloatMessageState({});
                 }, 4000);
             } else {
+                setInventory(result.value);
                 if( !sale ){
                     const branchOfficeId = branchOffice?.branchOfficeId? BigInt(branchOffice.branchOfficeId): BigInt(0);
                     const employeeId = employee?.employeeId ? BigInt(employee.employeeId) :BigInt(0);
@@ -82,7 +85,6 @@ const useSale = () => {
                     }
                 }
 
-                setInventory(result.value);
                 await handleUpdateSaleDetails(saleId);
                 handleResetSearch();
                 console.log(inventory);
@@ -111,6 +113,18 @@ const useSale = () => {
                     setFloatMessageState({});
                 }, 4000);
         }
+    }
+
+    const handleAddDetailToSale = async (saleId: bigint, dto: AddDetailToSaleDto)=> {
+        try{
+            const addResult = await addDetailToSaleAction(saleId, dto);
+            if(addResult?.ok){
+                await handleUpdateSaleDetails(saleId);
+            }
+        } catch(error){
+        
+        }
+
     }
 
 
