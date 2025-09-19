@@ -1,7 +1,11 @@
 import { AddDetailToSaleDto } from "../../application/dtos/add-detail-to-sale.dto";
+import { FinishSaleDto } from "../../application/dtos/finish-sale.dto";
+import { RegisterSalePaymentDto } from "../../application/dtos/register-sale-payment.dto";
 import { RegisterSaleDto } from "../../application/dtos/register-sale.dto";
 import { AddDetailToSaleHttpDto } from "../dtos/add-detail-to-sale-http.dto";
+import { FinishSaleHttpDto } from "../dtos/finish-sale-http.dto";
 import { RegisterSaleHttpDto } from "../dtos/register-sale-http.dto";
+import { RegisterSalePaymentHttpDto, RegisterSalePaymentItemHttp } from "../dtos/register-sale-payment-http.dto";
 
 export class SaleMapper {
     static toHttpRegisterSaleDTO(dto: RegisterSaleDto){
@@ -23,5 +27,29 @@ export class SaleMapper {
         }
 
         return httpDTO;
+    }
+
+    static toHttpFinishSale(dto: FinishSaleDto){
+        const httpDTO: FinishSaleHttpDto = {
+            customerId: dto.customerId.toString(),
+            employeeId: dto.employeeId.toString(),
+            notes: dto.notes
+        }
+
+        return httpDTO;
+    }
+
+    static toHttpRegisterSalePaymentDTO(dto: RegisterSalePaymentDto){
+        const httpDto: RegisterSalePaymentHttpDto = {
+            methods: dto.methods.map( item => {
+                const itemHttpDto: RegisterSalePaymentItemHttp = {
+                    amountPaid: item.amountPaid,
+                    paymentMethodId: item.paymentMethodId.toString(),
+                    referenceNumber: item.referenceNumber
+                }
+                return itemHttpDto;
+            })
+        }
+        return httpDto;
     }
 }

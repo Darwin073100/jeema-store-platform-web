@@ -1,4 +1,4 @@
-export interface SalePaymentResponseDTO{
+export interface SalePaymentEntity{
     salePaymentId: bigint;
     paymentMethodId: bigint;
     saleId: bigint;

@@ -8,6 +8,9 @@ import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { SaleMapper } from "../mappers/sale.mapper";
 import { AddDetailToSaleDto } from "../../application/dtos/add-detail-to-sale.dto";
 import { SaleDetailEntity } from "../../domain/entities/sale-detail-entity";
+import { FinishSaleDto } from "../../application/dtos/finish-sale.dto";
+import { RegisterSalePaymentDto } from "../../application/dtos/register-sale-payment.dto";
+import { SalePaymentEntity } from "../../domain/entities/sale-payment-entity";
 
 export class SaleFetchRepository implements SaleRepository {
     constructor(
@@ -30,8 +33,8 @@ export class SaleFetchRepository implements SaleRepository {
             return this.handleError(error, 'Register Sale');
         }    
     }
+
     async addDetailToSale(saleId: bigint, dto: AddDetailToSaleDto): Promise<Result<SaleDetailEntity, ErrorEntity>> {
-        
         try {
             let httpDto = SaleMapper.toHttpAddDetailToSaleDTO(dto);    
             const response = await this.httpClient.patch<SaleDetailEntity>(
@@ -45,6 +48,7 @@ export class SaleFetchRepository implements SaleRepository {
             return this.handleError(error, 'Add detail to sale');
         }    
     }
+
     async findSaleWithDetails(saleId: bigint): Promise<Result<SaleEntity, ErrorEntity>> {
         try {
 
@@ -57,6 +61,36 @@ export class SaleFetchRepository implements SaleRepository {
         } catch (error: any) {
             return this.handleError(error, 'Find sale with details');
         }    
+    }
+
+    async finishSale(saleId: bigint, dto: FinishSaleDto): Promise<Result<SaleEntity, ErrorEntity>> {
+        try {
+            let httpDto = SaleMapper.toHttpFinishSale(dto);    
+            const response = await this.httpClient.patch<SaleEntity>(
+                this.apiConfig.getEndpointUrl(`/sales/${saleId.toString()}/finish`),
+                httpDto
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Finish sale');
+        }
+    }
+
+    async paidSale(saleId: bigint, dto: RegisterSalePaymentDto): Promise<Result<{ payments: SalePaymentEntity[]; }, ErrorEntity>> {
+        try {
+            let httpDto = SaleMapper.toHttpRegisterSalePaymentDTO(dto);    
+            const response = await this.httpClient.patch<{payments: SalePaymentEntity[]}>(
+                this.apiConfig.getEndpointUrl(`/sales/${saleId.toString()}/paid`),
+                httpDto
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Paid sale');
+        }
     }
 
     /**
