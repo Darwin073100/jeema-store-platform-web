@@ -12,6 +12,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(({
     type, 
     error = false, 
     errorMessage,
+    className,
     ...props 
 }, ref) => {
     return (
@@ -22,7 +23,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(({
             className={
                 clsx(
                     `text-lg block w-full rounded-xl bg-white border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-blue-600`,
-                    props.className,
+                    className,
                     error && 'outline-red-600 focus:outline-red-600'
                 )
             } 

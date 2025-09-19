@@ -19,7 +19,7 @@ export const LabelInput = ({ required, value, Icon, error = false, errorMessage,
 
     return (
         <div>
-            <label htmlFor={htmlFor} className={clsx(`flex gap-1 items-center font-medium text-gray-700 ${className}`)}>
+            <label htmlFor={htmlFor} className={clsx(`flex gap-1 items-center font-medium text-gray-700`, className)}>
                 {!!Icon && <Icon />}
                 <span>{value}</span>
                 {error && <span className="text-red-600 text-[10px]">* {errorMessage}</span>}

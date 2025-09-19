@@ -8,10 +8,22 @@ type State = {
     sale: SaleEntity| null,
     setSale:(sale: SaleEntity|null)=> void,
     resetSale:()=> void,
+    total: number,
+    setTotal: (total: number)=> void,
+    productQuantity: number,
+    setProductQuantity: (total: number)=> void,
+    resetSaleStore: ()=> void,
+}
+
+const initialValues = {
+    saleId: BigInt(0),
+    sale: null,
+    total: 0,
 }
 
 export const useSaleStore = create<State>()((set, get)=>({
-    saleId: BigInt(0),
+    ...initialValues,
+    productQuantity: 0,
     setSaleId: (saleId: bigint)=> {
         set(()=>({
             saleId
@@ -22,7 +34,6 @@ export const useSaleStore = create<State>()((set, get)=>({
             saleId: BigInt(0)
         }));
     },
-    sale: null,
     resetSale: ()=> {
         set(()=>({sale: null}))
     },
@@ -30,5 +41,18 @@ export const useSaleStore = create<State>()((set, get)=>({
         set(()=>({
             sale
         }))
+    },
+    setTotal: (total: number) => {
+        set(()=>({
+            total
+        }))
+    },
+    setProductQuantity: (quantity: number)=>{
+        set(()=>({
+            productQuantity: quantity
+        }));
+    },
+    resetSaleStore: ()=> {
+        set(initialValues);
     }
 }));

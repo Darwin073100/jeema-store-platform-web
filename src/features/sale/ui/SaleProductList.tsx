@@ -5,7 +5,9 @@ import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { SaleDetailItem } from "./SaleDetailItem";
 
 const SaleProductList = () => {
+    
     const { sale } = useSaleStore();
+
     return (
         <section className="flex-1">
             <div className="flex gap-4 mb-4">
@@ -18,12 +20,12 @@ const SaleProductList = () => {
                     <span>Cancelar venta</span>
                 </Button>
             </div>
-            <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
+            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all">
                 <table className="w-full text-left rtl:text-right">
                     <thead>
-                        <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-white uppercase text-sm">
+                        <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
                             <th scope="col" className="px-6 py-4 font-semibold">
-                                Cód. de barra
+                                Código
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
                                 Producto

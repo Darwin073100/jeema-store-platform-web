@@ -1,5 +1,6 @@
 /**
  * Formatea una fecha a string legible
+ * Ej: 18 de septiembre de 2025, 19:14
  */
 export function formatDate(date: Date | string | null | undefined): string {
     if (!date) return 'N/A';
@@ -20,6 +21,7 @@ export function formatDate(date: Date | string | null | undefined): string {
 
 /**
  * Formatea una fecha a string corto
+ * Ej: 18/9/2025 
  */
 export function formatDateShort(date: Date | string | null | undefined): string {
     if (!date) return 'N/A';

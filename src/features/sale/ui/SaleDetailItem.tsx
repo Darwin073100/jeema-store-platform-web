@@ -1,6 +1,8 @@
 import { Button } from "@/ui/components/buttons";
 import { IoIosTrash } from "react-icons/io";
 import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
+import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
+
 interface Props {
     saleDetail?: SaleDetailEntity
 }
@@ -8,25 +10,25 @@ interface Props {
 const SaleDetailItem = ({ saleDetail }: Props) => {
     return (
         <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
-            <th scope="row" className="px-6 py-2 font-medium whitespace-nowrap">
+            <th scope="row" className="px-5 py-1 font-medium whitespace-nowrap">
                 {saleDetail?.productBarCodeAtSale ?? 'S/C'}
             </th>
-            <td className="px-6 py-2 font-bold">
+            <td className="px-5 py-1 font-bold">
                 {saleDetail?.productNameAtSale ?? 'S/N'}
             </td>
-            <td className="px-6 py-2">
-                $ {saleDetail?.unitPriceAtSale ?? '0.00'}
+            <td className="px-5 py-1">
+                $ {numberBasicFormat(saleDetail?.unitPriceAtSale ?? 0.00)}
             </td>
-            <td className="px-6 py-2 bg-blue-200 font-bold">
+            <td className="px-5 py-1 bg-blue-200 font-bold">
                 {saleDetail?.quantity ?? '0.00'}
             </td>
-            <td className="px-6 py-2">
+            <td className="px-5 py-1">
                 {saleDetail?.productUnitAtSale ?? 'S/P'}
             </td>
-            <td className="px-6 py-2 bg-blue-200 font-bold">
-                $ {saleDetail?.subtotalItem ?? '0.00'}
+            <td className="px-5 py-1 bg-blue-200 font-bold">
+                $ {numberBasicFormat(saleDetail?.subtotalItem ?? 0.00)}
             </td>
-            <td className="px-2 py-2 flex justify-center">
+            <td className="px-2 py-1 flex justify-center">
                 <Button color="red"><IoIosTrash /></Button>
             </td>
         </tr>

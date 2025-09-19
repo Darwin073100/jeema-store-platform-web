@@ -34,7 +34,7 @@ export function Button({
     <button
       className={twMerge(
         clsx(
-          `cursor-pointer transition-all flex justify-center items-center rounded-xl shadow-sm hover:shadow-lg ${ color=='white'? 'text-black': 'text-white'}`,
+          `cursor-pointer transition-all duration-500 flex justify-center items-center rounded-xl shadow-sm hover:shadow-lg ${ color=='white'? 'text-black': 'text-white'}`,
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
           fullWidth && 'w-full',
           txt,
