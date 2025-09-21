@@ -5,9 +5,15 @@ import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { useSaleSummary } from "../hooks/useSaleSummary";
 import { SalePaymentModal } from "./SalePaymentModal";
 import { useSalePayment } from "../hooks/useSalePayment";
+import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity";
+import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
 
-const SaleSummary = () => {
-    
+interface Props {
+    paymentMethods: PaymentMethodEntity[]
+}
+
+const SaleSummary = ({ paymentMethods }: Props) => {
+    const {} = useTransferDataToClientNewSale({methods: paymentMethods});
     const { productQuantity, total} = useSaleSummary();
     const { openPaymentModal } = useSalePayment();
 

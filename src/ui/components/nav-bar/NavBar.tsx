@@ -2,12 +2,14 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Logo from "../../assets/images/logologo.png";
+import Sale from '../../../ui/assets/images/sale.svg';
 import { IoChevronDownSharp, IoNotifications, IoPeopleOutline } from 'react-icons/io5'
 import { RoundedButton } from '../buttons/RoundedButton';
 import { RoundedBadge } from '../badges/RoundedBadge';
 import { LogoutModal } from '../modals/LogoutModal';
 import { useAuth, useWorkspace } from '@/shared/hooks/useAuth';
 import { Button } from '../buttons';
+import Link from 'next/link';
 
 export const NavBar = () => {
   const { user } = useAuth();
@@ -44,6 +46,16 @@ export const NavBar = () => {
           <span className="text-sm text-gray-500 max-sm:hidden">
             {branchOffice?.name}
           </span>
+        </div>
+        <div>
+          <Link href='/sale/new' className='text-sm flex flex-col items-center justify-center rounded-xl p-1 bg-blue-500 text-white hover:bg-blue-400 shadow transition-all duration-500'>
+            <Image 
+              alt='NewSale' 
+              src={Sale}
+              width={30}
+              height={30}/>
+            <span>Nueva Venta</span>
+          </Link>
         </div>
       </div>
 

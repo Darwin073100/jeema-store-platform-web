@@ -19,11 +19,11 @@ const initialValues = {
     saleId: BigInt(0),
     sale: null,
     total: 0,
+    productQuantity: 0,
 }
 
 export const useSaleStore = create<State>()((set, get)=>({
     ...initialValues,
-    productQuantity: 0,
     setSaleId: (saleId: bigint)=> {
         set(()=>({
             saleId
