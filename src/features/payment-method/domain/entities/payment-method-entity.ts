@@ -1,5 +1,5 @@
 export interface PaymentMethodEntity {
-  paymentMethodId: string;
+  paymentMethodId: bigint;
   name: string;
   requiresReference: boolean;
   createdAt: Date;

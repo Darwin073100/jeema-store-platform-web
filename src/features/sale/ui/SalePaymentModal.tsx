@@ -18,9 +18,9 @@ const SalePaymentModal = () => {
   const { total } = useSaleStore();
   const { 
     closePaymentModal, paymentModal, cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount, paymentMethods,
-    paids, transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef,
+    paids, transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
   } = useSalePaymentStore();
-  const { handleFinishSale, isLoading, floatMessageState } = useSalePayment();
+  const { handleFinishSale, isLoading, floatMessageState, handlePaidSale } = useSalePayment();
 
   return (
     <TemplateModal isOpen={paymentModal} onClose={closePaymentModal} title='Cobro de la venta'>
@@ -91,6 +91,7 @@ const SalePaymentModal = () => {
               : <> <MdOutlinePaid className="w-4 h-4" />Cobrar despues</> 
             }
           </Button>
+          <button onClick={()=> handlePaidSale()}>CHACANDO PAGOS</button>
           <Button
             type="submit"
             className='flex justify-center items-center min-w-[120px]'
