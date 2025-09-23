@@ -7,6 +7,7 @@ import { SalePaymentModal } from "./SalePaymentModal";
 import { useSalePayment } from "../hooks/useSalePayment";
 import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity";
 import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
+import { FloatMessage } from "@/ui/components/messages";
 
 interface Props {
     paymentMethods: PaymentMethodEntity[]
@@ -15,7 +16,7 @@ interface Props {
 const SaleSummary = ({ paymentMethods }: Props) => {
     const {} = useTransferDataToClientNewSale({methods: paymentMethods});
     const { productQuantity, total} = useSaleSummary();
-    const { openPaymentModal } = useSalePayment();
+    const { floatMessageState, handleCheckerOpenModalFinishSale } = useSalePayment();
 
     return (
         <section className="sticky top-4">
@@ -51,7 +52,7 @@ const SaleSummary = ({ paymentMethods }: Props) => {
                 </div>
 
                 <div className="pt-6">
-                    <Button onClick={()=> openPaymentModal()} className="w-full justify-center py-4 shadow-md hover:shadow-lg transition-all text-lg">
+                    <Button onClick={()=> handleCheckerOpenModalFinishSale()} className="w-full justify-center py-4 shadow-md hover:shadow-lg transition-all text-lg">
                         <IoIosCash className="text-2xl" />
                         <span className="font-medium">Finalizar Venta</span>
                     </Button>
@@ -59,6 +60,12 @@ const SaleSummary = ({ paymentMethods }: Props) => {
             </div>
 
             <SalePaymentModal />
+            <FloatMessage 
+                key='message-sale-summary'
+                summary={floatMessageState.summary}
+                description={floatMessageState.description}
+                isActive={floatMessageState.isActive}
+                type={floatMessageState.type}/>
         </section>
     )
 }

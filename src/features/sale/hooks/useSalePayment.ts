@@ -7,18 +7,6 @@ import { finishSaleAction } from "../actions/finish-sale.action";
 import { RegisterSalePaymentItem } from "../application/dtos/register-sale-payment.dto";
 import { registerSalePaymentAction } from "../actions/register-sale-payment.action";
 
-const initialStatePaids = [
-    {
-        paymentMethodId: BigInt(0), // Efectivo
-        amountPaid: 0,
-        referenceNumber: ``
-    },
-    {
-        paymentMethodId: BigInt(1), // Transferencia
-        amountPaid: 0,
-        referenceNumber: ``
-    }
-];
 
 const useSalePayment = () => {
     // Estados globales
@@ -31,9 +19,6 @@ const useSalePayment = () => {
     const [isSalePaymentLoading, setIsSalePaymentLoading] = useState<boolean>(false);
     //Estado para lanzar mensajes
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
-    // Estado para manejar que metodo de pago esta seleccionado
-    const [paymentCashItems, setPaymentCashItems] = useState<RegisterSalePaymentItem>(initialStatePaids[0]);
-    const [paymentTransferItems, setPaymentTransferItems] = useState<RegisterSalePaymentItem>(initialStatePaids[1]);
     // Este es el estado que vamos a usar para el array de pagos
     const [salePaids, setSalePaids] = useState<RegisterSalePaymentItem[]>([]);
 
@@ -87,7 +72,24 @@ const useSalePayment = () => {
         }
     }, [paymentModal, total, setCashAmount, setPaidAmount]);
     
+    // No permite abrir el modal si no hay productos que cobrar.
+    const handleCheckerOpenModalFinishSale = ()=> {
+        if(saleId === BigInt(0)){
+            setFloatMessageState({
+                type: 'red',
+                isActive: true,
+                summary: '¡No hay productos en la venta!',
+                description: 'Agrega productos a la venta para poder finalizarla.'
+            });
+            setTimeout(()=>{
+                setFloatMessageState({});
+            }, 4000);
+        } else{
+            openPaymentModal();
+        }
+    }
 
+    // Finaliza la venta, sin registrar el pago
     const handleFinishSale = async () => {
         setIsFinishSaleLoading(true);
         try {
@@ -131,6 +133,7 @@ const useSalePayment = () => {
         }
     }
 
+    // Finaliza la venta, registrando los pagos dependiendo el metodo de pago
     const handlePaidSale = async () => {
         setIsSalePaymentLoading(true);
         try {
@@ -202,7 +205,8 @@ const useSalePayment = () => {
         isFinishSaleLoading,
         isSalePaymentLoading,
         floatMessageState,
-        handlePaidSale
+        handlePaidSale,
+        handleCheckerOpenModalFinishSale
     }
 }
 
