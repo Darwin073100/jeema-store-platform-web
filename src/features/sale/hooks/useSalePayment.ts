@@ -21,47 +21,56 @@ const useSalePayment = () => {
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     // Este es el estado que vamos a usar para el array de pagos
     const [salePaids, setSalePaids] = useState<RegisterSalePaymentItem[]>([]);
+    // Controlar el mensaje para el pago total
+    const [paidAmountMessage, setPaidAmountMessage] = useState({ isError: false, message: '' });
 
     // Variables de contexto
     const { total, saleId, resetSaleStore } = useSaleStore();
     const { employee } = useWorkspace();
 
-// Efecto para actualizar los ítems de pago (efectivo y transferencia)
+    // Efecto para actualizar los ítems de pago (efectivo y transferencia)
     // y consolidarlos en un solo array `salePaids`.
     useEffect(() => {
-      // 1. Crear el nuevo array de pagos de forma inmutable
-      const newPaids: RegisterSalePaymentItem[] = [];
+        // 1. Crear el nuevo array de pagos de forma inmutable
+        const newPaids: RegisterSalePaymentItem[] = [];
 
-      // 2. Lógica para el pago en efectivo
-      const filterPaymentMethodCash = paymentMethods.find(item => item.name.toLowerCase() === 'Efectivo'.toLowerCase());
-      if (!!filterPaymentMethodCash && cashAmount > 0) {
-          const cashItem: RegisterSalePaymentItem = {
-              paymentMethodId: filterPaymentMethodCash.paymentMethodId,
-              amountPaid: cashAmount,
-              referenceNumber: `REF-CASH-${new Date().getTime()}`
-          };
-          newPaids.push(cashItem);
-      }
+        // 2. Lógica para el pago en efectivo
+        const filterPaymentMethodCash = paymentMethods.find(item => item.name.toLowerCase() === 'Efectivo'.toLowerCase());
+        if (!!filterPaymentMethodCash && cashAmount > 0) {
+            const cashItem: RegisterSalePaymentItem = {
+                paymentMethodId: filterPaymentMethodCash.paymentMethodId,
+                amountPaid: cashAmount,
+                referenceNumber: `REF-CASH-${new Date().getTime()}`
+            };
+            newPaids.push(cashItem);
+        }
 
-      // 3. Lógica para el pago en transferencia
-      const filterPaymentMethodTransfer = paymentMethods.find(item => item.name.toLowerCase() === 'transferencia'.toLowerCase());
-      if (!!filterPaymentMethodTransfer && transferAmount > 0) {
-          const transferItem: RegisterSalePaymentItem = {
-              paymentMethodId: filterPaymentMethodTransfer.paymentMethodId,
-              amountPaid: transferAmount,
-              referenceNumber: transferNumberRef !== '' ? transferNumberRef : `REF-TRANSFER-${new Date().getTime()}`
-          };
-          newPaids.push(transferItem);
-      }
+        // 3. Lógica para el pago en transferencia
+        const filterPaymentMethodTransfer = paymentMethods.find(item => item.name.toLowerCase() === 'transferencia'.toLowerCase());
+        if (!!filterPaymentMethodTransfer && transferAmount > 0) {
+            const transferItem: RegisterSalePaymentItem = {
+                paymentMethodId: filterPaymentMethodTransfer.paymentMethodId,
+                amountPaid: transferAmount,
+                referenceNumber: transferNumberRef !== '' ? transferNumberRef : `REF-TRANSFER-${new Date().getTime()}`
+            };
+            newPaids.push(transferItem);
+        }
 
-      // 4. Actualizar el estado `salePaids` con el nuevo array.
-      // Aquí se le pasa el array completo, que reemplazará el estado anterior.
-      setSalePaids(newPaids);
+        // 4. Actualizar el estado `salePaids` con el nuevo array.
+        // Aquí se le pasa el array completo, que reemplazará el estado anterior.
+        setSalePaids(newPaids);
+        setPaidAmount(Number(cashAmount) + Number(transferAmount));
     }, [cashAmount, transferAmount, transferNumberRef, paymentMethods]);
 
     // Efecto para calcular el cambio del cliente
     useEffect(() => {
         setCustomerChange(paidAmount - total);
+        if (Number(paidAmount) < Number(total)) {
+            setPaidAmountMessage({ isError: true, message: `Hacen falta $${Number( total - paidAmount).toFixed(2)}` });
+        }
+        if ((Number(paidAmount) - Number(total)) >= 0) {
+            setPaidAmountMessage({ isError: false, message: `` });
+        }
     }, [paidAmount, total, setCustomerChange]);
 
     // Efecto para resetear el monto cuando el modal se abre
@@ -71,20 +80,20 @@ const useSalePayment = () => {
             setPaidAmount(total);
         }
     }, [paymentModal, total, setCashAmount, setPaidAmount]);
-    
+
     // No permite abrir el modal si no hay productos que cobrar.
-    const handleCheckerOpenModalFinishSale = ()=> {
-        if(saleId === BigInt(0)){
+    const handleCheckerOpenModalFinishSale = () => {
+        if (saleId === BigInt(0)) {
             setFloatMessageState({
                 type: 'red',
                 isActive: true,
                 summary: '¡No hay productos en la venta!',
                 description: 'Agrega productos a la venta para poder finalizarla.'
             });
-            setTimeout(()=>{
+            setTimeout(() => {
                 setFloatMessageState({});
             }, 4000);
-        } else{
+        } else {
             openPaymentModal();
         }
     }
@@ -113,7 +122,7 @@ const useSalePayment = () => {
                 });
                 setIsFinishSaleLoading(false);
             }
-            setTimeout(()=>{
+            setTimeout(() => {
                 closePaymentModal();
                 setFloatMessageState({});
                 resetSaleStore();
@@ -126,7 +135,7 @@ const useSalePayment = () => {
                 summary: '¡Ha ocurrido un error inesperado!',
                 description: 'Error al finalizar la venta'
             });
-            setTimeout(()=>{
+            setTimeout(() => {
                 setIsFinishSaleLoading(false);
                 setFloatMessageState({});
             }, 4000);
@@ -149,9 +158,8 @@ const useSalePayment = () => {
                     description: result.error?.message ?? 'Error al finalizar la venta'
                 });
             } else {
-                const currentTotalSale = result.value?.totalAmount ?? 0;
                 const salePaymentResult = await registerSalePaymentAction(saleId, salePaids);
-                if(!salePaymentResult.ok){
+                if (!salePaymentResult.ok) {
                     setFloatMessageState({
                         type: 'red',
                         isActive: true,
@@ -165,16 +173,17 @@ const useSalePayment = () => {
                         summary: '¡Exito!',
                         description: 'Venta finalizada'
                     });
-                    setIsSalePaymentLoading(false);
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         closePaymentModal();
-                        setFloatMessageState({});
                         resetSaleStore();
                         resetSalePaymentStore();
                     }, 2000);
                 }
-                
             }
+            setTimeout(()=>{
+                setFloatMessageState({});
+            }, 3000);
+            setIsSalePaymentLoading(false);
         } catch (error) {
             setFloatMessageState({
                 type: 'red',
@@ -182,7 +191,7 @@ const useSalePayment = () => {
                 summary: '¡Ha ocurrido un error inesperado!',
                 description: 'Error al finalizar la venta'
             });
-            setTimeout(()=>{
+            setTimeout(() => {
                 setIsSalePaymentLoading(false);
                 setFloatMessageState({});
             }, 4000);
@@ -195,6 +204,7 @@ const useSalePayment = () => {
         closePaymentModal,
         total,
         cashAmount,
+        transferAmount,
         customerChange,
         paidAmount,
         setCashAmount,
@@ -206,7 +216,8 @@ const useSalePayment = () => {
         isSalePaymentLoading,
         floatMessageState,
         handlePaidSale,
-        handleCheckerOpenModalFinishSale
+        handleCheckerOpenModalFinishSale,
+        paidAmountMessage,
     }
 }
 

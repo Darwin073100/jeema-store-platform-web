@@ -20,7 +20,7 @@ const SalePaymentModal = () => {
     closePaymentModal, paymentModal, cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount, paymentMethods,
     paids, transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
   } = useSalePaymentStore();
-  const { handleFinishSale, isFinishSaleLoading, isSalePaymentLoading, floatMessageState, handlePaidSale } = useSalePayment();
+  const { handleFinishSale, isFinishSaleLoading, isSalePaymentLoading, floatMessageState, handlePaidSale, paidAmountMessage } = useSalePayment();
 
   return (
     <TemplateModal isOpen={paymentModal} onClose={closePaymentModal} title='Cobro de la venta'>
@@ -34,8 +34,8 @@ const SalePaymentModal = () => {
           </div>
           <div className='flex gap-2 justify-center'>
             <div
-              className={clsx(`w-[200px] cursor-pointer border border-blue-100 rounded-xl p-4 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
-                paids.paidCash&& `bg-blue-100`
+              className={clsx(`w-[200px] border border-blue-100 rounded-xl p-4 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
+                cashAmount > 0 && `bg-blue-100`
             )}>
               <div className='flex justify-center'><FcMoneyTransfer className='w-20 h-20' /></div>
               <span className='text-gray-600 font-bold'>Efectivo</span>
@@ -46,12 +46,13 @@ const SalePaymentModal = () => {
                 placeholder='Monto'/>
             </div>
             <div
-              className={clsx(`w-[200px] cursor-pointer border border-blue-100 rounded-xl p-4 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
-                paids.paidTransfer && `bg-blue-100`
+              className={clsx(`w-[200px] border border-blue-100 rounded-xl p-4 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
+                transferAmount > 0 && `bg-blue-100`
             )}>
               <div className='flex justify-center'><FcSmartphoneTablet className='w-20 h-20' /></div>
               <span className='text-gray-600 font-bold'>Transferencia</span>
               <TextInput
+                min={0}
                 value={transferAmount}
                 onChange={(e)=> setTransferAmount(Number(e.target.value))}
                 type='number'
@@ -65,11 +66,18 @@ const SalePaymentModal = () => {
           <div className='w-full flex flex-col gap-2'>
             <div className='flex gap-2 items-center'>
               <LabelInput value='Pago con:' className='w-[135px] text-2xl' description='Introduce el monto con el que el cliente esta paganto la venta, para mostrar el cambio que debes devolver.'/>
-              <TextInput
-                value={paidAmount}
-                onChange={(e)=> setPaidAmount(Number(e.target.value))}
-                type='number'
-                placeholder='Introduce el monto'/>
+              <div>
+                <TextInput
+                  disabled={true}
+                  className='flex flex-col'
+                  error={paidAmountMessage.isError}
+                  errorMessage={paidAmountMessage.message}
+                  min={0}
+                  value={paidAmount}
+                  onChange={(e)=> setPaidAmount(Number(e.target.value))}
+                  type='number'
+                  placeholder='Introduce el monto'/>
+              </div>
             </div>
             <div className='flex gap-2 items-center'>
               <LabelInput value='Cambio:' className='w-[135px] text-2xl' description='Introduce el monto con el que el cliente esta paganto la venta, para mostrar el cambio que debes devolver.'/>
