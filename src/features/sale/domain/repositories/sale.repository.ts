@@ -44,4 +44,11 @@ export interface SaleRepository {
      * @returns { Promise<Result<{payments: SalePaymentEntity[]}, ErrorEntity>> } 
      */
     paidSale(saleId: bigint, dto: RegisterSalePaymentDto): Promise<Result<{payments: SalePaymentEntity[]}, ErrorEntity>>;
+    /**
+     * Este metodo elimina toda la cantidad de producto de una venta.
+     * @param {bigint} saleId 
+     * @param {bigint} detailId
+     * @returns {Promise<Result<any, ErrorEntity>>}
+     */
+    physicalDeleteSaleDetail(saleId: bigint, detailId: bigint): Promise<Result<any, ErrorEntity>>;
 }

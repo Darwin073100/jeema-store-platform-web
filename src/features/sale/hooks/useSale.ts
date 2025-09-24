@@ -223,6 +223,7 @@ const useSale = () => {
 
 
     return {
+        handleUpdateSaleDetails,
         handleChangeSearch,
         searchValue,
         handleSubmit,

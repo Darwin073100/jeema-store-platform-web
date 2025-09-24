@@ -92,6 +92,18 @@ export class SaleFetchRepository implements SaleRepository {
             return this.handleError(error, 'Paid sale');
         }
     }
+    async physicalDeleteSaleDetail(saleId: bigint, detailId: bigint): Promise<Result<any, ErrorEntity>> {
+        try {  
+            const response = await this.httpClient.delete<any>(
+                this.apiConfig.getEndpointUrl(`/sales/${saleId.toString()}/details/${detailId.toString()}`)
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Delete detail to Sale');
+        }
+    }
 
     /**
      * Manejo centralizado de errores

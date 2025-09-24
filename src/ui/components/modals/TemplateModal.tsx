@@ -2,18 +2,23 @@ import React from 'react'
 import { Modal } from './Modal'
 import { RoundedButton } from '../buttons/RoundedButton'
 import { IoClose } from 'react-icons/io5'
+import clsx from 'clsx'
 
 interface Props {
+    size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
     title?: string
     children?: any,
     onClose: ()=> void,
     isOpen: boolean,
+    className?: string,
 }
 
-const TemplateModal = ({ children, isOpen, onClose, title='Ventana'}: Props) => {
+const TemplateModal = ({ children, isOpen, onClose, title='Ventana', size='full', className}: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} >
-          <div className='w-full max-w-2xl max-h-[90dvh] mx-4 text-gray-700 bg-white rounded-lg shadow-xl overflow-hidden flex flex-col'>
+          <div className={clsx(`w-${size} max-w-2xl max-h-[90dvh] mx-4 text-gray-700 bg-white rounded-lg shadow-xl overflow-hidden flex flex-col`,
+            className
+          )}>
             {/* Header fijo */}
             <div className="flex justify-between items-center px-6 py-3 border-b border-gray-200 bg-white">
               <h2 className="text-2xl text-gray-900">

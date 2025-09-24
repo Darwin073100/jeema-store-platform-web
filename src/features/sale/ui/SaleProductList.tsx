@@ -3,6 +3,7 @@ import { Button } from "@/ui/components/buttons";
 import { IoIosSearch, IoIosTrash } from "react-icons/io";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { SaleDetailItem } from "./SaleDetailItem";
+import { DeleteDetailConfirmModal } from "./DeleteDetailConfirmModal";
 
 const SaleProductList = () => {
     
@@ -53,6 +54,7 @@ const SaleProductList = () => {
                     </tbody>
                 </table>
             </div>
+            <DeleteDetailConfirmModal/>
         </section>
     )
 }
