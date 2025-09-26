@@ -21,8 +21,8 @@ export class SaleMapper {
         const httpDTO: AddDetailToSaleHttpDto = {
             productBarCodeAtSale: dto.productBarCodeAtSale,
             productUnitAtSale: dto.productUnitAtSale,
-            quantity: dto.quantity,
-            unitPriceAtSale: dto.unitPriceAtSale,
+            quantity: Number(dto.quantity),
+            unitPriceAtSale: Number(dto.unitPriceAtSale),
             notes: dto.notes
         }
 

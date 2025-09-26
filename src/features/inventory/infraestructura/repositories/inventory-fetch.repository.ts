@@ -7,6 +7,8 @@ import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { Result } from "@/shared/features/result";
 import { ErrorEntity } from "@/shared/features/error.entity";
 import { InventoryMapper } from "../mappers/inventory.mapper";
+import { LocationEnum } from "../../domain/enums/location.enum";
+import { InventoryItemEntity } from "../../domain/entities/inventory-item.entity";
 
 export class InventoryFetchRepository implements InventoryRepository {
     constructor(
@@ -46,6 +48,17 @@ export class InventoryFetchRepository implements InventoryRepository {
             return Result.success(result.data);
         } catch (error) {
             return this.handleError(error, 'Find Inventory By BarCode');
+        }
+    }
+
+    async findAllByLocationAndBranchOffice(branchOfficeId: bigint, location: LocationEnum): Promise<Result<{items:InventoryItemEntity[]}, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<{items:InventoryItemEntity[]}>(
+                this.apiConfig.getEndpointUrl(`/inventories/all/items?branchOfficeId=${branchOfficeId}&location=${location.toString()}`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return this.handleError(error, 'Find Inventory by location and branch office');
         }
     }
 

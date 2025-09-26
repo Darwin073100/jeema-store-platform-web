@@ -1,9 +1,9 @@
-import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/payment-method-entity'
-import { useEffect } from 'react'
-import { useSalePaymentStore } from '../infraestructure/stores/sale.payment.store'
+import { useEffect } from 'react';
+import { useSalePaymentStore } from '../infraestructure/stores/sale.payment.store';
+import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/payment-method-entity';
 
 interface Props {
-    methods: PaymentMethodEntity[]
+    methods: PaymentMethodEntity[],
 }
 
 const useTransferDataToClientNewSale = ({ methods }: Props) => {

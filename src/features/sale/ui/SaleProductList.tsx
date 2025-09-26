@@ -4,15 +4,18 @@ import { IoIosSearch, IoIosTrash } from "react-icons/io";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { SaleDetailItem } from "./SaleDetailItem";
 import { DeleteDetailConfirmModal } from "./DeleteDetailConfirmModal";
+import { SaleInventoryListModal } from "./SaleInventoryListModal";
+import { useSaleInventoryListStore } from "../infraestructure/stores/sale.inventory-list.store";
 
 const SaleProductList = () => {
     
     const { sale } = useSaleStore();
+    const { openModalInventoryList } = useSaleInventoryListStore();
 
     return (
         <section className="flex-1">
             <div className="flex gap-4 mb-4">
-                <Button color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                <Button onClick={()=> openModalInventoryList()} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosSearch className="text-lg" />
                     <span>Catálogo de productos</span>
                 </Button>
@@ -20,6 +23,7 @@ const SaleProductList = () => {
                     <IoIosTrash className="text-lg" />
                     <span>Cancelar venta</span>
                 </Button>
+                <SaleInventoryListModal />
             </div>
             <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all">
                 <table className="w-full text-left rtl:text-right">
