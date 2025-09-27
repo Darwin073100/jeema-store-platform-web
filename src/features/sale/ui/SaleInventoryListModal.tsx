@@ -13,8 +13,10 @@ import { Spinner } from '@/ui/components/loadings/Spinner';
 import { FloatMessage } from '@/ui/components/messages';
 
 const SaleInventoryListModal = () => {
-  const { closeModalInventoryList, modalInventoryList, inventoryItems, setItemSelected, itemSelected } = useSaleInventoryListStore();
-  const { handleSetItemSelected, quantityInsert, setQuantityInsert, floatMessageState, handleAddDetail, isLoading } = useInventoryListModal()
+  const { closeModalInventoryList, modalInventoryList, filterInventoryItems, itemSelected } = useSaleInventoryListStore();
+  const { handleSetItemSelected, quantityInsert, setQuantityInsert, floatMessageState, handleAddDetail, isLoading,
+    searchProductValue, setSearchProductValue,
+  } = useInventoryListModal()
   return (
     <TemplateModal size='full' isOpen={modalInventoryList} onClose={closeModalInventoryList} title='Catalogo de productos'>
       <div className="p-6 space-y-4">
@@ -25,6 +27,8 @@ const SaleInventoryListModal = () => {
               <span>Para agregar el producto a la venta, da click al producto que desees agregar y en el dialogo anota la cantidad y la unidad.</span>
             </span>
             <TextInput
+              value={searchProductValue}
+              onChange={(e)=> setSearchProductValue(e.target.value)}
               autoFocus={true}
               placeholder='Ingresa el nombre del producto que estas buscando'/>
           </div>
@@ -52,7 +56,7 @@ const SaleInventoryListModal = () => {
               </tr>
             </thead>
             <tbody>
-              { inventoryItems.map(item => (<>
+              { filterInventoryItems.map(item => (<>
                 <tr key={item.inventory?.product?.sku ?? new Date().getTime()} 
                   onClick={()=> handleSetItemSelected(item)} 
                   className={clsx(`text-sm ${itemSelected?.inventoryItemId === item.inventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>

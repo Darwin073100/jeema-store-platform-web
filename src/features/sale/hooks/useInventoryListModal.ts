@@ -11,11 +11,12 @@ import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
 
 const useInventoryListModal = () => {
     const { inventoryItems, setInventoryItems, modalInventoryList, itemSelected, setItemSelected, filterInventoryItems, 
-        setFilterInventoryItems,
+        setFilterInventoryItems, closeModalInventoryList
     } = useSaleInventoryListStore();
     const { saleId, setSale, setSaleId } = useSaleStore();
     const { branchOffice, employee } = useWorkspace();
     const [quantityInsert, setQuantityInsert] = useState<number>(0);
+    const [searchProductValue, setSearchProductValue] = useState<string>('')
     const [ isLoading, setIsLoading] = useState<boolean>(false);
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
 
@@ -32,6 +33,12 @@ const useInventoryListModal = () => {
         setQuantityInsert(0);
         setItemSelected(null);
     }, [modalInventoryList]);
+
+    useEffect(()=>{
+        const regex = new RegExp(searchProductValue, 'i');
+        const newInventoryFilter = inventoryItems.filter( item => regex.test(item.inventory?.product?.name ?? ''));
+        setFilterInventoryItems(newInventoryFilter);
+    }, [searchProductValue]);
     
 
 
@@ -42,15 +49,16 @@ const useInventoryListModal = () => {
             customerId: BigInt(2)
         }
 
-        let addDetailToSaleDTO: AddDetailToSaleDto;
-        addDetailToSaleDTO = {
+        const addDetailToSaleDTO: AddDetailToSaleDto = {
             productBarCodeAtSale: itemSelected?.inventory?.internalBarCode ?? '',
             productUnitAtSale: itemSelected?.inventory?.product?.unitOfMeasure ?? '',
             quantity: quantityInsert,
             unitPriceAtSale: itemSelected?.inventory?.salePriceOne ?? 0
         }
+
         setIsLoading(true);
         const result = await CreateSaleAndAddDetailAction(saleId, registerSaleDTO, addDetailToSaleDTO);
+        console.log(result);
         if(!result.ok ){
             setFloatMessageState({
                 type: 'red',
@@ -58,8 +66,11 @@ const useInventoryListModal = () => {
                 description: result.error?.message ?? 'Ha ocurrido un error al agregar el producto a la venta.',
                 isActive: true,
             });
+            setTimeout(()=>{
+                setFloatMessageState({});
+            },2000);
         } else {
-            // Validar que venga un value para actualizar la venta
+            // Validar que venga un value para actualizar el estado de la venta.
             result.value?
             setSale(result.value): null;
             result.value?
@@ -71,11 +82,10 @@ const useInventoryListModal = () => {
                 description: 'Se ha agregado el producto a la venta',
                 isActive: true
             });
+            closeModalInventoryList();
+            setFloatMessageState({});
         }
         setIsLoading(false);
-        setTimeout(()=>{
-            setFloatMessageState({});
-        },3000);
     }
 
     
@@ -98,6 +108,8 @@ const useInventoryListModal = () => {
         handleAddDetail,
         isLoading,
         floatMessageState,
+        searchProductValue, 
+        setSearchProductValue,
     }
 }
 
