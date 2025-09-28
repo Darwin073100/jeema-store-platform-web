@@ -203,11 +203,7 @@ const useSale = () => {
             return false;
         }
     }
-
-
-
-
-
+    
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleSearchInventory(searchValue);

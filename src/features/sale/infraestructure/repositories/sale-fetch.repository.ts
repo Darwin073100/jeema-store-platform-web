@@ -11,6 +11,7 @@ import { SaleDetailEntity } from "../../domain/entities/sale-detail-entity";
 import { FinishSaleDto } from "../../application/dtos/finish-sale.dto";
 import { RegisterSalePaymentDto } from "../../application/dtos/register-sale-payment.dto";
 import { SalePaymentEntity } from "../../domain/entities/sale-payment-entity";
+import { FinalizeSaleDto } from "../../application/dtos/finalize-sale.dto";
 
 export class SaleFetchRepository implements SaleRepository {
     constructor(
@@ -75,6 +76,20 @@ export class SaleFetchRepository implements SaleRepository {
 
         } catch (error: any) {
             return this.handleError(error, 'Finish sale');
+        }
+    }
+    async finalizeSale(saleId: bigint, dto: FinalizeSaleDto): Promise<Result<SaleEntity, ErrorEntity>> {
+        try {
+            let httpDto = SaleMapper.toHttpFinalizeSale(dto);    
+            const response = await this.httpClient.patch<SaleEntity>(
+                this.apiConfig.getEndpointUrl(`/sales/${saleId.toString()}/finalize`),
+                httpDto
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Finalize sale');
         }
     }
 

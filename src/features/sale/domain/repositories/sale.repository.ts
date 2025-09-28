@@ -7,6 +7,7 @@ import { SaleDetailEntity } from "../entities/sale-detail-entity";
 import { FinishSaleDto } from "../../application/dtos/finish-sale.dto";
 import { RegisterSalePaymentDto } from "../../application/dtos/register-sale-payment.dto";
 import { SalePaymentEntity } from "../entities/sale-payment-entity";
+import { FinalizeSaleDto } from "../../application/dtos/finalize-sale.dto";
 
 export interface SaleRepository {
     save(dto: RegisterSaleDto):Promise<Result<SaleEntity, ErrorEntity>>;
@@ -33,6 +34,17 @@ export interface SaleRepository {
      * @returns { Promise<Result<SaleEntity, ErrorEntity>> }
      */
     finishSale(saleId: bigint, dto: FinishSaleDto): Promise<Result<SaleEntity, ErrorEntity>>;
+    /**
+     * Este metodo finaliza una venta, actualizando la informacion como:
+     * - Total de la venta.
+     * - El cliente al que se le vente.
+     * - Notas adicionales de la venta.
+     * Adicionalmente, pide el status, para decidir si queda completada o cancelada la venta.
+     * @param { bigint } saleId 
+     * @param { FinalizeSaleDto } dto 
+     * @returns { Promise<Result<SaleEntity, ErrorEntity>> }
+     */
+    finalizeSale(saleId: bigint, dto: FinalizeSaleDto): Promise<Result<SaleEntity, ErrorEntity>>;
     /**
      * Este metodo registra los metodos de pago utilizados en la venta y el monto pagado por cada metodo.
      * Ej:
