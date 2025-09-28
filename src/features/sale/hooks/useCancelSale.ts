@@ -3,30 +3,25 @@ import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { cancelSaleAction } from "../actions/cancel-sale.action";
+import { useSaleCancelStore } from "../infraestructure/stores/sale.cancel.store";
 
 
-const useSalePayment = () => {
-    // Estado para el modal
-    const [cancelSaleModal, setCancelSaleModal] = useState<boolean>(false);
+const useCancelSale = () => {
+
     //Manejar estado cuanto la peticion este en proceso
     const [isCancelSaleLoading, setIsCancelSaleLoading] = useState<boolean>(false);
     //Estado para lanzar mensajes
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
 
+    const { cancelSaleModal, handleCloseCancelSaleModal, handleOpenCancelSaleModal, resetSalePaymentStore} = useSaleCancelStore();
+
     // Variables de contexto
     const { saleId, resetSaleStore } = useSaleStore();
     const { employee } = useWorkspace();
 
-    // Metodos para abrir y cerrar el modal
-    const handleCloseCancelSaleModal = ()=> {
-        setCancelSaleModal(false);
-    }
-    const handleOpenCancelSaleModal = ()=> {
-        setCancelSaleModal(true);
-    }
-
     // No permite abrir el modal si no hay productos que cobrar.
     const handleCheckerOpenModalCancelSale = () => {
+        console.log('handleCheckerOpenModalCancelSale');
         if (saleId === BigInt(0)) {
             setFloatMessageState({
                 type: 'red',
@@ -89,6 +84,7 @@ const useSalePayment = () => {
     return {
         cancelSaleModal,
         handleCloseCancelSaleModal,
+        handleOpenCancelSaleModal,
         isCancelSaleLoading,
         floatMessageState,
         handleCheckerOpenModalCancelSale,
@@ -96,4 +92,4 @@ const useSalePayment = () => {
     }
 }
 
-export { useSalePayment };
+export { useCancelSale };
