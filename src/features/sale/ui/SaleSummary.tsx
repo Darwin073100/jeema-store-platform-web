@@ -8,6 +8,9 @@ import { useSalePayment } from "../hooks/useSalePayment";
 import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity";
 import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
 import { FloatMessage } from "@/ui/components/messages";
+import { SaleCustomerListModal } from "./SaleCustomerListModal";
+import { useSaleCustomerListStore } from "../infraestructure/stores/sale.customer-list.store";
+import { useCustomerSale } from "../hooks/useCustomerSale";
 
 interface Props {
     paymentMethods: PaymentMethodEntity[]
@@ -17,6 +20,7 @@ const SaleSummary = ({ paymentMethods }: Props) => {
     const {} = useTransferDataToClientNewSale({methods: paymentMethods});
     const { productQuantity, total} = useSaleSummary();
     const { floatMessageState, handleCheckerOpenModalFinishSale } = useSalePayment();
+    const { openModalCustomerList, customerSelected, floatMessageState: messageCustomer } = useCustomerSale();
 
     return (
         <section className="sticky top-4">
@@ -38,17 +42,24 @@ const SaleSummary = ({ paymentMethods }: Props) => {
                 <div className="py-6 space-y-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         <span className="text-gray-600 text-sm">Cliente</span>
-                        <Button size="sm" className="shadow-sm hover:shadow-md transition-all">
+                        <Button onClick={()=> openModalCustomerList()} size="sm" className="shadow-sm hover:shadow-md transition-all">
                             <IoIosPerson className="text-lg" />
                             <span>Seleccionar</span>
                         </Button>
                     </div>
                     <div className="bg-blue-50 rounded-lg p-4">
-                        <h3 className="font-medium text-blue-800">Edwin Garcia Quiterio</h3>
-                        <p className="text-sm text-gray-600 mt-1">
-                            Los Chegües, Guerrero, México, Azoyú, a un costado del pozo de agua.
-                        </p>
+                        <h3 className="font-medium text-blue-800">{`${customerSelected?.firstName} ${customerSelected?.lastName}`}</h3>
+                        { customerSelected?.address
+                            ? <p className="text-sm text-gray-600 mt-1">
+                                    { `${customerSelected?.address?.city}, ${customerSelected?.address?.state}, ${customerSelected?.address?.country}, 
+                                    ${customerSelected?.address?.municipality}, ${customerSelected?.address?.postalCode}, ${customerSelected?.address?.reference}.`}
+                            </p>
+                            : <p className="text-sm text-gray-600 mt-1">
+                                Sin dirección
+                            </p>
+                        }
                     </div>
+                    <SaleCustomerListModal />
                 </div>
 
                 <div className="pt-6">
@@ -62,10 +73,10 @@ const SaleSummary = ({ paymentMethods }: Props) => {
             <SalePaymentModal />
             <FloatMessage 
                 key='message-sale-summary'
-                summary={floatMessageState.summary}
-                description={floatMessageState.description}
-                isActive={floatMessageState.isActive}
-                type={floatMessageState.type}/>
+                { ...floatMessageState } />
+            <FloatMessage 
+                key='message-sale-customer'
+                { ...messageCustomer } />
         </section>
     )
 }

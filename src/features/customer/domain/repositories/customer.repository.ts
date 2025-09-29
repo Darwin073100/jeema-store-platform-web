@@ -1,0 +1,7 @@
+import { Result } from "@/shared/features/result";
+import { CustomerEntity } from "../entities/customer.entity";
+import { ErrorEntity } from "@/shared/features/error.entity";
+
+export interface CustomerRepository {
+    findAllCustomerByEstablishment(establishmentId: bigint):Promise<Result<{customers: CustomerEntity[]}, ErrorEntity>>;
+}
