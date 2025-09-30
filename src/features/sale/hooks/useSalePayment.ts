@@ -6,6 +6,7 @@ import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { finishSaleAction } from "../actions/finish-sale.action";
 import { RegisterSalePaymentItem } from "../application/dtos/register-sale-payment.dto";
 import { registerSalePaymentAction } from "../actions/register-sale-payment.action";
+import { useSaleCustomerListStore } from "../infraestructure/stores/sale.customer-list.store";
 
 
 const useSalePayment = () => {
@@ -14,6 +15,7 @@ const useSalePayment = () => {
         closePaymentModal, openPaymentModal, paymentModal, cashAmount, customerChange, setPaymentMethods, paymentMethods, transferNumberRef,
         paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, setPaids, resetSalePaymentStore, transferAmount, setTransferAmount
     } = useSalePaymentStore();
+    const { customerSelected } = useSaleCustomerListStore();
     //Manejar estado cuanto la peticion este en proceso
     const [isFinishSaleLoading, setIsFinishSaleLoading] = useState<boolean>(false);
     const [isSalePaymentLoading, setIsSalePaymentLoading] = useState<boolean>(false);
@@ -104,30 +106,24 @@ const useSalePayment = () => {
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
-            const currentCustomerId = BigInt(2);
+            const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
+            console.log(customerSelected);
             const result = await finishSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
+            setIsFinishSaleLoading(false);
             if (!result.ok) {
-                setFloatMessageState({
-                    type: 'red',
-                    isActive: true,
-                    summary: '¡Ha ocurrido un error!',
-                    description: result.error?.message ?? 'Error al finalizar la venta'
-                });
+                setFloatMessageState(result.error ?? {});
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 2000);
             } else {
-                setFloatMessageState({
-                    type: 'green',
-                    isActive: true,
-                    summary: '¡Exito!',
-                    description: 'Venta finalizada'
-                });
-                setIsFinishSaleLoading(false);
+                setFloatMessageState(result.value ?? {});
+                setTimeout(() => {
+                    closePaymentModal();
+                    setFloatMessageState({});
+                    resetSaleStore();
+                    resetSalePaymentStore();
+                }, 2000);
             }
-            setTimeout(() => {
-                closePaymentModal();
-                setFloatMessageState({});
-                resetSaleStore();
-                resetSalePaymentStore();
-            }, 2000);
         } catch (error) {
             setFloatMessageState({
                 type: 'red',
@@ -148,15 +144,10 @@ const useSalePayment = () => {
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
-            const currentCustomerId = BigInt(2);
+            const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
             const result = await finishSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
             if (!result.ok) {
-                setFloatMessageState({
-                    type: 'red',
-                    isActive: true,
-                    summary: '¡Ha ocurrido un error!',
-                    description: result.error?.message ?? 'Error al finalizar la venta'
-                });
+                setFloatMessageState(result.error ?? {});
             } else {
                 const salePaymentResult = await registerSalePaymentAction(saleId, salePaids);
                 if (!salePaymentResult.ok) {

@@ -48,7 +48,7 @@ const SaleSummary = ({ paymentMethods }: Props) => {
                         </Button>
                     </div>
                     <div className="bg-blue-50 rounded-lg p-4">
-                        <h3 className="font-medium text-blue-800">{`${customerSelected?.firstName} ${customerSelected?.lastName}`}</h3>
+                        <h3 className="font-medium text-blue-800">{`${customerSelected?.firstName ?? 'Seleccina un cliente'} ${customerSelected?.lastName ?? ''}`}</h3>
                         { customerSelected?.address
                             ? <p className="text-sm text-gray-600 mt-1">
                                     { `${customerSelected?.address?.city}, ${customerSelected?.address?.state}, ${customerSelected?.address?.country}, 
