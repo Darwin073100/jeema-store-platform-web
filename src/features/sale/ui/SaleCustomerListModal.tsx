@@ -16,19 +16,19 @@ const SaleCustomerListModal = () => {
     customerIValue, setCustomerIValue,
    } = useCustomerSale();
   return (
-    <TemplateModal size='full' isOpen={modalCustomerList} onClose={closeModalCustomerList} title='Catalogo de productos'>
+    <TemplateModal size='full' isOpen={modalCustomerList} onClose={closeModalCustomerList} title='Relación de clientes'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className='flex flex-col gap-2'>
             <span className='flex gap-2 items-center'>
               <FcIdea className='w-9 h-9'/> 
-              <span>Para elegir a un cliente, da click al producto que desees agregar y en el dialogo anota la cantidad y la unidad.</span>
+              <span>Para elegir a un cliente, solo da click al cliente identificado en la tabla.</span>
             </span>
             <TextInput
               value={customerIValue}
               onChange={(e)=> setCustomerIValue(e.target.value)}
               autoFocus={true}
-              placeholder='Ingresa el nombre del cliente que estas buscando'/>
+              placeholder='Busca por nombre o apellidos de un cliente'/>
           </div>
           <table className="w-full text-left rtl:text-right">
             <thead>

@@ -4,6 +4,7 @@ import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
 import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { HiPencilSquare } from "react-icons/hi2";
 import { useDeleteDetail } from "../hooks/useDeleteDetail";
+import { useUpdateDetailModal } from "../hooks/useUpdateDetailModal";
 
 interface Props {
     saleDetail?: SaleDetailEntity
@@ -11,6 +12,7 @@ interface Props {
 
 const SaleDetailItem = ({ saleDetail }: Props) => {
     const { handleOpenModalDeleteDetail } = useDeleteDetail();
+    const { handleLoadUpdateDetail } = useUpdateDetailModal();
     return (
         <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
             <th scope="row" className="px-5 py-1 font-medium whitespace-nowrap">
@@ -34,7 +36,7 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
             <td className="px-2 py-1 flex justify-center gap-1">
                 { saleDetail 
                     ? <>
-                    <Button color="yellow" title="Modifica cantidades y unidades de productos en la venta.">
+                    <Button onClick={()=> handleLoadUpdateDetail(saleDetail)} color="yellow" title="Modifica cantidades y unidades de productos en la venta.">
                         <HiPencilSquare/>
                     </Button>
                     <Button type="button" onClick={()=> handleOpenModalDeleteDetail(saleDetail)} color="red" title="Elimina todos los productos de la venta.">

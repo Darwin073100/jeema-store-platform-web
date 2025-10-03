@@ -8,12 +8,13 @@ import { SaleInventoryListModal } from "./SaleInventoryListModal";
 import { useSaleInventoryListStore } from "../infraestructure/stores/sale.inventory-list.store";
 import { CancelSaleConfirmModal } from "./CancelSaleConfirmModal";
 import { useCancelSale } from "../hooks/useCancelSale";
+import { UpdateDetailModal } from "./UpdateDetailModal";
 
 const SaleProductList = () => {
     
     const { sale } = useSaleStore();
     const { openModalInventoryList } = useSaleInventoryListStore();
-    const { handleCheckerOpenModalCancelSale, handleOpenCancelSaleModal, } = useCancelSale();
+    const { handleCheckerOpenModalCancelSale } = useCancelSale();
 
     return (
         <section className="flex-1">
@@ -61,6 +62,7 @@ const SaleProductList = () => {
                     </tbody>
                 </table>
             </div>
+            <UpdateDetailModal />
             <DeleteDetailConfirmModal />
             <CancelSaleConfirmModal />
         </section>
