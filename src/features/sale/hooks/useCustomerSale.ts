@@ -1,13 +1,13 @@
 import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
 import { useSaleCustomerListStore } from "../infraestructure/stores/sale.customer-list.store";
 import { useEffect, useState } from "react";
-import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
+import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 const useCustomerSale = () => {
-    const { setCustomerSelected, customerSelected, closeModalCustomerList, filterCustomers, customers, modalCustomerList,
-        openModalCustomerList, setFilterCustomers,
-     } = useSaleCustomerListStore();
-    const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
+    const { setFloatMessageState, customerListModal, openCustomerListModal, closeCustomerListModal} = useSaleUIStore();
+    const { 
+        setCustomerSelected, customerSelected, filterCustomers, customers, openModalCustomerList, setFilterCustomers,
+    } = useSaleCustomerListStore();
     const [customerIValue, setCustomerIValue] = useState<string>('');
 
     useEffect(()=>{
@@ -27,7 +27,7 @@ const useCustomerSale = () => {
             description: 'Has cambiado de cliente correctamente',
             type: 'green'
         });
-        closeModalCustomerList();
+        closeCustomerListModal();
         setTimeout(()=> {
             setFloatMessageState({});
         }, 2000);
@@ -40,20 +40,18 @@ const useCustomerSale = () => {
         // );
 
         // setCustomerSelected(defaultCustomer ?? null);
-
     }, []);
 
     return {
         handleCustomerSelected,
         customerSelected,
-        floatMessageState,
-        closeModalCustomerList, 
+        closeCustomerListModal, 
         filterCustomers, 
         customers, 
-        modalCustomerList,
-        openModalCustomerList,
+        customerListModal,
         customerIValue,
-        setCustomerIValue
+        setCustomerIValue,
+        openCustomerListModal,
     }
 }
 

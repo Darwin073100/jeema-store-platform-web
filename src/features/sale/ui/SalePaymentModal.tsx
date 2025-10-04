@@ -121,12 +121,6 @@ const SalePaymentModal = () => {
           </Button>
         </div>
       </div>
-      <FloatMessage 
-        key='message-sale-payment-modal'
-        summary={floatMessageState.summary}
-        description={floatMessageState.description}
-        isActive={floatMessageState.isActive}
-        type={floatMessageState.type}/>
     </TemplateModal>
   )
 }

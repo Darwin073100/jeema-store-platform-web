@@ -2,20 +2,20 @@
 import { findInventoryByBarCodeAction } from "@/features/inventory/actions/find-inventory-by-bar-code.action";
 import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
 import { useWorkspace } from "@/shared/hooks/useAuth";
-import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { useEffect, useRef, useState } from "react";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { registerSaleInitialAction } from "../actions/register-sale-initial.action";
 import { findSaleWithDetailAction } from "../actions/find-sale-by-id-with-detail.action";
 import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
 import { addDetailToSaleAction } from "../actions/add-detail-to-sale.action";
+import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 const useSale = () => {
     const [inventory, setInventory] = useState<InventoryEntity>();
-    const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [searchValue, setSearchValue] = useState<string>('');
     const { branchOffice, employee } = useWorkspace();
-    const { resetSale, sale, setSale, saleId, resetSaleId, setSaleId } = useSaleStore();
+    const { floatMessageState, setFloatMessageState} = useSaleUIStore();
+    const { sale, setSale, saleId, setSaleId } = useSaleStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -223,7 +223,6 @@ const useSale = () => {
         handleChangeSearch,
         searchValue,
         handleSubmit,
-        floatMessageState,
         inputRef,
         isLoading,
     }

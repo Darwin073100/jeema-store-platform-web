@@ -1,22 +1,19 @@
 'use client'
 import React from 'react'
+import clsx from 'clsx';
 import { Button } from '@/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 import { TemplateModal } from '@/ui/components/modals/TemplateModal';
 import { TextInput } from '@/ui/components/inputs';
 import { FcIdea } from 'react-icons/fc';
-import clsx from 'clsx';
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { FloatMessage } from '@/ui/components/messages';
-import { useSaleCustomerListStore } from '../infraestructure/stores/sale.customer-list.store';
 import { useCustomerSale } from '../hooks/useCustomerSale';
 
 const SaleCustomerListModal = () => {
-  const { closeModalCustomerList, filterCustomers, customers, modalCustomerList, customerSelected, handleCustomerSelected,
+  const { closeCustomerListModal, filterCustomers, customerListModal, customerSelected, handleCustomerSelected,
     customerIValue, setCustomerIValue,
    } = useCustomerSale();
   return (
-    <TemplateModal size='full' isOpen={modalCustomerList} onClose={closeModalCustomerList} title='Relación de clientes'>
+    <TemplateModal size='full' isOpen={customerListModal} onClose={closeCustomerListModal} title='Relación de clientes'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className='flex flex-col gap-2'>
@@ -72,7 +69,7 @@ const SaleCustomerListModal = () => {
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">
           <Button
-            onClick={()=> closeModalCustomerList()}
+            onClick={()=> closeCustomerListModal()}
             type="button"
             color="gray"
             className="flex items-center"
@@ -82,9 +79,6 @@ const SaleCustomerListModal = () => {
           </Button>
         </div>
       </div>
-      {/* <FloatMessage 
-        key='message-sale-inventory-list-modal'
-        {...floatMessageState} /> */}
     </TemplateModal>
   )
 }

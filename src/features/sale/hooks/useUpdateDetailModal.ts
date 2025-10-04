@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
 import { useSaleUpdateDetailStore } from "../infraestructure/stores/sale.update-detail.store";
 import { useSaleInventoryListStore } from "../infraestructure/stores/sale.inventory-list.store";
+import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 type SaleForType = 'Menudeo'|'Mayoreo'|'Especial';
 
 const useUpdateDetailModal = () => {
-    const { handleCloseUpdateDetailModal, handleOpenUpdateDetailModal, updateDetailModal, setDetailSelected, detailSelected,
-        itemMatchDetail, setItemMatchDetail
+    const { 
+        updateDetailModal, openUpdateDetailModal, closeUpdateDetailModal 
+    } = useSaleUIStore();
+    const { 
+        setDetailSelected, detailSelected, itemMatchDetail, setItemMatchDetail
     } = useSaleUpdateDetailStore();
     const { inventoryItems } = useSaleInventoryListStore();
     const [detailPrice, setDetailPrice] = useState<number>(0);
@@ -18,7 +22,7 @@ const useUpdateDetailModal = () => {
     // Metodo para abriri y seleccionar el detalle en la UI
     const handleLoadUpdateDetail = (detail: SaleDetailEntity)=> {
         setDetailSelected(detail);
-        handleOpenUpdateDetailModal();
+        openUpdateDetailModal();
         handleSearchItemInfo(detail.inventoryId, detail.productBarCodeAtSale);
     }
 
@@ -72,7 +76,8 @@ const useUpdateDetailModal = () => {
 
 
     return {
-        handleCloseUpdateDetailModal, 
+        closeUpdateDetailModal, 
+        openUpdateDetailModal,
         handleLoadUpdateDetail, 
         updateDetailModal,
         detailSelected,

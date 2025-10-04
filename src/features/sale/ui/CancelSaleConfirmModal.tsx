@@ -1,21 +1,18 @@
 import React from 'react'
+import clsx from 'clsx';
 import { Button } from '@/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 import { TemplateModal } from '@/ui/components/modals/TemplateModal';
-import { MdOutlinePaid } from 'react-icons/md';
 import { Spinner } from '@/ui/components/loadings/Spinner';
-import { FloatMessage } from '@/ui/components/messages';
 import { IoMdTrash } from 'react-icons/io';
-import { useDeleteDetail } from '../hooks/useDeleteDetail';
-import clsx from 'clsx';
 import { useCancelSale } from '../hooks/useCancelSale';
 
 const CancelSaleConfirmModal = () => {
-  const { cancelSaleModal, handleCloseCancelSaleModal, floatMessageState, handleCancelSale, isCancelSaleLoading,
-    handleOpenCancelSaleModal,
-   } = useCancelSale();
+  const { 
+    cancelSaleModal, handleCancelSale, isCancelSaleLoading, closeCancelSaleModal
+  } = useCancelSale();
   return (
-    <TemplateModal size='md' isOpen={cancelSaleModal} onClose={handleCloseCancelSaleModal} title='Cancelar la venta actual'>
+    <TemplateModal size='md' isOpen={cancelSaleModal} onClose={closeCancelSaleModal} title='Cancelar la venta actual'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <p>¿Esta seguro de eliminar la venta actual?</p> 
@@ -34,7 +31,7 @@ const CancelSaleConfirmModal = () => {
               : <><IoMdTrash className="w-4 h-4" />Cancelar venta</> }
           </Button>
           <Button
-            onClick={()=> handleCloseCancelSaleModal()}
+            onClick={()=> closeCancelSaleModal()}
             type="button"
             color="gray"
             className="flex items-center"
@@ -44,12 +41,6 @@ const CancelSaleConfirmModal = () => {
           </Button>
         </div>
       </div>
-      <FloatMessage 
-        key='message-cancel-sale-modal'
-        summary={floatMessageState.summary}
-        description={floatMessageState.description}
-        isActive={floatMessageState.isActive}
-        type={floatMessageState.type}/>
     </TemplateModal>
   )
 }

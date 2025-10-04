@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 
 const useSaleSummary = () => {

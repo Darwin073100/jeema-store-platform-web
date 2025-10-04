@@ -7,20 +7,20 @@ import { finishSaleAction } from "../actions/finish-sale.action";
 import { RegisterSalePaymentItem } from "../application/dtos/register-sale-payment.dto";
 import { registerSalePaymentAction } from "../actions/register-sale-payment.action";
 import { useSaleCustomerListStore } from "../infraestructure/stores/sale.customer-list.store";
+import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 
 const useSalePayment = () => {
+    const { setFloatMessageState, floatMessageState, closePaymentModal, openPaymentModal, paymentModal } = useSaleUIStore();
     // Estados globales
     const {
-        closePaymentModal, openPaymentModal, paymentModal, cashAmount, customerChange, setPaymentMethods, paymentMethods, transferNumberRef,
-        paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, setPaids, resetSalePaymentStore, transferAmount, setTransferAmount
+         cashAmount, customerChange, paymentMethods, transferNumberRef,
+        paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, resetSalePaymentStore, transferAmount,
     } = useSalePaymentStore();
     const { customerSelected } = useSaleCustomerListStore();
     //Manejar estado cuanto la peticion este en proceso
     const [isFinishSaleLoading, setIsFinishSaleLoading] = useState<boolean>(false);
     const [isSalePaymentLoading, setIsSalePaymentLoading] = useState<boolean>(false);
-    //Estado para lanzar mensajes
-    const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     // Este es el estado que vamos a usar para el array de pagos
     const [salePaids, setSalePaids] = useState<RegisterSalePaymentItem[]>([]);
     // Controlar el mensaje para el pago total

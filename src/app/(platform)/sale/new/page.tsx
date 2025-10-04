@@ -1,4 +1,5 @@
 import { findAllPaymentMethodAction } from "@/features/payment-method/actions/find-all-payment-method.action";
+import { SaleMessages } from "@/features/sale/ui/SaleMessages";
 import { SaleProductList } from "@/features/sale/ui/SaleProductList";
 import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
 import { SaleSummary } from "@/features/sale/ui/SaleSummary";
@@ -30,6 +31,7 @@ export default async function() {
                     <SaleSummary 
                         paymentMethods={currentPaymentMethods} />
                 </article>
+                <SaleMessages />
             </TemplateHeader>
         </ProtectedRoute>
     )

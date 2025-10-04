@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { useWorkspace } from "@/shared/hooks/useAuth";
-import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { cancelSaleAction } from "../actions/cancel-sale.action";
-import { useSaleCancelStore } from "../infraestructure/stores/sale.cancel.store";
+import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 
 const useCancelSale = () => {
 
+    // Estado global de la UI de Ventas
+    const { 
+        floatMessageState, setFloatMessageState, cancelSaleModal, closeCancelSaleModal, openCancelSaleModal
+    } = useSaleUIStore();
+
     //Manejar estado cuanto la peticion este en proceso
     const [isCancelSaleLoading, setIsCancelSaleLoading] = useState<boolean>(false);
-    //Estado para lanzar mensajes
-    const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
-
-    const { cancelSaleModal, handleCloseCancelSaleModal, handleOpenCancelSaleModal, resetSalePaymentStore} = useSaleCancelStore();
 
     // Variables de contexto
     const { saleId, resetSaleStore } = useSaleStore();
@@ -33,7 +33,7 @@ const useCancelSale = () => {
                 setFloatMessageState({});
             }, 4000);
         } else {
-            handleOpenCancelSaleModal()
+            openCancelSaleModal()
         }
     }
 
@@ -62,7 +62,7 @@ const useCancelSale = () => {
                 setIsCancelSaleLoading(false);
             }
             setTimeout(() => {
-                handleCloseCancelSaleModal();
+                closeCancelSaleModal();
                 setFloatMessageState({});
                 resetSaleStore();
             }, 2000);
@@ -83,10 +83,9 @@ const useCancelSale = () => {
 
     return {
         cancelSaleModal,
-        handleCloseCancelSaleModal,
-        handleOpenCancelSaleModal,
+        closeCancelSaleModal,
+        openCancelSaleModal,
         isCancelSaleLoading,
-        floatMessageState,
         handleCheckerOpenModalCancelSale,
         handleCancelSale,
     }

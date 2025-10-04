@@ -4,11 +4,10 @@ import { Button } from "@/ui/components/buttons";
 import { TextInput } from "@/ui/components/inputs";
 import { IoIosBarcode, IoMdCheckmark } from "react-icons/io";
 import { useSale } from "../hooks/useSale";
-import { FloatMessage } from "@/ui/components/messages";
 import { Spinner } from "@/ui/components/loadings/Spinner";
 
 const SaleProductSearch = () => {
-    const { handleSubmit, floatMessageState, inputRef, handleChangeSearch, searchValue, isLoading } = useSale();
+    const { handleSubmit, inputRef, handleChangeSearch, searchValue, isLoading } = useSale();
 
     return (
         <form  
@@ -30,8 +29,6 @@ const SaleProductSearch = () => {
                     <span className="text-xs bg-white/20 px-2 py-1 rounded">ENTER</span>
                 </Button>
             </section>
-            <FloatMessage 
-                {...floatMessageState}/>
         </form>
     )
 }

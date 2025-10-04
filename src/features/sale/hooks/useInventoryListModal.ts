@@ -3,22 +3,22 @@ import { useSaleInventoryListStore } from "../infraestructure/stores/sale.invent
 import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/features/inventory/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
-import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { RegisterSaleDto } from "../application/dtos/register-sale.dto";
 import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
+import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 const useInventoryListModal = () => {
-    const { inventoryItems, setInventoryItems, modalInventoryList, itemSelected, setItemSelected, filterInventoryItems, 
-        setFilterInventoryItems, closeModalInventoryList
+    const { inventoryItems, setInventoryItems, modalInventoryList, itemSelected, setItemSelected, 
+        setFilterInventoryItems, closeModalInventoryList, filterInventoryItems
     } = useSaleInventoryListStore();
     const { saleId, setSale, setSaleId } = useSaleStore();
     const { branchOffice, employee } = useWorkspace();
     const [quantityInsert, setQuantityInsert] = useState<number>(0);
     const [searchProductValue, setSearchProductValue] = useState<string>('')
     const [ isLoading, setIsLoading] = useState<boolean>(false);
-    const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
+    const { setFloatMessageState, floatMessageState, inventoryListModal, closeInventoryListModal, openInventoryListModal } = useSaleUIStore();
 
 
     useEffect(()=>{
@@ -102,14 +102,18 @@ const useInventoryListModal = () => {
     }
 
     return {
+        isLoading,
         handleSetItemSelected,
         quantityInsert,
         setQuantityInsert,
         handleAddDetail,
-        isLoading,
-        floatMessageState,
         searchProductValue, 
         setSearchProductValue,
+        closeInventoryListModal,
+        openInventoryListModal,
+        inventoryListModal,
+        filterInventoryItems, 
+        itemSelected
     }
 }
 

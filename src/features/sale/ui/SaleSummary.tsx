@@ -7,9 +7,7 @@ import { SalePaymentModal } from "./SalePaymentModal";
 import { useSalePayment } from "../hooks/useSalePayment";
 import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity";
 import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
-import { FloatMessage } from "@/ui/components/messages";
 import { SaleCustomerListModal } from "./SaleCustomerListModal";
-import { useSaleCustomerListStore } from "../infraestructure/stores/sale.customer-list.store";
 import { useCustomerSale } from "../hooks/useCustomerSale";
 
 interface Props {
@@ -19,8 +17,8 @@ interface Props {
 const SaleSummary = ({ paymentMethods }: Props) => {
     const {} = useTransferDataToClientNewSale({methods: paymentMethods});
     const { productQuantity, total} = useSaleSummary();
-    const { floatMessageState, handleCheckerOpenModalFinishSale } = useSalePayment();
-    const { openModalCustomerList, customerSelected, floatMessageState: messageCustomer } = useCustomerSale();
+    const { handleCheckerOpenModalFinishSale } = useSalePayment();
+    const { customerSelected, openCustomerListModal } = useCustomerSale();
 
     return (
         <section className="sticky top-4">
@@ -42,7 +40,7 @@ const SaleSummary = ({ paymentMethods }: Props) => {
                 <div className="py-6 space-y-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         <span className="text-gray-600 text-sm">Cliente</span>
-                        <Button onClick={()=> openModalCustomerList()} size="sm" className="shadow-sm hover:shadow-md transition-all">
+                        <Button onClick={()=> openCustomerListModal()} size="sm" className="shadow-sm hover:shadow-md transition-all">
                             <IoIosPerson className="text-lg" />
                             <span>Seleccionar</span>
                         </Button>
@@ -69,14 +67,7 @@ const SaleSummary = ({ paymentMethods }: Props) => {
                     </Button>
                 </div>
             </div>
-
             <SalePaymentModal />
-            <FloatMessage 
-                key='message-sale-summary'
-                { ...floatMessageState } />
-            <FloatMessage 
-                key='message-sale-customer'
-                { ...messageCustomer } />
         </section>
     )
 }

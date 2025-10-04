@@ -9,11 +9,12 @@ import { useUpdateDetailModal } from '../hooks/useUpdateDetailModal';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 
 const UpdateDetailModal = () => {
-  const { handleCloseUpdateDetailModal, updateDetailModal, detailSelected, detailQuantity, setDetailQuantity,
-    detailCurrentTotal, saleFor, detailPrice,
+  const { 
+    closeUpdateDetailModal, updateDetailModal, detailSelected, detailQuantity, setDetailQuantity, detailCurrentTotal, 
+    saleFor, detailPrice,
   } = useUpdateDetailModal();
  return (
-    <TemplateModal size='lg' isOpen={updateDetailModal} onClose={handleCloseUpdateDetailModal} title='Producto en venta'>
+    <TemplateModal size='lg' isOpen={updateDetailModal} onClose={closeUpdateDetailModal} title='Producto en venta'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-2.5">
           <span className='text-green-600 font-bold'>{detailSelected?.productNameAtSale ?? 'S/N'}</span>
@@ -63,7 +64,7 @@ const UpdateDetailModal = () => {
               : <><IoSave className="w-4 h-4" />Aplicar cambios</> }
           </Button>
           <Button
-            onClick={()=> handleCloseUpdateDetailModal()}
+            onClick={()=> closeUpdateDetailModal()}
             type="button"
             color="gray"
             className="flex items-center"
@@ -73,12 +74,6 @@ const UpdateDetailModal = () => {
           </Button>
         </div>
       </div>
-      {/* <FloatMessage 
-        key='message-physical-delete-sale-detail-modal'
-        summary={floatMessageState.summary}
-        description={floatMessageState.description}
-        isActive={floatMessageState.isActive}
-        type={floatMessageState.type}/> */}
     </TemplateModal>
   )
 }

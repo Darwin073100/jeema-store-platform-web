@@ -1,25 +1,23 @@
 import { useState } from "react";
 import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
-import { SaleEntity } from "../domain/entities/sale-entity";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
-import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { physicalDeleteSaleDetailAction } from "../actions/phisical-delete-sale-detail.action";
 import { useSale } from "./useSale";
+import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 const useDeleteDetail = () => {
     const { 
-        openModalDeleteDetail, closeModalDeleteDetail, modalDeleteDetail, detailSelected, setDetailSelected, saleId
+        setFloatMessageState, floatMessageState, deleteDetailModal, openDeleteDetailModal, closeDeleteDetailModal 
+    } = useSaleUIStore();
+    const { 
+        detailSelected, setDetailSelected, saleId
     } = useSaleStore();
     const { handleUpdateSaleDetails } = useSale();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     
     const handleOpenModalDeleteDetail = (detail: SaleDetailEntity) => {
         setDetailSelected(detail);
-        openModalDeleteDetail();
-    }
-    const handleCloseModalDeleteDetail = () => {
-        closeModalDeleteDetail();
+        openDeleteDetailModal();
     }
 
     const handlePhysicalDeleteSaleDetail = async ()=>{
@@ -48,7 +46,7 @@ const useDeleteDetail = () => {
             setIsLoading(false);
             setTimeout(()=> {
                 setFloatMessageState({});
-                closeModalDeleteDetail();
+                closeDeleteDetailModal();
             }, 2000);
         } catch (error) {
             setIsLoading(false);
@@ -65,12 +63,11 @@ const useDeleteDetail = () => {
     }
     return {
         detailSelected,
-        modalDeleteDetail,
-        handleCloseModalDeleteDetail,
+        deleteDetailModal,
+        closeDeleteDetailModal,
         handleOpenModalDeleteDetail,
         handlePhysicalDeleteSaleDetail,
         isLoading,
-        floatMessageState,
     }
 }
 

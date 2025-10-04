@@ -1,24 +1,21 @@
 'use client'
+import clsx from 'clsx';
 import React from 'react'
 import { Button } from '@/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 import { TemplateModal } from '@/ui/components/modals/TemplateModal';
 import { TextInput } from '@/ui/components/inputs';
 import { FcIdea } from 'react-icons/fc';
-import { useSaleInventoryListStore } from '../infraestructure/stores/sale.inventory-list.store';
 import { useInventoryListModal } from '../hooks/useInventoryListModal';
 import { IoMdAdd } from 'react-icons/io';
-import clsx from 'clsx';
 import { Spinner } from '@/ui/components/loadings/Spinner';
-import { FloatMessage } from '@/ui/components/messages';
 
 const SaleInventoryListModal = () => {
-  const { closeModalInventoryList, modalInventoryList, filterInventoryItems, itemSelected } = useSaleInventoryListStore();
-  const { handleSetItemSelected, quantityInsert, setQuantityInsert, floatMessageState, handleAddDetail, isLoading,
-    searchProductValue, setSearchProductValue,
+  const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, isLoading, searchProductValue,
+    setSearchProductValue, filterInventoryItems, itemSelected, inventoryListModal, closeInventoryListModal
   } = useInventoryListModal()
   return (
-    <TemplateModal size='full' isOpen={modalInventoryList} onClose={closeModalInventoryList} title='Catalogo de productos'>
+    <TemplateModal size='full' isOpen={inventoryListModal} onClose={closeInventoryListModal} title='Catalogo de productos'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className='flex flex-col gap-2'>
@@ -113,7 +110,7 @@ const SaleInventoryListModal = () => {
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">
           <Button
-            onClick={()=> closeModalInventoryList()}
+            onClick={()=> closeInventoryListModal()}
             type="button"
             color="gray"
             className="flex items-center"
@@ -123,9 +120,6 @@ const SaleInventoryListModal = () => {
           </Button>
         </div>
       </div>
-      <FloatMessage 
-        key='message-sale-inventory-list-modal'
-        {...floatMessageState} />
     </TemplateModal>
   )
 }
