@@ -12,18 +12,17 @@ import { useSalePaymentStore } from '../infraestructure/stores/sale.payment.stor
 import { useSaleStore } from '../infraestructure/stores/sale.store';
 import clsx from 'clsx';
 import { Spinner } from '@/ui/components/loadings/Spinner';
-import { FloatMessage } from '@/ui/components/messages';
 
 const SalePaymentModal = () => {
   const { total } = useSaleStore();
   const { 
-    closePaymentModal, paymentModal, cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount, paymentMethods,
-    paids, transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
+    cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount,
+    transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
   } = useSalePaymentStore();
-  const { handleFinishSale, isFinishSaleLoading, isSalePaymentLoading, floatMessageState, handlePaidSale, paidAmountMessage } = useSalePayment();
+  const { handleFinishSale, loading, handlePaidSale, paidAmountMessage, saleModals, closeSaleModal } = useSalePayment();
 
   return (
-    <TemplateModal isOpen={paymentModal} onClose={closePaymentModal} title='Cobro de la venta'>
+    <TemplateModal isOpen={saleModals==='paymentModal'} onClose={closeSaleModal} title='Cobro de la venta'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className="text-center">
@@ -94,7 +93,7 @@ const SalePaymentModal = () => {
             className='flex justify-center items-center min-w-[120px]'
             // disabled={isLoading}
           >
-            { isFinishSaleLoading
+            { loading === 'finishSaleLoading'
               ? <><Spinner/></>
               : <> <MdOutlinePaid className="w-4 h-4" />Posponer cobro</> 
             }
@@ -105,7 +104,7 @@ const SalePaymentModal = () => {
             className='flex justify-center items-center min-w-[120px]'
             disabled={false}
           >
-            { isSalePaymentLoading
+            { loading === 'salePaymentLoading'
               ? <><Spinner/></>
               : <> <MdOutlinePaid className="w-4 h-4" />Cobrar venta</> 
             }
@@ -114,7 +113,7 @@ const SalePaymentModal = () => {
             type="button"
             color="gray"
             className="flex items-center"
-            onClick={closePaymentModal}
+            onClick={closeSaleModal}
           >
             <IoClose className="mr-2 w-4 h-4" />
             Cerrar

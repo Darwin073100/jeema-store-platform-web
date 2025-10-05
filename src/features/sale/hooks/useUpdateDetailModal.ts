@@ -8,7 +8,7 @@ type SaleForType = 'Menudeo'|'Mayoreo'|'Especial';
 
 const useUpdateDetailModal = () => {
     const { 
-        updateDetailModal, openUpdateDetailModal, closeUpdateDetailModal 
+        saleModals, openSaleModal, closeSaleModal 
     } = useSaleUIStore();
     const { 
         setDetailSelected, detailSelected, itemMatchDetail, setItemMatchDetail
@@ -22,7 +22,7 @@ const useUpdateDetailModal = () => {
     // Metodo para abriri y seleccionar el detalle en la UI
     const handleLoadUpdateDetail = (detail: SaleDetailEntity)=> {
         setDetailSelected(detail);
-        openUpdateDetailModal();
+        openSaleModal('updateDetailModal');
         handleSearchItemInfo(detail.inventoryId, detail.productBarCodeAtSale);
     }
 
@@ -54,7 +54,7 @@ const useUpdateDetailModal = () => {
     useEffect(()=>{
         setDetailQuantity(Number(detailSelected?.quantity ?? 0));
         currencyDetailPrice();
-    }, [updateDetailModal]);
+    }, [saleModals]);
 
     useEffect(()=>{
         if(itemMatchDetail?.inventory?.saleQuantityMany && detailQuantity >= itemMatchDetail?.inventory?.saleQuantityMany){
@@ -76,10 +76,10 @@ const useUpdateDetailModal = () => {
 
 
     return {
-        closeUpdateDetailModal, 
-        openUpdateDetailModal,
+        closeSaleModal, 
+        openSaleModal,
+        saleModals,
         handleLoadUpdateDetail, 
-        updateDetailModal,
         detailSelected,
         detailQuantity,
         setDetailQuantity,

@@ -9,11 +9,11 @@ import { FcIdea } from 'react-icons/fc';
 import { useCustomerSale } from '../hooks/useCustomerSale';
 
 const SaleCustomerListModal = () => {
-  const { closeCustomerListModal, filterCustomers, customerListModal, customerSelected, handleCustomerSelected,
+  const { saleModals, filterCustomers, closeSaleModal, customerSelected, handleCustomerSelected,
     customerIValue, setCustomerIValue,
    } = useCustomerSale();
   return (
-    <TemplateModal size='full' isOpen={customerListModal} onClose={closeCustomerListModal} title='Relación de clientes'>
+    <TemplateModal size='full' isOpen={saleModals==='customerListModal'} onClose={closeSaleModal} title='Relación de clientes'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className='flex flex-col gap-2'>
@@ -69,7 +69,7 @@ const SaleCustomerListModal = () => {
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">
           <Button
-            onClick={()=> closeCustomerListModal()}
+            onClick={()=> closeSaleModal()}
             type="button"
             color="gray"
             className="flex items-center"

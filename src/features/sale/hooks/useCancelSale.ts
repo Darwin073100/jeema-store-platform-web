@@ -9,11 +9,9 @@ const useCancelSale = () => {
 
     // Estado global de la UI de Ventas
     const { 
-        floatMessageState, setFloatMessageState, cancelSaleModal, closeCancelSaleModal, openCancelSaleModal
+        setFloatMessageState, saleModals, closeSaleModal, openSaleModal, loading, initLoading,
+        finishLoading,
     } = useSaleUIStore();
-
-    //Manejar estado cuanto la peticion este en proceso
-    const [isCancelSaleLoading, setIsCancelSaleLoading] = useState<boolean>(false);
 
     // Variables de contexto
     const { saleId, resetSaleStore } = useSaleStore();
@@ -33,13 +31,13 @@ const useCancelSale = () => {
                 setFloatMessageState({});
             }, 4000);
         } else {
-            openCancelSaleModal()
+            openSaleModal('cancelSaleModal')
         }
     }
 
     // Finaliza la venta, sin registrar el pago
     const handleCancelSale = async () => {
-        setIsCancelSaleLoading(true);
+        initLoading('cancelSaleLoading');
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
@@ -59,10 +57,10 @@ const useCancelSale = () => {
                     summary: '¡Exito!',
                     description: 'Venta cancelada.'
                 });
-                setIsCancelSaleLoading(false);
+                finishLoading();
             }
             setTimeout(() => {
-                closeCancelSaleModal();
+                closeSaleModal();
                 setFloatMessageState({});
                 resetSaleStore();
             }, 2000);
@@ -74,7 +72,7 @@ const useCancelSale = () => {
                 description: 'Error al cancelar la venta'
             });
             setTimeout(() => {
-                setIsCancelSaleLoading(false);
+                finishLoading();
                 setFloatMessageState({});
             }, 4000);
         }
@@ -82,10 +80,10 @@ const useCancelSale = () => {
     
 
     return {
-        cancelSaleModal,
-        closeCancelSaleModal,
-        openCancelSaleModal,
-        isCancelSaleLoading,
+        saleModals,
+        closeSaleModal,
+        openSaleModal,
+        loading,
         handleCheckerOpenModalCancelSale,
         handleCancelSale,
     }

@@ -9,10 +9,10 @@ import { useCancelSale } from '../hooks/useCancelSale';
 
 const CancelSaleConfirmModal = () => {
   const { 
-    cancelSaleModal, handleCancelSale, isCancelSaleLoading, closeCancelSaleModal
+    saleModals, handleCancelSale, loading, closeSaleModal
   } = useCancelSale();
   return (
-    <TemplateModal size='md' isOpen={cancelSaleModal} onClose={closeCancelSaleModal} title='Cancelar la venta actual'>
+    <TemplateModal size='md' isOpen={saleModals==='cancelSaleModal'} onClose={closeSaleModal} title='Cancelar la venta actual'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <p>¿Esta seguro de eliminar la venta actual?</p> 
@@ -24,14 +24,14 @@ const CancelSaleConfirmModal = () => {
             type="button"
             color='red'
             className={clsx(`flex justify-center items-center min-w-[120px]`)}
-            disabled={isCancelSaleLoading}
+            disabled={loading==='cancelSaleLoading'}
           >
-             { isCancelSaleLoading
+             { loading==='cancelSaleLoading'
               ? <Spinner/>
               : <><IoMdTrash className="w-4 h-4" />Cancelar venta</> }
           </Button>
           <Button
-            onClick={()=> closeCancelSaleModal()}
+            onClick={()=> closeSaleModal()}
             type="button"
             color="gray"
             className="flex items-center"

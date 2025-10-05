@@ -11,11 +11,11 @@ import { IoMdAdd } from 'react-icons/io';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 
 const SaleInventoryListModal = () => {
-  const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, isLoading, searchProductValue,
-    setSearchProductValue, filterInventoryItems, itemSelected, inventoryListModal, closeInventoryListModal
+  const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,
+    setSearchProductValue, filterInventoryItems, itemSelected, saleModals, closeSaleModal
   } = useInventoryListModal()
   return (
-    <TemplateModal size='full' isOpen={inventoryListModal} onClose={closeInventoryListModal} title='Catalogo de productos'>
+    <TemplateModal size='full' isOpen={saleModals==='inventoryListModal'} onClose={closeSaleModal} title='Catalogo de productos'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className='flex flex-col gap-2'>
@@ -90,10 +90,10 @@ const SaleInventoryListModal = () => {
                     </th>
                     <th>
                       <Button
-                        disabled={isLoading}
+                        disabled={loading==='addDetailToSaleLoading'}
                         onClick={()=> handleAddDetail()} 
                         className='font-medium'>
-                          { isLoading
+                          { loading==='addDetailToSaleLoading'
                             ? <Spinner/>
                             :<><IoMdAdd /> Agregar</>  
                           }
@@ -110,7 +110,7 @@ const SaleInventoryListModal = () => {
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">
           <Button
-            onClick={()=> closeInventoryListModal()}
+            onClick={()=> closeSaleModal()}
             type="button"
             color="gray"
             className="flex items-center"

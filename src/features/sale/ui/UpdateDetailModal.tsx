@@ -10,11 +10,11 @@ import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 
 const UpdateDetailModal = () => {
   const { 
-    closeUpdateDetailModal, updateDetailModal, detailSelected, detailQuantity, setDetailQuantity, detailCurrentTotal, 
+    closeSaleModal, saleModals, detailSelected, detailQuantity, setDetailQuantity, detailCurrentTotal, 
     saleFor, detailPrice,
   } = useUpdateDetailModal();
  return (
-    <TemplateModal size='lg' isOpen={updateDetailModal} onClose={closeUpdateDetailModal} title='Producto en venta'>
+    <TemplateModal size='lg' isOpen={saleModals==='updateDetailModal'} onClose={closeSaleModal} title='Producto en venta'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-2.5">
           <span className='text-green-600 font-bold'>{detailSelected?.productNameAtSale ?? 'S/N'}</span>
@@ -64,7 +64,7 @@ const UpdateDetailModal = () => {
               : <><IoSave className="w-4 h-4" />Aplicar cambios</> }
           </Button>
           <Button
-            onClick={()=> closeUpdateDetailModal()}
+            onClick={()=> closeSaleModal()}
             type="button"
             color="gray"
             className="flex items-center"

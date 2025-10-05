@@ -7,14 +7,14 @@ import { useSale } from "../hooks/useSale";
 import { Spinner } from "@/ui/components/loadings/Spinner";
 
 const SaleProductSearch = () => {
-    const { handleSubmit, inputRef, handleChangeSearch, searchValue, isLoading } = useSale();
+    const { handleSubmit, inputRef, handleChangeSearch, searchValue, loading } = useSale();
 
     return (
         <form  
             onSubmit={handleSubmit}
             className="flex gap-4 items-center w-full justify-between">
             <section className="flex bg-gradient-to-r from-blue-600 to-blue-700 w-full items-center rounded-xl shadow-md gap-4 pl-4">
-                {isLoading? <Spinner /> :<IoIosBarcode className="text-white text-2xl" />}
+                {loading === 'findInventoryItemsLoading'? <Spinner /> :<IoIosBarcode className="text-white text-2xl" />}
                 <TextInput
                     ref={inputRef}
                     autoFocus

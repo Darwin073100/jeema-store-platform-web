@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useSalePaymentStore } from "../infraestructure/stores/sale.payment.store";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { useWorkspace } from "@/shared/hooks/useAuth";
-import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { finishSaleAction } from "../actions/finish-sale.action";
 import { RegisterSalePaymentItem } from "../application/dtos/register-sale-payment.dto";
 import { registerSalePaymentAction } from "../actions/register-sale-payment.action";
@@ -11,16 +10,16 @@ import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 
 const useSalePayment = () => {
-    const { setFloatMessageState, floatMessageState, closePaymentModal, openPaymentModal, paymentModal } = useSaleUIStore();
+    const { 
+        setFloatMessageState, closeSaleModal, openSaleModal, saleModals, loading, 
+        initLoading, finishLoading
+    } = useSaleUIStore();
     // Estados globales
     const {
          cashAmount, customerChange, paymentMethods, transferNumberRef,
         paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, resetSalePaymentStore, transferAmount,
     } = useSalePaymentStore();
     const { customerSelected } = useSaleCustomerListStore();
-    //Manejar estado cuanto la peticion este en proceso
-    const [isFinishSaleLoading, setIsFinishSaleLoading] = useState<boolean>(false);
-    const [isSalePaymentLoading, setIsSalePaymentLoading] = useState<boolean>(false);
     // Este es el estado que vamos a usar para el array de pagos
     const [salePaids, setSalePaids] = useState<RegisterSalePaymentItem[]>([]);
     // Controlar el mensaje para el pago total
@@ -77,11 +76,11 @@ const useSalePayment = () => {
 
     // Efecto para resetear el monto cuando el modal se abre
     useEffect(() => {
-        if (paymentModal) {
+        if (saleModals==='paymentModal') {
             setCashAmount(total);
             setPaidAmount(total);
         }
-    }, [paymentModal, total, setCashAmount, setPaidAmount]);
+    }, [saleModals, total, setCashAmount, setPaidAmount]);
 
     // No permite abrir el modal si no hay productos que cobrar.
     const handleCheckerOpenModalFinishSale = () => {
@@ -96,20 +95,20 @@ const useSalePayment = () => {
                 setFloatMessageState({});
             }, 4000);
         } else {
-            openPaymentModal();
+            openSaleModal('paymentModal');
         }
     }
 
     // Finaliza la venta, sin registrar el pago
     const handleFinishSale = async () => {
-        setIsFinishSaleLoading(true);
+        initLoading('finishSaleLoading');
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
             const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
             console.log(customerSelected);
             const result = await finishSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
-            setIsFinishSaleLoading(false);
+            finishLoading();
             if (!result.ok) {
                 setFloatMessageState(result.error ?? {});
                 setTimeout(() => {
@@ -118,7 +117,7 @@ const useSalePayment = () => {
             } else {
                 setFloatMessageState(result.value ?? {});
                 setTimeout(() => {
-                    closePaymentModal();
+                    closeSaleModal();
                     setFloatMessageState({});
                     resetSaleStore();
                     resetSalePaymentStore();
@@ -132,7 +131,7 @@ const useSalePayment = () => {
                 description: 'Error al finalizar la venta'
             });
             setTimeout(() => {
-                setIsFinishSaleLoading(false);
+                finishLoading();
                 setFloatMessageState({});
             }, 4000);
         }
@@ -140,7 +139,7 @@ const useSalePayment = () => {
 
     // Finaliza la venta, registrando los pagos dependiendo el metodo de pago
     const handlePaidSale = async () => {
-        setIsSalePaymentLoading(true);
+        initLoading('salePaymentLoading');
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
@@ -165,7 +164,7 @@ const useSalePayment = () => {
                         description: 'Venta finalizada'
                     });
                     setTimeout(() => {
-                        closePaymentModal();
+                        closeSaleModal();
                         resetSaleStore();
                         resetSalePaymentStore();
                     }, 2000);
@@ -174,7 +173,7 @@ const useSalePayment = () => {
             setTimeout(()=>{
                 setFloatMessageState({});
             }, 3000);
-            setIsSalePaymentLoading(false);
+            finishLoading();
         } catch (error) {
             setFloatMessageState({
                 type: 'red',
@@ -183,16 +182,16 @@ const useSalePayment = () => {
                 description: 'Error al finalizar la venta'
             });
             setTimeout(() => {
-                setIsSalePaymentLoading(false);
+                finishLoading();
                 setFloatMessageState({});
             }, 4000);
         }
     }
 
     return {
-        paymentModal,
-        openPaymentModal,
-        closePaymentModal,
+        saleModals,
+        openSaleModal,
+        closeSaleModal,
         total,
         cashAmount,
         transferAmount,
@@ -203,9 +202,7 @@ const useSalePayment = () => {
         setCustomerChange,
         paids,
         handleFinishSale,
-        isFinishSaleLoading,
-        isSalePaymentLoading,
-        floatMessageState,
+        loading,
         handlePaidSale,
         handleCheckerOpenModalFinishSale,
         paidAmountMessage,

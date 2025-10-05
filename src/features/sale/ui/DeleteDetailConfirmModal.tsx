@@ -9,10 +9,10 @@ import { useDeleteDetail } from '../hooks/useDeleteDetail';
 
 const DeleteDetailConfirmModal = () => {
   const { 
-    detailSelected, handlePhysicalDeleteSaleDetail, isLoading, closeDeleteDetailModal, deleteDetailModal
+    detailSelected, handlePhysicalDeleteSaleDetail, loading, closeSaleModal, saleModals
   } = useDeleteDetail();
   return (
-    <TemplateModal size='md' isOpen={deleteDetailModal} onClose={closeDeleteDetailModal} title='Eliminar producto de la venta'>
+    <TemplateModal size='md' isOpen={saleModals==='deleteDetailModal'} onClose={closeSaleModal} title='Eliminar producto de la venta'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <p>¿Esta seguro de eliminar <span className='text-red-600'>{detailSelected?.quantity ?? 0.000}</span> <span className='font-bold'>{ detailSelected?.productNameAtSale ?? 'S/N'}</span>?</p>
@@ -24,14 +24,14 @@ const DeleteDetailConfirmModal = () => {
             type="button"
             color='red'
             className={clsx(`flex justify-center items-center min-w-[120px]`)}
-            disabled={isLoading}
+            disabled={loading==='deleteDetailLoading'}
           >
-             { isLoading
+             { loading==='deleteDetailLoading'
               ? <Spinner/>
               : <><IoMdTrash className="w-4 h-4" />Eliminar</> }
           </Button>
           <Button
-            onClick={()=> closeDeleteDetailModal()}
+            onClick={()=> closeSaleModal()}
             type="button"
             color="gray"
             className="flex items-center"

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { physicalDeleteSaleDetailAction } from "../actions/phisical-delete-sale-detail.action";
@@ -7,21 +6,21 @@ import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 const useDeleteDetail = () => {
     const { 
-        setFloatMessageState, floatMessageState, deleteDetailModal, openDeleteDetailModal, closeDeleteDetailModal 
+        setFloatMessageState, saleModals, openSaleModal, closeSaleModal, initLoading, finishLoading,
+        loading,
     } = useSaleUIStore();
     const { 
         detailSelected, setDetailSelected, saleId
     } = useSaleStore();
     const { handleUpdateSaleDetails } = useSale();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     
     const handleOpenModalDeleteDetail = (detail: SaleDetailEntity) => {
         setDetailSelected(detail);
-        openDeleteDetailModal();
+        openSaleModal('deleteDetailModal');
     }
 
     const handlePhysicalDeleteSaleDetail = async ()=>{
-        setIsLoading(true);
+        initLoading('deleteDetailLoading');
         try {
             if(!saleId || !detailSelected?.saleDetailId){
                 throw Error('No se ha seleccionado correctamente la informacion necesaria.');
@@ -43,13 +42,13 @@ const useDeleteDetail = () => {
                     isActive: true,
                 });
             }
-            setIsLoading(false);
+            finishLoading();
             setTimeout(()=> {
                 setFloatMessageState({});
-                closeDeleteDetailModal();
+                closeSaleModal();
             }, 2000);
         } catch (error) {
-            setIsLoading(false);
+            finishLoading();
             setFloatMessageState({
                 type: 'red',
                 summary: 'Ha ocurrido un error inesperado',
@@ -63,11 +62,11 @@ const useDeleteDetail = () => {
     }
     return {
         detailSelected,
-        deleteDetailModal,
-        closeDeleteDetailModal,
+        saleModals,
+        closeSaleModal,
         handleOpenModalDeleteDetail,
         handlePhysicalDeleteSaleDetail,
-        isLoading,
+        loading,
     }
 }
 

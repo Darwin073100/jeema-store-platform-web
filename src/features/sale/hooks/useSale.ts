@@ -14,9 +14,8 @@ const useSale = () => {
     const [inventory, setInventory] = useState<InventoryEntity>();
     const [searchValue, setSearchValue] = useState<string>('');
     const { branchOffice, employee } = useWorkspace();
-    const { floatMessageState, setFloatMessageState} = useSaleUIStore();
+    const { setFloatMessageState, loading, initLoading, finishLoading} = useSaleUIStore();
     const { sale, setSale, saleId, setSaleId } = useSaleStore();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -54,7 +53,7 @@ const useSale = () => {
 
     const handleSearchInventory = async (barCode: string) => {
         try {
-            setIsLoading(true);
+            initLoading('findInventoryItemsLoading');
             
             // 1. Buscar el producto en el inventario
             const result = await findInventoryByBarCodeAction(barCode);
@@ -150,7 +149,7 @@ const useSale = () => {
                 setFloatMessageState({});
             }, 4000);
         } finally {
-            setIsLoading(false);
+            finishLoading();
         }
     }
 
@@ -213,7 +212,7 @@ const useSale = () => {
     }
 
     const handleResetSearch = ()=> {
-        setIsLoading(false);
+        finishLoading();
         setSearchValue('');
     }
 
@@ -224,7 +223,7 @@ const useSale = () => {
         searchValue,
         handleSubmit,
         inputRef,
-        isLoading,
+        loading,
     }
 }
 

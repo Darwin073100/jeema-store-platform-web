@@ -17,8 +17,10 @@ const useInventoryListModal = () => {
     const { branchOffice, employee } = useWorkspace();
     const [quantityInsert, setQuantityInsert] = useState<number>(0);
     const [searchProductValue, setSearchProductValue] = useState<string>('')
-    const [ isLoading, setIsLoading] = useState<boolean>(false);
-    const { setFloatMessageState, floatMessageState, inventoryListModal, closeInventoryListModal, openInventoryListModal } = useSaleUIStore();
+    // LOADING: addProductToSaleLoading
+    const { 
+        setFloatMessageState, saleModals, closeSaleModal, openSaleModal, loading, initLoading, finishLoading
+    } = useSaleUIStore();
 
 
     useEffect(()=>{
@@ -56,7 +58,7 @@ const useInventoryListModal = () => {
             unitPriceAtSale: itemSelected?.inventory?.salePriceOne ?? 0
         }
 
-        setIsLoading(true);
+        initLoading('addDetailToSaleLoading');
         const result = await CreateSaleAndAddDetailAction(saleId, registerSaleDTO, addDetailToSaleDTO);
         console.log(result);
         if(!result.ok ){
@@ -85,7 +87,7 @@ const useInventoryListModal = () => {
             closeModalInventoryList();
             setFloatMessageState({});
         }
-        setIsLoading(false);
+        finishLoading();
     }
 
     
@@ -102,16 +104,16 @@ const useInventoryListModal = () => {
     }
 
     return {
-        isLoading,
+        loading,
         handleSetItemSelected,
         quantityInsert,
         setQuantityInsert,
         handleAddDetail,
         searchProductValue, 
         setSearchProductValue,
-        closeInventoryListModal,
-        openInventoryListModal,
-        inventoryListModal,
+        closeSaleModal,
+        openSaleModal,
+        saleModals,
         filterInventoryItems, 
         itemSelected
     }

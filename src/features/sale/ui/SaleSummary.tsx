@@ -18,7 +18,7 @@ const SaleSummary = ({ paymentMethods }: Props) => {
     const {} = useTransferDataToClientNewSale({methods: paymentMethods});
     const { productQuantity, total} = useSaleSummary();
     const { handleCheckerOpenModalFinishSale } = useSalePayment();
-    const { customerSelected, openCustomerListModal } = useCustomerSale();
+    const { customerSelected, openSaleModal } = useCustomerSale();
 
     return (
         <section className="sticky top-4">
@@ -40,7 +40,7 @@ const SaleSummary = ({ paymentMethods }: Props) => {
                 <div className="py-6 space-y-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         <span className="text-gray-600 text-sm">Cliente</span>
-                        <Button onClick={()=> openCustomerListModal()} size="sm" className="shadow-sm hover:shadow-md transition-all">
+                        <Button onClick={()=> openSaleModal('customerListModal')} size="sm" className="shadow-sm hover:shadow-md transition-all">
                             <IoIosPerson className="text-lg" />
                             <span>Seleccionar</span>
                         </Button>

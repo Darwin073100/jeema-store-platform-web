@@ -5,7 +5,6 @@ import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { SaleDetailItem } from "./SaleDetailItem";
 import { DeleteDetailConfirmModal } from "./DeleteDetailConfirmModal";
 import { SaleInventoryListModal } from "./SaleInventoryListModal";
-import { useSaleInventoryListStore } from "../infraestructure/stores/sale.inventory-list.store";
 import { CancelSaleConfirmModal } from "./CancelSaleConfirmModal";
 import { useCancelSale } from "../hooks/useCancelSale";
 import { UpdateDetailModal } from "./UpdateDetailModal";
@@ -14,13 +13,13 @@ import { useInventoryListModal } from "../hooks/useInventoryListModal";
 const SaleProductList = () => {
     
     const { sale } = useSaleStore();
-    const { openInventoryListModal } = useInventoryListModal();
+    const { openSaleModal } = useInventoryListModal();
     const { handleCheckerOpenModalCancelSale } = useCancelSale();
 
     return (
         <section className="flex-1">
             <div className="flex gap-4 mb-4">
-                <Button onClick={()=> openInventoryListModal()} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                <Button onClick={()=> openSaleModal('inventoryListModal')} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosSearch className="text-lg" />
                     <span>Catálogo de productos</span>
                 </Button>

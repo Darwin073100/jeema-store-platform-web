@@ -1,54 +1,41 @@
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { create } from "zustand";
+import { SaleLoadingsType } from "./types/sale-loadings-type";
+import { SaleModalsType } from "./types/sale-modals-type";
 
 interface UIState {
-    floatMessageState       : FloatMessageType;
-    cancelSaleModal         : boolean;
-    deleteDetailModal       : boolean;
-    customerListModal       : boolean;
-    inventoryListModal      : boolean;
-    paymentModal            : boolean;
-    updateDetailModal       : boolean;
-    setFloatMessageState    : (state: FloatMessageType) => void;
-    openCancelSaleModal     : () => void;
-    closeCancelSaleModal    : () => void;
-    openDeleteDetailModal   : () => void;
-    closeDeleteDetailModal  : () => void;
-    openCustomerListModal   : () => void;
-    closeCustomerListModal  : () => void;
-    openInventoryListModal  : () => void;
-    closeInventoryListModal : () => void;
-    openPaymentModal        : () => void;
-    closePaymentModal       : () => void;
-    openUpdateDetailModal   : () => void;
-    closeUpdateDetailModal  : () => void;
-    resetModals             : () => void;
+    //? Modales
+    saleModals           : SaleModalsType;
+    openSaleModal        : (payload: SaleModalsType) => void;
+    closeSaleModal       : () => void;
+    //? Messages
+    floatMessageState    : FloatMessageType;
+    setFloatMessageState : (state: FloatMessageType) => void;
+    //? Loadings
+    loading              : SaleLoadingsType,
+    initLoading          : (payload: SaleLoadingsType) => void,
+    finishLoading        : ()=> void,
+    resetModals          : () => void;
 }
 
 const initialState = {
-    cancelSaleModal    : false,
-    deleteDetailModal  : false,
-    customerListModal  : false,
-    inventoryListModal : false,
-    paymentModal       : false,
-    updateDetailModal  : false,
-    floatMessageState  : {},
+    //? Modales
+    saleModals        : 'none' as SaleModalsType,
+    //? Messages
+    floatMessageState : {},
+    //? Loadings
+    loading           : 'empty' as SaleLoadingsType,
 };
 
 export const useSaleUIStore = create<UIState>()((set, get) => ({
     ...initialState,
-    setFloatMessageState: (state: FloatMessageType) => set({ floatMessageState: state }),
-    openCancelSaleModal: () => set({ cancelSaleModal: true }),
-    closeCancelSaleModal: () => set({ cancelSaleModal: false }),
-    openDeleteDetailModal: () => set({ deleteDetailModal: true }),
-    closeDeleteDetailModal: () => set({ deleteDetailModal: false }),
-    openCustomerListModal: () => set({ customerListModal: true }),
-    closeCustomerListModal: () => set({ customerListModal: false }),
-    openInventoryListModal: () => set({ inventoryListModal: true }),
-    closeInventoryListModal: () => set({ inventoryListModal: false }),
-    openPaymentModal: () => set({ paymentModal: true }),
-    closePaymentModal: () => set({ paymentModal: false }),
-    openUpdateDetailModal: () => set({ updateDetailModal: true }),
-    closeUpdateDetailModal: () => set({ updateDetailModal: false }),
-    resetModals: () => set(initialState),
+    //? Modales
+    openSaleModal        : (payload) => set({ saleModals: payload }),
+    closeSaleModal       : () => set({ saleModals: 'none' }),
+    //? Messages
+    setFloatMessageState : (state: FloatMessageType) => set({ floatMessageState: state }),
+    //? Loadings
+    initLoading          : (payload: SaleLoadingsType) => set({ loading: payload }),
+    finishLoading        : () => set({ loading: 'none' }),
+    resetModals          : () => set(initialState),
 }));

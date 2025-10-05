@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 
 const useCustomerSale = () => {
-    const { setFloatMessageState, customerListModal, openCustomerListModal, closeCustomerListModal} = useSaleUIStore();
+    const { setFloatMessageState, saleModals, openSaleModal, closeSaleModal} = useSaleUIStore();
     const { 
         setCustomerSelected, customerSelected, filterCustomers, customers, openModalCustomerList, setFilterCustomers,
     } = useSaleCustomerListStore();
@@ -27,7 +27,7 @@ const useCustomerSale = () => {
             description: 'Has cambiado de cliente correctamente',
             type: 'green'
         });
-        closeCustomerListModal();
+        closeSaleModal();
         setTimeout(()=> {
             setFloatMessageState({});
         }, 2000);
@@ -45,13 +45,13 @@ const useCustomerSale = () => {
     return {
         handleCustomerSelected,
         customerSelected,
-        closeCustomerListModal, 
         filterCustomers, 
         customers, 
-        customerListModal,
+        saleModals,
+        openSaleModal,
+        closeSaleModal, 
         customerIValue,
         setCustomerIValue,
-        openCustomerListModal,
     }
 }
 
