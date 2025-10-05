@@ -3,15 +3,15 @@ import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { physicalDeleteSaleDetailAction } from "../actions/phisical-delete-sale-detail.action";
 import { useSale } from "./useSale";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 const useDeleteDetail = () => {
     const { 
         setFloatMessageState, saleModals, openSaleModal, closeSaleModal, initLoading, finishLoading,
         loading,
     } = useSaleUIStore();
-    const { 
-        detailSelected, setDetailSelected, saleId
-    } = useSaleStore();
+    const { saleId } = useSaleStore();
+    const { detailSelected, setDetailSelected } = useSaleProcessStore();
     const { handleUpdateSaleDetails } = useSale();
     
     const handleOpenModalDeleteDetail = (detail: SaleDetailEntity) => {

@@ -43,6 +43,9 @@ interface State {
     filterInventoryItems: InventoryItemEntity[],
     setFilterInventoryItems: (items: InventoryItemEntity[])=> void,
     setInventoryItems: (items: InventoryItemEntity[])=> void,
+    //? Product Quantity
+    productQuantity: number,
+    setProductQuantity: (total: number)=> void,
 }
 
 const initialValues = {
@@ -65,6 +68,8 @@ const initialValues = {
     //? Inventory List
     filterInventoryItems: [],
     itemSelected: null,
+    //? Product Quantity
+    productQuantity: 0,
 }
 
 export const useSaleProcessStore = create<State>()((set, get) => ({
@@ -172,7 +177,12 @@ export const useSaleProcessStore = create<State>()((set, get) => ({
             inventoryItems: items
         }));
     },
-    
+    //? Product Quantity
+    setProductQuantity: (quantity: number)=>{
+        set(()=>({
+            productQuantity: quantity
+        }));
+    },
     //? Reset Store
     resetSaleProcessStore: () => {
         set(initialValues);

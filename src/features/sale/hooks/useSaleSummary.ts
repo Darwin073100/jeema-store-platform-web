@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 const useSaleSummary = () => {
     const { 
-        sale, total, setTotal, productQuantity, setProductQuantity,
+        sale, total, setTotal
     } = useSaleStore();
+    const { productQuantity, setProductQuantity } = useSaleProcessStore();
 
     useEffect(() => {
         if (sale?.saleDetails) {
