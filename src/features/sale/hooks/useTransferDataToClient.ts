@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useSalePaymentStore } from '../infraestructure/stores/sale.payment.store';
 import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/payment-method-entity';
 import { useWorkspace } from '@/shared/hooks/useAuth';
-import { useSaleCustomerListStore } from '../infraestructure/stores/sale.customer-list.store';
 import { findAllCustomerByEstablishmentAction } from '@/features/customer/actions/find-all-customer-by-establishment.action';
+import { useSaleProcessStore } from '../infraestructure/stores/sale.process.store';
 
 interface Props {
     methods: PaymentMethodEntity[],
@@ -11,8 +10,7 @@ interface Props {
 
 const useTransferDataToClientNewSale = ({ methods }: Props) => {
     const { establishment } = useWorkspace();
-    const { setPaymentMethods, paidAmount } = useSalePaymentStore();
-    const { setCustomers } = useSaleCustomerListStore();
+    const { setPaymentMethods, paidAmount, setCustomers } = useSaleProcessStore();
 
     useEffect(()=>{
         handleLoadCustomerList();

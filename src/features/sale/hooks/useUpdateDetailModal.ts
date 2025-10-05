@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
-import { useSaleUpdateDetailStore } from "../infraestructure/stores/sale.update-detail.store";
-import { useSaleInventoryListStore } from "../infraestructure/stores/sale.inventory-list.store";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 type SaleForType = 'Menudeo'|'Mayoreo'|'Especial';
 
@@ -11,9 +10,8 @@ const useUpdateDetailModal = () => {
         saleModals, openSaleModal, closeSaleModal 
     } = useSaleUIStore();
     const { 
-        setDetailSelected, detailSelected, itemMatchDetail, setItemMatchDetail
-    } = useSaleUpdateDetailStore();
-    const { inventoryItems } = useSaleInventoryListStore();
+        setDetailSelected, detailSelected, itemMatchDetail, setItemMatchDetail, inventoryItems
+    } = useSaleProcessStore();
     const [detailPrice, setDetailPrice] = useState<number>(0);
     const [detailQuantity, setDetailQuantity] = useState<number>(0);
     const [detailCurrentTotal, setDetailCurrentTotal] = useState<number>(0);

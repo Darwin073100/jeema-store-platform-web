@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSaleInventoryListStore } from "../infraestructure/stores/sale.inventory-list.store";
 import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/features/inventory/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
@@ -8,11 +7,12 @@ import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-det
 import { RegisterSaleDto } from "../application/dtos/register-sale.dto";
 import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 const useInventoryListModal = () => {
-    const { inventoryItems, setInventoryItems, modalInventoryList, itemSelected, setItemSelected, 
-        setFilterInventoryItems, closeModalInventoryList, filterInventoryItems
-    } = useSaleInventoryListStore();
+    const { inventoryItems, setInventoryItems, itemSelected, setItemSelected, 
+        setFilterInventoryItems, filterInventoryItems
+    } = useSaleProcessStore();
     const { saleId, setSale, setSaleId } = useSaleStore();
     const { branchOffice, employee } = useWorkspace();
     const [quantityInsert, setQuantityInsert] = useState<number>(0);
@@ -34,7 +34,7 @@ const useInventoryListModal = () => {
     useEffect(()=>{
         setQuantityInsert(0);
         setItemSelected(null);
-    }, [modalInventoryList]);
+    }, [saleModals]);
 
     useEffect(()=>{
         const regex = new RegExp(searchProductValue, 'i');
@@ -84,7 +84,7 @@ const useInventoryListModal = () => {
                 description: 'Se ha agregado el producto a la venta',
                 isActive: true
             });
-            closeModalInventoryList();
+            closeSaleModal();
             setFloatMessageState({});
         }
         finishLoading();

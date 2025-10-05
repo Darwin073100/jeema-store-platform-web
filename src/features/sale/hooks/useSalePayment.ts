@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSalePaymentStore } from "../infraestructure/stores/sale.payment.store";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { finishSaleAction } from "../actions/finish-sale.action";
 import { RegisterSalePaymentItem } from "../application/dtos/register-sale-payment.dto";
 import { registerSalePaymentAction } from "../actions/register-sale-payment.action";
-import { useSaleCustomerListStore } from "../infraestructure/stores/sale.customer-list.store";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 
 const useSalePayment = () => {
@@ -16,10 +15,9 @@ const useSalePayment = () => {
     } = useSaleUIStore();
     // Estados globales
     const {
-         cashAmount, customerChange, paymentMethods, transferNumberRef,
-        paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, resetSalePaymentStore, transferAmount,
-    } = useSalePaymentStore();
-    const { customerSelected } = useSaleCustomerListStore();
+         cashAmount, customerChange, paymentMethods, transferNumberRef, customerSelected,
+        paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, resetSaleProcessStore, transferAmount,
+    } = useSaleProcessStore();
     // Este es el estado que vamos a usar para el array de pagos
     const [salePaids, setSalePaids] = useState<RegisterSalePaymentItem[]>([]);
     // Controlar el mensaje para el pago total
@@ -120,7 +118,7 @@ const useSalePayment = () => {
                     closeSaleModal();
                     setFloatMessageState({});
                     resetSaleStore();
-                    resetSalePaymentStore();
+                    resetSaleProcessStore();
                 }, 2000);
             }
         } catch (error) {
@@ -166,7 +164,7 @@ const useSalePayment = () => {
                     setTimeout(() => {
                         closeSaleModal();
                         resetSaleStore();
-                        resetSalePaymentStore();
+                        resetSaleProcessStore();
                     }, 2000);
                 }
             }

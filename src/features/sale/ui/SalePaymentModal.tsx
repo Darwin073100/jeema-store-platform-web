@@ -6,19 +6,19 @@ import { TemplateModal } from '@/ui/components/modals/TemplateModal';
 import { FcMoneyTransfer, FcSmartphoneTablet } from 'react-icons/fc';
 import { TextInput } from '@/ui/components/inputs';
 import { LabelInput } from '@/ui/components/labels';
-import { MdOutlinePaid, MdPaid } from 'react-icons/md';
+import { MdOutlinePaid } from 'react-icons/md';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
-import { useSalePaymentStore } from '../infraestructure/stores/sale.payment.store';
 import { useSaleStore } from '../infraestructure/stores/sale.store';
 import clsx from 'clsx';
 import { Spinner } from '@/ui/components/loadings/Spinner';
+import { useSaleProcessStore } from '../infraestructure/stores/sale.process.store';
 
 const SalePaymentModal = () => {
   const { total } = useSaleStore();
   const { 
     cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount,
     transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
-  } = useSalePaymentStore();
+  } = useSaleProcessStore();
   const { handleFinishSale, loading, handlePaidSale, paidAmountMessage, saleModals, closeSaleModal } = useSalePayment();
 
   return (

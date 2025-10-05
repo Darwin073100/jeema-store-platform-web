@@ -1,13 +1,13 @@
 import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
-import { useSaleCustomerListStore } from "../infraestructure/stores/sale.customer-list.store";
 import { useEffect, useState } from "react";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 const useCustomerSale = () => {
     const { setFloatMessageState, saleModals, openSaleModal, closeSaleModal} = useSaleUIStore();
     const { 
-        setCustomerSelected, customerSelected, filterCustomers, customers, openModalCustomerList, setFilterCustomers,
-    } = useSaleCustomerListStore();
+        setCustomerSelected, customerSelected, filterCustomers, customers, setFilterCustomers,
+    } = useSaleProcessStore();
     const [customerIValue, setCustomerIValue] = useState<string>('');
 
     useEffect(()=>{
