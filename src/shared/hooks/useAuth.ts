@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession, signIn, signOut } from "next-auth/react";
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
 
 export function useAuth() {
   const { data: session, status } = useSession();
@@ -54,10 +55,14 @@ export function useAuth() {
 // Hook específico para obtener información del workspace
 export function useWorkspace() {
   const { workspace, isAuthenticated } = useAuth();
+  setCookie("establishmentCookie", workspace?.establishment || "", {maxAge: 60*60})
+  setCookie("branchOfficeCookie", workspace?.branchOffice || "", {maxAge: 60*60})
+  setCookie("employeeCookie", workspace?.employee || "", {maxAge: 60*60})
 
   return {
     // Información del establecimiento
     establishment: workspace?.establishment || null,
+    // Setear la cookie del establecimiento por una hora
     
     // Información de la sucursal
     branchOffice: workspace?.branchOffice || null,

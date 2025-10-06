@@ -10,6 +10,7 @@ const useCustomerSale = () => {
     } = useSaleProcessStore();
     const [customerIValue, setCustomerIValue] = useState<string>('');
 
+    // Hook para filtrar los clientes
     useEffect(()=>{
         const regex = new RegExp(customerIValue, 'i');
         const newcustomerByFirstNameFilter = customers.filter( item => regex.test(item.firstName ?? ''));
@@ -34,13 +35,17 @@ const useCustomerSale = () => {
     }
 
     useEffect(()=>{
-        // const defaultCustomer = customers.find(
-        //     item=> item.firstName.trim().toLowerCase() === 'Publico'.trim().toLowerCase() 
-        //     || item.lastName?.trim().toLowerCase() === 'General'.trim().toLowerCase()
-        // );
+        setFilterCustomers(customers);
+    },[saleModals]);
 
-        // setCustomerSelected(defaultCustomer ?? null);
-    }, []);
+    useEffect(()=>{
+        const defaultCustomer = customers.find(
+            item=> item.firstName.trim().toLowerCase() === 'Publico'.trim().toLowerCase() 
+            || item.lastName?.trim().toLowerCase() === 'General'.trim().toLowerCase()
+        );
+
+        setCustomerSelected(defaultCustomer ?? null);
+    },[]);
 
     return {
         handleCustomerSelected,

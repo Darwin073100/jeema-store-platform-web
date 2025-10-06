@@ -1,29 +1,22 @@
 import { useEffect } from 'react';
 import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/payment-method-entity';
-import { useWorkspace } from '@/shared/hooks/useAuth';
-import { findAllCustomerByEstablishmentAction } from '@/features/customer/actions/find-all-customer-by-establishment.action';
 import { useSaleProcessStore } from '../infraestructure/stores/sale.process.store';
+import { CustomerEntity } from '@/features/customer/domain/entities/customer.entity';
+import { InventoryItemEntity } from '@/features/inventory/domain/entities/inventory-item.entity';
 
 interface Props {
     methods: PaymentMethodEntity[],
+    customers: CustomerEntity[],
+    inventoryItems: InventoryItemEntity[],
 }
 
-const useTransferDataToClientNewSale = ({ methods }: Props) => {
-    const { establishment } = useWorkspace();
-    const { setPaymentMethods, paidAmount, setCustomers } = useSaleProcessStore();
+const useTransferDataToClientNewSale = ({ methods, customers, inventoryItems }: Props) => {
+    const { setPaymentMethods, paidAmount, setCustomers, setInventoryItems } = useSaleProcessStore();
 
     useEffect(()=>{
-        handleLoadCustomerList();
+        setCustomers(customers ?? []);
+        setInventoryItems(inventoryItems ?? []);
     },[]);
-
-    // Hace la peticion al servidor para traer los clientes registrados y cargarlos en el estado global.
-    const handleLoadCustomerList = async ()=> {
-        const establishmentId = BigInt(establishment?.establishmentId ?? 0);
-        const result = await findAllCustomerByEstablishmentAction(establishmentId);
-        if(result.ok){
-           setCustomers(result.value?.customers ?? []); 
-        }
-    }
 
     useEffect(()=>{
         setPaymentMethods(methods);

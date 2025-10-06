@@ -24,8 +24,8 @@ const useInventoryListModal = () => {
 
 
     useEffect(()=>{
-        hanldeFindInventoryItems();
-    },[]);
+        setFilterInventoryItems(inventoryItems);
+    },[saleModals]);
 
     useEffect(()=>{
         setQuantityInsert(0);
@@ -88,15 +88,6 @@ const useInventoryListModal = () => {
             setFloatMessageState({});
         }
         finishLoading();
-    }
-
-    
-    const hanldeFindInventoryItems = async ()=>{
-        const branchOfficeId = branchOffice ? BigInt(branchOffice.branchOfficeId): BigInt(0);
-        const result = await findAllInventoryItemsByLocationAndBranchOfficeAction(branchOfficeId);
-        if(result.ok && result.value){
-            setInventoryItems(result.value.items);
-        }
     }
 
     const handleSetItemSelected = (item: InventoryItemEntity | null)=> {

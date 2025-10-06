@@ -1,3 +1,5 @@
+import { findAllCustomerByEstablishmentAction } from "@/features/customer/actions/find-all-customer-by-establishment.action";
+import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/features/inventory/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { findAllPaymentMethodAction } from "@/features/payment-method/actions/find-all-payment-method.action";
 import { SaleMessages } from "@/features/sale/ui/SaleMessages";
 import { SaleProductList } from "@/features/sale/ui/SaleProductList";
@@ -18,6 +20,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
 export default async function() {
     const resultPaymentMethods = await findAllPaymentMethodAction();
     const currentPaymentMethods = resultPaymentMethods.value?.paymentMethods ?? [];
+    const resultCustomers = await findAllCustomerByEstablishmentAction();
+    const currentCustomers = resultCustomers?.value?.customers ?? [];
+    const resultInventoryItemsList = await findAllInventoryItemsByLocationAndBranchOfficeAction();
+    const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
     
     return (
         <ProtectedRoute>
@@ -29,6 +35,8 @@ export default async function() {
                     <SaleProductList />
                     {/* Potential Component: SaleSummary */}
                     <SaleSummary 
+                        inventoryItems={currentInventoryItems}
+                        customers={currentCustomers}
                         paymentMethods={currentPaymentMethods} />
                 </article>
                 <SaleMessages />

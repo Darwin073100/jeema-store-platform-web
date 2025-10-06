@@ -9,13 +9,17 @@ import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/p
 import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
 import { SaleCustomerListModal } from "./SaleCustomerListModal";
 import { useCustomerSale } from "../hooks/useCustomerSale";
+import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
+import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
 
 interface Props {
-    paymentMethods: PaymentMethodEntity[]
+    paymentMethods: PaymentMethodEntity[],
+    customers: CustomerEntity[],
+    inventoryItems: InventoryItemEntity[],
 }
 
-const SaleSummary = ({ paymentMethods }: Props) => {
-    const {} = useTransferDataToClientNewSale({methods: paymentMethods});
+const SaleSummary = ({ paymentMethods, customers, inventoryItems }: Props) => {
+    const {} = useTransferDataToClientNewSale({methods: paymentMethods, customers, inventoryItems});
     const { productQuantity, total} = useSaleSummary();
     const { handleCheckerOpenModalFinishSale } = useSalePayment();
     const { customerSelected, openSaleModal } = useCustomerSale();

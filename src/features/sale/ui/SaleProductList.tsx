@@ -27,7 +27,7 @@ const SaleProductList = () => {
                     <IoIosTrash className="text-lg" />
                     <span>Cancelar venta</span>
                 </Button>
-                <SaleInventoryListModal />
+                <SaleInventoryListModal key='sale-inventory-items-modal' />
             </div>
             <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all">
                 <table className="w-full text-left rtl:text-right">
