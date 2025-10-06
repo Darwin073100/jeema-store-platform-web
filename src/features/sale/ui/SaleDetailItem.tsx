@@ -5,6 +5,7 @@ import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { HiPencilSquare } from "react-icons/hi2";
 import { useDeleteDetail } from "../hooks/useDeleteDetail";
 import { useUpdateDetailModal } from "../hooks/useUpdateDetailModal";
+import { useSale } from "../hooks/useSale";
 
 interface Props {
     saleDetail?: SaleDetailEntity
@@ -13,6 +14,7 @@ interface Props {
 const SaleDetailItem = ({ saleDetail }: Props) => {
     const { handleOpenModalDeleteDetail } = useDeleteDetail();
     const { handleLoadUpdateDetail } = useUpdateDetailModal();
+    const { handleSaleTypeText } = useSale();
     return (
         <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
             <th scope="row" className="px-5 py-1 font-medium whitespace-nowrap">
@@ -23,7 +25,7 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
             </td>
             <td className="px-5 py-1 flex justify-between items-center">
                 <span>$ {numberBasicFormat(saleDetail?.unitPriceAtSale ?? 0.00)}</span>
-                <span className="bg-green-100 p-1 rounded-md m-1 text-[12px] font-bold text-green-950">Mayoreo</span>
+                <span className="bg-green-100 p-1 rounded-md m-1 text-[12px] font-bold text-green-950">{handleSaleTypeText(saleDetail?.productBarCodeAtSale ?? '',saleDetail?.quantity ?? 0)}</span>
             </td>
             <td className="px-5 py-1 bg-blue-200 font-bold">
                 {saleDetail?.quantity ?? '0.00'}

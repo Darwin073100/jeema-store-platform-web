@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
-import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 import { useSale } from "./useSale";
-import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
 import { SaleEntity } from "../domain/entities/sale-entity";
 import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
 
@@ -91,11 +89,13 @@ const useInventoryListModal = () => {
                 setFloatMessageState({
                     type: 'green',
                     summary: '¡Correcto!',
-                    description: 'Se ha agregado el producto a la venta...',
+                    description: 'Se ha agregado el producto a la venta',
                     isActive: true
                 });
                 closeSaleModal();
-                setFloatMessageState({});
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 2000);
             }
             finishLoading();
         } else {

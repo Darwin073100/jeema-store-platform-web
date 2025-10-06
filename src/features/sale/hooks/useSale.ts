@@ -11,13 +11,16 @@ import { addDetailToSaleAction } from "../actions/add-detail-to-sale.action";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
+
+type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
 
 const useSale = () => {
-    const [inventory, setInventory] = useState<InventoryEntity>();
+
     const [searchValue, setSearchValue] = useState<string>('');
-    const { branchOffice, employee } = useWorkspace();
     const { setFloatMessageState, loading, initLoading, finishLoading } = useSaleUIStore();
     const { sale, setSale, saleId, setSaleId } = useSaleStore();
+    const { inventoryItems } = useSaleProcessStore();
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -52,8 +55,19 @@ const useSale = () => {
             window.removeEventListener('focus', maintainFocus);
         };
     }, []);
-    const handleVerifySaleBy = ()=> {
-        
+
+    const handleSaleTypeText = (barCode: string, quantity: number)=> {
+        let forSale: SaleForType = 'Menudeo';
+        const item = inventoryItems.find( subItem=> 
+            barCode.trim().toLowerCase() === subItem.inventory?.internalBarCode?.trim().toLowerCase() ||
+            barCode.trim().toLowerCase() === subItem.inventory?.product?.universalBarCode?.trim().toLowerCase()
+        );
+        if(item?.inventory){
+            if(quantity > ((item?.inventory?.saleQuantityMany) ?? 0)){
+                forSale = 'Mayoreo';
+            }
+        }
+        return forSale;
     }
     /**
      * Calculo de precios por:
@@ -100,10 +114,6 @@ const useSale = () => {
         } else {
             // Seteamos el estado del inventory con el producto encontrado
             const foundInventory = searchResult.value;
-            setInventory(foundInventory);
-
-            // Reasignar el id de la venta actual.
-            let currentSaleId = saleId;
 
             // Preparar el detalle del producto, para modificar la cantidad
             // Ej: Se utilizará para cuando hay 5 productos, sumarle 1, para que sean ahora 6.
@@ -166,6 +176,7 @@ const useSale = () => {
     return {
         handleUpdateSaleDetails,
         hancleCalculateDetailPrice,
+        handleSaleTypeText,
         handleChangeSearch,
         searchValue,
         handleSubmit,
