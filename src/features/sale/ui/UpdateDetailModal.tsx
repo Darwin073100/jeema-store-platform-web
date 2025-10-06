@@ -11,7 +11,7 @@ import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 const UpdateDetailModal = () => {
   const { 
     closeSaleModal, saleModals, detailSelected, detailQuantity, setDetailQuantity, detailCurrentTotal, 
-    saleFor, detailPrice,
+    saleFor, detailPrice, handleUpdateQuantityDetail, loading
   } = useUpdateDetailModal();
  return (
     <TemplateModal size='lg' isOpen={saleModals==='updateDetailModal'} onClose={closeSaleModal} title='Producto en venta'>
@@ -53,13 +53,13 @@ const UpdateDetailModal = () => {
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">
           <Button
-            // onClick={()=> handlePhysicalDeleteSaleDetail()}
+            onClick={()=> handleUpdateQuantityDetail()}
             type="button"
             color='purple'
             className={clsx(`flex justify-center items-center min-w-[120px]`)}
-            // disabled={isLoading}
+            disabled={loading === 'updateDetailLoading'}
           >
-             { false
+             { loading === 'updateDetailLoading'
               ? <Spinner/>
               : <><IoSave className="w-4 h-4" />Aplicar cambios</> }
           </Button>

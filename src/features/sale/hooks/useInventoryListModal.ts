@@ -1,96 +1,117 @@
 import { useEffect, useState } from "react";
-import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/features/inventory/actions/find-all-inventory-items-by-location-and-branch-office.action";
-import { useWorkspace } from "@/shared/hooks/useAuth";
 import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
-import { RegisterSaleDto } from "../application/dtos/register-sale.dto";
 import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
+import { useSale } from "./useSale";
+import { SaleDetailEntity } from "../domain/entities/sale-detail-entity";
+import { SaleEntity } from "../domain/entities/sale-entity";
+import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
 
 const useInventoryListModal = () => {
-    const { inventoryItems, setInventoryItems, itemSelected, setItemSelected, 
+    const { inventoryItems, itemSelected, setItemSelected,
         setFilterInventoryItems, filterInventoryItems
     } = useSaleProcessStore();
-    const { saleId, setSale, setSaleId } = useSaleStore();
-    const { branchOffice, employee } = useWorkspace();
+    const { saleId, setSale, setSaleId, sale } = useSaleStore();
+    const { hancleCalculateDetailPrice } = useSale();
     const [quantityInsert, setQuantityInsert] = useState<number>(0);
     const [searchProductValue, setSearchProductValue] = useState<string>('')
     // LOADING: addProductToSaleLoading
-    const { 
+    const {
         setFloatMessageState, saleModals, closeSaleModal, openSaleModal, loading, initLoading, finishLoading
     } = useSaleUIStore();
 
 
-    useEffect(()=>{
+    useEffect(() => {
         setFilterInventoryItems(inventoryItems);
-    },[saleModals]);
+    }, [saleModals]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setQuantityInsert(0);
     }, [itemSelected]);
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         setQuantityInsert(0);
         setItemSelected(null);
     }, [saleModals]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const regex = new RegExp(searchProductValue, 'i');
-        const newInventoryFilter = inventoryItems.filter( item => regex.test(item.inventory?.product?.name ?? ''));
+        const newInventoryFilter = inventoryItems.filter(item => regex.test(item.inventory?.product?.name ?? ''));
         setFilterInventoryItems(newInventoryFilter);
     }, [searchProductValue]);
-    
 
+    const handleVerifyExistDetail = (sale: SaleEntity, inventory?: InventoryEntity, )=>{
+        const existingProduct = sale?.saleDetails?.find(
+                detail => detail.productBarCodeAtSale === (inventory?.internalBarCode || '') 
+                    || detail.productBarCodeAtSale === (inventory?.product?.universalBarCode || '') 
+        );
+        return existingProduct;
+    }
 
-    const handleAddDetail = async()=> {
-        const registerSaleDTO: RegisterSaleDto = {
-            branchOfficeId: BigInt(branchOffice?.branchOfficeId ?? 0),
-            employeeId: BigInt(employee?.employeeId ?? 0),
-            customerId: BigInt(2)
-        }
+    const handleAddDetail = async () => {
+        const inventorySelected = itemSelected?.inventory;
+        if (inventorySelected) {
+            if(sale){
+                if(handleVerifyExistDetail(sale, inventorySelected)){
+                    setFloatMessageState({
+                        type: 'red',
+                        summary: '400: ¡Hay un error o conflicto!',
+                        description: 'Este producto ya está en la venta, modifica la cantidad en su registro.',
+                        isActive: true,
+                    });
+                    setTimeout(() => {
+                        setFloatMessageState({});
+                    }, 4000);
+                    return;
+                }
+            }
+            const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, quantityInsert);
+            initLoading('addDetailToSaleLoading');
+            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(2), addDetailToSaleDTO);
+            if (!result.ok) {
+                setFloatMessageState({
+                    type: 'red',
+                    summary: '¡Hay un error!',
+                    description: result.error?.message ?? 'Ha ocurrido un error al agregar el producto a la venta.',
+                    isActive: true,
+                });
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 2000);
+            } else {
+                // Validar que venga un value para actualizar el estado de la venta.
+                result.value ?
+                    setSale(result.value) : null;
+                result.value ?
+                    setSaleId(result.value.saleId) : null;
 
-        const addDetailToSaleDTO: AddDetailToSaleDto = {
-            productBarCodeAtSale: itemSelected?.inventory?.internalBarCode ?? '',
-            productUnitAtSale: itemSelected?.inventory?.product?.unitOfMeasure ?? '',
-            quantity: quantityInsert,
-            unitPriceAtSale: itemSelected?.inventory?.salePriceOne ?? 0
-        }
-
-        initLoading('addDetailToSaleLoading');
-        const result = await CreateSaleAndAddDetailAction(saleId, registerSaleDTO, addDetailToSaleDTO);
-        console.log(result);
-        if(!result.ok ){
+                setFloatMessageState({
+                    type: 'green',
+                    summary: '¡Correcto!',
+                    description: 'Se ha agregado el producto a la venta...',
+                    isActive: true
+                });
+                closeSaleModal();
+                setFloatMessageState({});
+            }
+            finishLoading();
+        } else {
             setFloatMessageState({
                 type: 'red',
                 summary: '¡Hay un error!',
-                description: result.error?.message ?? 'Ha ocurrido un error al agregar el producto a la venta.',
+                description: 'Ha ocurrido un error al agregar el producto a la venta.',
                 isActive: true,
             });
-            setTimeout(()=>{
+            setTimeout(() => {
                 setFloatMessageState({});
-            },2000);
-        } else {
-            // Validar que venga un value para actualizar el estado de la venta.
-            result.value?
-            setSale(result.value): null;
-            result.value?
-            setSaleId(result.value.saleId): null;
-
-            setFloatMessageState({
-                type: 'green',
-                summary: '¡Correcto!',
-                description: 'Se ha agregado el producto a la venta',
-                isActive: true
-            });
-            closeSaleModal();
-            setFloatMessageState({});
+            }, 2000);
         }
-        finishLoading();
     }
 
-    const handleSetItemSelected = (item: InventoryItemEntity | null)=> {
+    const handleSetItemSelected = (item: InventoryItemEntity | null) => {
         setItemSelected(item);
     }
 
@@ -100,12 +121,12 @@ const useInventoryListModal = () => {
         quantityInsert,
         setQuantityInsert,
         handleAddDetail,
-        searchProductValue, 
+        searchProductValue,
         setSearchProductValue,
         closeSaleModal,
         openSaleModal,
         saleModals,
-        filterInventoryItems, 
+        filterInventoryItems,
         itemSelected
     }
 }
