@@ -25,7 +25,9 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
             </td>
             <td className="px-5 py-1 flex justify-between items-center">
                 <span>$ {numberBasicFormat(saleDetail?.unitPriceAtSale ?? 0.00)}</span>
-                <span className="bg-green-100 p-1 rounded-md m-1 text-[12px] font-bold text-green-950">{handleSaleTypeText(saleDetail?.productBarCodeAtSale ?? '',saleDetail?.quantity ?? 0)}</span>
+                <span className="bg-green-100 p-1 rounded-md m-1 text-[12px] font-bold text-green-950">
+                    { saleDetail? handleSaleTypeText(saleDetail?.productBarCodeAtSale ?? '',saleDetail?.quantity ?? 0) : 'N/A'}
+                </span>
             </td>
             <td className="px-5 py-1 bg-blue-200 font-bold">
                 {saleDetail?.quantity ?? '0.00'}

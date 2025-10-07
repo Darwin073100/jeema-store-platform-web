@@ -48,12 +48,18 @@ export const NavBar = () => {
           </span>
         </div>
         <div>
-          <Link href='/sale/new' className='text-sm flex flex-col items-center justify-center rounded-xl p-1 bg-blue-500 text-white hover:bg-blue-400 shadow transition-all duration-500'>
-            <Image 
-              alt='NewSale' 
+          <Link
+            href='/sale/new'
+            className='text-sm flex flex-col items-center justify-center rounded-xl p-1 
+                   bg-emerald-500 text-white 
+                   hover:bg-emerald-400 shadow 
+                   transition-all duration-500' // Cambio aquí
+          >
+            <Image
+              alt='NewSale'
               src={Sale}
               width={30}
-              height={30}/>
+              height={30} />
             <span>Nueva Venta</span>
           </Link>
         </div>
@@ -63,7 +69,7 @@ export const NavBar = () => {
       <div className="flex items-center gap-6">
         {/* Notifications */}
         <div className="relative">
-          <RoundedButton 
+          <RoundedButton
             color='blue'
           >
             <IoNotifications className="text-xl" />
@@ -83,7 +89,7 @@ export const NavBar = () => {
               {user?.email ?? '--'}
             </span>
           </div>
-          
+
           <Button
             color='red'
             onClick={handleOpenLogoutModal}
@@ -92,9 +98,9 @@ export const NavBar = () => {
           </Button>
         </div>
       </div>
-      
+
       {/* Modal de Logout */}
-      <LogoutModal 
+      <LogoutModal
         isOpen={isLogoutModalOpen}
         onClose={handleCloseLogoutModal}
       />

@@ -63,6 +63,19 @@ export class SaleFetchRepository implements SaleRepository {
             return this.handleError(error, 'Find sale with details');
         }    
     }
+    async findAllByBranchOffice(branchOfficeId: bigint): Promise<Result<{sales:SaleEntity[]}, ErrorEntity>> {
+        try {
+
+            const response = await this.httpClient.get<{sales:SaleEntity[]}>(
+                this.apiConfig.getEndpointUrl(`/sales/all/branchOffices/${branchOfficeId.toString()}`)
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Find sale with details');
+        }    
+    }
 
     async finishSale(saleId: bigint, dto: FinishSaleDto): Promise<Result<SaleEntity, ErrorEntity>> {
         try {

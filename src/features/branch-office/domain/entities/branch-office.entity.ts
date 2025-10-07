@@ -1,3 +1,4 @@
+import { EmployeeEntity } from "@/features/employee/domain/entities/employee.entity";
 import { BaseEntity } from "@/shared/features/base.entity";
 
 export interface BranchOfficeEntity extends BaseEntity{
@@ -14,4 +15,5 @@ export interface BranchOfficeEntity extends BaseEntity{
     city: string;
     state: string;
     reference?: string;
+    employees: EmployeeEntity[]
 }

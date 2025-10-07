@@ -63,4 +63,10 @@ export interface SaleRepository {
      * @returns {Promise<Result<any, ErrorEntity>>}
      */
     physicalDeleteSaleDetail(saleId: bigint, detailId: bigint): Promise<Result<any, ErrorEntity>>;
+    /**
+     * Este metodo busca todas las ventas de una sucursal.
+     * @param {bigint} branchOfficeId 
+     * @returns {Promise<Result<{sales:SaleEntity[]}, ErrorEntity>>}
+     */
+    findAllByBranchOffice(branchOfficeId: bigint): Promise<Result<{sales:SaleEntity[]}, ErrorEntity>>
 }

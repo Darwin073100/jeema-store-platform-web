@@ -2,6 +2,8 @@ import { BranchOfficeEntity } from "@/features/branch-office/domain/entities/bra
 import { BaseEntity } from "@/shared/features/base.entity";
 import { SaleStatusEnum } from "../enums/sale-status.enum";
 import { SaleDetailEntity } from "./sale-detail-entity";
+import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
+import { EmployeeEntity } from "@/features/employee/domain/entities/employee.entity";
 
 export interface SaleEntity extends BaseEntity {
     saleId: bigint;
@@ -15,7 +17,7 @@ export interface SaleEntity extends BaseEntity {
     status: SaleStatusEnum;
     notes: string |null;
     branchOffice?: BranchOfficeEntity | null;
-    customer?: any | null;
-    employee?: any | null;
+    customer?: CustomerEntity | null;
+    employee?: EmployeeEntity | null;
     saleDetails?: SaleDetailEntity[] | [];
 }
