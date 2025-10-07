@@ -14,7 +14,7 @@ const SaleCardList = ({ sales }: Props) => {
     const { handleBadgeType } = useSaleListBranch();
     return (<>
         {sales.map(sale => (
-            <div className="bg-white p-4 mb-3 border border-gray-200 rounded-lg shadow-sm">
+            <div className="bg-green-50 p-4 mb-3 border border-gray-200 rounded-lg shadow-sm">
                 {/* Cabecera de la Tarjeta (Folio y Status) */}
                 <div className="flex justify-between items-start pb-2 border-b border-gray-100 mb-2">
                     <p className="text-lg font-bold text-gray-900">
