@@ -6,6 +6,7 @@ import { RegisterSalePaymentItem } from "../application/dtos/register-sale-payme
 import { registerSalePaymentAction } from "../actions/register-sale-payment.action";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
+import { pendingSaleAction } from "../actions/pending-sale.action";
 
 
 const useSalePayment = () => {
@@ -104,16 +105,25 @@ const useSalePayment = () => {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
             const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
-            console.log(customerSelected);
-            const result = await finishSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
+            const result = await pendingSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
             finishLoading();
             if (!result.ok) {
-                setFloatMessageState(result.error ?? {});
+                setFloatMessageState({
+                    type: 'red',
+                    isActive: true,
+                    summary: `${result.error?.error ?? '500: ¡Ha ocurrido un error!'}`,
+                    description: result.error?.message ?? 'Error al finalizar la venta'
+                });
                 setTimeout(() => {
                     setFloatMessageState({});
                 }, 2000);
             } else {
-                setFloatMessageState(result.value ?? {});
+                setFloatMessageState({
+                    summary: 'Venta pendiente',
+                    description: 'Venta guardada como pendiente',
+                    isActive: true,
+                    type: 'yellow', 
+                });
                 setTimeout(() => {
                     closeSaleModal();
                     setFloatMessageState({});

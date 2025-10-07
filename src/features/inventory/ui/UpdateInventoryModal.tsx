@@ -63,6 +63,11 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                         placeholder="Codigo de barra interno"
                                         error={!!errors.internalBarCode}
                                         errorMessage={errors.internalBarCode?.message}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                                e.preventDefault(); // ⛔ evita el submit del formulario
+                                            }
+                                        }}
                                         {...register('internalBarCode')}
                                     />
                                 </div>

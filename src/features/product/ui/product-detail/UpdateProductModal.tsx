@@ -90,6 +90,11 @@ const UpdateProductModal = () => {
                                 <TextInput
                                     placeholder="Código de barras universal"
                                     {...register('universalBarCode')}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                        e.preventDefault(); // ⛔ evita el submit del formulario
+                                        }
+                                    }}
                                 />
                                 {errors.universalBarCode && <p className="text-red-500 text-sm mt-1">{errors.universalBarCode.message}</p>}
                             </div>

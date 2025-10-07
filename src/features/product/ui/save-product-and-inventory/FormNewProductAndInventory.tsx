@@ -94,11 +94,16 @@ const FormNewProductAndInventory = ({ categoryList, brandList, seasonList }: Pro
                                 </div>
                                 
                                 <div>
-                                    <LabelInput 
+                                    <LabelInput
                                         required='yes' 
                                         value="Código de barras universal"
                                         description='Ingresa el código de barras EAN/UPC que viene impreso en el producto. Este código es único para cada producto. Ej: 7501234567890.' />
                                     <TextInput
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                            e.preventDefault(); // ⛔ evita el submit del formulario
+                                            }
+                                        }}
                                         {...register('universalBarCode')}
                                         error={!!errors.universalBarCode}
                                         errorMessage={errors.universalBarCode?.message}
@@ -659,6 +664,11 @@ const FormNewProductAndInventory = ({ categoryList, brandList, seasonList }: Pro
                                         <div className="flex flex-col">
                                             <TextInput
                                             {...register('internalBarCode')}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                e.preventDefault(); // ⛔ evita el submit del formulario
+                                                }
+                                            }}
                                             error={!!errors.internalBarCode}
                                             errorMessage={errors.internalBarCode?.message}
                                                 type="text"
