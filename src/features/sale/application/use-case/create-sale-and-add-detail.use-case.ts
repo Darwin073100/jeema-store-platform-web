@@ -13,7 +13,7 @@ export class CreateSaleAndAddDetailUseCase {
     async execute(saleId: bigint, saveSaleDTO: RegisterSaleDto, addDetailDTO: AddDetailToSaleDto) {
         try {
             //Validar el dto AddDetailToSaleDto
-            if(addDetailDTO.productBarCodeAtSale === '' && addDetailDTO.productUnitAtSale==='' && addDetailDTO.unitPriceAtSale <= 0){
+            if(addDetailDTO.productBarCodeAtSale === '' && addDetailDTO.productUnitAtSale===''){
                 return Result.failure<ErrorEntity>({
                     error: 'BadRequest',
                     message: 'Hubo un error al agregar el producto a la venta.',

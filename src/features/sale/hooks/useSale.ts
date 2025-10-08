@@ -12,6 +12,7 @@ import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
+import { SaleForEnum } from "../domain/enums/sale-for.enum";
 
 type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
 
@@ -55,40 +56,30 @@ const useSale = () => {
             window.removeEventListener('focus', maintainFocus);
         };
     }, []);
-
-    const handleSaleTypeText = (barCode: string, quantity: number)=> {
-        let forSale: SaleForType = 'Menudeo';
-        const item = inventoryItems.find( subItem=> 
-            barCode.trim().toLowerCase() === subItem.inventory?.internalBarCode?.trim().toLowerCase() ||
-            barCode.trim().toLowerCase() === subItem.inventory?.product?.universalBarCode?.trim().toLowerCase()
-        );
-        if(item?.inventory){
-            if(quantity > ((item?.inventory?.saleQuantityMany) ?? 0)){
-                forSale = 'Mayoreo';
-            }
-        }
-        return forSale;
-    }
     /**
      * Calculo de precios por:
      * - Mayore
      * - Menudeo
      * - Especial
      */
+    //TODO: Usar el modificador manual en update detail
     const hancleCalculateDetailPrice = (inventory: InventoryEntity, quantity: number, priceSpecial?: number) => {
-        let finalPrice: number;
-        if (priceSpecial && priceSpecial > 0) {
-            finalPrice = priceSpecial;
+        let finalPrice: number | undefined;
+        let saleFor: SaleForEnum;
+
+        if (quantity >= Number(inventory.saleQuantityMany ?? 0)) {
+            saleFor = SaleForEnum.MANY;
+        } else if (quantity < Number(inventory.saleQuantityMany ?? 0)) {
+            saleFor = SaleForEnum.ONE;
         } else {
-            if (quantity >= Number(inventory.saleQuantityMany ?? 0)) {
-                finalPrice = Number(inventory.salePriceMany || 0);
-            } else {
-                finalPrice = Number(inventory.salePriceOne || 0);
-            }
+            saleFor = SaleForEnum.SPECIAL;
+            finalPrice = priceSpecial? Number(priceSpecial): undefined;
         }
+
         const detailDto: AddDetailToSaleDto = {
             quantity: quantity,
-            unitPriceAtSale: finalPrice,
+            specialprice: finalPrice,
+            saleFor: saleFor,
             productBarCodeAtSale: inventory.internalBarCode || '',
             productUnitAtSale: inventory.product?.unitOfMeasure || 'PIEZA',
             notes: `Agregado el ${new Date().toLocaleString()}`
@@ -176,7 +167,6 @@ const useSale = () => {
     return {
         handleUpdateSaleDetails,
         hancleCalculateDetailPrice,
-        handleSaleTypeText,
         handleChangeSearch,
         searchValue,
         handleSubmit,

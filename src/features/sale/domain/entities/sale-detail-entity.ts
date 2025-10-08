@@ -2,6 +2,7 @@ import { ProductEntity } from "@/features/product/domain/entities/product.entity
 import { SaleEntity } from "./sale-entity";
 import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
 import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
+import { SaleForEnum } from "../enums/sale-for.enum";
 
 export interface SaleDetailEntity {
     saleDetailId: bigint;
@@ -22,6 +23,7 @@ export interface SaleDetailEntity {
     unitPriceAtSale: number;
     regularPriceAtSale: number;
     discountItem: number;
+    saleFor: SaleForEnum
     subtotalItem: number;
     notes?: string | null;
 

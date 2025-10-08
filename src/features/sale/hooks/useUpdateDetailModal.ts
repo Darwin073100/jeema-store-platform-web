@@ -5,6 +5,8 @@ import { useSaleProcessStore } from "../infraestructure/stores/sale.process.stor
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { useSale } from "./useSale";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
+import { SaleForEnum } from "../domain/enums/sale-for.enum";
+import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
 
 type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
 
@@ -20,7 +22,7 @@ const useUpdateDetailModal = () => {
     const [detailPrice, setDetailPrice] = useState<number>(0);
     const [detailQuantity, setDetailQuantity] = useState<number>(0);
     const [detailCurrentTotal, setDetailCurrentTotal] = useState<number>(0);
-    const [saleFor, setSaleFor] = useState<SaleForType>('Menudeo');
+    const [saleFor, setSaleFor] = useState<SaleForEnum>(SaleForEnum.ONE);
 
     // Metodo para abriri y seleccionar el detalle en la UI
     const handleLoadUpdateDetail = (detail: SaleDetailEntity) => {
@@ -47,9 +49,9 @@ const useUpdateDetailModal = () => {
 
     // Actualizar el precio del detalle, dependiendo si es mayoreo o menudeo
     const currencyDetailPrice = () => {
-        if (saleFor === 'Mayoreo' && itemMatchDetail?.inventory?.salePriceMany) {
+        if (saleFor === SaleForEnum.MANY && itemMatchDetail?.inventory?.salePriceMany) {
             setDetailPrice(itemMatchDetail?.inventory?.salePriceMany);
-        } else if (saleFor === 'Menudeo' && itemMatchDetail?.inventory?.salePriceOne) {
+        } else if (saleFor === SaleForEnum.ONE && itemMatchDetail?.inventory?.salePriceOne) {
             setDetailPrice(itemMatchDetail?.inventory?.salePriceOne);
         }
     }
@@ -61,9 +63,9 @@ const useUpdateDetailModal = () => {
 
     useEffect(() => {
         if (itemMatchDetail?.inventory?.saleQuantityMany && detailQuantity >= itemMatchDetail?.inventory?.saleQuantityMany) {
-            setSaleFor('Mayoreo');
+            setSaleFor(SaleForEnum.MANY);
         } else if (itemMatchDetail?.inventory?.saleQuantityMany && detailQuantity < itemMatchDetail?.inventory?.saleQuantityMany) {
-            setSaleFor('Menudeo');
+            setSaleFor(SaleForEnum.ONE);
         }
         currencyDetailPrice();
     }, [detailQuantity]);
@@ -76,6 +78,61 @@ const useUpdateDetailModal = () => {
         currencyDetailTotal()
     }, [detailPrice, saleFor, detailQuantity]);
 
+    const handleApplyManualSaleFor = async (detail?: SaleDetailEntity, specialprice?: number) => {
+        if(detail){
+            const currentDetail: AddDetailToSaleDto = {
+                productBarCodeAtSale: detail.productBarCodeAtSale,
+                productUnitAtSale: detail.productUnitAtSale,
+                quantity: detailQuantity,
+                notes: detail.notes ?? undefined,
+                specialprice: specialprice ? Number(specialprice): detail.unitPriceAtSale,
+                saleFor:  detail.saleFor === SaleForEnum.ONE? SaleForEnum.MANY
+                : detail.saleFor === SaleForEnum.MANY? SaleForEnum.ONE 
+                : SaleForEnum.SPECIAL
+            }
+            initLoading('aplyManualSaleForLoading');
+            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(2), currentDetail);
+            if (!result.ok) {
+                setFloatMessageState({
+                    type: 'red',
+                    summary: '¡Hay un error!',
+                    description: result.error?.message ?? 'Ha ocurrido un error al modificar la cantidad.',
+                    isActive: true,
+                });
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 2000);
+            } else {
+                // Validar que venga un value para actualizar el estado de la venta.
+                result.value ?
+                    setSale(result.value) : null;
+                result.value ?
+                    setSaleId(result.value.saleId) : null;
+    
+                setFloatMessageState({
+                    type: 'green',
+                    summary: '¡Correcto!',
+                    description: 'Cambios realizados.',
+                    isActive: true
+                });
+                closeSaleModal();
+                setTimeout(()=>{
+                    setFloatMessageState({});
+                }, 3000)
+            }
+            finishLoading();
+        } else {
+            setFloatMessageState({
+                type: 'red',
+                summary: '¡Hay un error!',
+                description: 'Ha ocurrido un error al aplicar los cambios.',
+                isActive: true,
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 2000);
+        }
+    }
     const handleUpdateQuantityDetail = async () => {
         const inventorySelected = itemMatchDetail?.inventory;
         if(inventorySelected){
@@ -140,6 +197,7 @@ const useUpdateDetailModal = () => {
         saleFor,
         loading,
         handleUpdateQuantityDetail,
+        handleApplyManualSaleFor,
     }
 }
 

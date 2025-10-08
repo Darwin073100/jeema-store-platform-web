@@ -29,7 +29,7 @@ const useDeleteDetail = () => {
             if(!result.ok){
                 setFloatMessageState({
                     type: 'red',
-                    summary: 'No se pudo eliminar el producto.',
+                    summary: `${result.error?.statusCode ?? '500' }: No se pudo eliminar el producto.`,
                     description: result.error?.message ?? 'No se ha podido completar la acción.',
                     isActive: true,
                 });
@@ -44,8 +44,10 @@ const useDeleteDetail = () => {
             }
             finishLoading();
             setTimeout(()=> {
-                setFloatMessageState({});
                 closeSaleModal();
+            }, 500);
+            setTimeout(()=> {
+                setFloatMessageState({});
             }, 2000);
         } catch (error) {
             finishLoading();

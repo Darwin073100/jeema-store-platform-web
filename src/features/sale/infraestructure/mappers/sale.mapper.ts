@@ -24,7 +24,8 @@ export class SaleMapper {
             productBarCodeAtSale: dto.productBarCodeAtSale,
             productUnitAtSale: dto.productUnitAtSale,
             quantity: Number(dto.quantity),
-            unitPriceAtSale: Number(dto.unitPriceAtSale),
+            saleFor: dto.saleFor,
+            specialPrice: Number(dto.specialprice),
             notes: dto.notes
         }
 

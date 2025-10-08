@@ -7,22 +7,33 @@ import { Spinner } from '@/ui/components/loadings/Spinner';
 import { TextInput } from '@/ui/components/inputs';
 import { useUpdateDetailModal } from '../hooks/useUpdateDetailModal';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
+import { FiGitCommit, FiGitPullRequest } from 'react-icons/fi';
+import { SaleForEnum } from '../domain/enums/sale-for.enum';
 
 const UpdateDetailModal = () => {
   const { 
     closeSaleModal, saleModals, detailSelected, detailQuantity, setDetailQuantity, detailCurrentTotal, 
-    saleFor, detailPrice, handleUpdateQuantityDetail, loading
+    saleFor, detailPrice, handleUpdateQuantityDetail, loading, handleApplyManualSaleFor
   } = useUpdateDetailModal();
  return (
     <TemplateModal size='lg' isOpen={saleModals==='updateDetailModal'} onClose={closeSaleModal} title='Producto en venta'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-2.5">
+          <div>
+            <Button onClick={()=> handleApplyManualSaleFor(detailSelected ?? undefined)} color='blue' size='sm' className='w-full' 
+              title='Al dar click al boton aplicas manualmente Ej: Menudeo o Mayoreo'>
+              { detailSelected?.saleFor === SaleForEnum.MANY 
+                ? loading==='aplyManualSaleForLoading'? <Spinner/> :<> <FiGitCommit />Aplicar Menudeo</> 
+                : loading==='aplyManualSaleForLoading'? <Spinner/> :<> <FiGitPullRequest />Aplicar Mayoreo</>
+              }
+            </Button>
+          </div>
           <span className='text-green-600 font-bold'>{detailSelected?.productNameAtSale ?? 'S/N'}</span>
           <div>
             <div className='flex flex-col items-center'>
               <div className='flex gap-1 items-center'>
                 <span>Precio</span>
-                <span className='text-sm text-blue-600 bg-blue-100 p-1 rounded-lg'>{ saleFor }</span>
+                <span className='text-sm text-blue-600 bg-blue-100 p-1 rounded-lg'>{ saleFor.toString() }</span>
               </div>
               <span>
                 <span className='text-purple-600 text-2xl'>

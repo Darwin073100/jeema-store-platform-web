@@ -1,7 +1,10 @@
+import { SaleForEnum } from "../../domain/enums/sale-for.enum";
+
 export interface AddDetailToSaleHttpDto {
     quantity: number;
-    unitPriceAtSale: number;
+    specialPrice?: number|null;
     productBarCodeAtSale: string;
     productUnitAtSale: string;
+    saleFor: SaleForEnum;
     notes?: string;
 }
