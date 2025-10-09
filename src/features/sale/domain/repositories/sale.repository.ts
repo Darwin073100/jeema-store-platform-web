@@ -69,4 +69,9 @@ export interface SaleRepository {
      * @returns {Promise<Result<{sales:SaleEntity[]}, ErrorEntity>>}
      */
     findAllByBranchOffice(branchOfficeId: bigint): Promise<Result<{sales:SaleEntity[]}, ErrorEntity>>
+    /**
+     * Este metodo es para buscar una venta y traer la informacion a detalle
+     * @param saleId 
+     */
+    findSaleInfoById(saleId: bigint): Promise<Result<SaleEntity, ErrorEntity>>
 }

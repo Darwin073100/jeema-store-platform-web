@@ -1,3 +1,5 @@
+import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity";
+
 export interface SalePaymentEntity{
     salePaymentId: bigint;
     paymentMethodId: bigint;
@@ -7,4 +9,5 @@ export interface SalePaymentEntity{
     createdAt: Date;
     updatedAt?: Date | null;
     deletedAt?: Date | null;
+    paymentMethod?: PaymentMethodEntity | null
 }

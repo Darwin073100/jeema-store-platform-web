@@ -7,6 +7,9 @@ import { useProductStore } from "@/features/product/infraestructure/stores/produ
 import { LotEntity } from "@/features/lot/domain/entities/lot.entity";
 import { useRouter } from "next/navigation";
 import { InventoryEntity } from "../domain/entities/inventory.entity";
+import { BasicTable, BCol, BRow, BTableEmpty } from "@/ui/components/tables/BasicTable";
+import { Button } from "@/ui/components/buttons";
+import { FiExternalLink } from "react-icons/fi";
 
 interface TableProductProps {
     productList: ProductEntity[];
@@ -28,7 +31,7 @@ export function TableProduct({ productList = [] }: TableProductProps) {
     // Memoiza el mapeo de productos con lotes e inventario
     const productsWhitLots: ProductEntity[] = useMemo(() => {
         if (!productList || !Array.isArray(productList)) return [];
-        
+
         return productList.flatMap((product: ProductEntity) => {
             // Verificar que el producto existe y tiene lotes
             if (!product || !product.lots || !Array.isArray(product.lots) || product.lots.length < 1) {
@@ -36,19 +39,19 @@ export function TableProduct({ productList = [] }: TableProductProps) {
                     ...product
                 }];
             }
-            
+
             return product.lots.flatMap((lot: LotEntity) => {
                 // Verificar que el lote existe y tiene inventarios
                 console.log(product)
                 console.log(lot)
-                if (!lot || !lot.inventories || !Array.isArray(lot.inventories)|| lot.inventories.length < 1) {
+                if (!lot || !lot.inventories || !Array.isArray(lot.inventories) || lot.inventories.length < 1) {
                     return [
                         {
-                    ...product,
-                    lots: [lot]
-                }];
+                            ...product,
+                            lots: [lot]
+                        }];
                 }
-                
+
                 let finalResult = lot.inventories.map((inventory: InventoryEntity) => ({
                     ...product,
                     lots: [lot],
@@ -65,12 +68,12 @@ export function TableProduct({ productList = [] }: TableProductProps) {
         if (!searchCharacter) {
             return productsWhitLots;
         }
-        
-        const filtered = productsWhitLots.filter(item => 
-            item && item.name && 
+
+        const filtered = productsWhitLots.filter(item =>
+            item && item.name &&
             item.name.toLowerCase().includes(searchCharacter.toLowerCase())
         );
-        
+
         return filtered;
     }, [productsWhitLots, searchCharacter]);
 
@@ -87,43 +90,37 @@ export function TableProduct({ productList = [] }: TableProductProps) {
         return true;
     }) || [];
 
-    const head = ['Cod. Bar. Uni.', 'Nombre', 'Stock', 'Ubi.', 'P. Com.', 'P. Uni.', 'P. May.', 'Categ.', 'Detalles'];
+    const head = ['Cod. Bar. Uni.', 'Nombre', 'Stock', 'Ubi.', 'P. Com.', 'P. Uni.', 'P. May.', 'Categ.'];
 
     return (
         <div>
-            <table className="w-full text-sm text-left rtl:text-right text-gray-700">
-                <thead className="text-sm text-gray-700 uppercase bg-white">
-                    <tr>
-                        {head.map(item => <th scope="col" className="px-6 py-3" key={item}>{item}</th>)}
-                    </tr>
-                </thead>
-                <tbody className="border-y border-gray-300">
-                    {finalProducts.map(item => (
-                        <tr className="bg-white border-b border-gray-200" key={item?.productId || Math.random()}>
-                            <td className="px-6 py-4">{item?.universalBarCode || '-'}</td>
-                            <td className="px-6 py-4">{item?.name || '-'}</td>
-                            <td className="px-6 py-4">{item?.inventories?.inventoryItems?.[0]?.quantityOnHan || 0}</td>
-                            <td className="px-6 py-4">{item?.inventories?.inventoryItems?.[0]?.location || '-'}</td>
-                            <td className="px-6 py-4">${item?.lots?.[0]?.purchasePrice || '0.00'}</td>
-                            <td className="px-6 py-4">${item?.inventories?.salePriceOne || '0.00'}</td>
-                            <td className="px-6 py-4">${item?.inventories?.salePriceMany || '0.00'}</td>
-                            <td className="px-6 py-4">{item?.category?.name || '-'}</td>
-                            <td className="px-6 py-4 flex gap-2 items-center">
-                                <RoundedButton 
-                                    color="yellow" 
-                                    onClick={() => handleViewProduct(item?.productId?.toString() || '')}
-                                    title="Ver detalles del producto"
-                                >
-                                    <CgDetailsMore />
-                                </RoundedButton>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            {(!finalProducts || finalProducts.length === 0) && (
-                <div className="w-full bg-gray-100 p-4">No hay productos...</div>
-            )}
+            <BasicTable theadList={head} isActions={true}>
+                {finalProducts.map(item => (
+                    <BRow key={item?.productId || Math.random()}>
+                        <BCol>{item?.universalBarCode || '-'}</BCol>
+                        <BCol>{item?.name || '-'}</BCol>
+                        <BCol>{item?.inventories?.inventoryItems?.[0]?.quantityOnHan || 0}</BCol>
+                        <BCol>{item?.inventories?.inventoryItems?.[0]?.location || '-'}</BCol>
+                        <BCol>${item?.lots?.[0]?.purchasePrice || '0.00'}</BCol>
+                        <BCol>${item?.inventories?.salePriceOne || '0.00'}</BCol>
+                        <BCol>${item?.inventories?.salePriceMany || '0.00'}</BCol>
+                        <BCol>{item?.category?.name || '-'}</BCol>
+                        <BCol className="flex justify-end">
+                            <Button
+                                size="sm"
+                                color="yellow"
+                                onClick={() => handleViewProduct(item?.productId?.toString() || '')}
+                                title="Ver detalles del producto"
+                            >
+                                <FiExternalLink size={14} /><span>Detalles</span>
+                            </Button>
+                        </BCol>
+                    </BRow>
+                ))}
+                {(!finalProducts || finalProducts.length === 0) && (
+                    <BTableEmpty colsNumber={head.length + 1} />
+                )}
+            </BasicTable>
         </div>
     )
 }

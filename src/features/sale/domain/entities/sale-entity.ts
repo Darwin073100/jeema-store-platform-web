@@ -4,6 +4,7 @@ import { SaleStatusEnum } from "../enums/sale-status.enum";
 import { SaleDetailEntity } from "./sale-detail-entity";
 import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
 import { EmployeeEntity } from "@/features/employee/domain/entities/employee.entity";
+import { SalePaymentEntity } from "./sale-payment-entity";
 
 export interface SaleEntity extends BaseEntity {
     saleId: bigint;
@@ -20,4 +21,5 @@ export interface SaleEntity extends BaseEntity {
     customer?: CustomerEntity | null;
     employee?: EmployeeEntity | null;
     saleDetails?: SaleDetailEntity[] | [];
+    salePayments?: SalePaymentEntity[]
 }
