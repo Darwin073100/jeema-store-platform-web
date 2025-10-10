@@ -9,7 +9,7 @@ export interface BreadcrumbItem {
 interface Props {
     breadcrumbItems: BreadcrumbItem[],
     title: string,
-    children: any,
+    children?: any,
     detail: string,
 }
 

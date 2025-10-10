@@ -23,6 +23,18 @@ export class CustomerFetchRepository implements CustomerRepository{
             return this.handleError(error, 'Find All Customer by Establishment');
         }
     }
+    async findOneCustomerByEstablishment(customerId: bigint, establishmentId: bigint): Promise<Result<CustomerEntity, ErrorEntity>> {
+        try {  
+            const response = await this.httpClient.get<CustomerEntity>(
+                this.apiConfig.getEndpointUrl(`/customers/${customerId.toString()}/establishments/${establishmentId.toString()}`),
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'Find One Customer by Establishment');
+        }
+    }
 
     /**
      * Manejo centralizado de errores

@@ -1,3 +1,5 @@
+import { EstablishmentEntity } from "@/features/establishment/domain/entities/establishment.entity";
+import { SaleEntity } from "@/features/sale/domain/entities/sale-entity";
 import { AddressEntity } from "@/shared/domain/entities/address.entity";
 
 export interface CustomerEntity {
@@ -15,4 +17,6 @@ export interface CustomerEntity {
     updatedAt?       : Date | null;
     deletedAt?       : Date | null;
     address?         : AddressEntity | null;
+    sales?           : SaleEntity[],
+    establishment?   : EstablishmentEntity | null;
 }

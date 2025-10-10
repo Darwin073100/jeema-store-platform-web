@@ -1,4 +1,5 @@
-import React from 'react'
+import clsx from 'clsx';
+import React from 'react';
 import { useSalePayment } from '../hooks/useSalePayment'
 import { Button } from '@/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
@@ -9,7 +10,6 @@ import { LabelInput } from '@/ui/components/labels';
 import { MdOutlinePaid } from 'react-icons/md';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 import { useSaleStore } from '../infraestructure/stores/sale.store';
-import clsx from 'clsx';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { useSaleProcessStore } from '../infraestructure/stores/sale.process.store';
 
