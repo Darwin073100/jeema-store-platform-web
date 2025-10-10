@@ -83,7 +83,6 @@ const useUpdateLotModal = () => {
     }, [lot, openModal, reset]);
     const handleOpenUpdateLotModal = (lot: LotEntity) => {
         setLot(lot);
-        console.log(lot)
         setOpenModal(true);
     }
 
@@ -125,8 +124,7 @@ const useUpdateLotModal = () => {
                 expirationDate: data.expirationDate ? new Date(data.expirationDate) : null,
                 manufacturingDate: data.manufacturingDate ? new Date(data.manufacturingDate) : null
             }
-            console.log(lot);
-            console.log(updateData);
+
             const result = await updateLotAction(updateData);
 
             if(result.ok){

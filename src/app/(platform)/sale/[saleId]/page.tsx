@@ -5,7 +5,7 @@ import Link from "next/link";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
 import { ProductDetailsView } from "@/features/product/ui/product-detail/ProductDetailsView";
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
-import { FcSurvey } from "react-icons/fc";
+import { FcPaid, FcSearch, FcSurvey } from "react-icons/fc";
 import { findSaleInfoByIdAction } from "@/features/sale/actions/find-sale-info-by-id.action";
 import { SaleStatusEnum } from "@/features/sale/domain/enums/sale-status.enum";
 
@@ -24,60 +24,61 @@ interface Props {
 }
 
 export default async function SaleInformationPage({ params }: Props) {
-    // Función de utilidad para formatear moneda
-    const formatCurrency = (amount: any) => `$${parseFloat(amount).toFixed(2)}`;
+    try {
+        // Función de utilidad para formatear moneda
+        const formatCurrency = (amount: any) => `$${parseFloat(amount).toFixed(2)}`;
 
-    // Función de utilidad para Badge (usando el verde esmeralda para 'completada')
-    const getStatusBadge = (status: SaleStatusEnum) => {
-        const statusText = status.charAt(0).toUpperCase() + status.slice(1);
-        const classes = status === SaleStatusEnum.COMPLETED ? 'bg-emerald-100 text-emerald-800' : status === SaleStatusEnum.CANCELLED ?'bg-red-100 text-red-800': status === SaleStatusEnum.PENDING ? 'bg-yellow-100 text-yellow-800': 'bg-red-100 text-red-800';
-        return (
-            <span className={`px-3 py-1 text-sm font-semibold rounded-full uppercase ${classes}`}>
-                {statusText}
-            </span>
-        );
-    };
+        // Función de utilidad para Badge (usando el verde esmeralda para 'completada')
+        const getStatusBadge = (status: SaleStatusEnum) => {
+            const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+            const classes = status === SaleStatusEnum.COMPLETED ? 'bg-emerald-100 text-emerald-800' : status === SaleStatusEnum.CANCELLED ? 'bg-red-100 text-red-800' : status === SaleStatusEnum.PENDING ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800';
+            return (
+                <span className={`px-3 py-1 text-sm font-semibold rounded-full uppercase ${classes}`}>
+                    {statusText}
+                </span>
+            );
+        };
 
-    const breadcrumbItems: BreadcrumbItem[] = [
-        {
-            label: 'ventas',
-            href: '/sale'
-        },
-        {
-            label: `Venta #${params.saleId}`
+        const breadcrumbItems: BreadcrumbItem[] = [
+            {
+                label: 'ventas',
+                href: '/sale'
+            },
+            {
+                label: `Venta #${params.saleId}`
+            }
+        ]
+        const { saleId } = await params;
+
+        // Obtener los detalles del producto
+        const saleResult = await findSaleInfoByIdAction(BigInt(saleId));
+
+        if (!saleResult.ok || !saleResult.value) {
+            return (
+                <ProtectedRoute>
+                    <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
+                        <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
+                            <div className="text-6xl mb-4 flex w-full justify-center"><FcSearch /></div>
+                            <h2 className="text-xl font-bold mb-2">¡Oops! No pudimos encontrar la informacion de la venta</h2>
+                            <p className="text-red-700">La venta solicitada no existe en nuestra base de datos o no se pudo cargar en este momento.</p>
+                            <div className="mt-6">
+                                <Link href="/sale">
+                                    <Button color="red">
+                                        <span><FcPaid /></span> Volver a la lista de ventas
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+                    </main>
+                </ProtectedRoute>
+            );
         }
-    ]
-    const { saleId } = await params;
 
-    // Obtener los detalles del producto
-    const saleResult = await findSaleInfoByIdAction(BigInt(saleId));
+        const data = saleResult.value;
 
-    if (!saleResult.ok || !saleResult.value) {
         return (
             <ProtectedRoute>
-                <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">                    
-                    <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
-                        <div className="text-6xl mb-4">🔍</div>
-                        <h2 className="text-xl font-bold mb-2">¡Oops! No pudimos encontrar la informacion de la venta</h2>
-                        <p className="text-red-700">La venta solicitada no existe en nuestra base de datos o no se pudo cargar en este momento.</p>
-                        <div className="mt-6">
-                            <Link href="/Sale">
-                                <Button color="red">
-                                    🏠 Volver a la lista de ventas
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </main>
-            </ProtectedRoute>
-        );
-    }
-
-    const data = saleResult.value;
-
-    return (
-        <ProtectedRoute>
-            <TemplateHeader title={`Folio de la venta #${params.saleId}`} detail="Vista general de ventas" breadcrumbItems={breadcrumbItems}>
+                <TemplateHeader title={`Folio de la venta #${params.saleId}`} detail="Vista general de ventas" breadcrumbItems={breadcrumbItems}>
                     {/* ENCABEZADO Y ACCIONES PRINCIPALES */}
                     <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-200">
                         <div className="flex items-center space-x-3">
@@ -242,7 +243,27 @@ export default async function SaleInformationPage({ params }: Props) {
 
                         </aside>
                     </div>
-            </TemplateHeader>
-        </ProtectedRoute>
-    );
+                </TemplateHeader>
+            </ProtectedRoute>
+        );
+    } catch (error) {
+        return (
+            <ProtectedRoute>
+                <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
+                    <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
+                        <div className="text-6xl mb-4 flex w-full justify-center"><FcSearch /></div>
+                        <h2 className="text-xl font-bold mb-2">¡Oops! No pudimos encontrar la informacion de la venta</h2>
+                        <p className="text-red-700">La venta solicitada no existe en nuestra base de datos o no se pudo cargar en este momento.</p>
+                        <div className="mt-6">
+                            <Link href="/sale">
+                                <Button color="red">
+                                    <span><FcPaid /></span> Volver a la lista de ventas
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                </main>
+            </ProtectedRoute>
+        );
+    }
 }

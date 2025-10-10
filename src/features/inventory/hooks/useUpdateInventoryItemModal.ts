@@ -80,7 +80,7 @@ const useUpdateInventoryItemModal = () => {
                 quantityOnHan: data.quantityOnHand,
                 internalBarCode: inventoryItem?.internalBarCode
             }
-            console.log(registerInventoryItemDto);
+
 
             const result = await updateInventoryItemAction(registerInventoryItemDto);
             if (result.ok) {

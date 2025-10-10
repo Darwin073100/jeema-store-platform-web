@@ -42,8 +42,7 @@ export function TableProduct({ productList = [] }: TableProductProps) {
 
             return product.lots.flatMap((lot: LotEntity) => {
                 // Verificar que el lote existe y tiene inventarios
-                console.log(product)
-                console.log(lot)
+
                 if (!lot || !lot.inventories || !Array.isArray(lot.inventories) || lot.inventories.length < 1) {
                     return [
                         {

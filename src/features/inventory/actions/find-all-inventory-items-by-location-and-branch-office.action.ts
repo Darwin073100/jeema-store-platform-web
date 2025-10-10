@@ -17,7 +17,7 @@ export async function findAllInventoryItemsByLocationAndBranchOfficeAction(locat
         branchOffice = cookieStore.get('branchOfficeCookie')?.value ?? null;
         if (branchOffice) {
             branchOffice = JSON.parse(branchOffice) as BranchOfficeEntity;
-            console.log(branchOffice);
+
             const result = await useCase.execute(branchOffice.branchOfficeId, location);
             return {
                 ...result

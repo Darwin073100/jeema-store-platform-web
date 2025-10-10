@@ -118,25 +118,20 @@ const useSeasonModal = ({ seasonList }: Props) => {
             const [year, month, day] = dateString.split('-').map(Number);
             const date = new Date(year, month - 1, day); // month - 1 porque los meses en JS son 0-indexados
             
-            console.log(`parseInputDate: "${dateString}" -> ${date.toISOString()} (local: ${date.toLocaleDateString()})`);
-            
             return isNaN(date.getTime()) ? null : date;
         } catch (error) {
-            console.error('Error parsing date:', error);
             return null;
         }
     }
 
     useEffect(()=>{
         if(!!season){
-            console.log('Setting season data:', season);
             const formData = {
                 name: season.name,
                 description: season.description,
                 dateInit: formatDateForInput(season.dateInit),
                 dateFinish: formatDateForInput(season.dateFinish)
             };
-            console.log('Form data being set:', formData);
             reset(formData);
         } else {
             resetForm()

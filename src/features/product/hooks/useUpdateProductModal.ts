@@ -82,29 +82,22 @@ const useUpdateProductModal = () => {
 
     const loadCatalogData = async () => {
         try {
-            console.log('Cargando datos del catálogo...');
             const [categoriesResult, brandsResult, seasonsResult] = await Promise.all([
                 ViewAllCategoriesAction(),
                 viewAllBrandsAction(),
                 viewAllSeasonsAction()
             ]);
 
-            console.log('Resultados:', { categoriesResult, brandsResult, seasonsResult });
-
             if (categoriesResult?.ok && categoriesResult.value) {
-                console.log('Categorías cargadas:', categoriesResult.value.categories);
                 setCategories(categoriesResult.value.categories);
             }
             if (brandsResult?.ok && brandsResult.value) {
-                console.log('Marcas cargadas:', brandsResult.value.brands);
                 setBrands(brandsResult.value.brands);
             }
             if (seasonsResult?.ok && seasonsResult.value) {
-                console.log('Temporadas cargadas:', seasonsResult.value.seasons);
                 setSeasons(seasonsResult.value.seasons);
             }
         } catch (error) {
-            console.error('Error loading catalog data:', error);
             setFloatMessageState({
                 description: 'Error al cargar los datos del catálogo',
                 summary: '¡Error!',

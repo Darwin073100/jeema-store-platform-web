@@ -91,7 +91,7 @@ export function ProductDetailsView({ product }: Props) {
     }
 
     // const handleAddInventory = (branchOfficeId: bigint, productId: bigint, lotId: bigint ) => {
-    //     console.log({branchOfficeId,productId,lotId});
+
     //     handleOpenModalInventory(branchOfficeId, productId, lotId);
     //     // Agregar inventario para lote
     // };

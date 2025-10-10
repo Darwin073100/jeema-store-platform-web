@@ -19,7 +19,7 @@ const useCancelSale = () => {
 
     // No permite abrir el modal si no hay productos que cobrar.
     const handleCheckerOpenModalCancelSale = () => {
-        console.log('handleCheckerOpenModalCancelSale');
+
         if (saleId === BigInt(0)) {
             setFloatMessageState({
                 type: 'red',
