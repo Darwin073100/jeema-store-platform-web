@@ -1,9 +1,15 @@
 import { findOneCustomerByEstablishmentAction } from "@/features/customer/actions/find-one-customer-by-establishment.action";
+import { CustomerSaleList } from "@/features/customer/presentation/ui/details/CustomerSaleList";
+import { SaleStatusEnum } from "@/features/sale/domain/enums/sale-status.enum";
+import { formatDate } from "@/shared/lib/utils/date-formatter";
+import { Badge } from "@/ui/components/badges/Badge";
 import { Button } from "@/ui/components/buttons";
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 import Link from "next/link";
+import { FcComboChart, FcLink, FcTimeline } from "react-icons/fc";
+import { IoBasketSharp } from "react-icons/io5";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -24,6 +30,7 @@ export default async function SaleInformationPage({ params }: Props) {
         const { customerId } = await params;
         const customer = await findOneCustomerByEstablishmentAction(BigInt(customerId));
         const data = customer?.value;
+
         const breadcrumbItems: BreadcrumbItem[] = [
             {
                 label: 'clientes',
@@ -34,24 +41,7 @@ export default async function SaleInformationPage({ params }: Props) {
             }
         ]
 
-        // Función de utilidad para formatear moneda
-        const formatCurrency = (amount: number) => `$${parseFloat(amount.toString()).toFixed(2)}`;
-
-        // Función para obtener el Badge de Status de la Venta (igual que antes)
-        const getSaleStatusBadge = (status: 'completada' | 'pendiente') => {
-            const statusText = status.charAt(0).toUpperCase() + status.slice(1);
-            const classes = {
-                'completada': 'bg-emerald-100 text-emerald-800 border-emerald-300',
-                'pendiente': 'bg-yellow-100 text-yellow-800 border-yellow-300',
-                // Agregar más si es necesario: 'cancelada': 'bg-red-100 text-red-800'
-            };
-            return (
-                <span className={`px-2 py-0.5 text-xs font-semibold rounded-full border ${classes[status] || 'bg-gray-100 text-gray-800'}`}>
-                    {statusText}
-                </span>
-            );
-        };
-        if (!customer?.ok || !customer?.value) {
+        if (!customer?.ok || !data) {
             return (
                 <ProtectedRoute>
                     <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
@@ -83,45 +73,13 @@ export default async function SaleInformationPage({ params }: Props) {
 
                             {/* 3. HISTORIAL DE VENTAS (LISTA/TABLA) */}
                             <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-200">
-                                <h2 className="text-2xl font-extrabold text-gray-900 mb-4 pb-3 border-b border-gray-100">
-                                    Historial de Compras Recientes
+                                <h2 className="flex items-center gap-2 text-2xl font-extrabold text-gray-900 mb-4 pb-3 border-b border-gray-100">
+                                    <FcTimeline />
+                                    <span>Historial de Compras Recientes</span>
                                 </h2>
 
                                 {/* Lista de Ventas (Diseño tipo Tarjeta/Fila para mejor UX) */}
-                                <div className="space-y-3">
-                                    {(data?.sales?.length ?? 0) > 0 ? (
-                                        data?.sales?.map((sale) => (
-                                            <div key={sale.saleId} className="p-4 bg-gray-50 rounded-lg border border-gray-200 flex justify-between items-center hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
-
-                                                {/* Información Principal */}
-                                                <div>
-                                                    <p className="text-lg font-bold text-gray-800">Venta #{sale.saleId}</p>
-                                                    <p className="text-sm text-gray-500">
-                                                        {new Date(sale.createdAt).toLocaleDateString()}
-                                                        <span className="mx-2 text-gray-300">|</span>
-                                                        {getSaleStatusBadge('completada')}
-                                                    </p>
-                                                </div>
-
-                                                {/* Monto y Acción */}
-                                                <div className="text-right flex items-center space-x-4">
-                                                    <span className="text-xl font-extrabold text-blue-700">
-                                                        {formatCurrency(sale.totalAmount)}
-                                                    </span>
-                                                    <button
-                                                        // Usando tu color de acento naranja para la acción de detalles
-                                                        className="px-3 py-1 text-sm font-semibold text-white bg-orange-500 rounded-md hover:bg-orange-600 transition-colors"
-                                                    // onClick={() => alert(`Navegar a Detalle de Venta #${sale.saleId}`)}
-                                                    >
-                                                        Ver Detalles
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p className="text-gray-500 italic p-4 text-center">Aún no hay ventas registradas para este cliente.</p>
-                                    )}
-                                </div>
+                                <CustomerSaleList data={data}/>
                             </div>
 
                         </div>
@@ -131,7 +89,7 @@ export default async function SaleInformationPage({ params }: Props) {
                             {/* 1. FICHA DE CONTACTO PRINCIPAL */}
                             <div className="bg-white p-6 rounded-xl shadow-lg border-t-4 border-blue-500">
                                 <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                                    <span className="text-blue-500 mr-2">🔗</span> Contacto Principal
+                                    <span className="text-blue-500 mr-2"><FcLink /></span> Contacto Principal
                                 </h2>
 
                                 <dl className="text-sm space-y-3">
@@ -169,8 +127,8 @@ export default async function SaleInformationPage({ params }: Props) {
 
                             {/* 2. ESTADÍSTICAS DEL CLIENTE (Placeholder) */}
                             <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                                <h2 className="text-xl font-bold text-gray-800 mb-4">
-                                    📊 Estadísticas
+                                <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4">
+                                    <FcComboChart /> <span>Estadísticas</span>
                                 </h2>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
