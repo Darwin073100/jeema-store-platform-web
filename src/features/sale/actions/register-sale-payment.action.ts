@@ -1,4 +1,5 @@
 'use server';
+import { revalidatePath } from "next/cache";
 import { RegisterSalePaymentItem } from "../application/dtos/register-sale-payment.dto";
 import { RegisterSalePaymentUseCase } from "../application/use-case/register-sale-payment.use-case";
 import { SaleRepositoryFactory } from "../infraestructure/factory/sale-repository.factory";
@@ -8,6 +9,9 @@ export async function registerSalePaymentAction(saleId: bigint, dtos: RegisterSa
     const useCase = new RegisterSalePaymentUseCase(repository);
 
     const result = await useCase.execute(saleId, dtos);
+    if(result.ok){
+        revalidatePath('/sale');
+    }
     
     return {
         ...result

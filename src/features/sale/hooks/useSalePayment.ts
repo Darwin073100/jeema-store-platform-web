@@ -169,7 +169,7 @@ const useSalePayment = () => {
                         type: 'green',
                         isActive: true,
                         summary: '¡Exito!',
-                        description: 'Venta finalizada'
+                        description: 'Se ha cobrado la venta'
                     });
                     setTimeout(() => {
                         closeSaleModal();
