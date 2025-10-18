@@ -2,9 +2,11 @@
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
+import { useState } from "react";
 
 export function useAuth() {
   const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(false);
 
   const login = async (email: string, password: string) => {
     try {
@@ -28,6 +30,7 @@ export function useAuth() {
   };
 
   const logout = async () => {
+    setLoading(true);
     await signOut({ redirect: false });
   };
 
@@ -46,6 +49,8 @@ export function useAuth() {
     // Métodos
     login,
     logout,
+
+    loading,
     
     // Session completa por si necesitas algo más específico
     session,

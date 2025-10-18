@@ -9,7 +9,7 @@ import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/Templa
 
 const homeCards = [
   {
-    title: 'Ventas',
+    title: 'Nueva venta',
     description: 'Vende productos a clientes',
     to: '/sale/new',
     image: Sale

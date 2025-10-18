@@ -1,7 +1,9 @@
 'use client'
-import { IoClose } from 'react-icons/io5';
+import { IoClose, IoCloseOutline, IoPushSharp } from 'react-icons/io5';
 import { Button } from '../buttons';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { RoundedButton } from '../buttons/RoundedButton';
+import { Spinner } from '../loadings/Spinner';
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -9,7 +11,7 @@ interface LogoutModalProps {
 }
 
 export const LogoutModal = ({ isOpen, onClose }: LogoutModalProps) => {
-  const { logout, user } = useAuth();
+  const { logout, user, loading } = useAuth();
 
   if (!isOpen) return null;
 
@@ -21,26 +23,23 @@ export const LogoutModal = ({ isOpen, onClose }: LogoutModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay */}
-      <div 
-        className="fixed inset-0 bg-black opacity-50"
-        onClick={onClose}
-      />
-      
-      {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-md mx-4">
+    <div className="fixed inset-0 z-50" onClick={onClose}>
+      {/* Modal positioned top-right */}
+      <div
+        className=" absolute top-24 sm:right-6 right-4 bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-[90vw]"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-800">
             Cerrar Sesión
           </h2>
-          <button
+          <RoundedButton
+            color='red'
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
           >
             <IoClose size={24} />
-          </button>
+          </RoundedButton>
         </div>
         
         {/* Content */}
@@ -56,15 +55,18 @@ export const LogoutModal = ({ isOpen, onClose }: LogoutModalProps) => {
         {/* Actions */}
         <div className="flex gap-3 justify-end">
           <Button
+            color='gray'
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
           >
+            <IoCloseOutline />
             Cancelar
           </Button>
           <Button
+            disabled={loading}
+            color='red'
             onClick={handleLogout}
-            className="px-4 py-2 bg-red-500 text-white hover:bg-red-600 transition-colors"
           >
+            {loading? <Spinner/>: <IoPushSharp />}
             Cerrar Sesión
           </Button>
         </div>
