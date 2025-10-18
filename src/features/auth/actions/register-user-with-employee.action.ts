@@ -1,10 +1,10 @@
 'use server'
 import { RegisterUserWithEmployeeDTO } from "../application/dtos/register-user-with-employee.dto";
 import { RegisterUserWithEmployeeUseCase } from "../application/use-cases/register-user-with-employee.use-case";
-import { UserFetchRepositoryImpl } from "../infraestructure/user-fetch-repository.impl";
+import { UserRepositoryFactory } from "../infraestructure/factories/user-repository.factory";
 
 export async function registerUserWithEmployeeAction(dto: RegisterUserWithEmployeeDTO){
-    const userFetchRepositoryImpl = new UserFetchRepositoryImpl();
+    const userFetchRepositoryImpl = UserRepositoryFactory.create();
     const registerUserWithEmployeeUseCase = new RegisterUserWithEmployeeUseCase(userFetchRepositoryImpl);
 
     const result = await registerUserWithEmployeeUseCase.execute(dto);

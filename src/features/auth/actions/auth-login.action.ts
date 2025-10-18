@@ -1,7 +1,7 @@
 'use server'
 import { AuthLoginDTO } from "../application/dtos/auth.login.dto";
 import { AuthLoginUseCase } from "../application/use-cases/auth.login.use-case";
-import { AuthFetchRepositoryImpl } from "../infraestructure/auth-fetch-repository.impl";
+import { AuthFetchRepositoryImpl } from "../infraestructure/repositories/auth-fetch-repository.impl";
 
 export async function authLoginAction(dto: AuthLoginDTO){
 
