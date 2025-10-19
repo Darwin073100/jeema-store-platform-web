@@ -34,7 +34,7 @@ const ConfigurationOptions = () => {
                         <FcShop className="w-[50px] h-[50px]" />
                         <span>Sucursales</span>
                     </div>
-                    <Link href='/configurations/users'>
+                    <Link href='/configurations/employees'>
                         <div className="transition-all duration-200 cursor-pointer shadow hover:shadow-xl flex flex-col items-center justify-center bg-white p-4 w-[150px] rounded-2xl">
                             <FcConferenceCall className="w-[50px] h-[50px]" />
                             <span>Empleados</span>

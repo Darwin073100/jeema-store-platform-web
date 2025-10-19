@@ -1,4 +1,5 @@
 import { AddressEntity } from "@/shared/domain/entities/address.entity";
+import { EmployeeRoleEntity } from "./employee-role.entity";
 
 export interface EmployeeEntity {
     employeeId       : bigint; // El ID del rol del empleado (como string para compatibilidad JSON)
@@ -22,4 +23,5 @@ export interface EmployeeEntity {
     updatedAt?       : Date | null; // La fecha de la última actualización
     deletedAt?       : Date | null; // La fecha de eliminación (puede ser nulo)
     address?         : AddressEntity| null;
+    employeeRole?    : EmployeeRoleEntity| null;
 }
