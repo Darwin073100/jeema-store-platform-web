@@ -42,8 +42,7 @@ export const schema = yup.object().shape({
     currentSalary: yup.number()
         .nullable()
         .optional()
-        .notRequired()
-        .typeError('Asegurate de ingresar la información correcta.'),
+        .notRequired(),
     entryTime: yup.string()
         .transform((value, originalValue) => originalValue === '' ? null : value)
         .optional().notRequired().nullable(),
