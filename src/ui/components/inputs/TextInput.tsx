@@ -3,7 +3,7 @@ import clsx from "clsx"
 import { forwardRef } from 'react'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement>{
-    type?: 'text'|'password'|'email'|'tel'|'url'|'search'|'number'|'date'|'radio',
+    type?: 'text'|'password'|'email'|'tel'|'url'|'search'|'number'|'date'|'time',
     error?: boolean,
     errorMessage?: string,
 }

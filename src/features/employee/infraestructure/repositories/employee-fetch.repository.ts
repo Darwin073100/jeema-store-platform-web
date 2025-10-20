@@ -4,6 +4,7 @@ import { EmployeeEntity } from "../../domain/entities/employee.entity";
 import { EmployeeRepository } from "../../domain/repositories/employee.repository";
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
+import { EmployeeRoleEntity } from "../../domain/entities/employee-role.entity";
 
 export class EmployeeFetchRepository implements EmployeeRepository {
     constructor(
@@ -15,6 +16,16 @@ export class EmployeeFetchRepository implements EmployeeRepository {
         try {
             const result = await this.httpClient.get<{ employees: EmployeeEntity[] }>(
                 this.apiConfig.getEndpointUrl(`/employees/all/establishments/${establishmentId.toString()}`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return this.handleError(error, '');
+        }
+    }
+    async findAllEmployeeRoles(): Promise<Result<{ employeeRoles: EmployeeRoleEntity[] }, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<{ employeeRoles: EmployeeRoleEntity[] }>(
+                this.apiConfig.getEndpointUrl(`/employee-roles`)
             );
             return Result.success(result.data);
         } catch (error) {

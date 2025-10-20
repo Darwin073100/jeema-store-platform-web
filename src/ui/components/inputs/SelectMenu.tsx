@@ -2,7 +2,7 @@
 import clsx from 'clsx'
 import React from 'react'
 
-type Option = {
+export type SelectMenuOption = {
     value : string,
     text: string
 }
@@ -10,7 +10,7 @@ type Option = {
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement>{
     error?: boolean,
     errorMessage?: string,
-    items: Option[]
+    items: SelectMenuOption[]
 }
 
 export const SelectMenu = ({ error = false, errorMessage, items ,...props }: Props) => {
