@@ -25,7 +25,6 @@ export default async function(){
     return (
         <ProtectedRoute>
             <TemplateHeader title="Registra un nuevo empleado" detail="Podras dar de alta un nuevo empleado con o sin usuario para acceso al sistema." breadcrumbItems={breadCrumbItems}>
-                <EmployeeEnableOptios />
                 <EmployeeForms 
                     optionsRoles={employeeRoles}/>
             </TemplateHeader>

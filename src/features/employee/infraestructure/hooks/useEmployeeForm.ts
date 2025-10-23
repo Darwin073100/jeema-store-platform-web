@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEmployeeUIStore } from "../stores/employee-ui.store";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 export const schema = yup.object().shape({
     employeeRoleId: yup.string()
@@ -49,38 +50,149 @@ export const schema = yup.object().shape({
     exitTime: yup.string()
         .transform((value, originalValue) => originalValue === '' ? null : value)
         .optional().notRequired().nullable(),
+    //?VALIDACION PARA LA DIRECCION
+    addressCheck: yup.boolean().required(),
+    addressPostalCode: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('El campo codigo postal es obligatorio')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressStreet: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressInteriorNumber: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .optional()
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressExteriorNumber: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .optional()
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressMunicipality: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('El campo municipio es obligatorio')
+            .min(3, 'El campo ciudad o municipio debe tener mínimo 3 caracteres')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressCity: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('El campo ciudad es obligatorio')
+            .min(3, 'El campo ciudad debe tener mínimo 3 caracteres')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressState: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('El campo estado es obligatorio')
+            .min(3, 'El campo estado debe tener mínimo 3 caracteres')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressNighborhood: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressCountry: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('El campo país es obligatorio')
+            .min(3, 'El campo país debe tener mínimo 3 caracteres')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    addressReference: yup.string().trim().when('addressCheck',{
+        is: true,
+        then: (schema)=> schema
+            .optional().notRequired().default('')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    //? VALIDACION PARA EL USUARIO
+    userCheck: yup.boolean().required(),
+    userUsername: yup.string().trim().when('userCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('La campo nombre de usuario es obligatorio.')
+            .min(3, 'Mínimo 3 caracteres debes escribir')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    userEmail: yup.string().trim().when('userCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('El campo correo es obligatorio.')
+            .email('El formato para el correo es alberto@platform.com.mx')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    userPassword: yup.string().trim().when('userCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('La contraseña es obligatoria.')
+            .min(8,'La contraseña debe tener al menos 8 caracteres.')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
+    userPasswordConfirm: yup.string().trim().when('userCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('Debes confirmar tu contraseña.')
+            .oneOf([yup.ref('userPassword')], 'Las contraseñas no coindicen.')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
 });
 
 type FormData = yup.InferType<typeof schema>;
 
 const useEmployeeForm = () => {
-    const { setAddressStateCheck, setUserStateCheck, addressStateCheck, userStateCheck } = useEmployeeUIStore();
-    const handleUserCheck = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        setUserStateCheck(!!e.target.checked.valueOf());
-    }
-    const handleAddressCheck = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        setAddressStateCheck(!!e.target.checked);
-    }
-
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onChange',
         defaultValues: {
+            userCheck: false,
+            addressCheck: false,
+            currentSalary: 0.0
         }
     });
+
+    const userCheck = watch('userCheck');
+    useEffect(()=>{
+        if(!userCheck){
+        // reset({
+        //     userUsername: undefined
+        // })
+    }
+    }, [userCheck]);
+    const addressCheck = watch('addressCheck');
 
     const onSubmit = async (data: FormData) => {
         console.log(data)
     }
     return {
-        addressStateCheck, 
-        userStateCheck,
-        handleAddressCheck,
-        handleUserCheck,
         onSubmit,
         handleSubmit,
         register,
         errors,
+        userCheck,
+        addressCheck
     }
 }
 
