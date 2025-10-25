@@ -1,14 +1,19 @@
 'use client';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEmployeeUIStore } from "../stores/employee-ui.store";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { RoleEntity } from "@/features/auth/domain/entities/role.entity";
+import { RegisterUserDTO } from "@/features/auth/application/dtos/register-user.dto";
+import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.dto";
+import { RegisterEmployeeDTO } from "../../application/dtos/register-employee.dto";
+import { saveEmployeeAction } from "../../actions/save-employee.action";
+import { useEmployeeUIStore } from "../stores/employee-ui.store";
 
 export const schema = yup.object().shape({
     employeeRoleId: yup.string()
         .required('Debes elegir el rol para el empleado.')
-        .test('not-empty', 'Debes elegir la categoría del producto.', 
+        .test('not-empty', 'Debes elegir un rol.', 
             value => value !== undefined && value !== null && value !== ''),
     firstName: yup.string()
         .required('El nombre es obligatorio.')
@@ -126,6 +131,15 @@ export const schema = yup.object().shape({
     }),
     //? VALIDACION PARA EL USUARIO
     userCheck: yup.boolean().required(),
+    userRoleId: yup.string().trim().when('userCheck',{
+        is: true,
+        then: (schema)=> schema
+            .required('Debes elegir el rol para el usuario.')
+            .test('not-empty', 'Debes elegir un rol.', 
+            value => value !== undefined && value !== null && value !== '')
+            .typeError('Asegurate de ingresar la información correcta.'),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
     userUsername: yup.string().trim().when('userCheck',{
         is: true,
         then: (schema)=> schema
@@ -163,6 +177,8 @@ export const schema = yup.object().shape({
 type FormData = yup.InferType<typeof schema>;
 
 const useEmployeeForm = () => {
+    const { floatMessageState, setFloatMessageState} = useEmployeeUIStore();
+    const [loading, setLoading] = useState(false);
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onChange',
@@ -172,6 +188,47 @@ const useEmployeeForm = () => {
             currentSalary: 0.0
         }
     });
+    const optionUserRoleSelected = watch('userRoleId');
+    const handleOptionsUserRoles = (roles: RoleEntity[])=>{
+        const rolesOption = roles.map(item => {
+            if(item.name.trim().toLowerCase() === 'global_admin'.trim().toLowerCase()){
+                return {
+                    value: item.roleId,
+                    text: 'Administrador Global',
+                    additional: item.description 
+                }
+            }
+            if(item.name.trim().toLowerCase() === 'establishment_manager'.trim().toLowerCase()){
+                return {
+                    value: item.roleId,
+                    text: 'Administrador de Establecimiento',
+                    additional: item.description 
+                }
+            }
+            if(item.name.trim().toLowerCase() === 'branch_office_management'.trim().toLowerCase()){
+                return {
+                    value: item.roleId,
+                    text: 'Administrador de Sucursal',
+                    additional: item.description 
+                }
+            }
+            if(item.name.trim().toLowerCase() === 'cajero'.trim().toLowerCase()){
+                return {
+                    value: item.roleId,
+                    text: 'Cajero',
+                    additional: item.description 
+                }
+            }
+            if(item.name.trim().toLowerCase() === 'seller'.trim().toLowerCase()){
+                return {
+                    value: item.roleId,
+                    text: 'Vendedor',
+                    additional: item.description 
+                }
+            }
+        });
+        return rolesOption;
+    }
 
     const userCheck = watch('userCheck');
     useEffect(()=>{
@@ -184,7 +241,76 @@ const useEmployeeForm = () => {
     const addressCheck = watch('addressCheck');
 
     const onSubmit = async (data: FormData) => {
-        console.log(data)
+        let userDTO: RegisterUserDTO | null = null;
+        setLoading(true);
+        if(userCheck){
+            userDTO = {
+                email: data.email ?? '',
+                employeeId: BigInt(0),
+                roleId: BigInt(data.userRoleId ?? 0),
+                passwordHash: data.userPassword ?? '',
+                username: data.userUsername ?? ''
+            }
+        }
+        let addressDTO: RegisterAddressDTO | null = null;
+        if(addressCheck){
+            addressDTO = {
+                country: data.addressCountry ?? '',
+                state: data.addressState ?? '',
+                postalCode: data.addressPostalCode ?? '',
+                municipality: data.addressMunicipality ?? '',
+                city: data.addressCity ?? '',
+                neighborhood: data.addressNighborhood ?? null,
+                street: data.addressStreet ?? null,
+                internalNumber: data.addressInteriorNumber ?? null,
+                externalNumber: data.addressExteriorNumber ?? null,
+                reference: data.addressReference ?? null
+            }
+        }
+
+        const registerEmployeeDTO: RegisterEmployeeDTO = {
+            isActive: true,
+            birthDate: data.birthDate ?? null,
+            branchOfficeId: BigInt(1),
+            currentSalary: Number(data.currentSalary ?? 0),
+            email: data.email,
+            employeeRoleId: BigInt(data.employeeRoleId),
+            entryTime: data.entryTime ?? null,
+            exitTime: data.exitTime ?? null,
+            firstName: data.firstName,
+            gender: data.gender ?? null,
+            hireDate: data.hireDate ?? new Date(),
+            lastName: data.lastName,
+            phoneNumber: data.phoneNumber,
+            photoUrl: data.phoneNumber,
+            terminationDate: null,
+            address: addressDTO,
+        }
+        const result = await saveEmployeeAction(registerEmployeeDTO, userDTO);
+        setLoading(false);
+        if(result.ok){
+            setFloatMessageState({
+                summary: '¡Correcto!',
+                description: 'Datos guardados correctamente',
+                isActive: true,
+                type: 'green'  
+            });
+            setTimeout(()=>{
+                setFloatMessageState({});
+            }, 2500);
+        } else {
+            setFloatMessageState({
+                summary: `${result.error?.statusCode}: ¡Error!`,
+                description: result.error?.message,
+                isActive: true,
+                type: 'red'
+            });
+            setTimeout(()=>{
+                setFloatMessageState({});
+            }, 4000);
+        }
+
+
     }
     return {
         onSubmit,
@@ -192,7 +318,11 @@ const useEmployeeForm = () => {
         register,
         errors,
         userCheck,
-        addressCheck
+        addressCheck,
+        handleOptionsUserRoles,
+        optionUserRoleSelected,
+        floatMessageState,
+        loading
     }
 }
 

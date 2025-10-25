@@ -5,6 +5,8 @@ import { EmployeeRepository } from "../../domain/repositories/employee.repositor
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { EmployeeRoleEntity } from "../../domain/entities/employee-role.entity";
+import { RegisterEmployeeDTO } from "../../application/dtos/register-employee.dto";
+import { EmployeeMapper } from "../mappers/employee.mapper";
 
 export class EmployeeFetchRepository implements EmployeeRepository {
     constructor(
@@ -26,6 +28,18 @@ export class EmployeeFetchRepository implements EmployeeRepository {
         try {
             const result = await this.httpClient.get<{ employeeRoles: EmployeeRoleEntity[] }>(
                 this.apiConfig.getEndpointUrl(`/employee-roles`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return this.handleError(error, '');
+        }
+    }
+    async save(dto: RegisterEmployeeDTO): Promise<Result<EmployeeEntity, ErrorEntity>> {
+        try {
+            const httpDto = EmployeeMapper.toRegisterEmployeeHttpDTO(dto);
+            const result = await this.httpClient.post<EmployeeEntity>(
+                this.apiConfig.getEndpointUrl(`/employees`),
+                httpDto
             );
             return Result.success(result.data);
         } catch (error) {

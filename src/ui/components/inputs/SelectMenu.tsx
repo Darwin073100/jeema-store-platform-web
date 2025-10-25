@@ -4,7 +4,8 @@ import React from 'react'
 
 export type SelectMenuOption = {
     value : string,
-    text: string
+    text: string,
+    additional?: string,
 }
 
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement>{

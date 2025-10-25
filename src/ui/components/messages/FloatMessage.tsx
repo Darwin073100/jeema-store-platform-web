@@ -13,7 +13,18 @@ interface Props {
 
 export const FloatMessage = ({ summary = 'Massage', description = 'Message Description', type = 'blue', isActive = false }: Props) => {
     const [isVisible, setIsVisible] = useState<boolean>(isActive);
+    const [messages, setMessages] = useState<string[]>([]);
 
+    useEffect(()=>{
+        if (typeof description === 'string'){
+            const message = [description];
+            setMessages(message);
+        } else if(typeof description === 'object'){
+            setMessages([
+                ...description
+            ]);
+        }
+    },[description]);
     const getIcon = () => {
         switch(type) {
             case 'blue':
@@ -68,8 +79,8 @@ export const FloatMessage = ({ summary = 'Massage', description = 'Message Descr
                                 <IoClose className="text-xl" />
                             </button>
                         </div>
-                        <div>
-                            <span>{description}</span>
+                        <div className="flex flex-col justify-start items-start">
+                            {messages.map(item=> <span>{item}</span>)}
                         </div>
                     </div>
                 </div>

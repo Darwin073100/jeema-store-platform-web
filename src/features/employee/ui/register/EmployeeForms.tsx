@@ -9,15 +9,20 @@ import { useEmployeeForm } from '../../infraestructure/hooks/useEmployeeForm';
 import { Button } from '@/ui/components/buttons';
 import { EmployeeEnableOptios } from './EmployeeEnableOptios';
 import { EmployeeFormUser } from './EmployeeFormUser';
+import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
+import { FloatMessage } from '@/ui/components/messages';
+import { Spinner } from '@/ui/components/loadings/Spinner';
+import { IoSave } from 'react-icons/io5';
 
 interface Props {
-    optionsRoles: SelectMenuOption[]
+    optionsRoles: SelectMenuOption[],
+    userRoles: RoleEntity[],
 }
 
-const EmployeeForms = ({ optionsRoles }: Props) => {
+const EmployeeForms = ({ optionsRoles, userRoles }: Props) => {
     const genderOptions = Object.values(GenderEnum).map(item => ({ text: item.toUpperCase(), value: item }));
 
-    const { errors, onSubmit, register, handleSubmit, userCheck, addressCheck } = useEmployeeForm()
+    const { errors, onSubmit, register, handleSubmit, userCheck, addressCheck, floatMessageState, loading } = useEmployeeForm()
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
             <EmployeeEnableOptios register={register}/>
@@ -135,14 +140,16 @@ const EmployeeForms = ({ optionsRoles }: Props) => {
                                 name="currentSalary"
                                 placeholder="Ej: 200" />
                         </div>
-                        <Button type='submit'>
-                            Guardar
+                        <Button type='submit' className='w-full mt-4' disabled={loading}>
+                            {loading? <Spinner/>: <IoSave/>}
+                            Guradar
                         </Button>
                     </div>
                 </div>
                 <div className={clsx(`${(!userCheck && !addressCheck) && 'hidden'} w-full flex flex-col gap-4`)}>
                     {userCheck && <>
                         <EmployeeFormUser 
+                            userRoles={userRoles}
                             register={register}
                             errors={errors}/>
                     </>}
@@ -153,6 +160,8 @@ const EmployeeForms = ({ optionsRoles }: Props) => {
                     </>}
                 </div>
             </div>
+            <FloatMessage
+                {...floatMessageState} />
         </form>
     )
 }
