@@ -21,6 +21,8 @@ export class EmployeeMapper {
             photoUrl: dto.photoUrl ?? undefined,
             terminationDate: dto.terminationDate?.toISOString(),
             address: dto.address? AddressMapper.toRegisterAddressHttpDTO(dto.address): undefined,
+            user: undefined
+            // user: dto.user? UserMapper.toRegisterUserHttpDTO(dto.user): undefined,
         }
         return httpDTO;
     }

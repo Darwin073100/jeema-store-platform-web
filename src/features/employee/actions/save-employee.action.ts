@@ -5,8 +5,8 @@ import { SaveEmployeeUseCase } from "../application/use-cases/save-employee.use-
 import { EmployeeRepositoryFactory } from "../infraestructure/factories/employee-repository.factory";
 
 export async function saveEmployeeAction(registerEmployeeDto: RegisterEmployeeDTO, registerUserDto: RegisterUserDTO | null){
-    const userFetchRepositoryImpl = EmployeeRepositoryFactory.create();
-    const useCase = new SaveEmployeeUseCase(userFetchRepositoryImpl);
+    const employeeFetchRepositoryImpl = EmployeeRepositoryFactory.create();
+    const useCase = new SaveEmployeeUseCase(employeeFetchRepositoryImpl);
     
     const result = await useCase.execute(registerEmployeeDto, registerUserDto);
     return {

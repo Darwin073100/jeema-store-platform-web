@@ -1,3 +1,4 @@
+import { RegisterUserHttpDTO } from "@/features/auth/infraestructure/dtos/register-user-http.dto";
 import { RegisterAddressHttpDTO } from "@/shared/infrastructure/http/address/dtos/register-address-http.dto";
 
 export interface RegisterEmployeeHttpDTO{
@@ -17,4 +18,5 @@ export interface RegisterEmployeeHttpDTO{
     isActive: boolean;
     photoUrl: string | undefined;
     address: RegisterAddressHttpDTO | undefined;
+    user: RegisterUserHttpDTO | undefined;
 }

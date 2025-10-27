@@ -1,7 +1,7 @@
 export interface RegisterUserHttpDTO{
-    employeeId: string,
+    employeeId?: string | null,
     roleId: string,
     username: string,
     email: string,
-    passwordHash: string,
+    password: string,
 }

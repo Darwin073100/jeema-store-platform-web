@@ -38,7 +38,7 @@ export default function Home() {
     <ProtectedRoute>
       <TemplateHeader title="Vista general" detail="Página de inicio" breadcrumbItems={breadCrumbItems}>
         <div className="h-full w-full">
-          <form className="grid grid-cols-5 gap-4 w-full text-gray-700">
+          <form className="flex max-md:flex-col gap-4 w-full text-gray-700">
             {homeCards.map(item => (
               <CardLink 
                 key={item.title}

@@ -8,7 +8,6 @@ import { GenderEnum } from '../../domain/enums/gender.enum';
 import { useEmployeeForm } from '../../infraestructure/hooks/useEmployeeForm';
 import { Button } from '@/ui/components/buttons';
 import { EmployeeEnableOptios } from './EmployeeEnableOptios';
-import { EmployeeFormUser } from './EmployeeFormUser';
 import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
 import { FloatMessage } from '@/ui/components/messages';
 import { Spinner } from '@/ui/components/loadings/Spinner';
@@ -147,12 +146,12 @@ const EmployeeForms = ({ optionsRoles, userRoles }: Props) => {
                     </div>
                 </div>
                 <div className={clsx(`${(!userCheck && !addressCheck) && 'hidden'} w-full flex flex-col gap-4`)}>
-                    {userCheck && <>
+                    {/* {userCheck && <>
                         <EmployeeFormUser 
                             userRoles={userRoles}
                             register={register}
                             errors={errors}/>
-                    </>}
+                    </>} */}
                     {addressCheck && <>
                         <EmployeeFormAddress 
                             register={register}

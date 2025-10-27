@@ -5,6 +5,8 @@ import { RegisterUserWithEmployeeDTO } from "../../application/dtos/register-use
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { UserEntity } from "../../domain/entities/user.entity";
+import { RegisterUserDTO } from "../../application/dtos/register-user.dto";
+import { UserMapper } from "../mappers/user.mapper";
 
 export class UserFetchRepositoryImpl implements UserRepository {
     constructor(
@@ -17,6 +19,19 @@ export class UserFetchRepositoryImpl implements UserRepository {
             const result = await this.httpClient.post<any>(
                 this.apiConfig.getEndpointUrl(`/users/with-employee`),
                 dto
+            );
+
+            return Result.success(result.data);
+        } catch (error:any) {
+           return this.handleError(error, 'Error al guardar usuario.');
+        }
+    }
+    async save(dto: RegisterUserDTO): Promise<Result<UserEntity, ErrorEntity>> {
+        const httpDTO = UserMapper.toRegisterUserHttpDTO(dto);
+        try {
+            const result = await this.httpClient.post<UserEntity>(
+                this.apiConfig.getEndpointUrl(`/users`),
+                httpDTO
             );
 
             return Result.success(result.data);

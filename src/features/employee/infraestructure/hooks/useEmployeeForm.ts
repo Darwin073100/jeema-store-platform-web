@@ -230,6 +230,17 @@ const useEmployeeForm = () => {
         return rolesOption;
     }
 
+    const handleResetForm = ()=> {
+        reset({
+            addressCheck: false, addressCity: undefined, addressCountry: undefined, addressExteriorNumber: undefined,
+            addressInteriorNumber: undefined, addressMunicipality: undefined, addressNighborhood: undefined, addressPostalCode: undefined,
+            addressReference: undefined, addressState: undefined, addressStreet: undefined, birthDate: undefined, currentSalary: 0,
+            email: '', employeeRoleId: '', entryTime: undefined, exitTime: undefined, firstName: '',
+            gender: undefined, hireDate: undefined, lastName: '', phoneNumber: '', userCheck: false,
+            userEmail: undefined, userPassword: undefined, userPasswordConfirm: undefined, userRoleId: undefined, userUsername: undefined
+        });
+    }
+
     const userCheck = watch('userCheck');
     useEffect(()=>{
         if(!userCheck){
@@ -245,7 +256,7 @@ const useEmployeeForm = () => {
         setLoading(true);
         if(userCheck){
             userDTO = {
-                email: data.email ?? '',
+                email: data.userEmail ?? '',
                 employeeId: BigInt(0),
                 roleId: BigInt(data.userRoleId ?? 0),
                 passwordHash: data.userPassword ?? '',
@@ -285,6 +296,7 @@ const useEmployeeForm = () => {
             photoUrl: data.phoneNumber,
             terminationDate: null,
             address: addressDTO,
+            user: null,
         }
         const result = await saveEmployeeAction(registerEmployeeDTO, userDTO);
         setLoading(false);
@@ -295,6 +307,7 @@ const useEmployeeForm = () => {
                 isActive: true,
                 type: 'green'  
             });
+            handleResetForm();
             setTimeout(()=>{
                 setFloatMessageState({});
             }, 2500);

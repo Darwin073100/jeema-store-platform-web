@@ -1,3 +1,4 @@
+import { RegisterUserDTO } from "@/features/auth/application/dtos/register-user.dto";
 import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.dto";
 
 export interface RegisterEmployeeDTO{
@@ -17,4 +18,5 @@ export interface RegisterEmployeeDTO{
     isActive: boolean;
     photoUrl: string | null;
     address: RegisterAddressDTO | null;
+    user: RegisterUserDTO | null;
 }

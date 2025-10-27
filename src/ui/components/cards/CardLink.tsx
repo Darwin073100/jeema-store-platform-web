@@ -11,7 +11,7 @@ interface Props {
 
 export const CardLink = ({ title, description, image, to }:Props) => {
     return (
-        <Link href={ to } className="transition-all duration-300 bg-white hover:bg-gray-100 rounded-xl p-4 shadow-xl flex flex-col items-center justify-center gap-1">
+        <Link href={ to } className="transition-all duration-300 bg-white hover:bg-gray-100 rounded-xl p-4 shadow-xl flex flex-col max-md:flex-row items-center justify-center gap-1">
             <Image
                 src={ image }
                 alt={ title }
