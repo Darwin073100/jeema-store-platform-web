@@ -12,11 +12,11 @@ interface Props {
 }
 const EmployeeDesktopTable = ({ employees }: Props) => {
     const heads = ['Folio', 'Empleado', 'Telefono', 'Correo', 'Rol', 'H. Entrada', 'H. Salida']
-    const [loading, setLoading] = useState(false);
+    const [employeeId, setEmployeeId] = useState(BigInt(0));
     const router = useRouter();
-    const handleRouter = (route: string)=>{
-        setLoading(true);
-        router.push(route);
+    const handleRouter = (id: bigint) => {
+        setEmployeeId(id);
+        router.push(`/configurations/employees/${id.toString()}`);
     }
     return (
         <BasicTable theadList={heads} isActions={true}>
@@ -30,8 +30,8 @@ const EmployeeDesktopTable = ({ employees }: Props) => {
                     <BCol>{item.entryTime}</BCol>
                     <BCol>{item.exitTime}</BCol>
                     <BCol className="text-right flex justify-end">
-                        <Button onClick={()=> handleRouter(`/configurations/employees/${item.employeeId.toString()}`)} color='yellow' size='sm' title='Da click para ver el perfil del empleado.'>
-                            {loading? <Spinner />: <AiFillProfile size={14} />}<span>Perfil</span>
+                        <Button onClick={() => handleRouter(item.employeeId)} color='yellow' size='sm' title='Da click para ver el perfil del empleado.'>
+                            {employeeId===item.employeeId ? <Spinner size={14} /> : <AiFillProfile size={14} />}<span>Perfil</span>
                         </Button>
                     </BCol>
                 </BRow>

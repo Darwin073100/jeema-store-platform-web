@@ -1,13 +1,11 @@
 import { findAllByEstablishmentIdAction } from "@/features/auth/actions/find-all-by-establishment-id.action";
+import { UserTableDesktop } from "@/features/auth/ui/UserTableDesktop";
 import { Badge } from "@/ui/components/badges/Badge";
 import { Button } from "@/ui/components/buttons";
-import { ButtonOutLine } from "@/ui/components/buttons/ButtonOutLine";
 import { TextInput } from "@/ui/components/inputs";
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BasicTable, BCol, BRow } from "@/ui/components/tables/BasicTable";
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
-import { AiFillProfile } from "react-icons/ai";
 import { IoPersonAdd } from "react-icons/io5";
 
 export const metadata: Metadata = {
@@ -15,7 +13,6 @@ export const metadata: Metadata = {
 }
 
 export default async function(){
-    const heads = ['Folio', 'Empleado', 'Nom. de Usuario', 'Correo']
     const breadCrumbItems: BreadcrumbItem[] = [
         {label: 'Configuraciones', href: '/configurations'},
         {label: 'Usuarios'},
@@ -35,21 +32,8 @@ export default async function(){
                 <div>
                     <TextInput placeholder="Buscar por nombre de empleado"/>
                 </div>
-                <BasicTable theadList={heads} isActions={true}>
-                    {data.map(user=> (<>
-                        <BRow>
-                            <BCol>{user.userId}</BCol>
-                            <BCol>{`${user.employee?.firstName} ${user.employee?.lastName}`}</BCol>
-                            <BCol>{user.username}</BCol>
-                            <BCol>{user.email}</BCol>
-                            <BCol className="text-right flex justify-end">
-                                <Button color='yellow' size='sm' title='Da click para ver el perfil del cliente.'>
-                                    <AiFillProfile size={14} /><span>Detalles</span>
-                                </Button>
-                            </BCol>
-                        </BRow>
-                    </>))}
-                </BasicTable>
+                <UserTableDesktop
+                    data={data}/>
             </TemplateHeader>
         </ProtectedRoute>
     )

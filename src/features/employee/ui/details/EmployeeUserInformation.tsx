@@ -1,6 +1,12 @@
 import React from 'react'
-import { FcKey } from 'react-icons/fc';
+import { TiUserAdd } from "react-icons/ti";
+import { FcKey, FcMediumPriority } from 'react-icons/fc';
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
+import { Button } from '@/ui/components/buttons';
+import { MdLockReset } from 'react-icons/md';
+import { TbTrashXFilled } from 'react-icons/tb';
+import { ButtonOutLine } from '@/ui/components/buttons/ButtonOutLine';
+import { AlertMessage } from '@/ui/components/messages/AlertMessage';
 interface Props {
     data: EmployeeEntity
 }
@@ -13,32 +19,35 @@ const EmployeeUserInformation = ({ data }:Props) => {
 
             {data.user ? (
                 // Opción 1: EL EMPLEADO YA TIENE USUARIO ASIGNADO
-                <div className="p-4 bg-blue-50 border-l-4 border-blue-400 rounded-md">
-                    <p className="font-bold text-blue-800 mb-1">Email de Acceso Asignado</p>
+                <AlertMessage>
+                    <p className="font-bold mb-1">Email de Acceso Asignado</p>
                     <div className="flex justify-between items-center text-sm">
                         <div>
                             <span className="font-semibold text-gray-700">Email:</span> <span className="font-mono text-gray-900">{data.user.email}</span>
                         </div>
-                        <div>
-                            <button className="text-orange-500 hover:text-orange-700 font-semibold transition-colors mr-3">
+                        <div className='flex gap-4'>
+                            <ButtonOutLine size='sm' color='yellow'>
+                                <MdLockReset />
                                 Restablecer Contraseña
-                            </button>
-                            <button className="text-red-500 hover:text-red-700 font-semibold transition-colors">
-                                Eliminar Usuario
-                            </button>
+                            </ButtonOutLine>
+                            <ButtonOutLine size='sm' color='red'>
+                                <TbTrashXFilled />
+                                Desactivar Usuario
+                            </ButtonOutLine>
                         </div>
                     </div>
-                </div>
+                </AlertMessage>
             ) : (
                 // Opción 2: DAR DE ALTA USUARIO (SOLUCIÓN AL REQUERIMIENTO)
-                <div className="p-5 bg-orange-50 border-l-4 border-orange-400 rounded-md flex justify-between items-center">
-                    <p className="font-bold text-orange-800">
-                        ⚠️ No hay usuario de acceso asignado.
+                <AlertMessage color='orange' className='flex justify-between items-center'>
+                    <p className="font-bold flex items-center gap-2">
+                        <FcMediumPriority /> <span>No hay usuario de acceso asignado.</span>
                     </p>
-                    <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md">
+                    <Button size='sm'>
+                        <TiUserAdd />
                         Dar de Alta Usuario
-                    </button>
-                </div>
+                    </Button>
+                </AlertMessage>
             )}
         </div>
     )

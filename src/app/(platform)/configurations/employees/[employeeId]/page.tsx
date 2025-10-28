@@ -31,8 +31,12 @@ export default async function SaleInformationPage({ params }: Props) {
 
         const breadcrumbItems: BreadcrumbItem[] = [
             {
+                label: 'configuraciones',
+                href: '/configurations'
+            },
+            {
                 label: 'empleados',
-                href: '/employees'
+                href: '/configurations/employees'
             },
             {
                 label: `${data?.firstName ?? ''} ${data?.lastName ?? ''}`

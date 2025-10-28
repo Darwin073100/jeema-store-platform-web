@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode
-  color?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple' |'white'
+  color?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple' |'white' | 'orange'
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   fullWidth?: boolean           // ⬅️ nuevo prop
   className?: string
@@ -34,7 +34,7 @@ export function Button({
     <button
       className={twMerge(
         clsx(
-          `cursor-pointer transition-all duration-500 flex justify-center items-center rounded-xl shadow-sm hover:shadow-lg ${ color=='white'? 'text-black': 'text-white'}`,
+          `cursor-pointer transition-all duration-500 flex justify-center items-center ${size==='sm'? 'rounded-lg':'rounded-xl'} shadow-sm hover:shadow-lg ${ color=='white'? 'text-black': 'text-white'}`,
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
           fullWidth && 'w-full',
           txt,
