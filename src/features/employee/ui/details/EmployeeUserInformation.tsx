@@ -10,12 +10,12 @@ import { ButtonOutLine } from '@/ui/components/buttons/ButtonOutLine';
 import { AlertMessage } from '@/ui/components/messages/AlertMessage';
 import { EmpRegisterUserModal } from '../register/EmpRegisterUserModal';
 import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
-import { useEmpRegisterUserForm } from '../../infraestructure/hooks/useEmpRegisterUserForm';
 import { useEmployeeUIStore } from '../../infraestructure/stores/employee-ui.store';
 import { FloatMessage } from '@/ui/components/messages';
 import { useStateUser } from '../../infraestructure/hooks/useDeleteUser';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
+import { EmpResetPasswordModal } from '../register/EmpResetPasswordModal';
 interface Props {
     data: EmployeeEntity,
     userRoles: RoleEntity[]
@@ -38,7 +38,7 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                             <span className="font-semibold text-gray-700">Email:</span> <span className="font-mono text-gray-900">{data.user.email}</span>
                         </div>
                         <div className='flex gap-4'>
-                            <ButtonOutLine size='sm' color='yellow'>
+                            <ButtonOutLine size='sm' color='yellow' onClick={()=> openEmployeeModal('resetPassword')}>
                                 <MdLockReset />
                                 Restablecer Contraseña
                             </ButtonOutLine>
@@ -55,6 +55,8 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                             </ButtonOutLine>
                         </div>
                     </div>
+                    <EmpResetPasswordModal 
+                        userId={data.user.userId}/>
                 </AlertMessage>
             ) : (
                 // Opción 2: DAR DE ALTA USUARIO (SOLUCIÓN AL REQUERIMIENTO)

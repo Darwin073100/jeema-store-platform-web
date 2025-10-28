@@ -1,8 +1,9 @@
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { create } from "zustand";
 
-type ModalType  = 'registerUser' | 'editEmployee' | 'none';
-type LoadingType = 'registerUser' | 'editEmployee' | 'stateUser' | 'none';
+type ModalType  = 'registerUser' | 'editEmployee' | 'resetPassword' | 'none';
+type LoadingType = 'registerUser' | 'editEmployee' | 'stateUser' | 'resetPassword' | 'none';
+
 interface State {
     employeeModal: ModalType,
     closeEmployeeModal: () => void,
