@@ -13,12 +13,16 @@ import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
 import { useEmpRegisterUserForm } from '../../infraestructure/hooks/useEmpRegisterUserForm';
 import { useEmployeeUIStore } from '../../infraestructure/stores/employee-ui.store';
 import { FloatMessage } from '@/ui/components/messages';
+import { useStateUser } from '../../infraestructure/hooks/useDeleteUser';
+import { Spinner } from '@/ui/components/loadings/Spinner';
+import { IoMdCheckmarkCircle } from 'react-icons/io';
 interface Props {
     data: EmployeeEntity,
     userRoles: RoleEntity[]
 }
 const EmployeeUserInformation = ({ data, userRoles }:Props) => {
-    const { openEmployeeModal, floatMessageState } = useEmployeeUIStore();
+    const { openEmployeeModal, floatMessageState, loading } = useEmployeeUIStore();
+    const { handleDeleteUser } = useStateUser();
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
             <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4 pb-3 border-b border-gray-100">
@@ -38,9 +42,16 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                                 <MdLockReset />
                                 Restablecer Contraseña
                             </ButtonOutLine>
-                            <ButtonOutLine size='sm' color='red'>
-                                <TbTrashXFilled />
-                                Desactivar Usuario
+                            <ButtonOutLine size='sm' color={data.user.isActive? 'red': 'green'} 
+                                onClick={()=> handleDeleteUser(data.user?.userId ?? BigInt(0), data.user?.isActive ?? false)}>
+                                {
+                                    loading==='stateUser'
+                                        ? <Spinner size={14} />
+                                        : data.user.isActive? <TbTrashXFilled />: <IoMdCheckmarkCircle/>
+                                }
+                                {
+                                    data.user.isActive? 'Desactivar Usuario': 'Activar Usuario'
+                                }
                             </ButtonOutLine>
                         </div>
                     </div>
