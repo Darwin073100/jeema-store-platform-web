@@ -46,6 +46,16 @@ export class EmployeeFetchRepository implements EmployeeRepository {
             return this.handleError(error, '');
         }
     }
+    async findById(employeeId: bigint): Promise<Result<EmployeeEntity, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<EmployeeEntity>(
+                this.apiConfig.getEndpointUrl(`/employees/${employeeId.toString()}`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return this.handleError(error, '');
+        }
+    }
 
     /**
      * Manejo centralizado de errores

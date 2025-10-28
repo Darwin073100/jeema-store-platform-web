@@ -19,6 +19,23 @@ export function formatDate(date: Date | string | null | undefined): string {
     }
 }
 
+export const formatTime = (time: any) => time.substring(0, 5); // Simple HH:MM
+
+export function formatDateWithOutTime(date: Date | string | null | undefined): string {
+    if (!date) return 'N/A';
+    
+    try {
+        const dateObj = typeof date === 'string' ? new Date(date) : date;
+        return dateObj.toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    } catch (error) {
+        return 'Fecha inválida';
+    }
+}
+
 /**
  * Formatea una fecha a string corto
  * Ej: 18/9/2025 

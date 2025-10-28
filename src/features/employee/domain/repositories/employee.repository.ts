@@ -7,5 +7,6 @@ import { RegisterEmployeeDTO } from "../../application/dtos/register-employee.dt
 export interface EmployeeRepository {
     findAllEmployeesByEstablishmentId(establishmentId: bigint): Promise<Result<{employees: EmployeeEntity[]}, ErrorEntity>>;
     findAllEmployeeRoles(): Promise<Result<{ employeeRoles: EmployeeRoleEntity[] }, ErrorEntity>>;
+    findById(employeeId: bigint): Promise<Result<EmployeeEntity, ErrorEntity>>;
     save(dto: RegisterEmployeeDTO): Promise<Result<EmployeeEntity, ErrorEntity>>;
 }
