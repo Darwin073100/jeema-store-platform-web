@@ -1,3 +1,4 @@
+import { findAllRoleAction } from "@/features/auth/actions/find-all-role.action";
 import { findEmployeeByIdAction } from "@/features/employee/actions/find-employee-by-id.action";
 import { EmployeeLaboralInformation } from "@/features/employee/ui/details/EmployeeLaboralInformation";
 import { EmployeeProfileCard } from "@/features/employee/ui/details/EmployeeProfileCard";
@@ -28,6 +29,8 @@ export default async function SaleInformationPage({ params }: Props) {
         const { employeeId } = await params;
         const employee = await findEmployeeByIdAction(BigInt(employeeId));
         const data = employee?.value;
+        const userRoles = await findAllRoleAction();
+        const currentUserRoles = userRoles.value?.roles ?? [];
 
         const breadcrumbItems: BreadcrumbItem[] = [
             {
@@ -82,6 +85,7 @@ export default async function SaleInformationPage({ params }: Props) {
 
                                 {/* 3. GESTIÓN DE USUARIO Y ACCESO */}
                                 <EmployeeUserInformation 
+                                    userRoles={currentUserRoles}
                                     data={data}/>
 
                                 {/* 4. INFORMACIÓN ADICIONAL (CREATED AT, ETC.) */}

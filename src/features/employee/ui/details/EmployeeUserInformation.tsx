@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { TiUserAdd } from "react-icons/ti";
 import { FcKey, FcMediumPriority } from 'react-icons/fc';
@@ -7,10 +8,17 @@ import { MdLockReset } from 'react-icons/md';
 import { TbTrashXFilled } from 'react-icons/tb';
 import { ButtonOutLine } from '@/ui/components/buttons/ButtonOutLine';
 import { AlertMessage } from '@/ui/components/messages/AlertMessage';
+import { EmpRegisterUserModal } from '../register/EmpRegisterUserModal';
+import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
+import { useEmpRegisterUserForm } from '../../infraestructure/hooks/useEmpRegisterUserForm';
+import { useEmployeeUIStore } from '../../infraestructure/stores/employee-ui.store';
+import { FloatMessage } from '@/ui/components/messages';
 interface Props {
-    data: EmployeeEntity
+    data: EmployeeEntity,
+    userRoles: RoleEntity[]
 }
-const EmployeeUserInformation = ({ data }:Props) => {
+const EmployeeUserInformation = ({ data, userRoles }:Props) => {
+    const { openEmployeeModal, floatMessageState } = useEmployeeUIStore();
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
             <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4 pb-3 border-b border-gray-100">
@@ -43,12 +51,17 @@ const EmployeeUserInformation = ({ data }:Props) => {
                     <p className="font-bold flex items-center gap-2">
                         <FcMediumPriority /> <span>No hay usuario de acceso asignado.</span>
                     </p>
-                    <Button size='sm'>
+                    <Button size='sm' onClick={()=> openEmployeeModal('registerUser')}>
                         <TiUserAdd />
                         Dar de Alta Usuario
                     </Button>
+                    <EmpRegisterUserModal
+                        employeeId={data.employeeId}
+                        userRoles={userRoles} />
                 </AlertMessage>
             )}
+            <FloatMessage 
+                {...floatMessageState}/>
         </div>
     )
 }

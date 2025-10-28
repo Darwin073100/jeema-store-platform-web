@@ -7,6 +7,7 @@ import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { RegisterUserDTO } from "../../application/dtos/register-user.dto";
 import { UserMapper } from "../mappers/user.mapper";
+import { UpdateUserDTO } from "../../application/dtos/update-user.dto";
 
 export class UserFetchRepositoryImpl implements UserRepository {
     constructor(
@@ -37,6 +38,18 @@ export class UserFetchRepositoryImpl implements UserRepository {
             return Result.success(result.data);
         } catch (error:any) {
            return this.handleError(error, 'Error al guardar usuario.');
+        }
+    }
+    async update(establishmentId: bigint, userId: bigint, dto: UpdateUserDTO): Promise<Result<UserEntity, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.patch<UserEntity>(
+                this.apiConfig.getEndpointUrl(`/users/${userId.toString()}/establishments/${establishmentId.toString()}`),
+                dto
+            );
+
+            return Result.success(result.data);
+        } catch (error:any) {
+           return this.handleError(error, 'Error al actualizar usuario.');
         }
     }
 
