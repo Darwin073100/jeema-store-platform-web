@@ -1,4 +1,5 @@
 import { findAllRoleAction } from "@/features/auth/actions/find-all-role.action";
+import { findAllEmployeeRolesAction } from "@/features/employee/actions/find-all-employee-roles.action";
 import { findEmployeeByIdAction } from "@/features/employee/actions/find-employee-by-id.action";
 import { EmployeeLaboralInformation } from "@/features/employee/ui/details/EmployeeLaboralInformation";
 import { EmployeeProfileCard } from "@/features/employee/ui/details/EmployeeProfileCard";
@@ -31,6 +32,8 @@ export default async function SaleInformationPage({ params }: Props) {
         const data = employee?.value;
         const userRoles = await findAllRoleAction();
         const currentUserRoles = userRoles.value?.roles ?? [];
+        const employeeRolesResult = await findAllEmployeeRolesAction();
+        const empoyeeRoles = employeeRolesResult.value?.employeeRoles ?? [];
 
         const breadcrumbItems: BreadcrumbItem[] = [
             {
@@ -74,6 +77,7 @@ export default async function SaleInformationPage({ params }: Props) {
 
                             {/* COLUMNA LATERAL (FICHA DE IDENTIDAD Y CONTACTO) - 1/3 */}
                             <EmployeeProfileCard
+                                employeeRoles={empoyeeRoles}
                                 data={data}/> 
 
                             {/* COLUMNA PRINCIPAL (DATOS LABORALES Y GESTIÓN) - 2/3 */}

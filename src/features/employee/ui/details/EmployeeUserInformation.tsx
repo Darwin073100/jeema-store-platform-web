@@ -16,13 +16,19 @@ import { useStateUser } from '../../infraestructure/hooks/useDeleteUser';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { EmpResetPasswordModal } from '../register/EmpResetPasswordModal';
+import { useWorkspace } from '@/shared/hooks/useAuth';
 interface Props {
     data: EmployeeEntity,
     userRoles: RoleEntity[]
 }
 const EmployeeUserInformation = ({ data, userRoles }:Props) => {
     const { openEmployeeModal, floatMessageState, loading } = useEmployeeUIStore();
+    const { employee } = useWorkspace();
     const { handleDeleteUser } = useStateUser();
+    console.log(data.employeeId);
+    console.log(employee?.employeeId);
+    console.log((data?.employeeId === BigInt(employee?.employeeId ?? 0)));
+    console.log((data?.employeeId !== BigInt(employee?.employeeId ?? 0)));
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
             <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4 pb-3 border-b border-gray-100">
@@ -42,17 +48,19 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                                 <MdLockReset />
                                 Restablecer Contraseña
                             </ButtonOutLine>
-                            <ButtonOutLine size='sm' color={data.user.isActive? 'red': 'green'} 
-                                onClick={()=> handleDeleteUser(data.user?.userId ?? BigInt(0), data.user?.isActive ?? false)}>
-                                {
-                                    loading==='stateUser'
-                                        ? <Spinner size={14} />
-                                        : data.user.isActive? <TbTrashXFilled />: <IoMdCheckmarkCircle/>
-                                }
-                                {
-                                    data.user.isActive? 'Desactivar Usuario': 'Activar Usuario'
-                                }
-                            </ButtonOutLine>
+                            {(BigInt(data.employeeId) !== BigInt(employee?.employeeId ?? 0)) && <>
+                                <ButtonOutLine size='sm' color={data.user.isActive? 'red': 'green'} 
+                                    onClick={()=> handleDeleteUser(data.user?.userId ?? BigInt(0), data.user?.isActive ?? false)}>
+                                    {
+                                        loading==='stateUser'
+                                            ? <Spinner size={14} />
+                                            : data.user.isActive? <TbTrashXFilled />: <IoMdCheckmarkCircle/>
+                                    }
+                                    {
+                                        data.user.isActive? 'Desactivar Usuario': 'Activar Usuario'
+                                    }
+                                </ButtonOutLine>
+                            </>}
                         </div>
                     </div>
                     <EmpResetPasswordModal 

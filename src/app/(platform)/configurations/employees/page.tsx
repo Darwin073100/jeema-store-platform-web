@@ -21,7 +21,8 @@ export default async function(){
     return (
         <ProtectedRoute>
             <TemplateHeader title="Empleados del establecimiento" detail="Lista de los empleados de este establecimeinto." breadcrumbItems={breadCrumbItems}>
-                <EmployeeOptios/>
+                <EmployeeOptios
+                    employeesNo={data.length}/>
                 <div>
                     <TextInput placeholder="Buscar por nombre de empleado"/>
                 </div>

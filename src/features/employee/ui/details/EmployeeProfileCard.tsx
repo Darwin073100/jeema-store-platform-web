@@ -1,16 +1,26 @@
 'use client'
 import { Badge } from '@/ui/components/badges/Badge';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FcBusinessman, FcBusinesswoman, FcDecision } from 'react-icons/fc';
 import { GenderEnum } from '../../domain/enums/gender.enum';
 import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter';
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
 import { Button } from '@/ui/components/buttons';
 import { HiPencil } from 'react-icons/hi';
+import { EmployeeUpdateModal } from '../register/EmployeeUpdateModal';
+import { useEmployeeUIStore } from '../../infraestructure/stores/employee-ui.store';
+import { EmployeeRoleEntity } from '../../domain/entities/employee-role.entity';
+import { useEmployeeStore } from '../../infraestructure/stores/employee-store';
 interface Props {
-    data        : EmployeeEntity
+    data        : EmployeeEntity,
+    employeeRoles: EmployeeRoleEntity[],
 }
-const EmployeeProfileCard = ({ data }: Props) => {
+const EmployeeProfileCard = ({ data, employeeRoles }: Props) => {
+    const { openEmployeeModal } = useEmployeeUIStore();
+    const { setEmployee } = useEmployeeStore()
+    useEffect(()=>{
+        setEmployee(data);
+    },[]);
     return (
         <aside className="lg:col-span-1 space-y-6">
 
@@ -31,7 +41,7 @@ const EmployeeProfileCard = ({ data }: Props) => {
                 <h2 className="text-2xl font-bold text-gray-900">{data.firstName} {data.lastName}</h2>
                 <div className='flex justify-center items-center gap-2 mb-2'>
                     <p className="text-md font-semibold text-green-600">{ data.employeeRole?.name }</p>
-                    <Button size='sm'><HiPencil/> Editar</Button>
+                    <Button size='sm' onClick={()=> openEmployeeModal('editEmployee')}><HiPencil/> Editar</Button>
                 </div>
 
                 {/* Badge de Estatus */}
@@ -57,7 +67,9 @@ const EmployeeProfileCard = ({ data }: Props) => {
                     </div>
                 </dl>
             </div>
-
+            <EmployeeUpdateModal
+                employeeRoles={employeeRoles} 
+                employee={data}/>
         </aside>
     )
 }

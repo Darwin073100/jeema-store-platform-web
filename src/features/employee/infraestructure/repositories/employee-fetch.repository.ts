@@ -7,6 +7,7 @@ import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { EmployeeRoleEntity } from "../../domain/entities/employee-role.entity";
 import { RegisterEmployeeDTO } from "../../application/dtos/register-employee.dto";
 import { EmployeeMapper } from "../mappers/employee.mapper";
+import { UpdateEmployeeDTO } from "../../application/dtos/update-employee.dto";
 
 export class EmployeeFetchRepository implements EmployeeRepository {
     constructor(
@@ -44,6 +45,19 @@ export class EmployeeFetchRepository implements EmployeeRepository {
             return Result.success(result.data);
         } catch (error) {
             return this.handleError(error, '');
+        }
+    }
+    async update(employeeId: bigint, dto: UpdateEmployeeDTO): Promise<Result<EmployeeEntity, ErrorEntity>> {
+        try {
+            const httpDto = EmployeeMapper.toUpdateEmployeeHttpDTO(dto);
+            console.log(httpDto);
+            const result = await this.httpClient.patch<EmployeeEntity>(
+                this.apiConfig.getEndpointUrl(`/employees/${employeeId.toString()}`),
+                httpDto
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return this.handleError(error, 'Update employee error');
         }
     }
     async findById(employeeId: bigint): Promise<Result<EmployeeEntity, ErrorEntity>> {

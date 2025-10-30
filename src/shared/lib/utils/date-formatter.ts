@@ -19,7 +19,18 @@ export function formatDate(date: Date | string | null | undefined): string {
     }
 }
 
-export const formatTime = (time: any) => time.substring(0, 5); // Simple HH:MM
+export const formatTime = (time: string | null | undefined) => {
+    if (!time) return 'N/A';
+    try {
+        const dateObj = new Date(`1970-01-01T${time}`);
+        return dateObj.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    } catch (error) {
+        return 'Hora inválida';
+    }
+}; // Simple HH:MM
 
 export function formatDateWithOutTime(date: Date | string | null | undefined): string {
     if (!date) return 'N/A';
@@ -50,3 +61,13 @@ export function formatDateShort(date: Date | string | null | undefined): string 
         return 'Fecha inválida';
     }
 }
+
+/**
+ *  Función auxiliar para formatear fechas para inputs tipo date
+ */
+export const formatDateForInput = (date: Date | string | null | undefined): string => {
+    if (!date) return '';
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    if (isNaN(dateObj.getTime())) return '';
+    return dateObj.toISOString().split('T')[0];
+};
