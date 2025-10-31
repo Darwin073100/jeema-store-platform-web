@@ -50,7 +50,6 @@ export class EmployeeFetchRepository implements EmployeeRepository {
     async update(employeeId: bigint, dto: UpdateEmployeeDTO): Promise<Result<EmployeeEntity, ErrorEntity>> {
         try {
             const httpDto = EmployeeMapper.toUpdateEmployeeHttpDTO(dto);
-            console.log(httpDto);
             const result = await this.httpClient.patch<EmployeeEntity>(
                 this.apiConfig.getEndpointUrl(`/employees/${employeeId.toString()}`),
                 httpDto

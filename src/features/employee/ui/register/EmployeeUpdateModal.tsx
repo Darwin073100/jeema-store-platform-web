@@ -142,7 +142,7 @@ const EmployeeUpdateModal = ({ employee, employeeRoles }: Props) => {
         <div className='flex justify-end gap-4 mt-4'>
           <Button>
             {loading === 'editEmployee' ? <Spinner /> : <HiUserAdd />}
-            Registrar usuario
+            Guardar cambios
           </Button>
           <Button color='gray' onClick={() => closeEmployeeModal()}>
             <IoClose />

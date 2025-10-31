@@ -108,9 +108,16 @@ const useEmployeeUpdate = () => {
         const result = await updateEmployeeAction(employee?.employeeId ?? BigInt(0), dto)
         stopLoading();
         if(result.ok){
+            if(result.value){
+                // Actualizar el estado local con los datos actualizados
+                setEmployee({
+                    ...result.value
+                });
+            }
+            
             setFloatMessageState({
                 summary: '¡Correcto!',
-                description: 'Información modificada correctamente',
+                description: 'Información modificada correctamente 😉.',
                 isActive: true,
                 type: 'green'  
             });
@@ -121,7 +128,7 @@ const useEmployeeUpdate = () => {
         } else {
             setFloatMessageState({
                 summary: `${result.error?.statusCode}: ¡Error!`,
-                description: result.error?.message,
+                description: `${result.error?.message} 😢.`,
                 isActive: true,
                 type: 'red'
             });

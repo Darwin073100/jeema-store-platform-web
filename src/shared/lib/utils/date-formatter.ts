@@ -6,8 +6,32 @@ export function formatDate(date: Date | string | null | undefined): string {
     if (!date) return 'N/A';
     
     try {
-        const dateObj = typeof date === 'string' ? new Date(date) : date;
-        return dateObj.toLocaleDateString('es-ES', {
+        // Si es string, parseamos directamente la fecha
+        if (typeof date === 'string') {
+            // Extraemos la fecha y hora
+            const [datePart, timePart] = date.split('T');
+            const [year, month, day] = datePart.split('-').map(Number);
+            const [hour, minute] = timePart ? timePart.split(':').map(Number) : [0, 0];
+            
+            // Creamos la fecha usando la zona horaria local
+            return new Date(year, month - 1, day, hour, minute).toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // Si es objeto Date, usamos directamente los getters
+        const dateObj = date;
+        return new Date(
+            dateObj.getFullYear(),
+            dateObj.getMonth(),
+            dateObj.getDate(),
+            dateObj.getHours(),
+            dateObj.getMinutes()
+        ).toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -36,8 +60,27 @@ export function formatDateWithOutTime(date: Date | string | null | undefined): s
     if (!date) return 'N/A';
     
     try {
-        const dateObj = typeof date === 'string' ? new Date(date) : date;
-        return dateObj.toLocaleDateString('es-ES', {
+        // Si es string, parseamos directamente la fecha sin crear objeto Date
+        if (typeof date === 'string') {
+            // Extraemos solo la parte de la fecha (YYYY-MM-DD)
+            const datePart = date.split('T')[0];
+            const [year, month, day] = datePart.split('-').map(Number);
+            
+            // Creamos la fecha usando la zona horaria local
+            return new Date(year, month - 1, day).toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        // Si es objeto Date, usamos directamente los getters
+        const dateObj = date;
+        return new Date(
+            dateObj.getFullYear(),
+            dateObj.getMonth(),
+            dateObj.getDate()
+        ).toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
@@ -67,7 +110,21 @@ export function formatDateShort(date: Date | string | null | undefined): string 
  */
 export const formatDateForInput = (date: Date | string | null | undefined): string => {
     if (!date) return '';
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    if (isNaN(dateObj.getTime())) return '';
-    return dateObj.toISOString().split('T')[0];
+    
+    try {
+        // Si es string, extraemos directamente la fecha
+        if (typeof date === 'string') {
+            // Extraemos solo la parte de la fecha (YYYY-MM-DD)
+            return date.split('T')[0];
+        }
+        
+        // Si es objeto Date, formateamos manualmente
+        const dateObj = date;
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    } catch {
+        return '';
+    }
 };
