@@ -9,6 +9,7 @@ import { ErrorEntity } from "@/shared/features/error.entity";
 import { InventoryMapper } from "../mappers/inventory.mapper";
 import { LocationEnum } from "../../domain/enums/location.enum";
 import { InventoryItemEntity } from "../../domain/entities/inventory-item.entity";
+import { EditInventoryItemDTO } from "../../application/dtos/edit-inventory-item.dto";
 
 export class InventoryFetchRepository implements InventoryRepository {
     constructor(
@@ -33,6 +34,19 @@ export class InventoryFetchRepository implements InventoryRepository {
             const result = await this.httpClient.patch<InventoryEntity>(
                 this.apiConfig.getEndpointUrl('/inventories'),
                 httpDto
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            console.log(error);
+            return this.handleError(error, 'Update Inventory');
+        }
+    }
+
+    async editItem(dto: EditInventoryItemDTO):Promise<Result<InventoryEntity, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.patch<InventoryEntity>(
+                this.apiConfig.getEndpointUrl(`/inventories/${dto.inventoryId.toString()}/items/${dto.inventoryItemId.toString()}`),
+                {location: dto.location, quantityOnHand: dto.quantityOnHand}
             );
             return Result.success(result.data);
         } catch (error) {

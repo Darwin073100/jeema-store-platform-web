@@ -21,7 +21,7 @@ export interface ProductEntity {
   brand?           : BrandEntity | null;
   category?        : CategoryEntity | null;
   lots?            : LotEntity[] | null;
-  inventories?     : InventoryEntity |null;
+  inventory?       : InventoryEntity |null;
   createdAt        : Date;
   updatedAt        : Date | null;
   deletedAt        : Date | null;

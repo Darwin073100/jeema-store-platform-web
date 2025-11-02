@@ -1,7 +1,6 @@
 export interface UpdateInventoryHttpDTO {
     inventoryId          : string;
     productId            : string;
-    lotId                : string;
     branchOfficeId       : string;
     isSellable           : boolean;
     internalBarCode?     : string | null;

@@ -10,7 +10,6 @@ import { UpdateInventoryHttpDTO } from "../dtos/update-inventory.http.dto";
 export class InventoryMapper {
     static toRegisterInventoryHttpDTO(dto: RegisterInventoryDTO){
         const httpDto: RegisterInventoryHttpDTO = {
-            lotId: dto.lotId.toString(),
             branchOfficeId: dto.branchOfficeId.toString(),
             productId: dto.productId.toString(),
             isSellable: dto.isSellable,
@@ -27,7 +26,6 @@ export class InventoryMapper {
     static toUpdateInventoryHttpDTO(dto: UpdateInventoryDTO){
         const httpDto: UpdateInventoryHttpDTO = {
             inventoryId: dto.inventoryId.toString(),
-            lotId: dto.lotId.toString(),
             branchOfficeId: dto.branchOfficeId.toString(),
             productId: dto.productId.toString(),
             isSellable: dto.isSellable,

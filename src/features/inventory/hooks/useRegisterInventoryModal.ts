@@ -118,7 +118,6 @@ const useRegisterInventoryModal = () => {
             const registerInventoryDto: RegisterInventoryDTO = {
                 branchOfficeId: branchOffice?.branchOfficeId? BigInt(branchOffice?.branchOfficeId): BigInt(0),
                 productId: selectedProductId ?? BigInt(0),
-                lotId: selectedLotId ?? BigInt(0),
                 isSellable: true,
                 internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,

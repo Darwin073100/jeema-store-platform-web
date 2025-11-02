@@ -14,7 +14,6 @@ export interface LotEntity {
   manufacturingDate? : Date | null;
   product?           : ProductEntity | null;
   receivedDate       : Date;
-  inventories        : InventoryEntity[];
   lotUnitPurchases?  : LotUnitPurchaseEntity[]|null,
   createdAt          : Date;
   updatedAt?         : Date | null;

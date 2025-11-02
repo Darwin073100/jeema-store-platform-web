@@ -96,7 +96,7 @@ const useUpdateInventoryModal = () => {
         setFloatMessageState({});
     }
 
-    const handleOpenModalInventory = (selectedInv: InventoryEntity, selectedProd: ProductEntity)=> {
+    const handleOpenModalInventory = (selectedInv: InventoryEntity | null, selectedProd: ProductEntity)=> {
         setInventory(selectedInv);
         setSelectedProduct(selectedProd);
         handleTrueUpdateOpenModal();
@@ -119,7 +119,6 @@ const useUpdateInventoryModal = () => {
                 inventoryId: inventory?.inventoryId ?? BigInt(0),
                 branchOfficeId: inventory?.branchOfficeId ?? BigInt(0),
                 productId: inventory?.productId ?? BigInt(0),
-                lotId: inventory?.lotId ?? BigInt(0),
                 isSellable: inventory?.isSellable ?? true,
                 internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,

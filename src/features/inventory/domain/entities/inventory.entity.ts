@@ -1,11 +1,9 @@
-import { LotEntity } from "@/features/lot";
 import { InventoryItemEntity } from "./inventory-item.entity";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 
 export interface InventoryEntity{
     inventoryId       : bigint;
     productId         : bigint;
-    lotId             : bigint;
     branchOfficeId    : bigint;
     isSellable        : boolean;
     internalBarCode?  : string | null;
@@ -19,6 +17,5 @@ export interface InventoryEntity{
     updatedAt?        : Date|null;
     deletedAt?        : Date|null;
     product?          : ProductEntity|null;
-    lot?              : LotEntity | null;
     inventoryItems?   : InventoryItemEntity[] | null;
 }

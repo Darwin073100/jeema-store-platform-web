@@ -3,6 +3,8 @@ import { InventoryItemEntity } from "../../domain/entities/inventory-item-respon
 
 type State = {
     saveOpenModal: boolean,
+    inventoryItems: InventoryItemEntity[],
+    setInventoryItems: (payload: InventoryItemEntity[]) => void,
     selectedInventoryId: bigint | null,
     setSelectedInventoryId: (id: bigint | null) => void, 
     handleTrueSaveOpenModal: ()=> void,
@@ -15,6 +17,10 @@ export const useRegisterInventoryItemStore = create<State>()((set, get)=>({
     inventoryItem: null,
     saveOpenModal: false,
     selectedInventoryId: null,
+    inventoryItems: [],
+    setInventoryItems: (payload: InventoryItemEntity[])=>{
+        set(()=>({inventoryItems: payload}));
+    },
     setSelectedInventoryId(id) {
         set(()=> ({selectedInventoryId: id}))
     },

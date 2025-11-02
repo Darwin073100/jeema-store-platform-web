@@ -8,9 +8,14 @@ import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
 import { registerLotAction } from "../actions/register-lot.action";
 import { useRegisterLotModalStore } from "../infraestructure/store/register-lot-modal.store";
+import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 
 // Schema de validación Yup para registrar un lote
 export const registerLotSchema = yup.object().shape({
+    inventoryItemId: yup
+            .string()
+            .required(`Debes elegir a donde se va esta compra, Ej: (${Object.values(LocationEnum)}).`)
+            .typeError('Asegurate de ingresar la información correcta.'),
     purchasePrice: yup
         .number()
         .required('El precio de compra es obligatorio.')
@@ -101,7 +106,8 @@ const useRegisterLotModal = () => {
             purchaseUnit: ForSaleEnum.PC,
             expirationDate: '',
             manufacturingDate: '',
-            receivedDate: '',
+            receivedDate: formatDateForInput(new Date()),
+            inventoryItemId: undefined
         });
         clearErrors(['purchasePrice', 'initialQuantity', 
             'purchaseUnit', 'expirationDate', 'manufacturingDate', 'receivedDate'

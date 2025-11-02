@@ -52,6 +52,8 @@ import { DeleteProductModal } from './DeleteProductModal';
 import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal';
 import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventoryModal';
 import { ImPrinter } from 'react-icons/im';
+import { useEffect } from 'react';
+import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';
 
 interface Props {
     product: ProductEntity;
@@ -71,7 +73,7 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenModalDeleteLotUnitPurchase } = useDeleteLotUnitPurchaseModal();
     const { handleOpenModalDeleteLot } = useDeleteLotModal();
     const { handleOpenModalDeleteProduct } = useDeleteProductModal();
-
+    const { setInventoryItems } = useRegisterInventoryItemStore();
 
     const handlePrint = () => {
         window.print();
@@ -95,12 +97,12 @@ export function ProductDetailsView({ product }: Props) {
     //     handleOpenModalInventory(branchOfficeId, productId, lotId);
     //     // Agregar inventario para lote
     // };
-    const handleAddInventory = (selectedInventory: InventoryEntity, selectProd: ProductEntity) => {
+    const handleAddInventory = (selectedInventory: InventoryEntity | null, selectProd: ProductEntity) => {
         handleOpenModalInventory(selectedInventory, selectProd);
         // Agregar inventario para lote
     };
 
-    const handleAddInventoryItem = (inventoryId: bigint) => {
+    const handleAddInventoryItem = (inventoryId: bigint | null) => {
         handleOpenModalInventoryItem(inventoryId);
         // Agregar item de inventario para inventario
     };
@@ -336,7 +338,7 @@ export function ProductDetailsView({ product }: Props) {
                                             Inventario
                                         </h4>
                                         {
-                                            lot.inventories && lot.inventories.length < 1 && (
+                                            !product.inventory && (
                                                 <Button color='blue' onClick={()=> handleRegisterOpenModalInventory(lot.lotId, product)}>
                                                     <HiPlus className="w-4 h-4" />
                                                     Agregar control de inventario
@@ -345,19 +347,18 @@ export function ProductDetailsView({ product }: Props) {
                                         }
                                     </div>
                                     {
-                                        lot.inventories && lot.inventories.length < 1 && (
+                                        !product.inventory && (
                                             <span className='text-gray-700 border border-gray-300 rounded-xl p-4 block mt-4'>
                                                 No se encontro inventario...
                                             </span>
                                         )
                                     }
                                     <RegisterInventoryModal/>
-                                    {lot.inventories && lot.inventories.length > 0 && (
+                                    {product.inventory  && (
                                         <div className="space-y-4">
                                             <UpdateInventoryModal product={product} />
-                                            {lot.inventories.map((inventory) => (
-                                                <div key={inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
-                                                <Button color='yellow' onClick={() => handleAddInventory(inventory, product)}>
+                                                <div key={product.inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
+                                                <Button color='yellow' onClick={() => handleAddInventory(product?.inventory ?? null, product)}>
                                                     <HiPencil className="w-4 h-4" />
                                                     Modificar
                                                 </Button>
@@ -377,7 +378,7 @@ export function ProductDetailsView({ product }: Props) {
                                                             <div className="text-gray-900 font-semibold">
                                                                 <div className='printable-content'>
                                                                     <Barcode 
-                                                                        value={inventory.internalBarCode?? ''} 
+                                                                        value={product?.inventory.internalBarCode?? ''} 
                                                                         width={1} 
                                                                         height={50} 
                                                                         fontSize={16}/>
@@ -387,31 +388,31 @@ export function ProductDetailsView({ product }: Props) {
                                                         </div>
                                                         <InfoCard
                                                             label="Precio de menudeo"
-                                                            value={`$${inventory.salePriceOne}`}
+                                                            value={`$${product?.inventory.salePriceOne}`}
                                                             icon={<TbCurrencyDollar className="w-4 h-4" />}
                                                             className="bg-white"
                                                         />
                                                         <InfoCard
                                                             label="Stock mínimo"
-                                                            value={(inventory.minStockBranch ?? 0).toString()}
+                                                            value={(product?.inventory.minStockBranch ?? 0).toString()}
                                                             icon={<TbBoxMultiple className="w-4 h-4" />}
                                                             className="bg-white"
                                                         />
                                                         <InfoCard
                                                             label="Stock máximo"
-                                                            value={(inventory.maxStockBranch ?? 0).toString()}
+                                                            value={(product.inventory.maxStockBranch ?? 0).toString()}
                                                             icon={<TbBoxMultiple className="w-4 h-4" />}
                                                             className="bg-white"
                                                         />
                                                         <InfoCard
                                                             label="Unidades para mayoreo"
-                                                            value={(inventory.saleQuantityMany ?? 0).toString()}
+                                                            value={(product.inventory.saleQuantityMany ?? 0).toString()}
                                                             icon={<TbBoxMultiple className="w-4 h-4" />}
                                                             className="bg-white"
                                                         />
                                                         <InfoCard
                                                             label="Precio de mayoreo"
-                                                            value={`$${inventory.salePriceMany}`}
+                                                            value={`$${product.inventory.salePriceMany}`}
                                                             icon={<TbCurrencyDollar className="w-4 h-4" />}
                                                             className="bg-white"
                                                         />
@@ -424,15 +425,15 @@ export function ProductDetailsView({ product }: Props) {
                                                             <HiOutlineLocationMarker className="w-5 h-5" />
                                                             Ubicación: Ventas
                                                         </h5>
-                                                        <Button onClick={() => handleAddInventoryItem(inventory.inventoryId)}>
+                                                        <Button onClick={() => handleAddInventoryItem(product.inventory?.inventoryId ?? null)}>
                                                             <HiPlus className="w-4 h-4" /> Agregar ubicación
                                                         </Button>
                                                     </div>
-                                                    {inventory.inventoryItems && inventory.inventoryItems.length > 0 && (
+                                                    {product.inventory.inventoryItems && product.inventory.inventoryItems.length > 0 && (
                                                         <div>
 
                                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                                                {inventory.inventoryItems.map((item) => (
+                                                                {product.inventory.inventoryItems.map((item) => (
                                                                 <>
                                                                     <UpdateInventoryItemModal/>
                                                                     <DeleteInventoryItemModal/>
@@ -465,7 +466,6 @@ export function ProductDetailsView({ product }: Props) {
                                                         </div>
                                                     )}
                                                 </div>
-                                            ))}
                                         </div>
                                     )}
                                 </div>

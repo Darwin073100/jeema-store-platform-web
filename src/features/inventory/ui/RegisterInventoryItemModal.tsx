@@ -12,6 +12,7 @@ import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterInventoryItemModal } from '../hooks/useRegisterInventoryItemModal';
 import { LocationEnum } from '../domain/enums/location.enum';
 import { useInventoryItemDescripctionInput } from '../hooks/useInventoryItemSecripctionInput';
+import { useRegisterInventoryItemStore } from '../infraestructura/stores/register-inventory-item.store';
 
 const RegisterInventoryItemModal = () => {
     const {

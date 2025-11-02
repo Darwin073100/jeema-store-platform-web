@@ -1,6 +1,5 @@
 export interface RegisterInventoryHttpDTO {
     productId            : string;
-    lotId                : string;
     branchOfficeId       : string;
     isSellable           : boolean;
     internalBarCode?     : string | null;

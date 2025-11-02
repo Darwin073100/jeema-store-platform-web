@@ -1,15 +1,12 @@
 'use client'
-import { RoundedButton } from "@/ui/components/buttons/RoundedButton";
-import { CgDetailsMore } from "react-icons/cg";
 import { useMemo } from "react";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductStore } from "@/features/product/infraestructure/stores/product.store";
-import { LotEntity } from "@/features/lot/domain/entities/lot.entity";
 import { useRouter } from "next/navigation";
-import { InventoryEntity } from "../domain/entities/inventory.entity";
 import { BasicTable, BCol, BRow, BTableEmpty } from "@/ui/components/tables/BasicTable";
 import { Button } from "@/ui/components/buttons";
 import { FiExternalLink } from "react-icons/fi";
+import { InventoryItemEntity } from "../domain/entities/inventory-item.entity";
 
 interface TableProductProps {
     productList: ProductEntity[];
@@ -28,53 +25,20 @@ export function TableProduct({ productList = [] }: TableProductProps) {
         );
     }
 
-    // Memoiza el mapeo de productos con lotes e inventario
-    const productsWhitLots: ProductEntity[] = useMemo(() => {
-        if (!productList || !Array.isArray(productList)) return [];
-
-        return productList.flatMap((product: ProductEntity) => {
-            // Verificar que el producto existe y tiene lotes
-            if (!product || !product.lots || !Array.isArray(product.lots) || product.lots.length < 1) {
-                return [{
-                    ...product
-                }];
-            }
-
-            return product.lots.flatMap((lot: LotEntity) => {
-                // Verificar que el lote existe y tiene inventarios
-
-                if (!lot || !lot.inventories || !Array.isArray(lot.inventories) || lot.inventories.length < 1) {
-                    return [
-                        {
-                            ...product,
-                            lots: [lot]
-                        }];
-                }
-
-                let finalResult = lot.inventories.map((inventory: InventoryEntity) => ({
-                    ...product,
-                    lots: [lot],
-                    inventories: inventory
-                }));
-                return finalResult;
-            });
-        });
-    }, [productList]);
-
     // Memoiza el filtrado por nombre
     const filteredProducts = useMemo(() => {
-        if (!productsWhitLots || !Array.isArray(productsWhitLots)) return [];
+        if (!productList || !Array.isArray(productList)) return [];
         if (!searchCharacter) {
-            return productsWhitLots;
+            return productList;
         }
 
-        const filtered = productsWhitLots.filter(item =>
+        const filtered = productList.filter(item =>
             item && item.name &&
             item.name.toLowerCase().includes(searchCharacter.toLowerCase())
         );
 
         return filtered;
-    }, [productsWhitLots, searchCharacter]);
+    }, [productList, searchCharacter]);
 
     const handleViewProduct = (productId: string) => {
         router.push(`/products/${productId}`);
@@ -89,7 +53,20 @@ export function TableProduct({ productList = [] }: TableProductProps) {
         return true;
     }) || [];
 
-    const head = ['Cod. Bar. Uni.', 'Nombre', 'Stock', 'Ubi.', 'P. Com.', 'P. Uni.', 'P. May.', 'Categ.'];
+    const totalStock = (items: InventoryItemEntity[])=>{
+        if(items.length <= 0){
+            return 0;
+        } else {
+            let total: number = 0;
+            for(let i = 0; i <= items.length; i++){
+                total = total + Number(items[i]?.quantityOnHan ?? 0);
+            }
+            return total;
+        }
+
+    }
+
+    const head = ['Cod. Bar. Uni.', 'Nombre', 'Stock', 'P. Uni.', 'P. May.', 'Categ.'];
 
     return (
         <div>
@@ -98,11 +75,11 @@ export function TableProduct({ productList = [] }: TableProductProps) {
                     <BRow key={item?.productId || Math.random()}>
                         <BCol>{item?.universalBarCode || '-'}</BCol>
                         <BCol>{item?.name || '-'}</BCol>
-                        <BCol>{item?.inventories?.inventoryItems?.[0]?.quantityOnHan || 0}</BCol>
-                        <BCol>{item?.inventories?.inventoryItems?.[0]?.location || '-'}</BCol>
-                        <BCol>${item?.lots?.[0]?.purchasePrice || '0.00'}</BCol>
-                        <BCol>${item?.inventories?.salePriceOne || '0.00'}</BCol>
-                        <BCol>${item?.inventories?.salePriceMany || '0.00'}</BCol>
+                        <BCol>{totalStock(item?.inventory?.inventoryItems ?? [])}</BCol>
+                        {/* <BCol>{item?.inventory?.inventoryItems?.[0]?.location || '-'}</BCol> */}
+                        {/* <BCol>${item?.lots?.[0]?.purchasePrice || '0.00'}</BCol> */}
+                        <BCol>${item?.inventory?.salePriceOne || '0.00'}</BCol>
+                        <BCol>${item?.inventory?.salePriceMany || '0.00'}</BCol>
                         <BCol>{item?.category?.name || '-'}</BCol>
                         <BCol className="flex justify-end">
                             <Button

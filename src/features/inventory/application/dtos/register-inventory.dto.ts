@@ -1,6 +1,5 @@
 export interface RegisterInventoryDTO {
     productId            : bigint;
-    lotId                : bigint;
     branchOfficeId       : bigint;
     isSellable           : boolean;
     internalBarCode?     : string | null;

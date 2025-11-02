@@ -13,6 +13,7 @@ import { useRegisterLotModal } from '../hooks/useRegisterLotModal';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
 import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
+import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';
 
 const RegisterLotModal = () => {
     const {
@@ -27,6 +28,12 @@ const RegisterLotModal = () => {
         floatMessageState,
         isLoading
     } = useRegisterLotModal();
+    const { inventoryItems } = useRegisterInventoryItemStore();
+    
+    // Opciones para el select de unidad de compra
+    const locationOptions = inventoryItems.map(item=> {
+        return{ text: item.inventoryItemId.toString(), value: item.location};
+    });;
 
     const lotDescription = useLotDescriptionInputs;
 
@@ -132,6 +139,20 @@ const RegisterLotModal = () => {
                                         error={!!errors.expirationDate}
                                         errorMessage={errors.expirationDate?.message}
                                         {...register('expirationDate')}
+                                    />
+                                </div>
+                                <div className="md:col-span-2 flex">
+                                    <span className='border w-full'></span>
+                                </div>
+                                <div className="md:col-span-2">
+                                    <LabelInput 
+                                        value="Ubicación donde va este stock"
+                                        required='no' />
+                                    <SelectMenu
+                                    items={ locationOptions }
+                                        error={!!errors.inventoryItemId}
+                                        errorMessage={errors.inventoryItemId?.message}
+                                        {...register('inventoryItemId')}
                                     />
                                 </div>
                             </div>

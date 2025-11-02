@@ -5,10 +5,12 @@ import { InventoryEntity } from "../entities/inventory.entity";
 import { ErrorEntity } from "@/shared/features/error.entity";
 import { InventoryItemEntity } from "../entities/inventory-item.entity";
 import { LocationEnum } from "../enums/location.enum";
+import { EditInventoryItemDTO } from "../../application/dtos/edit-inventory-item.dto";
 
 export interface InventoryRepository{
     save(dto: RegisterInventoryDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
     update(dto: UpdateInventoryDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
     findByBarCode(barCode: string):Promise<Result<InventoryEntity, ErrorEntity>>;
     findAllByLocationAndBranchOffice(branchOfficeId: bigint, location: LocationEnum): Promise<Result<{items:InventoryItemEntity[]}, ErrorEntity>>;
+    editItem(dto: EditInventoryItemDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
 }

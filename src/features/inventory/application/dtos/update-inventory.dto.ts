@@ -1,7 +1,6 @@
 export interface UpdateInventoryDTO {
     inventoryId          : bigint;
     productId            : bigint;
-    lotId                : bigint;
     branchOfficeId       : bigint;
     isSellable           : boolean;
     internalBarCode?     : string | null;

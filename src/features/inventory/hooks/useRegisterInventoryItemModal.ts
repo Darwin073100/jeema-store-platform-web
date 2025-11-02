@@ -7,6 +7,7 @@ import { useRegisterInventoryItemStore } from "../infraestructura/stores/registe
 import { LocationEnum } from "../domain/enums/location.enum";
 import { RegisterInventoryItemDTO } from "../application/dtos/register-inventory-item.dto";
 import { registerInventoryItemAction } from "../actions/register-inventory-item.action";
+import { InventoryItemEntity } from "../domain/entities/inventory-item.entity";
 
 const registerFormData = yup.object().shape({
     location: yup
@@ -25,7 +26,7 @@ type RegisterFormData = yup.InferType<typeof registerFormData>;
 
 const useRegisterInventoryItemModal = () => {
     const { handleTrueSaveOpenModal, handleFalseSaveOpenModal, saveOpenModal,
-        selectedInventoryId, setSelectedInventoryId
+        selectedInventoryId, setSelectedInventoryId, setInventoryItems, inventoryItems
     } = useRegisterInventoryItemStore();
     
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
@@ -58,7 +59,7 @@ const useRegisterInventoryItemModal = () => {
         setFloatMessageState({});
     }
 
-    const handleOpenModalInventoryItem = (inventoryId: bigint)=> {
+    const handleOpenModalInventoryItem = (inventoryId: bigint | null)=> {
         setSelectedInventoryId(inventoryId);
         handleTrueSaveOpenModal();
     }
