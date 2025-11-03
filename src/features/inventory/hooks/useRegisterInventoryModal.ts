@@ -95,8 +95,7 @@ const useRegisterInventoryModal = () => {
         setFloatMessageState({});
     }
 
-    const handleRegisterOpenModalInventory = ( lotId: bigint, selectedProd: ProductEntity)=> {
-        setSelectedLotId(lotId);
+    const handleRegisterOpenModalInventory = (selectedProd: ProductEntity)=> {
         setSelectedProductId(selectedProd.productId);
         setSelectedProduct(selectedProd);
         handleTrueSaveOpenModal();

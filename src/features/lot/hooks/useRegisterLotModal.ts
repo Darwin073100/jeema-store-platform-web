@@ -6,16 +6,18 @@ import { v4 as UUID } from 'uuid'
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
-import { registerLotAction } from "../actions/register-lot.action";
 import { useRegisterLotModalStore } from "../infraestructure/store/register-lot-modal.store";
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
+import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
+import { registerLotWithInventoryItemAction } from '../actions/register-lot-with-inventory-item.action';
 
 // Schema de validación Yup para registrar un lote
 export const registerLotSchema = yup.object().shape({
     inventoryItemId: yup
             .string()
-            .required(`Debes elegir a donde se va esta compra, Ej: (${Object.values(LocationEnum)}).`)
-            .typeError('Asegurate de ingresar la información correcta.'),
+            .optional()
+            .default('0')
+            .typeError(`Asegurate de ingresar la información correcta, Ej: (${Object.values(LocationEnum)}).`),
     purchasePrice: yup
         .number()
         .required('El precio de compra es obligatorio.')
@@ -57,14 +59,6 @@ export const registerLotSchema = yup.object().shape({
 });
 
 export type RegisterFormData = yup.InferType<typeof registerLotSchema>;
-
-// Función auxiliar para formatear fechas para inputs tipo date
-const formatDateForInput = (date: Date | string | null | undefined): string => {
-    if (!date) return '';
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    if (isNaN(dateObj.getTime())) return '';
-    return dateObj.toISOString().split('T')[0];
-};
 
 const useRegisterLotModal = () => {
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
@@ -136,7 +130,7 @@ const useRegisterLotModal = () => {
                 manufacturingDate: data.manufacturingDate ? new Date(data.manufacturingDate) : null
             }
 
-            const result = await registerLotAction(registerData);
+            const result = await registerLotWithInventoryItemAction(registerData, BigInt(data.inventoryItemId ?? 0));
 
             if (result.ok) {
                 setFloatMessageState({

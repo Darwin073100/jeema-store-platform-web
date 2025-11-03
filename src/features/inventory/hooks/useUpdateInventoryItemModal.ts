@@ -19,7 +19,6 @@ const registerFormData = yup.object().shape({
     quantityOnHand: yup
         .number()
         .required('El stock para la ubicación asignada es obligatorio.')
-        .positive('La cantidad debe ser positiva.')
         .typeError('Asegurate de ingresar la información correcta.')
 });
 
@@ -35,7 +34,10 @@ const useUpdateInventoryItemModal = () => {
 
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm<RegisterFormData>({
         resolver: yupResolver(registerFormData) as any,
-        mode: 'onChange'
+        mode: 'onChange',
+        defaultValues: {
+            quantityOnHand: 0
+        }
     });
 
     useEffect(()=>{

@@ -8,6 +8,9 @@ import { SaleSummary } from "@/features/sale/ui/SaleSummary";
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader"
 
+export const revalidate = 0; // Revalidar en cada request
+export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
+
 export const metadata = {
     title: 'Nueva venta'
 }

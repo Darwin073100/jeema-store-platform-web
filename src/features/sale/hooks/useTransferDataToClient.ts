@@ -16,11 +16,11 @@ const useTransferDataToClientNewSale = ({ methods, customers, inventoryItems }: 
     useEffect(()=>{
         setCustomers(customers ?? []);
         setInventoryItems(inventoryItems ?? []);
-    },[]);
+    },[customers, inventoryItems]);
 
     useEffect(()=>{
         setPaymentMethods(methods);
-    },[paidAmount]);
+    },[paidAmount, methods]);
 
     return {
 

@@ -54,6 +54,20 @@ export class InventoryFetchRepository implements InventoryRepository {
         }
     }
 
+    async addStockItem(itemId: bigint, addQuantity: number): Promise<Result<InventoryItemEntity, ErrorEntity>> {
+        console.log('AddStockItem');
+        try {
+            const result = await this.httpClient.patch<InventoryItemEntity>(
+                this.apiConfig.getEndpointUrl(`/inventories/add/items/${itemId.toString()}`),
+                {quantityOnHand: addQuantity}
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            console.log(error)
+            return this.handleError(error, 'Update Inventory');
+        }
+    }
+
     async findByBarCode(barCode: string): Promise<Result<InventoryEntity, ErrorEntity>> {
         try {
             const result = await this.httpClient.get<InventoryEntity>(

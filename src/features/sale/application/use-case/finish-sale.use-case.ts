@@ -2,6 +2,8 @@ import { Result } from "@/shared/features/result";
 import { SaleRepository } from "../../domain/repositories/sale.repository";
 import { FinishSaleDto } from "../dtos/finish-sale.dto";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
+import { FinalizeSaleDto } from "../dtos/finalize-sale.dto";
+import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 
 export class FinishSaleUseCase {
     constructor(
@@ -9,6 +11,12 @@ export class FinishSaleUseCase {
     ){}
 
     async execute(saleId: bigint, dto: FinishSaleDto){
+        const newDTO: FinalizeSaleDto = {
+            customerId: dto.customerId,
+            employeeId: dto.employeeId,
+            status: SaleStatusEnum.COMPLETED, // Finished
+            notes: dto.notes
+        }
         const customerIdvalid = dto.customerId <= BigInt(0);
         if(customerIdvalid){
             return Result.failure<FloatMessageType>({
@@ -29,7 +37,7 @@ export class FinishSaleUseCase {
                 type: 'red'
             })
         }
-        const result = await this.repository.finishSale(saleId, dto);
+        const result = await this.repository.finalizeSale(saleId, newDTO);
         if(result.ok){
             return Result.success<FloatMessageType>({
                 isActive: true,

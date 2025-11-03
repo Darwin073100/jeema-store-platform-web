@@ -32,7 +32,7 @@ const RegisterLotModal = () => {
     
     // Opciones para el select de unidad de compra
     const locationOptions = inventoryItems.map(item=> {
-        return{ text: item.inventoryItemId.toString(), value: item.location};
+        return{ text: item.location, value: item.inventoryItemId.toString()};
     });;
 
     const lotDescription = useLotDescriptionInputs;
@@ -144,10 +144,10 @@ const RegisterLotModal = () => {
                                 <div className="md:col-span-2 flex">
                                     <span className='border w-full'></span>
                                 </div>
+                                <div className="md:col-span-2 flex">
+                                    <span>Elige una ubicación para automaticamente agregarlo al inventario. Si no deseas agregar a inventario, no seleccione ninguna opción.</span>
+                                </div>
                                 <div className="md:col-span-2">
-                                    <LabelInput 
-                                        value="Ubicación donde va este stock"
-                                        required='no' />
                                     <SelectMenu
                                     items={ locationOptions }
                                         error={!!errors.inventoryItemId}
@@ -157,7 +157,7 @@ const RegisterLotModal = () => {
                                 </div>
                             </div>
                             {/* Botones del formulario */}
-                            <div className="flex justify-end gap-3 flex-wrap pt-4">
+                            <div className="flex justify-end gap-3 flex-wrap pt-2">
                                 <Button
                                     type="submit"
                                     className='flex justify-center items-center min-w-[120px]'
