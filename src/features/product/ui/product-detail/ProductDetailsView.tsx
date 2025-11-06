@@ -19,6 +19,7 @@ import {
     TbBoxMultiple,
     TbBuildingWarehouse,
     TbCurrencyDollar,
+    TbTransfer,
 } from 'react-icons/tb';
 import { UpdateProductModal } from './UpdateProductModal';
 import { useUpdateProductModal } from '../../hooks';
@@ -54,6 +55,10 @@ import { RegisterInventoryModal } from '@/features/inventory/ui/RegisterInventor
 import { ImPrinter } from 'react-icons/im';
 import { useEffect } from 'react';
 import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';
+import { useInventoryItemUIStore } from '@/features/inventory/infraestructura/stores/inventory-item-ui.store';
+import { FloatMessage } from '@/ui/components/messages';
+import { LocalTransferInventoryItemModal } from '@/features/inventory/ui/LocalTransferInventoryModal';
+import { useLocalTransferInventoryItemModal } from '@/features/inventory/hooks/useLocalTransferInventoryItemModal';
 
 interface Props {
     product: ProductEntity;
@@ -74,6 +79,8 @@ export function ProductDetailsView({ product }: Props) {
     const { handleOpenModalDeleteLot } = useDeleteLotModal();
     const { handleOpenModalDeleteProduct } = useDeleteProductModal();
     const { setInventoryItems } = useRegisterInventoryItemStore();
+    const { openLocalTransferInventoryItemModal } = useLocalTransferInventoryItemModal();
+    const { openInventoryItemModal, floatMessageState } = useInventoryItemUIStore();
 
     const handlePrint = () => {
         window.print();
@@ -329,6 +336,7 @@ export function ProductDetailsView({ product }: Props) {
                                             <>
                                                 <UpdateInventoryItemModal />
                                                 <DeleteInventoryItemModal />
+                                                <LocalTransferInventoryItemModal />
                                                 <div key={item.inventoryItemId} className="w-60 bg-white rounded-lg p-4 border border-gray-200">
                                                     <div className="flex flex-col justify-center items-center mb-3">
                                                         <div className="flex items-center gap-2">
@@ -336,11 +344,14 @@ export function ProductDetailsView({ product }: Props) {
                                                             <span className="text-2xl font-bold text-gray-800">{item.location.toUpperCase()}</span>
                                                         </div>
                                                         <div className="flex gap-1">
-                                                            <Button color='yellow' onClick={() => handlerSelectedInventoryItemModal(item)}>
-                                                                <HiPencil className="w-3 h-3" /> Modificar
+                                                            <Button color='red' title='Eliminar ubicación de stock' onClick={() => handleOpenModalDeleteInventoryItem(item.inventoryItemId)}>
+                                                                <HiTrash className="w-3 h-3" />
                                                             </Button>
-                                                            <Button color='red' onClick={() => handleOpenModalDeleteInventoryItem(item.inventoryItemId)}>
-                                                                <HiTrash className="w-3 h-3" /> Eliminar
+                                                            <Button color='yellow' title='Editar cantidad de stock' onClick={() => handlerSelectedInventoryItemModal(item)}>
+                                                                <HiPencil className="w-3 h-3" />
+                                                            </Button>
+                                                            <Button color='green' title='Transfiere stock a otra ubicacion: Ej (Venta, Almacen, etc)' onClick={() => openLocalTransferInventoryItemModal(item)}>
+                                                                <TbTransfer className="w-3 h-3" />
                                                             </Button>
                                                         </div>
                                                     </div>
@@ -487,6 +498,9 @@ export function ProductDetailsView({ product }: Props) {
                     </div>
                 )}
             </div>
+            <FloatMessage
+                key='product-details-general' 
+                {...floatMessageState} />
         </TemplateHeader>
     );
 }

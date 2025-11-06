@@ -31,6 +31,7 @@ const Login = () => {
                         <div>
                             <LabelInput value="Correo electrónico" />
                             <TextInput
+                                autoFocus={true}
                                 {...register('email')}
                                 error={!!errors.email}
                                 errorMessage={errors.email?.message} 
