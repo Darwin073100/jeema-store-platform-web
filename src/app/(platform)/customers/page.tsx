@@ -4,6 +4,7 @@ import { ProtectedRoute } from '@/ui/components/routes/ProtectedRoute';
 import { BreadcrumbItem, TemplateHeader } from '@/ui/components/templates/TemplateHeader'
 import { findAllCustomerByEstablishmentAction } from '@/features/customer/actions/find-all-customer-by-establishment.action'
 import CustomerDesktopTable from '@/features/customer/presentation/ui/CustomerDesktopTable';
+import { CustomerOptios } from '@/features/customer/presentation/ui/CustomerOptios';
 
 export const metadata: Metadata = {
     title: 'Customers'
@@ -22,6 +23,8 @@ export default async function CustomerPage() {
   return (
     <ProtectedRoute>
         <TemplateHeader breadcrumbItems={breadCrumbItems} title='Clientes' detail='Vista general de los clientes en todo el establecimeinto.'>
+            <CustomerOptios 
+                customersNo={currentCustomers.length}/>
             <div className="hidden md:block">
                 <CustomerDesktopTable
                     customers={currentCustomers}/>

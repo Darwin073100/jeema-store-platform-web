@@ -8,21 +8,21 @@ import React from 'react'
 import { IoPersonAdd } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 interface Props {
-    employeesNo: number
+    customersNo: number
 }
-const EmployeeOptios = ({ employeesNo }: Props) => {
+const CustomerOptios = ({ customersNo }: Props) => {
     const router = useRouter();
     const [loading, setLoading] = React.useState(false);
     const handleNewEmployee = () => {
         setLoading(true);
-        router.push('/configurations/employees/new');
+        router.push('/customers/new');
     }
     return (
         <>
             <div className="flex gap-4 items-center justify-between">
                 <Button onClick={() => handleNewEmployee()} disabled={loading}>
                     {loading ? <Spinner /> : <IoPersonAdd />}
-                    Nuevo empleado
+                    Cliente nuevo
                 </Button>
                 <div className='flex gap-4 items-center'>
                     <Button disabled={loading} color='green'>
@@ -30,15 +30,15 @@ const EmployeeOptios = ({ employeesNo }: Props) => {
                         Exportar a Excel
                     </Button>
                     <div>
-                        Empleados<Badge>{employeesNo}</Badge>
+                        Empleados<Badge>{customersNo}</Badge>
                     </div>
                 </div>
             </div>
             <div>
-                <TextInput placeholder="Buscar por nombre de empleado"/>
+                <TextInput placeholder="Buscar por nombre del cliente"/>
             </div>
         </>
     )
 }
 
-export { EmployeeOptios };
+export { CustomerOptios };

@@ -1,15 +1,11 @@
 import { findOneCustomerByEstablishmentAction } from "@/features/customer/actions/find-one-customer-by-establishment.action";
 import { CustomerSaleList } from "@/features/customer/presentation/ui/details/CustomerSaleList";
-import { SaleStatusEnum } from "@/features/sale/domain/enums/sale-status.enum";
-import { formatDate } from "@/shared/lib/utils/date-formatter";
-import { Badge } from "@/ui/components/badges/Badge";
 import { Button } from "@/ui/components/buttons";
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 import Link from "next/link";
 import { FcComboChart, FcLink, FcTimeline } from "react-icons/fc";
-import { IoBasketSharp } from "react-icons/io5";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
