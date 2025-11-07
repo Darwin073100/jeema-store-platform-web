@@ -11,6 +11,8 @@ import { UpdateInventoryItemDTO } from "../application/dtos/update-inventory-ite
 import { updateInventoryItemAction } from "../actions/update-inventory-item.action";
 import { useInventoryItemUIStore } from "../infraestructura/stores/inventory-item-ui.store";
 import { useInventoryItemDescripctionInput } from "./useInventoryItemSecripctionInput";
+import { LocalTransferDTO } from "@/features/transfer/application/dtos/local-transfer.dto";
+import { localTransferAction } from "@/features/transfer/actions/local-transfer.action";
 
 const registerFormData = yup.object().shape({
     location: yup
@@ -21,6 +23,10 @@ const registerFormData = yup.object().shape({
     quantityOnHand: yup
         .number()
         .required('El stock para la ubicación asignada es obligatorio.')
+        .typeError('Asegurate de ingresar la información correcta.'),
+    notes: yup
+        .string()
+        .optional()
         .typeError('Asegurate de ingresar la información correcta.')
 });
 
@@ -67,7 +73,6 @@ const useLocalTransferInventoryItemModal = () => {
         clearErrors([
             'location', 'quantityOnHand'
         ]);
-        setFloatMessageState({});
     }
 
     const openLocalTransferInventoryItemModal = (inventoryItem: InventoryItemEntity)=> {
@@ -78,41 +83,39 @@ const useLocalTransferInventoryItemModal = () => {
     const onSubmit = async (data: RegisterFormData) => {
         setFloatMessageState({});
         runInventoryItemLoading('transferring')
-
         try {
-
-            const registerInventoryItemDto: UpdateInventoryItemDTO = {
-                inventoryItemId: inventoryItem?.inventoryItemId ?? BigInt(0),
+            const dto = {
                 inventoryId: inventoryItem?.inventoryId ?? BigInt(0),
-                lastStockedAt: inventoryItem?.lastStockedAt? new Date(inventoryItem.lastStockedAt): new Date(),
-                purchasePriceAtStock: inventoryItem?.purchasePriceAtStock ?? 0,
-                location: data.location,
-                quantityOnHan: data.quantityOnHand,
-                internalBarCode: inventoryItem?.internalBarCode
+                fromLocation: inventoryItem?.location ?? LocationEnum.STOCK,
+                toLocation: data.location,
+                quantity: data.quantityOnHand,
+                notes: data.notes || null,
             }
-            
-            
-            const result = await updateInventoryItemAction(registerInventoryItemDto);
+
+            const result = await localTransferAction(dto);
+
             stopInventoryItemLoading();
+
             if (result.ok) {
                 setFloatMessageState({
                     summary: '¡Correcto!',
                     isActive: true,
                     type: 'green',
-                    description: '¡Ubicacion registrado exitosamente!'
+                    description: '¡Traspaso exitoso!'
                 });
                 closeInventoryItemModal();
+                resetFormLocalTransferInventoryItem();
                 setTimeout(() => {
                     setFloatMessageState({});
                 }, 3000);
             } else {
-                const errorMessage = Array.isArray(result?.error) 
-                    ? result.error.join(', ') 
-                    : result?.error?.message || 'Error al registrar un ubicacion';
-                
+                const errorMessage = Array.isArray(result?.error)
+                    ? result.error.join(', ')
+                    : result?.error?.message || 'Error al traspasar la mercancía de ubicación.';
+
                 setFloatMessageState({
                     description: errorMessage,
-                    summary: '¡Error!',
+                    summary: result.error?.statusCode ? `${result.error?.statusCode}: ¡Error!` : '500: ¡Error!',
                     isActive: true,
                     type: 'red'
                 });
@@ -123,8 +126,8 @@ const useLocalTransferInventoryItemModal = () => {
             }
         } catch(error){
             setFloatMessageState({
-                description: 'Error inesperado al registrar un ubicacion',
-                summary: '¡Error!',
+                description: 'Error inesperado al traspasar la mercancía de ubicación.',
+                summary: '500: ¡Error!',
                 isActive: true,
                 type: 'red'
             });

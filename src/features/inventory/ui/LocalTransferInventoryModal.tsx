@@ -10,6 +10,7 @@ import { useLocalTransferInventoryItemModal } from '../hooks/useLocalTransferInv
 import { useInventoryItemUIStore } from '../infraestructura/stores/inventory-item-ui.store';
 import { FcDeployment, FcShipped, FcShop, FcWorkflow } from 'react-icons/fc';
 import { TbTransfer } from 'react-icons/tb';
+import { TextArea } from '@/ui/components/inputs/TextInput copy';
 
 const LocalTransferInventoryItemModal = () => {
     const {
@@ -60,7 +61,18 @@ const LocalTransferInventoryItemModal = () => {
                                 {...register('quantityOnHand')}
                             />
                         </div>
-                        
+                        <div className="md:col-span-2">
+                            <LabelInput 
+                                value="Notas adicionales"
+                                required='no'
+                                description = 'Agrega una nota adicional' />
+                            <TextArea
+                                placeholder="Notas adicionales"
+                                error={!!errors.notes}
+                                errorMessage={errors.notes?.message}
+                                {...register('notes')}
+                            />
+                        </div>
                     </div>
                     {/* Botones del formulario */}
                     <div className="flex justify-end gap-3 flex-wrap pt-4">
