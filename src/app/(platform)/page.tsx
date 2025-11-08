@@ -6,6 +6,9 @@ import Sale from '../../ui/assets/images/sale.svg';
 import Inventory from '../../ui/assets/images/inventary.svg';
 import Contability from '../../ui/assets/images/payCash.svg';
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { FaHistory } from "react-icons/fa";
+import { PCol, PrimaryTable, PRow } from "@/ui/components/tables/PrimaryTable";
+import { FcNegativeDynamic, FcStatistics } from "react-icons/fc";
 
 const homeCards = [
   {
@@ -15,13 +18,13 @@ const homeCards = [
     image: Sale
   },
   {
-    title: 'Inventario',
-    description: 'Control de los productos',
+    title: 'Traspasos',
+    description: 'Historial de traspasos',
     to: '/',
     image: Inventory
   },
   {
-    title: 'Contabilidad',
+    title: 'Finanzas',
     description: 'Revisa los ingresos y egresos',
     to: '/',
     image: Contability
@@ -50,11 +53,66 @@ export default function Home() {
             ))}
           </form>
           
-          <div className="pt-4">
-            <h1 className="flex justify-center items-center text-gray-700 text-2xl pb-4">
-              Top 10 de productos mas vendidos 
-              <HiPhoto />
-            </h1>
+          <div className="w-full pt-8 flex justify-between gap-4">
+            <div>
+              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl"><FcStatistics />Productos mas vendidos</h2>
+              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Cantidad']}>
+                <PRow>
+                  <PCol>1</PCol>
+                  <PCol>Sombrilla doble tela</PCol>
+                  <PCol>$20,000</PCol>
+                  <PCol>300</PCol>
+                  <PCol><FaHistory/></PCol>
+                </PRow>
+                <PRow>
+                  <PCol>1</PCol>
+                  <PCol>Sombrilla doble tela</PCol>
+                  <PCol>$20,000</PCol>
+                  <PCol>300</PCol>
+                  <PCol><FaHistory/></PCol>
+                </PRow>
+                <PRow>
+                  <PCol>1</PCol>
+                  <PCol>Sombrilla doble tela</PCol>
+                  <PCol>$20,000</PCol>
+                  <PCol>300</PCol>
+                  <PCol><FaHistory/></PCol>
+                </PRow>
+                <PRow>
+                  <PCol>1</PCol>
+                  <PCol>Sombrilla doble tela</PCol>
+                  <PCol>$20,000</PCol>
+                  <PCol>300</PCol>
+                  <PCol><FaHistory/></PCol>
+                </PRow>
+              </PrimaryTable>
+            </div>
+            <div>
+              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl"><FcNegativeDynamic />Productos con bajo stock</h2>
+              <PrimaryTable theadList={['Top', 'Producto', 'Stock min.', 'Stock total']}>
+                <PRow>
+                  <PCol>1</PCol>
+                  <PCol>Sombrilla doble tela</PCol>
+                  <PCol>20</PCol>
+                  <PCol>24</PCol>
+                  <PCol><FaHistory/></PCol>
+                </PRow>
+                <PRow>
+                  <PCol>1</PCol>
+                  <PCol>Sombrilla doble tela</PCol>
+                  <PCol>20</PCol>
+                  <PCol>24</PCol>
+                  <PCol><FaHistory/></PCol>
+                </PRow>
+                <PRow>
+                  <PCol>1</PCol>
+                  <PCol>Sombrilla doble tela</PCol>
+                  <PCol>20</PCol>
+                  <PCol>24</PCol>
+                  <PCol><FaHistory/></PCol>
+                </PRow>
+              </PrimaryTable>
+            </div>
           </div>
         </div>
       </TemplateHeader>

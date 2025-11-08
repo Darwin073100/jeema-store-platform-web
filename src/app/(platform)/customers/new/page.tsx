@@ -1,0 +1,24 @@
+import { CustomerForms } from "@/features/customer/presentation/ui/CustomerForms";
+import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Nuevo cliente'
+}
+
+export default async function(){
+
+    const breadCrumbItems: BreadcrumbItem[] = [
+        {label: 'Clientes', href: '/customers'},
+        {label: 'Nuevo cliente'},
+    ]
+
+    return (
+        <ProtectedRoute>
+            <TemplateHeader title="Registra un nuevo cliente" detail="Da de alta los clientes para las ventas." breadcrumbItems={breadCrumbItems}>
+                <CustomerForms />
+            </TemplateHeader>
+        </ProtectedRoute>
+    )
+}

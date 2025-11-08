@@ -4,6 +4,8 @@ import { CustomerRepository } from "../../domain/repositories/customer.repositor
 import { ErrorEntity } from "@/shared/features/error.entity";
 import { Result } from "@/shared/features/result";
 import { CustomerEntity } from "../../domain/entities/customer.entity";
+import { RegisterCustomerDTO } from "../../application/dtos/register-customer.dto";
+import { CustomerMapper } from "../mappers/customer.mapper";
 
 export class CustomerFetchRepository implements CustomerRepository{
     constructor(
@@ -33,6 +35,19 @@ export class CustomerFetchRepository implements CustomerRepository{
 
         } catch (error: any) {
             return this.handleError(error, 'Find One Customer by Establishment');
+        }
+    }
+
+    async registerCustomer(dto: RegisterCustomerDTO): Promise<Result<CustomerEntity, ErrorEntity>>{
+        try{
+            const httpDTO = CustomerMapper.toRegisterCustomerHttpDTO(dto);
+            const response = await this.httpClient.post<CustomerEntity>(
+                this.apiConfig.getEndpointUrl('/customers'),
+                httpDTO
+            );
+            return Result.success(response.data);
+        } catch(error){
+            return this.handleError(error, 'CustomerFetchRepository.registerCustomer');
         }
     }
 
