@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import clsx from 'clsx';
-import { TextInput } from '@/ui/components/inputs';
+import { SelectMenu, TextInput } from '@/ui/components/inputs';
 import { LabelInput } from '@/ui/components/labels';
 import { Button } from '@/ui/components/buttons';
 import { FloatMessage } from '@/ui/components/messages';
@@ -12,7 +12,7 @@ import { CustomerFormAddress } from './CustomerFormAddress';
 import { CustomerEnableOptios } from './CustomerEnableOptios';
 
 const CustomerForms = () => {
-    const { errors, onSubmit, register, handleSubmit, addressCheck, floatMessageState, loading } = useCustomerForm()
+    const { errors, onSubmit, register, handleSubmit, addressCheck, floatMessageState, loading, customerTypeOptions } = useCustomerForm()
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
             <CustomerEnableOptios register={register}/>
@@ -62,13 +62,12 @@ const CustomerForms = () => {
                         </div>
                         <div>
                             <LabelInput value="Típo de cliente" required="no" />
-                            <TextInput
-                                type="text"
+                            <SelectMenu
                                 {...register('customerType')}
                                 error={!!errors.customerType}
                                 errorMessage={errors.customerType?.message}
                                 name="customerType"
-                                placeholder="Típo de cliente" />
+                                items={customerTypeOptions} />
                         </div>
                         <div>
                             <LabelInput value="Nombre de la empresa o negocio" required="no" />

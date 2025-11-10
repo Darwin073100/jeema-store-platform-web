@@ -6,6 +6,7 @@ import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.d
 import { useCustomerUIStore } from "../../infraestructure/stores/customer-ui.store";
 import { RegisterCustomerDTO } from "../../application/dtos/register-customer.dto";
 import { registerCustomerAction } from "../../actions/register-customer.action";
+import { CustomerTypeEnum } from "../../domain/enums/customer-type-enum";
 
 export const schema = yup.object().shape({
     firstName: yup.string()
@@ -138,6 +139,10 @@ const useCustomerForm = () => {
         });
     }
 
+    const customerTypeOptions = Object.values(CustomerTypeEnum).map( item => ({
+        text: item.toUpperCase(), value: item
+    }));
+
     const addressCheck = watch('addressCheck');
 
     const onSubmit = async (data: FormData) => {
@@ -205,7 +210,8 @@ const useCustomerForm = () => {
         errors,
         addressCheck,
         floatMessageState,
-        loading
+        loading,
+        customerTypeOptions
     }
 }
 

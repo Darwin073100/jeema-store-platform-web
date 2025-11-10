@@ -1,7 +1,7 @@
 'use client'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LabelInput } from '../../../ui/components/labels';
 import { TextInput } from '../../../ui/components/inputs';
@@ -17,13 +17,27 @@ import { useBranchOfficeStore } from '@/features/branch-office/infraestructure/b
 import { useEstablishmentStore } from '@/features/establishment/infraestructure/establishment.store';
 
 const schema = yup.object({
-    firstName: yup.string().required('El campo nombre es obligatorio.').min(3, 'El valor minimo debe ser de 3 caracteres'),
-    lastName: yup.string().required('El campo apellidos es obligatorio.'),
-    username: yup.string().required('La campo nombre de usuario es obligatorio.').min(3, 'Mínimo 3 caracteres debes escribir'),
-    email: yup.string().required('El campo correo es obligatorio.').email('El formato para el correo es alberto@platform.com.mx'),
-    password: yup.string().required('La contraseña es obligatoria.').min(8,'La contraseña debe tener al menos 8 caracteres.'),
-    passwordConfirm: yup.string().required('Debes confirmar tu contraseña.').oneOf([yup.ref('password')], 'Las contraseñas no coindicen.'),
-    phoneNumber: yup.string().nullable().optional().default(''),
+    firstName: yup.string().trim()
+        .required('El campo nombre es obligatorio.')
+        .min(3, 'El valor minimo debe ser de 3 caracteres'),
+    lastName: yup.string().trim()
+        .required('El campo apellidos es obligatorio.'),
+    username: yup.string().trim()
+        .required('La campo nombre de usuario es obligatorio.')
+        .min(3, 'Mínimo 3 caracteres debes escribir'),
+    email: yup.string().trim()
+        .required('El campo correo es obligatorio.')
+        .email('El formato para el correo es alberto@platform.com.mx'),
+    password: yup.string().trim()
+        .required('La contraseña es obligatoria.')
+        .min(8,'La contraseña debe tener al menos 8 caracteres.'),
+    passwordConfirm: yup.string().trim()
+        .required('Debes confirmar tu contraseña.')
+        .oneOf([yup.ref('password')], 'Las contraseñas no coindicen.'),
+    phoneNumber: yup.string().trim()
+        .nullable()
+        .optional()
+        .default(''),
 }).required();
 
 type FormData = yup.InferType<typeof schema>
@@ -68,7 +82,7 @@ export const InitAcountForm = () => {
                 description: 'Usuario creado correctamente, ahora solo inicia sesión',
                 summary: '¡Correcto!',
                 isActive: true,
-                type: 'blue'
+                type: 'green'
             }));
 
             cleanLocalStorage();
@@ -93,7 +107,7 @@ export const InitAcountForm = () => {
                 <div className='w-full flex justify-center gap-4'>
                     <div className='w-full'>
                         <div>
-                            <LabelInput htmlFor="firstname" value="Nombre del usuario" />
+                            <LabelInput htmlFor="firstname" value="Nombre del usuario" required='yes' />
                             <TextInput
                                 {...register('firstName')}
                                 type='text'
@@ -102,7 +116,7 @@ export const InitAcountForm = () => {
                                 name="firstName" placeholder="Alberto" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="lastName" value="Apellidos" />
+                            <LabelInput htmlFor="lastName" value="Apellidos" required='yes' />
                             <TextInput
                                 {...register('lastName')}
                                 type="text"
@@ -111,7 +125,7 @@ export const InitAcountForm = () => {
                                 name="lastName" placeholder="Morales Medel" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="password" value="Contraseña" />
+                            <LabelInput htmlFor="password" value="Contraseña" required='yes'/>
                             <TextInput
                                 {...register('password')}
                                 type='password'
@@ -120,7 +134,7 @@ export const InitAcountForm = () => {
                                 name="password" placeholder="ContrSup3rSecr374$" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="passwordConfirm" value="Confirma tu contraseña" />
+                            <LabelInput htmlFor="passwordConfirm" value="Confirma tu contraseña" required='yes'/>
                             <TextInput
                                 {...register('passwordConfirm')}
                                 type='password'
@@ -131,7 +145,7 @@ export const InitAcountForm = () => {
                     </div>
                     <div className='w-full'>
                         <div>
-                            <LabelInput htmlFor="username" value="Nombre de usuario" />
+                            <LabelInput htmlFor="username" value="Nombre de usuario" required='yes'/>
                             <TextInput
                                 {...register('username')}
                                 type="text"
@@ -140,7 +154,7 @@ export const InitAcountForm = () => {
                                 name="username" placeholder="beto89" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="email" value="Correo electrónico" />
+                            <LabelInput htmlFor="email" value="Correo electrónico" required='yes'/>
                             <TextInput
                                 {...register('email')}
                                 type='email'
@@ -149,7 +163,7 @@ export const InitAcountForm = () => {
                                 name="email" placeholder="albert@platform.com.mx" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="phoneNumber" value="Número de teléfono" />
+                            <LabelInput htmlFor="phoneNumber" value="Número de teléfono" required='no' />
                             <TextInput
                                 {...register('phoneNumber')}
                                 type='text'
@@ -162,7 +176,7 @@ export const InitAcountForm = () => {
                 <Button
                     type='submit'
                     color="blue">
-                    {isLoading ? <Spinner /> : <>Siguiente<HiMiniArrowLongRight /></>}
+                    {isLoading ?<>Procesando <Spinner /></> : <>Terminar<HiMiniArrowLongRight /></>}
                 </Button>
             </form>
             <FloatMessage

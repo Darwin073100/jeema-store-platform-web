@@ -11,19 +11,17 @@ export class BranchOfficeFetchRepositoryImpl implements BranchOfficeRepository{
         let dataBody = {
             name: data.name,
             establishmentId: data.establishmentId.toString(),
-            street: data.street,
+            street: data.street && (data.street.trim().length > 0) ? data.street: undefined,
             country: data.country,
-            internalNumber: data.internalNumber,
-            externalNumber: data.externalNumber,
+            internalNumber: data.internalNumber && (data.internalNumber.trim().length > 0) ? data.internalNumber: undefined,
+            externalNumber: data.externalNumber && (data.externalNumber.trim().length > 0) ? data.externalNumber: undefined,
             postalCode: data.postalCode,
-            neighborhood: data.neighborhood,
+            neighborhood: data.neighborhood && (data.neighborhood.trim().length > 0) ? data.neighborhood: undefined,
             municipality: data.municipality,
             city: data.city,
             state: data.state,
-            reference: data.reference
+            reference: data.reference && (data.reference.trim().length > 0) ? data.reference: undefined
         }
-        
-        if(!dataBody.reference)delete dataBody.reference;
     
 
         try {

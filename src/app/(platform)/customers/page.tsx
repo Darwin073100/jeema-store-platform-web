@@ -24,10 +24,9 @@ export default async function CustomerPage() {
     <ProtectedRoute>
         <TemplateHeader breadcrumbItems={breadCrumbItems} title='Clientes' detail='Vista general de los clientes en todo el establecimeinto.'>
             <CustomerOptios 
-                customersNo={currentCustomers.length}/>
+                customersList={currentCustomers}/>
             <div className="hidden md:block">
-                <CustomerDesktopTable
-                    customers={currentCustomers}/>
+                <CustomerDesktopTable />
             </div>
             <div className="md:hidden">
                 {/* <SaleCardList

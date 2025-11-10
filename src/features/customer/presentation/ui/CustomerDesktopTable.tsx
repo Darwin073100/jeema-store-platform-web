@@ -3,18 +3,16 @@ import { Button } from '@/ui/components/buttons'
 import { BasicTable, BCol, BRow } from '@/ui/components/tables/BasicTable'
 import React from 'react'
 import { AiFillProfile } from 'react-icons/ai'
-import { CustomerEntity } from '../../domain/entities/customer.entity'
 import { useRouter } from 'next/navigation';
+import { useCustomerStore } from '../../infraestructure/stores/customer.store';
 
-interface Props {
-    customers: CustomerEntity[]
-}
-const CustomerDesktopTable = ({ customers }: Props) => {
+const CustomerDesktopTable = () => {
+    const { customersFilter } = useCustomerStore();
     const router = useRouter();
     const headTable = ['Folio', 'Nombre', 'Téfono', 'Correo', 'Ciudad']
     return (
         <BasicTable theadList={headTable}>
-            {customers.map(item => (
+            {customersFilter.map(item => (
                 <BRow>
                     <BCol>{item.customerId}</BCol>
                     <BCol>{`${item.firstName} ${item.lastName ?? ''}`}</BCol>

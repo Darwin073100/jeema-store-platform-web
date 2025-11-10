@@ -15,20 +15,46 @@ import { HiMiniArrowLongRight } from 'react-icons/hi2';
 import { CreateBranchOfficeDTO } from '../application/dtos/create-branch-office.dto';
 import { useEstablishmentStore } from '@/features/establishment/infraestructure/establishment.store';
 import { useBranchOfficeStore } from '../infraestructure/branch-office.store';
+import { TextArea } from '@/ui/components/inputs/TextInput copy';
 
-const schema = yup.object({
-    name: yup.string().required('El campo nombre es obligatorio').min(3, 'El valor minimo debe ser de 3 caracteres'),
-    postalCode: yup.string().required('El campo codigo postal es obligatorio'),
-    street: yup.string().required('La campo calle es requerido').min(3, 'Mínimo 3 caracteres debes escribir'),
-    interiorNumber: yup.string().default('S/N'),
-    exteriorNumber: yup.string().default('S/N'),
-    municipality: yup.string().required('El campo municipio es obligatorio'),
-    city: yup.string().required('El campo ciudad es obligatorio'),
-    state: yup.string().required('El campo estado es obligatorio'),
-    neighborhood: yup.string().required('El campo colonia es obligatorio'),
-    country: yup.string().required('El campo ciudad es obligatorio'),
-    reference: yup.string().optional().notRequired().default(''),
-}).required();
+const schema = yup.object().shape({
+    name: yup.string().trim()
+        .required('El campo nombre es obligatorio')
+        .min(3, 'El valor minimo debe ser de 3 caracteres'),
+    postalCode: yup.string().trim()
+        .required('El campo codigo postal es obligatorio')
+        .typeError('Asegurate de ingresar la información correcta.'),
+    street: yup.string().trim()
+        .optional()
+        .typeError('Asegurate de ingresar la información correcta.'),
+    interiorNumber: yup.string().trim()
+        .optional()
+        .typeError('Asegurate de ingresar la información correcta.'),
+    exteriorNumber: yup.string().trim()
+        .optional()
+        .typeError('Asegurate de ingresar la información correcta.'),
+    municipality: yup.string().trim()
+        .required('El campo municipio es obligatorio')
+        .min(3, 'El campo ciudad o municipio debe tener mínimo 3 caracteres')
+        .typeError('Asegurate de ingresar la información correcta.'),
+    city: yup.string().trim()
+        .required('El campo ciudad es obligatorio')
+        .min(3, 'El campo ciudad debe tener mínimo 3 caracteres')
+        .typeError('Asegurate de ingresar la información correcta.'),
+    state: yup.string().trim()
+        .required('El campo estado es obligatorio')
+        .min(3, 'El campo estado debe tener mínimo 3 caracteres')
+        .typeError('Asegurate de ingresar la información correcta.'),
+    neighborhood: yup.string().trim()
+        .typeError('Asegurate de ingresar la información correcta.'),
+    country: yup.string().trim()
+        .required('El campo país es obligatorio')
+        .min(3, 'El campo país debe tener mínimo 3 caracteres')
+        .typeError('Asegurate de ingresar la información correcta.'),
+    reference: yup.string().trim()
+        .optional().notRequired().default('')
+        .typeError('Asegurate de ingresar la información correcta.')
+});
 
 type FormData = yup.InferType<typeof schema>
 
@@ -40,7 +66,7 @@ export const CreateBranchForm = () => {
     const { setBranchOffice } = useBranchOfficeStore();
     const router = useRouter();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
@@ -52,17 +78,17 @@ export const CreateBranchForm = () => {
         let resp;
         const branch: CreateBranchOfficeDTO = {
             name: data.name,
-            establishmentId: establishment?.establishmentId?? BigInt(0),
-            street: data.street,
-            internalNumber: data.interiorNumber,
-            externalNumber: data.exteriorNumber,
+            establishmentId: establishment?.establishmentId ?? BigInt(0),
+            street: data.street ?? null,
+            internalNumber: data.interiorNumber ?? null,
+            externalNumber: data.exteriorNumber ?? null,
             postalCode: data.postalCode,
-            neighborhood: data.neighborhood,
+            neighborhood: data.neighborhood ?? null,
             municipality: data.municipality,
             country: data.country,
             city: data.city,
             state: data.state,
-            reference: data.reference?.toString()
+            reference: data.reference?.toString() ?? null
         };
 
         resp = await createNewBranchOfficeAction(branch);
@@ -74,8 +100,8 @@ export const CreateBranchForm = () => {
                 isActive: true,
                 type: 'green'
             }));
-            
-            resp.value? setBranchOffice(resp.value): null;
+
+            resp.value ? setBranchOffice(resp.value) : null;
 
             router.push('/initial/first-user')
         } else {
@@ -97,57 +123,15 @@ export const CreateBranchForm = () => {
                 <div className='w-full flex justify-center gap-4'>
                     <div className='w-full'>
                         <div>
-                            <LabelInput htmlFor="name" value="Nombre de la sucursal" />
+                            <LabelInput htmlFor="name" value="Nombre de la sucursal" required='yes' />
                             <TextInput
                                 {...register('name')}
                                 error={!!errors.name}
                                 errorMessage={errors.name?.message}
-                                name="name" placeholder="Los Tamarindos S.A. de C.V." />
+                                name="name" placeholder="La Guadalupe 1" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="postalCode" value="Codigo postal" />
-                            <TextInput
-                                {...register('postalCode')}
-                                error={!!errors.postalCode}
-                                errorMessage={errors.postalCode?.message}
-                                name="postalCode" placeholder="41700" type="text" />
-                        </div>
-                        <div>
-                            <LabelInput htmlFor="street" value="Nombre de la calle" />
-                            <TextInput
-                                {...register('street')}
-                                error={!!errors.street}
-                                errorMessage={errors.street?.message}
-                                name="street" placeholder="Juan Ruiz de Alarcón" />
-                        </div>
-                        <div>
-                            <LabelInput htmlFor="interiorNumber" value="Numero interior" />
-                            <TextInput
-                                {...register('interiorNumber')}
-                                error={!!errors.interiorNumber}
-                                errorMessage={errors.interiorNumber?.message}
-                                name="interiorNumber" placeholder="14" />
-                        </div>
-                        <div>
-                            <LabelInput htmlFor="exteriorNumber" value="Numero exterior" />
-                            <TextInput
-                                {...register('exteriorNumber')}
-                                error={!!errors.exteriorNumber}
-                                errorMessage={errors.exteriorNumber?.message}
-                                name="exteriorNumber" placeholder="S/N" />
-                        </div>
-                    </div>
-                    <div className='w-full'>
-                        <div>
-                            <LabelInput htmlFor="neighborhood" value="Colonia" />
-                            <TextInput
-                                {...register('neighborhood')}
-                                error={!!errors.neighborhood}
-                                errorMessage={errors.neighborhood?.message}
-                                name="neighborhood" placeholder="Barrio de la Guadalupe" />
-                        </div>
-                        <div>
-                            <LabelInput htmlFor="country" value="País" />
+                            <LabelInput htmlFor="country" value="País" required='yes' />
                             <TextInput
                                 {...register('country')}
                                 error={!!errors.country}
@@ -155,7 +139,23 @@ export const CreateBranchForm = () => {
                                 name="country" placeholder="México" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="municipality" value="Municipio" />
+                            <LabelInput htmlFor="state" value="Estado" required='yes' />
+                            <TextInput
+                                {...register('state')}
+                                error={!!errors.state}
+                                errorMessage={errors.state?.message}
+                                name="state" placeholder="Guerrero" />
+                        </div>
+                        <div>
+                            <LabelInput htmlFor="postalCode" value="Codigo postal" required='yes' />
+                            <TextInput
+                                {...register('postalCode')}
+                                error={!!errors.postalCode}
+                                errorMessage={errors.postalCode?.message}
+                                name="postalCode" placeholder="41700" type="text" />
+                        </div>
+                        <div>
+                            <LabelInput htmlFor="municipality" value="Municipio" required='yes' />
                             <TextInput
                                 {...register('municipality')}
                                 error={!!errors.municipality}
@@ -163,26 +163,52 @@ export const CreateBranchForm = () => {
                                 name="municipality" placeholder="Ometepec" />
                         </div>
                         <div>
-                            <LabelInput htmlFor="city" value="Ciudad" />
+                            <LabelInput htmlFor="city" value="Ciudad o comunidad" required='yes' />
                             <TextInput
                                 {...register('city')}
                                 error={!!errors.city}
                                 errorMessage={errors.city?.message}
                                 name="city" placeholder="Ometepec" />
                         </div>
+                    </div>
+                    <div className='w-full'>
                         <div>
-                            <LabelInput htmlFor="state" value="Estado" />
+                            <LabelInput htmlFor="neighborhood" value="Colonia" required='no' />
                             <TextInput
-                                {...register('state')}
-                                error={!!errors.state}
-                                errorMessage={errors.state?.message}
-                                name="state" placeholder="Guerrero" />
+                                {...register('neighborhood')}
+                                error={!!errors.neighborhood}
+                                errorMessage={errors.neighborhood?.message}
+                                name="neighborhood" placeholder="Barrio de la Guadalupe" />
+                        </div>
+                        <div>
+                            <LabelInput htmlFor="street" value="Nombre de la calle" required='no' />
+                            <TextInput
+                                {...register('street')}
+                                error={!!errors.street}
+                                errorMessage={errors.street?.message}
+                                name="street" placeholder="Juan Ruiz de Alarcón" />
+                        </div>
+                        <div>
+                            <LabelInput htmlFor="interiorNumber" value="Numero interior" required='no' />
+                            <TextInput
+                                {...register('interiorNumber')}
+                                error={!!errors.interiorNumber}
+                                errorMessage={errors.interiorNumber?.message}
+                                name="interiorNumber" placeholder="14" />
+                        </div>
+                        <div>
+                            <LabelInput htmlFor="exteriorNumber" value="Numero exterior" required='no' />
+                            <TextInput
+                                {...register('exteriorNumber')}
+                                error={!!errors.exteriorNumber}
+                                errorMessage={errors.exteriorNumber?.message}
+                                name="exteriorNumber" placeholder="S/N" />
                         </div>
                     </div>
                 </div>
                 <div>
-                    <LabelInput htmlFor="reference" value="Referencia adicional" />
-                    <TextInput
+                    <LabelInput htmlFor="reference" value="Referencia adicional" required='no' />
+                    <TextArea
                         {...register('reference')}
                         error={!!errors.reference}
                         errorMessage={errors.reference?.message}
@@ -191,7 +217,7 @@ export const CreateBranchForm = () => {
                 <Button
                     type='submit'
                     color="blue">
-                    {isLoading ? <Spinner /> : <>Siguiente<HiMiniArrowLongRight /></>}
+                    {isLoading ?<>Procesando <Spinner /></> : <>Siguiente<HiMiniArrowLongRight /></>}
                 </Button>
             </form>
             <FloatMessage

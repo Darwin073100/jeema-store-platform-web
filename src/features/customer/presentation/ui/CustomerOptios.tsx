@@ -4,19 +4,36 @@ import { Button } from '@/ui/components/buttons';
 import { TextInput } from '@/ui/components/inputs';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IoPersonAdd } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { CustomerEntity } from '../../domain/entities/customer.entity';
+import { useCustomerStore } from '../../infraestructure/stores/customer.store';
 interface Props {
-    customersNo: number
+    customersList: CustomerEntity[]
 }
-const CustomerOptios = ({ customersNo }: Props) => {
+const CustomerOptios = ({ customersList }: Props) => {
     const router = useRouter();
     const [loading, setLoading] = React.useState(false);
+    const { customersFilter, setCustomersFilter,  searchValue, setSearchValue } = useCustomerStore();
+
     const handleNewEmployee = () => {
         setLoading(true);
         router.push('/customers/new');
     }
+
+    useEffect(()=>{
+        const regex = new RegExp(searchValue, 'i');
+        const newcustomerByFirstNameFilter = customersList.filter( item => regex.test(item.firstName ?? ''));
+        const newcustomerByLastNameFilter = customersList.filter( item => regex.test(item.lastName ?? ''));
+        const completFilter = [...(new Set([...newcustomerByFirstNameFilter, ...newcustomerByLastNameFilter]))]
+        setCustomersFilter(completFilter);
+    }, [searchValue]);
+
+    useEffect(()=>{
+        setCustomersFilter(customersList);
+    }, [])
+
     return (
         <>
             <div className="flex gap-4 items-center justify-between">
@@ -30,12 +47,15 @@ const CustomerOptios = ({ customersNo }: Props) => {
                         Exportar a Excel
                     </Button>
                     <div>
-                        Empleados<Badge>{customersNo}</Badge>
+                        Empleados<Badge>{customersFilter.length}</Badge>
                     </div>
                 </div>
             </div>
             <div>
-                <TextInput placeholder="Buscar por nombre del cliente"/>
+                <TextInput
+                    onChange={(e)=> setSearchValue(e.target.value ?? '')}
+                    value={searchValue}
+                    placeholder="Buscar por nombre del cliente o apellidos"/>
             </div>
         </>
     )

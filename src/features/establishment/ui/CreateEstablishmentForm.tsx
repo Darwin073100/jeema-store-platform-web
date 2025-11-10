@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextInput } from '../../../ui/components/inputs'
 import { Button } from '../../../ui/components/buttons'
 import { HiMiniArrowLongRight } from 'react-icons/hi2'
@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEstablishmentStore } from '../infraestructure/establishment.store'
 import { CreateEstablishmentDTO } from '../application/dtos/create-establishment.dto'
+import { useBranchOfficeStore } from '@/features/branch-office/infraestructure/branch-office.store'
 
 const schema = yup.object({
     name: yup.string().required('El campo nombre es requerido').min(3, 'El valor debe ser mayor a 3 caracteres')
@@ -30,8 +31,13 @@ export const CreateEstablishmentForm = () => {
     // const { setEstablishment, establishment } = useEstablishmentStore();
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [isLoading, setIsLoading] = useState(false);
-    const { setEstablishment } = useEstablishmentStore();
+    const { setEstablishment, clearEstablishment } = useEstablishmentStore();
+    const { clearBranchOffice } = useBranchOfficeStore();
     
+    useEffect(()=>{
+        clearEstablishment();
+        clearBranchOffice();
+    },[]);
 
     const router = useRouter();
 
@@ -47,7 +53,6 @@ export const CreateEstablishmentForm = () => {
         resp = await createEstablishmentAction(dto);
 
         if (resp?.ok) {
-            setIsLoading(false);
             setFloatMessageState(()=>({
                 description: 'Establecimiento creado correctamente',
                 summary: '¡Correcto!',
@@ -86,7 +91,7 @@ export const CreateEstablishmentForm = () => {
                 <Button
                     type='submit'
                     color="blue">
-                    {isLoading ? <Spinner /> : <>Siguiente<HiMiniArrowLongRight /></>}
+                    {isLoading ?<>Procesando <Spinner /></> : <>Siguiente<HiMiniArrowLongRight /></>}
                 </Button>
             </form>
             <FloatMessage 

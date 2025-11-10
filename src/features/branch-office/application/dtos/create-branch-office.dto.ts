@@ -1,14 +1,14 @@
 export interface CreateBranchOfficeDTO{
         establishmentId: bigint;
         name: string;
-        postalCode: string;
-        street: string;
-        internalNumber: string;
-        externalNumber: string;
-        neighborhood: string;
+        street: string | null;
+        externalNumber: string | null;
+        internalNumber: string | null;
         municipality: string;
-        country: string;
+        neighborhood: string | null;
         city: string;
         state: string;
-        reference?: string;
+        postalCode: string;
+        country: string;
+        reference: string|null;
 }
