@@ -18,6 +18,9 @@ import { viewAllSeasonsAction } from "@/features/season/actions/view-all-seasons
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
 import { Breadcrumb } from "@/ui/components/navigation";
+import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
+import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
+import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -34,13 +37,13 @@ export default async function ProductsPage() {
         const inventoryItemsData = await viewAllProductsAction();
         const items = inventoryItemsData?.ok && inventoryItemsData.value?.products ? inventoryItemsData.value.products : [];
 
-        const viewAllCategories = await ViewAllCategoriesAction();
+        const viewAllCategories = await FindAllCategoriesByEstablishmentAction();
         const categories = viewAllCategories?.ok && viewAllCategories.value?.categories ? viewAllCategories.value.categories : [];
 
-        const viewAllBrands = await viewAllBrandsAction();
+        const viewAllBrands = await findAllBrandsByEstablishmentAction();
         const brandItems = viewAllBrands?.ok && viewAllBrands.value?.brands ? viewAllBrands.value.brands : [];
 
-        const viewAllSeasons = await viewAllSeasonsAction();
+        const viewAllSeasons = await findAllSeasonsBYEstablishmentAction();
         const seasonItems = viewAllSeasons?.ok && viewAllSeasons.value?.seasons ? viewAllSeasons.value.seasons : [];
 
         const breadcrumbItems: BreadcrumbItem[] = [

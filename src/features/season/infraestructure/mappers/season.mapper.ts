@@ -6,6 +6,7 @@ import { UpdateSeasonHttpDTO } from "../dtos/update-season-http.dto";
 export class SeasonMapper{
     static toHttpDto(dto: RegisterSeasonDTO): RegisterSeasonHttpDTO {
         return {
+            establishmentId: dto.establishmentId.toString(),
             name: dto.name,
             description: dto.description? dto.description: undefined,
             dateInit: dto.dateInit ? dto.dateInit.toISOString() : undefined,

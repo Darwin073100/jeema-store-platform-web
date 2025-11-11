@@ -95,7 +95,7 @@ const useBrandModal = ({ brandList }: Props) => {
                 }
             } else {
                 // Create new brand
-                const newBrand: RegisterBrandDTO = {
+                const newBrand = {
                     name: data.name
                 }
                 result = await registerBrandAction(newBrand);

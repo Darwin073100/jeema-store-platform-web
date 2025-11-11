@@ -107,4 +107,26 @@ export class SeasonFetchRepositoryImpl implements SeasonRepository{
             } satisfies ErrorEntity);
         }
     }
+    async findAllSeasonsByEstablishment(establishmentId: bigint): Promise<Result<{ seasons: SeasonEntity[]; }, ErrorEntity>> {
+        try {
+            const url = this.apiConfig.getEndpointUrl(`/seasons/establishments/${establishmentId.toString()}`);
+            
+            const response = await this.httpClient.get<{ seasons: SeasonEntity[] }>(url);
+            
+            return Result.success(response.data);
+        } catch (error: any) {
+            // Si es un HttpError, extraer información del servidor
+            if (error.status && error.data) {
+                return Result.failure(error.data);
+            }
+            
+            return Result.failure({
+                error: error?.message || error,
+                message: 'No se pudo conectar al backend',
+                statusCode: 500,
+                path: '/seasons',
+                timestamp: new Date().toDateString(),
+            } satisfies ErrorEntity);
+        }
+    }
 }

@@ -18,7 +18,10 @@ export class BrandFetchRepositoryImpl implements BrandRepository {
         try {
             const url = this.apiConfig.getEndpointUrl('/brands');
             
-            const response = await this.httpClient.post<BrandEntity>(url, dto);
+            const response = await this.httpClient.post<BrandEntity>(url, {
+                name: dto.name,
+                establishmentId: dto.establishmentId,
+            });
             
             return Result.success(response.data);
         } catch (error: any) {
@@ -86,6 +89,28 @@ export class BrandFetchRepositoryImpl implements BrandRepository {
     async findAll(): Promise<Result<{ brands: BrandEntity[]; }, ErrorEntity>> {
         try {
             const url = this.apiConfig.getEndpointUrl('/brands');
+            
+            const response = await this.httpClient.get<{ brands: BrandEntity[] }>(url);
+            
+            return Result.success(response.data);
+        } catch (error: any) {
+            // Si es un HttpError, extraer información del servidor
+            if (error.status && error.data) {
+                return Result.failure(error.data);
+            }
+            
+            return Result.failure({
+                error: error?.message || error,
+                message: 'No se pudo conectar al backend',
+                statusCode: 500,
+                path: '/brands',
+                timestamp: new Date().toDateString(),
+            } satisfies ErrorEntity);
+        }
+    }
+    async findAllByEstablishment(establishmentId: bigint): Promise<Result<{ brands: BrandEntity[]; }, ErrorEntity>> {
+        try {
+            const url = this.apiConfig.getEndpointUrl(`/brands/establishments/${establishmentId.toString()}`);
             
             const response = await this.httpClient.get<{ brands: BrandEntity[] }>(url);
             

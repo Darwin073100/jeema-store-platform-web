@@ -105,4 +105,26 @@ export class CategoryFetchRepositoryImpl implements CategoryRepository{
             } satisfies ErrorEntity);
         }
     }
+    async findAllCategoriesByEstablishment(establishmentId: bigint): Promise<Result<{ categories: CategoryEntity[]; }, ErrorEntity>> {
+        try {
+            const url = this.apiConfig.getEndpointUrl(`/categories/establishments/${establishmentId.toString()}`);
+            
+            const response = await this.httpClient.get<{ categories: CategoryEntity[] }>(url);
+            
+            return Result.success(response.data);
+        } catch (error: any) {
+            // Si es un HttpError, extraer información del servidor
+            if (error.status && error.data) {
+                return Result.failure(error.data);
+            }
+            
+            return Result.failure({
+                error: error?.message || error,
+                message: 'No se pudo conectar al backend',
+                statusCode: 500,
+                path: '/categories',
+                timestamp: new Date().toDateString(),
+            } satisfies ErrorEntity);
+        }
+    }
 }

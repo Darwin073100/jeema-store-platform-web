@@ -9,4 +9,5 @@ export interface SeasonRepository{
     update(dto: UpdateSeasonDTO): Promise<Result<SeasonEntity, ErrorEntity>>
     delete(seasonId: bigint): Promise<Result<boolean, ErrorEntity>>
     findAll(): Promise<Result<{seasons: SeasonEntity[]}, ErrorEntity>>
+    findAllSeasonsByEstablishment(establishmentId: bigint): Promise<Result<{ seasons: SeasonEntity[]; }, ErrorEntity>>
 }

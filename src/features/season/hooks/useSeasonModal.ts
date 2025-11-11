@@ -184,7 +184,7 @@ const useSeasonModal = ({ seasonList }: Props) => {
                 }
             } else {
                 // Modo creación
-                const newSeason: RegisterSeasonDTO = {
+                const newSeason = {
                     name: data.name,
                     description: data.description,
                     dateInit: parseInputDate(data.dateInit),

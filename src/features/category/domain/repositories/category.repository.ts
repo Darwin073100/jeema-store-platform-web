@@ -9,4 +9,5 @@ export interface CategoryRepository{
     update(entity: UpdateCategoryDTO): Promise<Result<CategoryEntity, ErrorEntity>>
     delete(categoryId: string): Promise<Result<boolean, ErrorEntity>>
     findAll(): Promise<Result<{categories: CategoryEntity[]}, ErrorEntity>>
+    findAllCategoriesByEstablishment(establishmentId: bigint): Promise<Result<{ categories: CategoryEntity[]; }, ErrorEntity>>
 }
