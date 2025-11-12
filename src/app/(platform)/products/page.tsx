@@ -53,7 +53,8 @@ export default async function ProductsPage() {
             <ProtectedRoute>
                 <TemplateHeader title="Catalogo de productos" detail="Lista de todos los productos en diferentes ubicaciones" breadcrumbItems={breadcrumbItems}>
                     <main className="flex flex-col gap-4 w-full">
-                        <ProductActionsBar />
+                        <ProductActionsBar
+                            productQuantity={items.length} />
                         <ProductSearch />
                         <TableProduct
                             productList={items} />
@@ -74,7 +75,7 @@ export default async function ProductsPage() {
         return (
             <ProtectedRoute>
                 <main className="flex flex-col gap-4 w-full">
-                    <ProductActionsBar />
+                    <ProductActionsBar productQuantity={0} />
                     <ProductSearch />
                     <h1 className="text-xl">Lista de productos</h1>
                     <div className="w-full bg-gray-100 border border-gray-400 text-red-700 px-4 py-3 rounded">
