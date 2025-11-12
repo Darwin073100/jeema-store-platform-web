@@ -8,6 +8,7 @@ import { ProductMapper } from "../mappers/product.mapper";
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { UpdateProductDTO } from "../../application/dtos/update-product.dto";
+import { RegisterCompleteProductDTO } from "../../application/dtos/register-complete-product.dto";
 
 export class ProductFetchRepositoryImpl implements ProductRepository {
     constructor(
@@ -73,6 +74,20 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             const dtoHttp = ProductMapper.toHttpMany(dto);
             const response = await this.httpClient.post<ProductEntity>(
                 this.apiConfig.getEndpointUrl('/products/with-lot-and-inventory-item'),
+                dtoHttp
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'save product with lot and inventory');
+        }  
+    }
+    async registerCompleteProduct(dto: RegisterCompleteProductDTO): Promise<Result<ProductEntity, ErrorEntity>> {
+        try {
+            const dtoHttp = ProductMapper.toHttpRegisterCompleteProduct(dto);
+            const response = await this.httpClient.post<ProductEntity>(
+                this.apiConfig.getEndpointUrl('/products/complete'),
                 dtoHttp
             );
 

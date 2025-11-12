@@ -1,16 +1,16 @@
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { viewAllBrandsAction } from "@/features/brand/actions/view-all-brands.action";
-import { ViewAllCategoriesAction } from "@/features/category/actions/view-all-categories.action";
-import { FormNewProductAndInventory } from "@/features/product/ui/save-product-and-inventory/FormNewProductAndInventory";
-import { viewAllSeasonsAction } from "@/features/season/actions/view-all-seasons.action";
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
+import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
+import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
+import { FormRegisterCompleteProduct } from "@/features/product/ui/register-complete-product/FormRegisterCompleteProduct";
 
 export default async function () {
-    const viewAllCategories = await ViewAllCategoriesAction();
+    const viewAllCategories = await FindAllCategoriesByEstablishmentAction();
     const categoryItems = viewAllCategories.ok ? viewAllCategories.value?.categories ?? [] : [];
-    const viewAllBrands = await viewAllBrandsAction();
+    const viewAllBrands = await findAllBrandsByEstablishmentAction();
     const brandItems = viewAllBrands.ok ? viewAllBrands.value?.brands ?? [] : [];
-    const viewAllSeasons = await viewAllSeasonsAction();
+    const viewAllSeasons = await findAllSeasonsBYEstablishmentAction();
     const seasonItems = viewAllSeasons.ok ? viewAllSeasons.value?.seasons ?? [] : [];
 
     const breadcrumbItems: BreadcrumbItem[] = [
@@ -20,7 +20,7 @@ export default async function () {
     return (
         <ProtectedRoute>
             <TemplateHeader title="Alta de productos e inventario" detail="Da de alta un producto con lote inicial e inventario." breadcrumbItems={breadcrumbItems}>
-                <FormNewProductAndInventory
+                <FormRegisterCompleteProduct
                     brandList={brandItems}
                     seasonList={seasonItems}
                     categoryList={categoryItems} />

@@ -1,5 +1,5 @@
 'use client'
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductStore } from "@/features/product/infraestructure/stores/product.store";
 import { useRouter } from "next/navigation";
@@ -7,6 +7,7 @@ import { BasicTable, BCol, BRow, BTableEmpty } from "@/ui/components/tables/Basi
 import { Button } from "@/ui/components/buttons";
 import { FiExternalLink } from "react-icons/fi";
 import { InventoryItemEntity } from "../domain/entities/inventory-item.entity";
+import { Spinner } from "@/ui/components/loadings/Spinner";
 
 interface TableProductProps {
     productList: ProductEntity[];
@@ -14,12 +15,13 @@ interface TableProductProps {
 
 export function TableProduct({ productList = [] }: TableProductProps) {
     const { searchCharacter } = useProductStore();
+    const [productId, setProductId] = useState('0');
     const router = useRouter();
 
     // Validación temprana de props
     if (!productList || !Array.isArray(productList)) {
         return (
-            <div className="w-full bg-gray-100 p-4 text-center">
+            <div className="w-full bg-gray-100 p-4 text-center italic">
                 No hay productos disponibles
             </div>
         );
@@ -41,6 +43,7 @@ export function TableProduct({ productList = [] }: TableProductProps) {
     }, [productList, searchCharacter]);
 
     const handleViewProduct = (productId: string) => {
+        setProductId(productId);
         router.push(`/products/${productId}`);
     };
 
@@ -88,7 +91,10 @@ export function TableProduct({ productList = [] }: TableProductProps) {
                                 onClick={() => handleViewProduct(item?.productId?.toString() || '')}
                                 title="Ver detalles del producto"
                             >
-                                <FiExternalLink size={14} /><span>Detalles</span>
+                                {productId===item.productId.toString()
+                                    ? <Spinner size={14} />
+                                    :<FiExternalLink size={14} /> }
+                                <span>Detalles</span>
                             </Button>
                         </BCol>
                     </BRow>

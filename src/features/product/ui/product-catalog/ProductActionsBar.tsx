@@ -3,12 +3,18 @@ import { useBrandStore } from '@/features/brand/infraestructure/brand.store';
 import { useCategoryStore } from '@/features/category/infraestructure/category.store';
 import { useSeasonStore } from '@/features/season/infraestructure/season.store';
 import { Button } from '@/ui/components/buttons';
+import { Spinner } from '@/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useState } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 
 const ProductActionsBar = () => {
+    const [loading, setLoading] = useState(false);
+    const newProductPage = ()=> {
+        setLoading(true);
+        router.push('products/new')
+    }
     const router = useRouter();
 
     const {modalOpen,setModalOpen} = useCategoryStore();
@@ -16,8 +22,8 @@ const ProductActionsBar = () => {
     const { modalOpen: seasonModalOpen, setModalOpen: setSeasonModalOpen} = useSeasonStore();
     return (
         <div className="flex gap-2 w-[700px]">
-            <Button color="blue" size="md" onClick={()=> router.push('products/new')}>
-                <IoMdAdd />
+            <Button color="blue" size="md" onClick={()=> newProductPage()}>
+                {loading? <Spinner/>: <IoMdAdd size={14}/>}
                 Nuevo Producto
             </Button>
             <Button color="yellow" size="md" onClick={() => setModalOpen(!modalOpen)}>
