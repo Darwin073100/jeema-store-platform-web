@@ -2,7 +2,7 @@ import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { create } from "zustand";
 
 type ModalType  = 'registerCashRegister' | 'openCashSession' | 'none';
-type LoadingType = 'registerCashRegister' | 'registerCashRegister' | 'none';
+type LoadingType = 'registerCashRegister' | 'openCashSession' | 'none';
 
 interface State {
     //? Modals

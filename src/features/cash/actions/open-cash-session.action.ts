@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { OpenCashSessionUseCase } from '../application/use-cases/open-cash-session.use-case';
 import { OpenCashSessionDTO } from '../application/dtos/open-cash-session.dto';
 import { EmployeeEntity } from '@/features/employee/domain/entities/employee.entity';
+import { revalidatePath } from 'next/cache';
 
 export async function openCashSessionAction(dto: Omit<OpenCashSessionDTO, 'branchOfficeId' | 'employeeId'>){
 
@@ -35,6 +36,10 @@ export async function openCashSessionAction(dto: Omit<OpenCashSessionDTO, 'branc
         }
 
         const result = await useCase.execute(currentDto);
+
+        if(result.ok){
+            revalidatePath('/cash');
+        }
 
         return {
             ...result

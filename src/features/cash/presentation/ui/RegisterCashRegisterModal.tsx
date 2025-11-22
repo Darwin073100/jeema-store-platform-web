@@ -4,12 +4,11 @@ import { TemplateModal } from '@/ui/components/modals/TemplateModal';
 import { TextInput } from '@/ui/components/inputs';
 import { LabelInput } from '@/ui/components/labels';
 import { Button } from '@/ui/components/buttons';
-import { HiUserAdd } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { Spinner } from '@/ui/components/loadings/Spinner';
 import { useCashUIStore } from '../../infraestructure/stores/cash-ui.store';
 import { useRegisterCashRegister } from '../hooks/useRegisterCashRegister';
-import { MdAdd } from 'react-icons/md';
+import { FaSave } from 'react-icons/fa';
 
 interface Props {
 }
@@ -34,8 +33,8 @@ const RegisterCashRegisterModal = ({}: Props) => {
         </div>
         <div className='flex justify-end gap-4 mt-4'>
           <Button>
-            {loading === 'registerCashRegister' ? <Spinner /> : <MdAdd />}
-            Registrar
+            {loading === 'registerCashRegister' ? <Spinner /> : <FaSave />}
+            Guardar
           </Button>
           <Button color='gray' onClick={() => closeCashModal()}>
             <IoClose />
