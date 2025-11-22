@@ -4,6 +4,7 @@ import { BranchOfficeEntity } from '@/features/branch-office/domain/entities/bra
 import { RegisterCashRegisterDTO } from '../application/dtos/register-cash-register.dto';
 import { RegisterCashRegisterUseCase } from '../application/use-cases/register-cash-register.use-case';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
 export async function registerCashRegisterAction(name: string){
 
@@ -25,7 +26,9 @@ export async function registerCashRegisterAction(name: string){
             branchOfficeId
         }
         const result = await useCase.execute(dto);
-
+        if(result.ok){
+            revalidatePath('/cash');
+        }
         return {
             ...result
         }
