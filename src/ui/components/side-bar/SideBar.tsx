@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { FcConferenceCall, FcMindMap, FcOrgUnit, FcPaid, FcServices, FcShop } from "react-icons/fc";
+import { FcConferenceCall, FcCurrencyExchange, FcMindMap, FcOrgUnit, FcPaid, FcServices, FcShop } from "react-icons/fc";
 import { SideLink } from './SideLink'
 
 export const SideBar = () => {
@@ -20,9 +20,9 @@ export const SideBar = () => {
         <SideLink hover={hover} Icon={FcOrgUnit} href='/' value='Inicio'/>
         <SideLink hover={hover} Icon={FcPaid} href='/sale' value='Ventas'/>
         <SideLink hover={hover} Icon={FcMindMap} href='/products' value='Productos'/>
-        {/* <SideLink hover={hover} Icon={FcShop} href='/branch-office' value='Suc.'/> */}
         <SideLink hover={hover} Icon={FcConferenceCall} href='/customers' value='Clientes'/>
         <SideLink hover={hover} Icon={FcServices} href='/configurations' value='Config.'/>
+        <SideLink hover={hover} Icon={FcCurrencyExchange} href='/cash' value='Caja'/>
     </form>
   )
 }

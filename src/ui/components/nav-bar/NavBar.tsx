@@ -52,7 +52,7 @@ export const NavBar = () => {
             href='/sale/new'
             className='text-sm flex flex-col items-center justify-center rounded-xl p-1 
                    bg-emerald-500 text-white 
-                   hover:bg-emerald-400 shadow 
+                   hover:bg-emerald-300 shadow 
                    transition-all duration-500' // Cambio aquí
           >
             <Image

@@ -39,7 +39,7 @@ export function ButtonOutLine({
           fullWidth && 'w-full',
           txt,
           `gap-${space} px-${space} py-${space}`,
-          `text-${color}-600 hover:bg-${color}-100`,
+          `text-${color}-600 hover:text-${color}-950`,
           className // lo último para que pueda sobrescribir
         )
       )}
