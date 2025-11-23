@@ -1,13 +1,22 @@
 'use client'
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/ui/components/buttons";
 import { TextInput } from "@/ui/components/inputs";
 import { IoIosBarcode, IoMdCheckmark } from "react-icons/io";
 import { useSale } from "../hooks/useSale";
 import { Spinner } from "@/ui/components/loadings/Spinner";
-
-const SaleProductSearch = () => {
+import { CashSessionEntity } from "@/features/cash/domain/entities/cash-session.entity";
+import { useSaleStore } from "../infraestructure/stores/sale.store";
+interface Props {
+    cashSession: CashSessionEntity | null;
+}
+const SaleProductSearch = ({ cashSession }: Props) => {
     const { handleSubmit, inputRef, handleChangeSearch, searchValue, loading } = useSale();
+    const { setCashSessionActive } = useSaleStore();
+
+    useEffect(()=> {
+        setCashSessionActive(cashSession);
+    },[cashSession]);
 
     return (
         <form  

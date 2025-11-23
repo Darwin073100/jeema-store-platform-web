@@ -12,7 +12,7 @@ const useInventoryListModal = () => {
     const { inventoryItems, itemSelected, setItemSelected,
         setFilterInventoryItems, filterInventoryItems
     } = useSaleProcessStore();
-    const { saleId, setSale, setSaleId, sale } = useSaleStore();
+    const { saleId, setSale, setSaleId, sale, cashSessionActive } = useSaleStore();
     const { hancleCalculateDetailPrice } = useSale();
     const [quantityInsert, setQuantityInsert] = useState<number>(0);
     const [searchProductValue, setSearchProductValue] = useState<string>('')
@@ -50,6 +50,18 @@ const useInventoryListModal = () => {
     }
 
     const handleAddDetail = async () => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder vender',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         const inventorySelected = itemSelected?.inventory;
         if (inventorySelected) {
             if(sale){
@@ -68,7 +80,7 @@ const useInventoryListModal = () => {
             }
             const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, quantityInsert);
             initLoading('addDetailToSaleLoading');
-            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(2), addDetailToSaleDTO);
+            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(2), cashSessionActive.cashRegisterId, addDetailToSaleDTO);
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',

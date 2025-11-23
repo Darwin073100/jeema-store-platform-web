@@ -9,4 +9,5 @@ export interface CashRepository{
     findAllCashRegisterByBranchOfficeId(branchOfficeId: bigint):Promise<Result<{cashRegisters: CashRegisterEntity[]}, ErrorEntity>>;
     openCashSession(dto: OpenCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>>;
     registerCashRegister(dto: RegisterCashRegisterDTO): Promise<Result<CashRegisterEntity, ErrorEntity>>;
+    findCashSessionByEmployeeId(employeeId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>>;
 }

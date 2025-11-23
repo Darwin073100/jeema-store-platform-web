@@ -1,10 +1,10 @@
 'use server';
 import { revalidatePath } from "next/cache";
-import { FinishSaleDto } from "../application/dtos/finish-sale.dto";
 import { FinishSaleUseCase } from "../application/use-case/finish-sale.use-case";
 import { SaleRepositoryFactory } from "../infraestructure/factory/sale-repository.factory";
+import { FinalizeSaleDto } from "../application/dtos/finalize-sale.dto";
 
-export async function finishSaleAction(saleId: bigint, dto: FinishSaleDto){
+export async function finishSaleAction(saleId: bigint, dto: FinalizeSaleDto){
     const repository = SaleRepositoryFactory.create();
     const useCase = new FinishSaleUseCase(repository);
 

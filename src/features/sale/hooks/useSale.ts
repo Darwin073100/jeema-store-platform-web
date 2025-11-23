@@ -1,27 +1,19 @@
 'use client';
 import { findInventoryByBarCodeAction } from "@/features/inventory/actions/find-inventory-by-bar-code.action";
 import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
-import { useWorkspace } from "@/shared/hooks/useAuth";
 import { useEffect, useRef, useState } from "react";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
-import { registerSaleInitialAction } from "../actions/register-sale-initial.action";
 import { findSaleWithDetailAction } from "../actions/find-sale-by-id-with-detail.action";
 import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
-import { addDetailToSaleAction } from "../actions/add-detail-to-sale.action";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
-import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
-import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 import { SaleForEnum } from "../domain/enums/sale-for.enum";
-
-type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
 
 const useSale = () => {
 
     const [searchValue, setSearchValue] = useState<string>('');
     const { setFloatMessageState, loading, initLoading, finishLoading } = useSaleUIStore();
-    const { sale, setSale, saleId, setSaleId } = useSaleStore();
-    const { inventoryItems } = useSaleProcessStore();
+    const { sale, setSale, saleId, setSaleId, cashSessionActive } = useSaleStore();
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -89,6 +81,19 @@ const useSale = () => {
 
     const handleSearchInventory = async (barCode: string) => {
         initLoading('findInventoryItemsLoading');
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder vender',
+                type: 'red',
+                isActive: true
+            });
+            handleResetSearch();
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         // Buscar el producto, haciendo el request al servidor
         const searchResult = await findInventoryByBarCodeAction(barCode);
         if (!searchResult.ok || !searchResult.value) {
@@ -114,7 +119,7 @@ const useSale = () => {
 
             const finalQuantity = Number(existingProduct?.quantity ?? 0) + 1;
             const detailDto = hancleCalculateDetailPrice(foundInventory, finalQuantity);
-            const resultSale = await CreateSaleAndAddDetailAction(saleId, BigInt(2), detailDto);
+            const resultSale = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, detailDto);
             if (!resultSale.ok) {
                 setFloatMessageState({
                     type: 'red',

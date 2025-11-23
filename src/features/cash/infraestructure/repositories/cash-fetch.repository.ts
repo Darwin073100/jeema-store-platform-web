@@ -23,8 +23,17 @@ export class CashFetchRepository implements CashRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            console.log(error);
             return handleError(error, 'findAllCashRegisterByBranchOfficeId');
+        }
+    }
+    async findCashSessionByEmployeeId(employeeId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<CashSessionEntity>(
+                this.apiConfig.getEndpointUrl(`cash-registers/sessions/one/employees/${employeeId.toString()}`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'findCashSessionByEmployeeId');
         }
     }
     async openCashSession(dto: OpenCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>> {

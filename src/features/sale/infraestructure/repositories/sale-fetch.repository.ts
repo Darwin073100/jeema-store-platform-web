@@ -116,6 +116,7 @@ export class SaleFetchRepository implements SaleRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
+            console.log(error);
             return this.handleError(error, 'Finalize sale');
         }
     }

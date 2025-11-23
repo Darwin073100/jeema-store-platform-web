@@ -15,6 +15,7 @@ export class SaleMapper {
             branchOfficeId: dto.branchOfficeId.toString(),
             customerId: dto.customerId.toString(),
             employeeId: dto.employeeId.toString(),
+            cashRegisterId: dto.cashRegisterId.toString(),
         }
         return httpDTO;
     }
@@ -46,6 +47,8 @@ export class SaleMapper {
         const httpDTO: FinalizeSaleHttpDto = {
             customerId: dto.customerId.toString(),
             employeeId: dto.employeeId.toString(),
+            cashRegisterId: dto.cashRegisterId.toString(),
+            inAmount: dto.inAmount,
             status: dto.status,
             notes: dto.notes
         }

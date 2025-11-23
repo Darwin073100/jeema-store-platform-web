@@ -1,3 +1,4 @@
+import { findCashSessionByEmployeeIdAction } from "@/features/cash/actions/find-cash-session-by-employee-id.action";
 import { findAllCustomerByEstablishmentAction } from "@/features/customer/actions/find-all-customer-by-establishment.action";
 import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/features/inventory/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { findAllPaymentMethodAction } from "@/features/payment-method/actions/find-all-payment-method.action";
@@ -27,12 +28,18 @@ export default async function() {
     const currentCustomers = resultCustomers?.value?.customers ?? [];
     const resultInventoryItemsList = await findAllInventoryItemsByLocationAndBranchOfficeAction();
     const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
-    
+    const resultCashSession = await findCashSessionByEmployeeIdAction();
+    const currentCashSession = resultCashSession.value ?? null;
+
     return (
         <ProtectedRoute>
-            <TemplateHeader breadcrumbItems={breadcrumbItems} title="Nueva Venta" detail="Agrega productos a la venta usando el código de barras o búsqueda manual." >
+            <TemplateHeader 
+                breadcrumbItems={breadcrumbItems} 
+                title={currentCashSession?.cashRegister? currentCashSession.cashRegister.name: 'Caja no aperturada' } 
+                detail="Agrega productos a la venta usando el código de barras o búsqueda manual." >
                 {/* Potential Component: SaleProductSearch */}
-                <SaleProductSearch />
+                <SaleProductSearch
+                    cashSession={currentCashSession} />
                 <article className="flex gap-6 items-start w-full mt-6">
                     {/* Potential Component: SaleProductList */}
                     <SaleProductList />

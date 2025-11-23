@@ -1,12 +1,12 @@
 # EdYOf Platform Web
 
 ## Tecnologías utilizadas
-- Nextjs
-- Reactjs
-- PNPM
+- Nextjs v15
+- Reactjs v19
+- PNPM v10 ->
 
 ## Comandos a ejecutar
-1. Copiar y renombrar el __.env.template__ a un __.env.local__ y cambiar los valores de las propiedades si es necesario.
+1. Copiar y renombrar el __.env.template__ a un __.env__ y cambiar los valores de las propiedades si es necesario.
 
 2. Instala el manejador de paquetes __pnpm__
 ``` bash

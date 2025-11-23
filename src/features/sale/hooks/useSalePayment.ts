@@ -7,6 +7,7 @@ import { registerSalePaymentAction } from "../actions/register-sale-payment.acti
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 import { pendingSaleAction } from "../actions/pending-sale.action";
+import { SaleStatusEnum } from "../domain/enums/sale-status.enum";
 
 
 const useSalePayment = () => {
@@ -25,7 +26,7 @@ const useSalePayment = () => {
     const [paidAmountMessage, setPaidAmountMessage] = useState({ isError: false, message: '' });
 
     // Variables de contexto
-    const { total, saleId, resetSaleStore } = useSaleStore();
+    const { total, saleId, resetSaleStore, cashSessionActive } = useSaleStore();
     const { employee } = useWorkspace();
 
     // Efecto para actualizar los ítems de pago (efectivo y transferencia)
@@ -83,6 +84,18 @@ const useSalePayment = () => {
 
     // No permite abrir el modal si no hay productos que cobrar.
     const handleCheckerOpenModalFinishSale = () => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder continuar.',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         if (saleId === BigInt(0)) {
             setFloatMessageState({
                 type: 'red',
@@ -100,12 +113,30 @@ const useSalePayment = () => {
 
     // Finaliza la venta, sin registrar el pago
     const handleFinishSale = async () => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder vender',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         initLoading('finishSaleLoading');
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
             const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
-            const result = await pendingSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
+            const dto = { 
+                customerId: currentCustomerId, 
+                employeeId: currentEmployeeId, 
+                cashRegisterId: cashSessionActive.cashRegisterId, 
+                inAmount: paidAmount
+            }
+            const result = await pendingSaleAction(currentSaleId, dto);
             finishLoading();
             if (!result.ok) {
                 setFloatMessageState({
@@ -147,12 +178,31 @@ const useSalePayment = () => {
 
     // Finaliza la venta, registrando los pagos dependiendo el metodo de pago
     const handlePaidSale = async () => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder continuar',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         initLoading('salePaymentLoading');
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
             const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
-            const result = await finishSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
+            const dto = { 
+                customerId: currentCustomerId, 
+                employeeId: currentEmployeeId, 
+                cashRegisterId: cashSessionActive?.cashRegisterId, 
+                inAmount: paidAmount, 
+                status: SaleStatusEnum.COMPLETED 
+            }
+            const result = await finishSaleAction(currentSaleId, dto);
             if (!result.ok) {
                 setFloatMessageState(result.error ?? {});
             } else {
