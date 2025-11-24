@@ -17,7 +17,7 @@ const useUpdateDetailModal = () => {
     const {
         setDetailSelected, detailSelected, itemMatchDetail, setItemMatchDetail, inventoryItems
     } = useSaleProcessStore();
-    const { setSale, setSaleId, saleId } = useSaleStore();
+    const { setSale, setSaleId, saleId, cashSessionActive } = useSaleStore();
     const { hancleCalculateDetailPrice } = useSale()
     const [detailPrice, setDetailPrice] = useState<number>(0);
     const [detailQuantity, setDetailQuantity] = useState<number>(0);
@@ -79,6 +79,18 @@ const useUpdateDetailModal = () => {
     }, [detailPrice, saleFor, detailQuantity]);
 
     const handleApplyManualSaleFor = async (detail?: SaleDetailEntity, specialprice?: number) => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder continuar',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         if(detail){
             const currentDetail: AddDetailToSaleDto = {
                 productBarCodeAtSale: detail.productBarCodeAtSale,
@@ -91,7 +103,7 @@ const useUpdateDetailModal = () => {
                 : SaleForEnum.SPECIAL
             }
             initLoading('aplyManualSaleForLoading');
-            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(2), currentDetail);
+            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, currentDetail);
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',
@@ -134,11 +146,23 @@ const useUpdateDetailModal = () => {
         }
     }
     const handleUpdateQuantityDetail = async () => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder continuar',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         const inventorySelected = itemMatchDetail?.inventory;
         if(inventorySelected){
             const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, detailQuantity);
             initLoading('updateDetailLoading');
-            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(2), addDetailToSaleDTO);
+            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, addDetailToSaleDTO);
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',

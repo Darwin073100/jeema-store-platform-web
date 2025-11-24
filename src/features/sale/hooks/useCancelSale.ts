@@ -14,7 +14,7 @@ const useCancelSale = () => {
     } = useSaleUIStore();
 
     // Variables de contexto
-    const { saleId, resetSaleStore } = useSaleStore();
+    const { saleId, resetSaleStore, cashSessionActive } = useSaleStore();
     const { employee } = useWorkspace();
 
     // No permite abrir el modal si no hay productos que cobrar.
@@ -37,12 +37,29 @@ const useCancelSale = () => {
 
     // Finaliza la venta, sin registrar el pago
     const handleCancelSale = async () => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder continuar',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
         initLoading('cancelSaleLoading');
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
-            const currentCustomerId = BigInt(2);
-            const result = await cancelSaleAction(currentSaleId, { customerId: currentCustomerId, employeeId: currentEmployeeId });
+            const currentCustomerId = BigInt(1);
+            const result = await cancelSaleAction(currentSaleId, { 
+                customerId: currentCustomerId, 
+                employeeId: currentEmployeeId,
+                cashRegisterId: cashSessionActive.cashRegisterId,
+                inAmount: 0,
+            });
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',

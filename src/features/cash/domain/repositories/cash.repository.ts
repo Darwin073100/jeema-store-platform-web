@@ -10,4 +10,5 @@ export interface CashRepository{
     openCashSession(dto: OpenCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>>;
     registerCashRegister(dto: RegisterCashRegisterDTO): Promise<Result<CashRegisterEntity, ErrorEntity>>;
     findCashSessionByEmployeeId(employeeId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>>;
+    findCashSessionWithTransactions(cashSessionId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>>;
 }

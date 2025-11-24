@@ -80,7 +80,7 @@ const useInventoryListModal = () => {
             }
             const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, quantityInsert);
             initLoading('addDetailToSaleLoading');
-            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(2), cashSessionActive.cashRegisterId, addDetailToSaleDTO);
+            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, addDetailToSaleDTO);
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',

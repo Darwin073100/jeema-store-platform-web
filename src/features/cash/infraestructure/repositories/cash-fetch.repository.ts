@@ -36,6 +36,16 @@ export class CashFetchRepository implements CashRepository {
             return handleError(error, 'findCashSessionByEmployeeId');
         }
     }
+    async findCashSessionWithTransactions(cashSessionId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<CashSessionEntity>(
+                this.apiConfig.getEndpointUrl(`cash-registers/sessions/${cashSessionId.toString()}/transactions`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'findCashSessionWithTransactions');
+        }
+    }
     async openCashSession(dto: OpenCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>> {
         try {
             const httpDTO = CashMapper.toOpenCashSessionHttpDTO(dto);

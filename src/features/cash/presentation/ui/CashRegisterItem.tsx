@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/ui/components/buttons'
-import React from 'react'
+import React, { useState } from 'react'
 import { FaCashRegister, FaCircle } from 'react-icons/fa'
 import { MdClosedCaption, MdClosedCaptionDisabled } from 'react-icons/md'
 import { TbCashRegister } from 'react-icons/tb'
@@ -9,6 +9,8 @@ import clsx from 'clsx'
 import { BiPencil } from 'react-icons/bi'
 import { OpenCashSessionModal } from './OpenCashSessionModal'
 import { useOpenCashSession } from '../hooks/useOpenCashSession'
+import { useRouter } from 'next/navigation'
+import { Spinner } from '@/ui/components/loadings/Spinner'
 
 interface Props {
     cashRegister: CashRegisterEntity
@@ -16,6 +18,12 @@ interface Props {
 
 const CashRegisterItem = ({ cashRegister }: Props) => {
     const { handleOpenOpenCasSessionModal } = useOpenCashSession();
+    const [redirectCloseCash, setRedirectCloseCash] = useState(false);
+    const router = useRouter();
+    const handleRouter = (route: string)=>{
+        setRedirectCloseCash(true);
+        router.push(route);
+    }
     return (
         <div className="bg-white flex flex-col gap-4 rounded-2xl p-4 w-full shadow-md">
             <div className='flex justify-between items-center w-full'>
@@ -40,7 +48,10 @@ const CashRegisterItem = ({ cashRegister }: Props) => {
                 <div className="flex justify-center items-center gap-2">
                     {
                         cashRegister.cashSessions.length > 0
-                            ? <Button size="sm" color="yellow"><MdClosedCaptionDisabled />Hacer Corte</Button>
+                            ? <Button size="sm" color="yellow" onClick={()=> handleRouter('/cash/session/'+cashRegister.cashSessions[0].cashSessionId)}>
+                                {redirectCloseCash? <Spinner/>: <MdClosedCaptionDisabled />}
+                                Hacer Corte 
+                              </Button>
                             : <Button size="sm" onClick={()=> handleOpenOpenCasSessionModal(cashRegister)}><TbCashRegister /> Aperturar</Button>
                     }
                 </div>

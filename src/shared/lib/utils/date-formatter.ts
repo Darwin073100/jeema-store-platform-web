@@ -55,6 +55,19 @@ export const formatTime = (time: string | null | undefined) => {
         return 'Hora inválida';
     }
 }; // Simple HH:MM
+export const formatTimeByDate = (time: Date | null | undefined) => {
+    if (!time) return 'N/A';
+    try {
+        const dateObj = new Date(time);
+        return dateObj.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    } catch (error) {
+        return 'Hora inválida';
+    }
+}; // Simple HH:MM
 
 export function formatDateWithOutTime(date: Date | string | null | undefined): string {
     if (!date) return 'N/A';
