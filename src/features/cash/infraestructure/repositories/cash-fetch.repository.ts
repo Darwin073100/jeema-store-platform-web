@@ -9,6 +9,7 @@ import { OpenCashSessionDTO } from "../../application/dtos/open-cash-session.dto
 import { CashMapper } from "../mappers/cash-mapper";
 import { CashSessionEntity } from "../../domain/entities/cash-session.entity";
 import { RegisterCashRegisterDTO } from "../../application/dtos/register-cash-register.dto";
+import { CloseCashSessionDTO } from "../../application/dtos/close-cash-session.dto";
 
 export class CashFetchRepository implements CashRepository {
     constructor(
@@ -56,8 +57,19 @@ export class CashFetchRepository implements CashRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            console.log(error);
             return handleError(error, 'openCashSession');
+        }
+    }
+    async closeCashSession(cashSessionId: bigint, dto: CloseCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>> {
+        try {
+            const httpDTO = CashMapper.toCloseCashSessionHttpDTO(dto);
+            const result = await this.httpClient.put<CashSessionEntity>(
+                this.apiConfig.getEndpointUrl(`cash-registers/sessions/${cashSessionId.toString()}`),
+                httpDTO
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'closeCashSession');
         }
     }
     async registerCashRegister(dto: RegisterCashRegisterDTO): Promise<Result<CashRegisterEntity, ErrorEntity>> {
@@ -70,7 +82,6 @@ export class CashFetchRepository implements CashRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            console.log(error);
             return handleError(error, 'registerCashRegister');
         }
     }

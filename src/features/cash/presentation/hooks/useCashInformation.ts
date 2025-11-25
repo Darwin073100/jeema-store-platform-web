@@ -7,6 +7,9 @@ const useCashInformation = () => {
         let total: number = 0;
         cashSessionSelected?.transactions.forEach(item=> {
             if(item.transactionType?.accountType===AccountTypeEnum.INCOME){
+                // if(item.transactionType?.name.trim().toLowerCase() === 'Apertura de Caja'.trim().toLowerCase()){
+                //     return;
+                // }
                 total = total + item.amount;
             }
         });
@@ -20,6 +23,9 @@ const useCashInformation = () => {
             }
             if(item.transactionType?.name.trim().toLowerCase() === 'Apertura de Caja'.trim().toLowerCase()){
                 total = total + item.amount;
+            }
+            if(item.transactionType?.name.trim().toLowerCase() === 'Retiro de efectivo/Corte de caja'.trim().toLowerCase()){
+                total = total - (item.amount);
             }
         });
         return total;

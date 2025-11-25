@@ -13,7 +13,7 @@ interface Props {
 }
 
 const CashInfo = ({ cashSession }: Props) => {
-    const { setCashSessionSelected } = useCashStore();
+    const { setCashSessionSelected, totalIn, totalOut, totalClose } = useCashStore();
     const { handleTotalIn, handleTotalOut, handleTotalClose } = useCashInformation();
     useEffect(()=>{
         setCashSessionSelected(cashSession)

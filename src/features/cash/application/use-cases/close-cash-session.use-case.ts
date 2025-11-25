@@ -1,14 +1,14 @@
 import { ErrorEntity } from "@/shared/features/error.entity";
 import { CashRepository } from "../../domain/repositories/cash.repository";
-import { OpenCashSessionDTO } from "../dtos/open-cash-session.dto";
 import { Result } from "@/shared/features/result";
+import { CloseCashSessionDTO } from "../dtos/close-cash-session.dto";
 
-export class OpenCashSessionUseCase {
+export class CloseCashSessionUseCase {
     constructor(
         private readonly repository: CashRepository
     ){}
 
-    async execute(dto: OpenCashSessionDTO){
+    async execute(cashSessionId: bigint, dto: CloseCashSessionDTO){
         if(dto.branchOfficeId <= BigInt(0)){
             return Result.failure<ErrorEntity>({
                 error: 'No pudimos otener informacion de la sucursal.',
@@ -27,16 +27,16 @@ export class OpenCashSessionUseCase {
                 timestamp: new Date().toISOString()
             });
         }
-        if(dto.cashRegisterId <= BigInt(0)){
+        if(cashSessionId <= BigInt(0)){
             return Result.failure<ErrorEntity>({
                 error: 'Error con la caja',
                 message: 'Ha ocurrido un error inesperado.',
-                path: 'OpenCashSessionUseCase',
+                path: 'CloseCashSessionUseCase',
                 statusCode: 500,
                 timestamp: new Date().toISOString()
             });
         }
-        const result = await this.repository.openCashSession(dto);
+        const result = await this.repository.closeCashSession(cashSessionId, dto);
         return result;
     }
 }

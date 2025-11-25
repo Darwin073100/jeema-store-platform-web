@@ -4,6 +4,7 @@ import { ErrorEntity } from "@/shared/features/error.entity";
 import { CashSessionEntity } from "../entities/cash-session.entity";
 import { OpenCashSessionDTO } from "../../application/dtos/open-cash-session.dto";
 import { RegisterCashRegisterDTO } from "../../application/dtos/register-cash-register.dto";
+import { CloseCashSessionDTO } from "../../application/dtos/close-cash-session.dto";
 
 export interface CashRepository{
     findAllCashRegisterByBranchOfficeId(branchOfficeId: bigint):Promise<Result<{cashRegisters: CashRegisterEntity[]}, ErrorEntity>>;
@@ -11,4 +12,5 @@ export interface CashRepository{
     registerCashRegister(dto: RegisterCashRegisterDTO): Promise<Result<CashRegisterEntity, ErrorEntity>>;
     findCashSessionByEmployeeId(employeeId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>>;
     findCashSessionWithTransactions(cashSessionId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>>;
+    closeCashSession(cashSessionId: bigint, dto: CloseCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>>;
 }

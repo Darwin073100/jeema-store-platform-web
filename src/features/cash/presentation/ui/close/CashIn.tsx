@@ -2,6 +2,7 @@ import { CashSessionEntity } from '@/features/cash/domain/entities/cash-session.
 import React from 'react'
 import { FcBullish } from 'react-icons/fc';
 import { CashTransaction } from './CashTransaction';
+import { AccountTypeEnum } from '@/features/transaction/domain/enums/account-type.enum';
 interface Props {
     cashSession: CashSessionEntity
 }
@@ -12,9 +13,12 @@ const CashIn = ({cashSession}:Props) => {
                 <FcBullish /> <span>Ingresos</span>
             </div>
             {cashSession.transactions.map(item => <>
-                <CashTransaction
-                    type="in"
-                    transaction={item} />
+                {item.transactionType?.accountType === AccountTypeEnum.INCOME? <>
+                    <CashTransaction
+                        key={item.transactionId}
+                        type="in"
+                        transaction={item} />
+                </>: null}
             </>)}
         </section>
     )
