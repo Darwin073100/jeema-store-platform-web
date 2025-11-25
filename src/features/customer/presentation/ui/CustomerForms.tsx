@@ -20,6 +20,11 @@ const CustomerForms = () => {
                 <div className="w-full">
                     <h1 className="text-blue-600 font-semibold bg-blue-100 rounded-t-2xl p-2 text-lg uppercase text-center">Información del cliente</h1>
                     <div className="bg-white p-4 rounded-b-2xl">
+                        <div className=' flex items-center gap-4 bg-amber-100 rounded-xl p-2 shadow-md'>
+                            <LabelInput value="Habilitar para usarlo por defecto en ventas" />
+                            <input type='checkbox' {...register('saleDefault')} name="saleDefault" id="saleDefault"
+                                className='w-5 h-5' />
+                        </div>
                         <div>
                             <LabelInput value="Nombre" required="yes" />
                             <TextInput

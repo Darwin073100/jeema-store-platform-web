@@ -2,6 +2,7 @@ import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.d
 
 export interface RegisterCustomerDTO {
     firstName: string;
+    saleDefault: boolean;
     lastName?: string|null;
     companyName?: string|null;
     phoneNumber?: string|null;

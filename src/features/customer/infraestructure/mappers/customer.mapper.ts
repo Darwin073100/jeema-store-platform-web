@@ -7,6 +7,7 @@ export class CustomerMapper {
         const httpDTO: RegisterCustomerHttpDTO = {
             establishmentId: dto.establishmentId?.toString() ?? undefined,
             firstName: dto.firstName,
+            saleDefault: dto.saleDefault,
             lastName: dto.lastName && (dto.lastName.trim().length > 0) ? dto.lastName : undefined,
             customerType: dto.customerType && (dto.customerType.trim().length > 0) ? dto.customerType : 'Minorista',
             email: dto.email && (dto.email.trim().length > 0) ? dto.email :undefined,

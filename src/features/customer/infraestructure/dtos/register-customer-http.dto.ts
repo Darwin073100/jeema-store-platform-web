@@ -2,6 +2,7 @@ import { RegisterAddressHttpDTO } from "@/shared/infrastructure/http/address/dto
 
 export interface RegisterCustomerHttpDTO {
     firstName: string;
+    saleDefault: boolean;
     lastName?: string;
     companyName?: string;
     phoneNumber?: string;

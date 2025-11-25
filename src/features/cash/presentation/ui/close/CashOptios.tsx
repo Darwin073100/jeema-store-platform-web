@@ -11,7 +11,7 @@ import { useCashUIStore } from '@/features/cash/infraestructure/stores/cash-ui.s
 import { CashSessionCloseModal } from './CashSessionCloseModal';
 import { useCashStore } from '@/features/cash/infraestructure/stores/cash.store';
 import clsx from 'clsx';
-import { formatDate, formatDateWithOutTime } from '@/shared/lib/utils/date-formatter';
+import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter';
 interface Props {
     cashSession: CashSessionEntity
 }
