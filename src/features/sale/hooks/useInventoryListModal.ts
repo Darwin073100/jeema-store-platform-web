@@ -10,7 +10,7 @@ import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.
 
 const useInventoryListModal = () => {
     const { inventoryItems, itemSelected, setItemSelected,
-        setFilterInventoryItems, filterInventoryItems
+        setFilterInventoryItems, filterInventoryItems, customers
     } = useSaleProcessStore();
     const { saleId, setSale, setSaleId, sale, cashSessionActive } = useSaleStore();
     const { hancleCalculateDetailPrice } = useSale();
@@ -80,7 +80,10 @@ const useInventoryListModal = () => {
             }
             const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, quantityInsert);
             initLoading('addDetailToSaleLoading');
-            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, addDetailToSaleDTO);
+            const result = await CreateSaleAndAddDetailAction(
+                saleId, BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0), 
+                cashSessionActive.cashRegisterId, 
+                addDetailToSaleDTO);
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',

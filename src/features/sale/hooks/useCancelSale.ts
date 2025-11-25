@@ -3,6 +3,7 @@ import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { cancelSaleAction } from "../actions/cancel-sale.action";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 
 const useCancelSale = () => {
@@ -15,6 +16,7 @@ const useCancelSale = () => {
 
     // Variables de contexto
     const { saleId, resetSaleStore, cashSessionActive } = useSaleStore();
+    const { customers } = useSaleProcessStore();
     const { employee } = useWorkspace();
 
     // No permite abrir el modal si no hay productos que cobrar.
@@ -53,7 +55,7 @@ const useCancelSale = () => {
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
-            const currentCustomerId = BigInt(1);
+            const currentCustomerId = BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0);
             const result = await cancelSaleAction(currentSaleId, { 
                 customerId: currentCustomerId, 
                 employeeId: currentEmployeeId,

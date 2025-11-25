@@ -8,12 +8,14 @@ import { AddDetailToSaleDto } from "../application/dtos/add-detail-to-sale.dto";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { SaleForEnum } from "../domain/enums/sale-for.enum";
+import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 
 const useSale = () => {
 
     const [searchValue, setSearchValue] = useState<string>('');
     const { setFloatMessageState, loading, initLoading, finishLoading } = useSaleUIStore();
     const { sale, setSale, saleId, setSaleId, cashSessionActive } = useSaleStore();
+    const { customers, setCustomerSelected } = useSaleProcessStore();
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -119,7 +121,12 @@ const useSale = () => {
 
             const finalQuantity = Number(existingProduct?.quantity ?? 0) + 1;
             const detailDto = hancleCalculateDetailPrice(foundInventory, finalQuantity);
-            const resultSale = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, detailDto);
+            const resultSale = await CreateSaleAndAddDetailAction(
+                saleId, 
+                BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0), 
+                cashSessionActive.cashRegisterId, 
+                detailDto
+            );
             if (!resultSale.ok) {
                 setFloatMessageState({
                     type: 'red',

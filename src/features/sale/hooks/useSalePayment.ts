@@ -17,7 +17,7 @@ const useSalePayment = () => {
     } = useSaleUIStore();
     // Estados globales
     const {
-         cashAmount, customerChange, paymentMethods, transferNumberRef, customerSelected,
+         cashAmount, customerChange, paymentMethods, transferNumberRef, customerSelected, customers, setCustomerSelected,
         paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, resetSaleProcessStore, transferAmount,
     } = useSaleProcessStore();
     // Este es el estado que vamos a usar para el array de pagos
@@ -129,7 +129,7 @@ const useSalePayment = () => {
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
-            const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
+            const currentCustomerId = BigInt(customerSelected?.customerId ? customerSelected.customerId: customers.filter(item=> item.saleDefault===true)[0].customerId ?? BigInt(0));
             const dto = { 
                 customerId: currentCustomerId, 
                 employeeId: currentEmployeeId, 
@@ -194,7 +194,7 @@ const useSalePayment = () => {
         try {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
-            const currentCustomerId = BigInt(customerSelected?.customerId ?? 0);
+            const currentCustomerId = BigInt(customerSelected?.customerId ? customerSelected.customerId: customers.filter(item=> item.saleDefault===true)[0].customerId ?? BigInt(0));
             const dto = { 
                 customerId: currentCustomerId, 
                 employeeId: currentEmployeeId, 

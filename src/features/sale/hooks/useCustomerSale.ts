@@ -38,14 +38,6 @@ const useCustomerSale = () => {
         setFilterCustomers(customers);
     },[saleModals]);
 
-    useEffect(()=>{
-        const defaultCustomer = customers.find(
-            item=> item.firstName.trim().toLowerCase() === 'Publico'.trim().toLowerCase() 
-            || item.lastName?.trim().toLowerCase() === 'General'.trim().toLowerCase()
-        );
-
-        setCustomerSelected(defaultCustomer ?? null);
-    },[]);
 
     return {
         handleCustomerSelected,

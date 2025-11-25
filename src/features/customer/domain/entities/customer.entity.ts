@@ -4,6 +4,7 @@ import { AddressEntity } from "@/shared/domain/entities/address.entity";
 
 export interface CustomerEntity {
     customerId       : bigint;
+    saleDefault      : boolean;
     addressId?       : bigint|null;
     establishmentId? : bigint|null;
     firstName        : string;
