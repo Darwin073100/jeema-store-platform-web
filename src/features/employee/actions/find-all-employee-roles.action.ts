@@ -1,8 +1,10 @@
 'use server'
+import { unstable_noStore as noStore } from 'next/cache';
 import { EmployeeRepositoryFactory } from "../infraestructure/factories/employee-repository.factory";
 import { FindAllEmployeeRolesUseCase } from "../application/use-cases/find-all-employee-roles.use-case";
 
 export async function findAllEmployeeRolesAction(){
+    noStore(); // Evitar que se cachée este server action
     const userFetchRepositoryImpl = EmployeeRepositoryFactory.create();
     const useCase = new FindAllEmployeeRolesUseCase(userFetchRepositoryImpl);
 

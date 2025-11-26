@@ -1,10 +1,12 @@
 'use server'
 import { cookies } from "next/headers";
+import { unstable_noStore as noStore } from 'next/cache';
 import { EstablishmentEntity } from "@/features/establishment/domain/entities/establishment.entity";
 import { FindAllEmployeesByEstablishmentIdUseCase } from "../application/use-cases/find-all-employee-by-establishment-id.use-case";
 import { EmployeeRepositoryFactory } from "../infraestructure/factories/employee-repository.factory";
 
 export async function findAllEmployeesByEstablishmentIdAction(){
+    noStore(); // Evitar que se cachée este server action
     const userFetchRepositoryImpl = EmployeeRepositoryFactory.create();
     const useCase = new FindAllEmployeesByEstablishmentIdUseCase(userFetchRepositoryImpl);
     

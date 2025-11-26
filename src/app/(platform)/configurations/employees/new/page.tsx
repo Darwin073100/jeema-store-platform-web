@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     title: 'Nuevo empleado'
 }
 
+export const revalidate = 0; // Revalidar en cada request
+export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
+
 export default async function(){
     const employeeRolesResult = await findAllEmployeeRolesAction();
     const employeeRoles = employeeRolesResult.value?.employeeRoles.map(item=> ({
