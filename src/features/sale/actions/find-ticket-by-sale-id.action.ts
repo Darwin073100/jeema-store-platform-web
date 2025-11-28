@@ -7,8 +7,9 @@ export async function findTicketBySaleIdAction(saleId: bigint){
     const useCase = new FindTicketBySaleIdUseCase(repository);
 
     const result = await useCase.execute(saleId);
+
     
     return {
         ...result
-    }
+    };
 }

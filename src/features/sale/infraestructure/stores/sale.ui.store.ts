@@ -16,6 +16,9 @@ interface UIState {
     initLoading          : (payload: SaleLoadingsType) => void,
     finishLoading        : ()=> void,
     resetModals          : () => void;
+    //? Ticket
+    viewTicket: boolean;
+    setViewTicket: (payload: boolean)=> void;
 }
 
 const initialState = {
@@ -25,6 +28,8 @@ const initialState = {
     floatMessageState : {},
     //? Loadings
     loading           : 'empty' as SaleLoadingsType,
+    //? Ticket
+    viewTicket        : false,
 };
 
 export const useSaleUIStore = create<UIState>()((set, get) => ({
@@ -37,5 +42,8 @@ export const useSaleUIStore = create<UIState>()((set, get) => ({
     //? Loadings
     initLoading          : (payload: SaleLoadingsType) => set({ loading: payload }),
     finishLoading        : () => set({ loading: 'none' }),
+    //? Ticket
+    setViewTicket        : (payload)=> set(()=>({viewTicket: payload})),
+    //? Reset Store 
     resetModals          : () => set(initialState),
 }));

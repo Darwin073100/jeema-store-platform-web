@@ -12,6 +12,7 @@ import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/p
 import { IoBagHandle, IoPrintSharp, IoWalletSharp } from 'react-icons/io5';
 import { useSaleContinue } from '../../hooks/details/useSaleContinue';
 import { Spinner } from '@/ui/components/loadings/Spinner';
+import { SaleTicketModal } from '../SaleTicketModal';
 
 interface Props {
     sale: SaleEntity;
@@ -29,7 +30,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                 <div className='flex gap-4 items-center'>
                     {
                         sale.status === SaleStatusEnum.COMPLETED &&
-                            <Button>
+                            <Button onClick={()=> openSaleModal('saleTicketReprintModal')}>
                                 <IoPrintSharp />
                                 Reimprimir ticket de la venta
                             </Button>
@@ -61,6 +62,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                 </Badge>
             </div>
             <SalePaymentDetailModal />
+            <SaleTicketModal saleId={sale?.saleId ?? BigInt(0)} />
             <FloatMessage 
                 {...floatMessageState} />
         </div>

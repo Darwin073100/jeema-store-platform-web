@@ -1,0 +1,52 @@
+import React from 'react'
+import useTicketSale from '../hooks/useTicketSale';
+import { Spinner } from '@/ui/components/loadings/Spinner';
+import { TemplateModal } from '@/ui/components/modals/TemplateModal';
+import { useSaleUIStore } from '../infraestructure/stores/sale.ui.store';
+import { Button } from '@/ui/components/buttons';
+import { IoClose } from 'react-icons/io5';
+interface Props {
+    saleId: bigint,
+}
+const SaleTicketModal = ({ saleId }: Props) => {
+    const { saleModals, closeSaleModal } = useSaleUIStore();
+    const { error, loading, pdfUrl } = useTicketSale({ saleId });
+
+    if (!pdfUrl) {
+        return;
+    }
+    return (
+        <TemplateModal isOpen={saleModals === 'saleTicketModal' || saleModals === 'saleTicketReprintModal'} onClose={closeSaleModal} title='Vista previa del ticket'>
+            <div className='h-[500px]'>
+                {
+                    error && <div style={{ color: 'red' }}>{error}</div>
+                }
+                {
+                    !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
+                }
+                <iframe
+                    src={pdfUrl}
+                    title="Documento PDF incrustado"
+                    width="100%"
+                    height="500px"
+                    style={{ border: '1px solid #ccc' }}
+                >
+                    <p>Tu navegador no soporta iframes.</p>
+                </iframe>
+            </div>
+            <div className="flex justify-end gap-3 flex-wrap p-4">
+                <Button
+                    type="button"
+                    color="gray"
+                    className="flex items-center"
+                    onClick={closeSaleModal}
+                >
+                    <IoClose className="mr-2 w-4 h-4" />
+                    Cerrar
+                </Button>
+            </div>
+        </TemplateModal>
+    )
+}
+
+export { SaleTicketModal };

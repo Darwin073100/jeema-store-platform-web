@@ -13,7 +13,7 @@ import { SaleStatusEnum } from "../domain/enums/sale-status.enum";
 const useSalePayment = () => {
     const { 
         setFloatMessageState, closeSaleModal, openSaleModal, saleModals, loading, 
-        initLoading, finishLoading
+        initLoading, finishLoading, setViewTicket
     } = useSaleUIStore();
     // Estados globales
     const {
@@ -222,7 +222,8 @@ const useSalePayment = () => {
                         closeSaleModal();
                         resetSaleStore();
                         resetSaleProcessStore();
-                    }, 2000);
+                        openSaleModal('saleTicketModal');
+                    }, 1000);
                 }
             setTimeout(()=>{
                 setFloatMessageState({});

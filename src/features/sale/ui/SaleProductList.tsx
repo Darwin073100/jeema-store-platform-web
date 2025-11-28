@@ -9,6 +9,8 @@ import { CancelSaleConfirmModal } from "./CancelSaleConfirmModal";
 import { useCancelSale } from "../hooks/useCancelSale";
 import { UpdateDetailModal } from "./UpdateDetailModal";
 import { useInventoryListModal } from "../hooks/useInventoryListModal";
+import useTicketSale from "../hooks/useTicketSale";
+import { SaleTicketModal } from "./SaleTicketModal";
 
 const SaleProductList = () => {
     
@@ -27,6 +29,8 @@ const SaleProductList = () => {
                     <IoIosTrash className="text-lg" />
                     <span>Cancelar venta</span>
                 </Button>
+                <SaleTicketModal saleId={sale?.saleId ?? BigInt(0)} />
+            
                 <SaleInventoryListModal key='sale-inventory-items-modal' />
             </div>
             <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all">
