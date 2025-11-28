@@ -37,6 +37,9 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
             <td className="px-5 py-1">
                 {saleDetail?.productUnitAtSale ?? 'S/P'}
             </td>
+            <td className="px-5 py-1 bg-green-200">
+                $ {numberBasicFormat(saleDetail?.discountItem ?? 0.00)}
+            </td>
             <td className="px-5 py-1 bg-blue-200 font-bold">
                 $ {numberBasicFormat(saleDetail?.subtotalItem ?? 0.00)}
             </td>

@@ -47,10 +47,13 @@ const SaleProductList = () => {
                                 Precio Unit.
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
-                                Cantidad
+                                Cant.
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
                                 Unidad
+                            </th>
+                            <th scope="col" className="px-6 py-4 font-semibold">
+                                Desc.
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
                                 Subtotal

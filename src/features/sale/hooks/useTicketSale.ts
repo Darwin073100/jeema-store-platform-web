@@ -13,6 +13,9 @@ const useTicketSale = ({saleId}:Props) => {
     const handlePrint = async () => {
         setLoading(true);
         try {
+            if(saleId===BigInt(0)){
+                return;
+            }
             const result = await fetch(`http://localhost:3001/api/v1/reports/tickets/sales/${saleId.toString()}`);
             if (!result.ok ) {
                 return;
@@ -20,7 +23,6 @@ const useTicketSale = ({saleId}:Props) => {
             const blobUrl = URL.createObjectURL(await result.blob());
             setPdfUrl(blobUrl);
         } catch (error) {
-            console.error("Error al cargar el PDF:", error);
             setError("No se pudo cargar el documento.");
         } finally {
             setLoading(false);
