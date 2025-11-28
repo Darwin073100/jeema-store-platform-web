@@ -35,7 +35,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                             </Button>
                     }
                     {
-                        sale.status == SaleStatusEnum.PENDING && 
+                        (sale.status == SaleStatusEnum.PENDING || sale.status == SaleStatusEnum.INITIALIZED) && 
                         <>
                             <Button color="green" onClick={()=> handleSaleContinue()} disabled={loading==='saleContinue'}>
                                 {loading==='saleContinue'? <Spinner/>: <IoBagHandle />}
@@ -53,6 +53,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                         sale.status === SaleStatusEnum.COMPLETED 
                             ? 'green' : sale.status === SaleStatusEnum.CANCELLED 
                             ? 'red' : sale.status === SaleStatusEnum.PENDING 
+                            ? 'blue' : sale.status === SaleStatusEnum.INITIALIZED
                             ? 'yellow' : 'red'
                     } 
                     size='xl'>

@@ -21,7 +21,8 @@ export class PendingSaleUseCase {
         }
         const formatDTO: FinalizeSaleDto = {
             ...dto,
-            status: SaleStatusEnum.PENDING
+            status: SaleStatusEnum.PENDING,
+            salePayments: undefined,
         }
         const result = await this.repository.finalizeSale(saleId, formatDTO);
         return result;

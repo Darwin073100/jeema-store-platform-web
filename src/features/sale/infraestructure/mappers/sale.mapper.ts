@@ -33,6 +33,7 @@ export class SaleMapper {
         return httpDTO;
     }
 
+    //! Este metodod debe eliminarse
     static toHttpFinishSale(dto: FinishSaleDto){
         const httpDTO: FinishSaleHttpDto = {
             customerId: dto.customerId.toString(),
@@ -49,6 +50,14 @@ export class SaleMapper {
             employeeId: dto.employeeId.toString(),
             cashRegisterId: dto.cashRegisterId.toString(),
             inAmount: dto.inAmount,
+            salePayments: dto.salePayments? dto.salePayments.map(item => {
+                const itemHttpDto: RegisterSalePaymentItemHttp = {
+                    amountPaid: item.amountPaid,
+                    paymentMethodId: item.paymentMethodId.toString(),
+                    referenceNumber: item.referenceNumber
+                }
+                return itemHttpDto;
+            }): undefined,
             status: dto.status,
             notes: dto.notes
         }

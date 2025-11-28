@@ -18,6 +18,7 @@ export class RegisterSaleInitialUseCase {
                 timestamp: new Date().toISOString()
             });
         }
+        
         const result = await this.repository.save(dto);
         return result;
     }

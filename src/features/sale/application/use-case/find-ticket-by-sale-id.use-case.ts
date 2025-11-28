@@ -2,7 +2,7 @@ import { Result } from "@/shared/features/result";
 import { SaleRepository } from "../../domain/repositories/sale.repository";
 import { ErrorEntity } from "@/shared/features/error.entity";
 
-export class FindSaleByIdWithDetailUseCase {
+export class FindTicketBySaleIdUseCase {
     constructor(
         private readonly repository: SaleRepository
     ){}
@@ -10,14 +10,14 @@ export class FindSaleByIdWithDetailUseCase {
     async execute(saleId: bigint){
         if(saleId <= BigInt(0)){
             return Result.failure<ErrorEntity>({
-                message: 'No se encontro una venta inicializada.',
-                error: 'Sale not found initilize',
+                message: 'No se encontro una venta',
+                error: 'Sale not found.',
                 statusCode: 404,
-                path: 'FindSaleByIdWithDetailUseCase',
+                path: 'FindTicketBySaleIdUseCase',
                 timestamp: new Date().toJSON(),
             });
         }
-        const result = await this.repository.findSaleWithDetails(saleId);
+        const result = await this.repository.findTickedBySaleId(saleId);
         return result;
     }
 }

@@ -73,5 +73,10 @@ export interface SaleRepository {
      * Este metodo es para buscar una venta y traer la informacion a detalle
      * @param saleId 
      */
-    findSaleInfoById(saleId: bigint): Promise<Result<SaleEntity, ErrorEntity>>
+    findSaleInfoById(saleId: bigint): Promise<Result<SaleEntity, ErrorEntity>>;
+    /**
+     * Este metodo retorna un ticket de venta.
+     * @param saleId 
+     */
+    findTickedBySaleId(saleId: bigint): Promise<Result<Blob, ErrorEntity>>;
 }

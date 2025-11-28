@@ -200,19 +200,16 @@ const useSalePayment = () => {
                 employeeId: currentEmployeeId, 
                 cashRegisterId: cashSessionActive?.cashRegisterId, 
                 inAmount: paidAmount, 
-                status: SaleStatusEnum.COMPLETED 
+                status: SaleStatusEnum.COMPLETED,
+                salePayments: salePaids
             }
             const result = await finishSaleAction(currentSaleId, dto);
-            if (!result.ok) {
-                setFloatMessageState(result.error ?? {});
-            } else {
-                const salePaymentResult = await registerSalePaymentAction(saleId, salePaids);
-                if (!salePaymentResult.ok) {
+                if (!result.ok) {
                     setFloatMessageState({
                         type: 'red',
                         isActive: true,
                         summary: '¡Ha ocurrido un error!',
-                        description: salePaymentResult.error?.message ?? 'Error al finalizar la venta'
+                        description: result.error?.description ?? 'Error al finalizar la venta'
                     });
                 } else {
                     setFloatMessageState({
@@ -227,7 +224,6 @@ const useSalePayment = () => {
                         resetSaleProcessStore();
                     }, 2000);
                 }
-            }
             setTimeout(()=>{
                 setFloatMessageState({});
             }, 3000);

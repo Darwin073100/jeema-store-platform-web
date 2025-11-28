@@ -147,6 +147,18 @@ export class SaleFetchRepository implements SaleRepository {
             return this.handleError(error, 'Delete detail to Sale');
         }
     }
+    async findTickedBySaleId(saleId: bigint): Promise<Result<Blob, ErrorEntity>> {
+        try {  
+            const response = await this.httpClient.get<Blob>(
+                this.apiConfig.getEndpointUrl(`/reports/tickets/sales/${saleId.toString()}`)
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'findTickedBySaleId');
+        }
+    }
 
     /**
      * Manejo centralizado de errores

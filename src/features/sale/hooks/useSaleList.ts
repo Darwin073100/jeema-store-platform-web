@@ -7,6 +7,7 @@ const useSaleListBranch = () => {
             case SaleStatusEnum.PENDING: return 'yellow';
             case SaleStatusEnum.REFUNDED: return 'gray';
             case SaleStatusEnum.CANCELLED: return 'red';
+            case SaleStatusEnum.INITIALIZED: return 'blue';
             default: return 'blue';
         }
     }

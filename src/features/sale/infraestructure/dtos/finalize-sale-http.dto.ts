@@ -1,4 +1,5 @@
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
+import { RegisterSalePaymentItemHttp } from "./register-sale-payment-http.dto";
 
 export interface FinalizeSaleHttpDto {
     customerId: string;
@@ -6,5 +7,6 @@ export interface FinalizeSaleHttpDto {
     cashRegisterId: string;
     inAmount: number;
     status: SaleStatusEnum;
+    salePayments?: RegisterSalePaymentItemHttp[];
     notes?: string | null;
 }

@@ -1,4 +1,5 @@
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
+import { RegisterSalePaymentItem } from "./register-sale-payment.dto";
 
 export interface FinalizeSaleDto {
     customerId: bigint;
@@ -6,5 +7,6 @@ export interface FinalizeSaleDto {
     cashRegisterId: bigint;
     inAmount: number;
     status: SaleStatusEnum;
+    salePayments?: RegisterSalePaymentItem[];
     notes?: string | null;
 }
