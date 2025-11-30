@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../../ui/styles/globals.css";
 import { NavBar } from "@/ui/components/nav-bar/NavBar";
 import { SideBar } from "@/ui/components/side-bar/SideBar";
+import { SideBarMovile } from "@/ui/components/side-bar/SideBarMovile";
 
 export const metadata: Metadata = {
   title: "EdYOf Platform",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <NavBar/>
         <main className="flex w-full py-4 pr-4">
           <SideBar />
+          <SideBarMovile />
           {children}
         </main>
       </body>

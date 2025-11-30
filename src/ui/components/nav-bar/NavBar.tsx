@@ -10,11 +10,14 @@ import { LogoutModal } from '../modals/LogoutModal';
 import { useAuth, useWorkspace } from '@/shared/hooks/useAuth';
 import { Button } from '../buttons';
 import Link from 'next/link';
+import { useSideStore } from '../side-bar/side.store';
+import clsx from 'clsx';
 
 export const NavBar = () => {
   const { user } = useAuth();
   const { establishment, branchOffice } = useWorkspace();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const { onToggelSideBar, sideBar } = useSideStore();
 
   const handleOpenLogoutModal = () => {
     setIsLogoutModalOpen(true);
@@ -28,7 +31,7 @@ export const NavBar = () => {
     <nav className="flex justify-between items-center py-3 px-6 bg-white shadow-md hover:shadow-lg transition-all w-full">
       {/* Brand Section */}
       <div className='flex items-center gap-4'>
-        <div className="relative group">
+        <div className={clsx(`relative group ${sideBar? 'rotate-90': 'rotate-0'} transition-all duration-300 sm:rotate-0`)} onClick={()=> onToggelSideBar()}>
           <Image
             className="rounded-lg shadow-sm group-hover:shadow-md transition-all"
             src={Logo}
