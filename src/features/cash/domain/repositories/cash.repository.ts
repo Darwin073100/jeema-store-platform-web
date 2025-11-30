@@ -13,4 +13,5 @@ export interface CashRepository{
     findCashSessionByEmployeeId(employeeId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>>;
     findCashSessionWithTransactions(cashSessionId: bigint): Promise<Result<CashSessionEntity, ErrorEntity>>;
     closeCashSession(cashSessionId: bigint, dto: CloseCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>>;
+    findMovementsByBranchOfficeId(branchOfficeId: bigint): Promise<Result<{cashSessions: CashSessionEntity[]}, ErrorEntity>>;
 }

@@ -85,4 +85,14 @@ export class CashFetchRepository implements CashRepository {
             return handleError(error, 'registerCashRegister');
         }
     }
+    async findMovementsByBranchOfficeId(branchOfficeId: bigint): Promise<Result<{cashSessions: CashSessionEntity[]}, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<{cashSessions: CashSessionEntity[]}>(
+                this.apiConfig.getEndpointUrl(`cash-registers/all/sessions/all/branch-offices/${branchOfficeId.toString()}`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'findMovementsByBranchOfficeId');
+        }
+    }
 }

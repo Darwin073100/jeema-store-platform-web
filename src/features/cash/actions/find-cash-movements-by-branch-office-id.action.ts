@@ -1,0 +1,31 @@
+'use server'
+import { unstable_noStore as noStore } from 'next/cache';import { cookies } from 'next/headers';
+import { CashFetchRepositoryFactory } from '../infraestructure/factories/cash-fetch-repository.factory';
+import { BranchOfficeEntity } from '@/features/branch-office/domain/entities/branch-office.entity';
+import { FindCashMovementsByBranchOfficeIdUseCase } from '../application/use-cases/find-cash-movements-by-branch-office-id.use-case';
+
+export async function findCashMovementsByBranchOfficeIdAction(){
+    noStore(); // Evitar que se cachée este server action
+    
+    try {
+        // Inyeccion de las dependencias usando Factory
+        const repository= CashFetchRepositoryFactory.create();
+        const useCase = new FindCashMovementsByBranchOfficeIdUseCase(repository);
+        
+        const cookieStore = await cookies();
+                
+        let branchOffice = cookieStore.get('branchOfficeCookie')?.value ?? null;
+        let branchOfficeId = BigInt(0);
+        if (branchOffice) {
+            branchOfficeId = (JSON.parse(branchOffice) as BranchOfficeEntity).branchOfficeId;
+        }
+        const result = await useCase.execute(branchOfficeId);
+
+        return {
+            ...result
+        }
+    } catch (error) {
+        console.error('Error in findCashMovementsByBranchOfficeIdAction:', error);
+        throw error;
+    }
+}
