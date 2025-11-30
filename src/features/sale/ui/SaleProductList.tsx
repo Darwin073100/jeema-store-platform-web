@@ -49,7 +49,7 @@ const SaleProductList = () => {
                                 Precio Unit.
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
-                                Unidad
+                                Ud.
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
                                 Desc.

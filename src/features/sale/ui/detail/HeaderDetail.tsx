@@ -42,10 +42,14 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                                 {loading==='saleContinue'? <Spinner/>: <IoBagHandle />}
                                 Reanudar venta
                             </Button>
-                            <Button color="yellow" onClick={()=> openSaleModal('paymentModal')}>
-                                <IoWalletSharp />
-                                Pagar venta
-                            </Button>
+                            {
+                                sale.status === SaleStatusEnum.PENDING &&<>
+                                    <Button color="yellow" onClick={()=> openSaleModal('paymentModal')}>
+                                        <IoWalletSharp />
+                                        Pagar venta
+                                    </Button>
+                                </>
+                            }
                         </>
                     }
                 </div>

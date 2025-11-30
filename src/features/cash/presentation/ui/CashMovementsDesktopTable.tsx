@@ -22,7 +22,7 @@ const CashMovementsDesktopTable = ({ cashSessions }: Props) => {
                     <BCol>{formatDateShort(item.startTime)}</BCol>
                     <BCol>{numberMoneyFormat(item.startBalance)}</BCol>
                     <BCol>{formatDateShort(item.endTime)}</BCol>
-                    <BCol>{numberMoneyFormat(item.actualBalance ?? 0)}</BCol>
+                    <BCol>{numberMoneyFormat(Number(item.actualBalance ?? 0)+item.startBalance)}</BCol>
                     <BCol><Badge type='green'>{item.cashRegister?.name}</Badge></BCol>
                     <BCol>{`${item.employee?.firstName}`}</BCol>
                     <BCol className="text-right flex justify-end">

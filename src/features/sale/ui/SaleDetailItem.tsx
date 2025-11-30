@@ -22,7 +22,7 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
             <td className="px-5 py-1 bg-blue-200 font-bold">
                 {saleDetail?.quantity ?? '0.00'}
             </td>
-            <th scope="row" className="px-5 py-1 font-medium whitespace-nowrap">
+            <th scope="row" className="px-5 py-1 font-medium whitespace-nowrap text-[12px]">
                 {saleDetail?.productBarCodeAtSale ?? 'S/C'}
             </th>
             <td className="px-5 py-1 font-bold">
