@@ -9,7 +9,6 @@ import { CancelSaleConfirmModal } from "./CancelSaleConfirmModal";
 import { useCancelSale } from "../hooks/useCancelSale";
 import { UpdateDetailModal } from "./UpdateDetailModal";
 import { useInventoryListModal } from "../hooks/useInventoryListModal";
-import useTicketSale from "../hooks/useTicketSale";
 import { SaleTicketModal } from "./SaleTicketModal";
 
 const SaleProductList = () => {
@@ -38,6 +37,9 @@ const SaleProductList = () => {
                     <thead>
                         <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
                             <th scope="col" className="px-6 py-4 font-semibold">
+                                #
+                            </th>
+                            <th scope="col" className="px-6 py-4 font-semibold">
                                 Código
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
@@ -47,16 +49,16 @@ const SaleProductList = () => {
                                 Precio Unit.
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
-                                Cant.
-                            </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
                                 Unidad
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
                                 Desc.
                             </th>
                             <th scope="col" className="px-6 py-4 font-semibold">
-                                Subtotal
+                                S.total
+                            </th>
+                            <th scope="col" className="px-6 py-4 font-semibold">
+                                Total
                             </th>
                             <th scope="col" className="px-2 py-2">
                             </th>

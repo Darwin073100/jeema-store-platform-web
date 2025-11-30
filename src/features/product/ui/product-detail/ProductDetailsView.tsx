@@ -59,12 +59,15 @@ import { useInventoryItemUIStore } from '@/features/inventory/infraestructura/st
 import { FloatMessage } from '@/ui/components/messages';
 import { LocalTransferInventoryItemModal } from '@/features/inventory/ui/LocalTransferInventoryModal';
 import { useLocalTransferInventoryItemModal } from '@/features/inventory/hooks/useLocalTransferInventoryItemModal';
+import { useProductUIStore } from '../../infraestructure/stores/product-ui.store';
+import { ProductBarCodeModal } from './ProductBarCodesModal';
 
 interface Props {
     product: ProductEntity;
 }
 
 export function ProductDetailsView({ product }: Props) {
+    const { openProductModal } = useProductUIStore();
     const { handleOpenUpdateProductModal } = useUpdateProductModal();
     const { handleOpenUpdateLotModal } = useUpdateLotModal();
     const { handleOpenRegisterLotModal } = useRegisterLotModal();
@@ -99,11 +102,6 @@ export function ProductDetailsView({ product }: Props) {
         handleSelectedLotUnitPurchase(lotUnitPurchase);
     }
 
-    // const handleAddInventory = (branchOfficeId: bigint, productId: bigint, lotId: bigint ) => {
-
-    //     handleOpenModalInventory(branchOfficeId, productId, lotId);
-    //     // Agregar inventario para lote
-    // };
     const handleAddInventory = (selectedInventory: InventoryEntity | null, selectProd: ProductEntity) => {
         handleOpenModalInventory(selectedInventory, selectProd);
         // Agregar inventario para lote
@@ -165,6 +163,7 @@ export function ProductDetailsView({ product }: Props) {
                             </div>
                             <div className="text-gray-900 font-semibold">
                                 <Barcode
+                                    format='CODE128'
                                     value={product.universalBarCode ?? ''}
                                     width={1}
                                     height={50}
@@ -270,13 +269,15 @@ export function ProductDetailsView({ product }: Props) {
                                         </label>
                                         <Button
                                             title='Imprimir código de barras'
-                                            onClick={() => handlePrint()}>
+                                            onClick={() => openProductModal('printLabels')}>
                                             <ImPrinter />
                                         </Button>
                                     </div>
+                                    <ProductBarCodeModal inventoryId={product.inventory.inventoryId}/>
                                     <div className="text-gray-900 font-semibold">
                                         <div className='printable-content'>
                                             <Barcode
+                                                format='CODE128'
                                                 value={product?.inventory.internalBarCode ?? ''}
                                                 width={1}
                                                 height={50}

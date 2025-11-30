@@ -10,6 +10,7 @@ import { InventoryMapper } from "../mappers/inventory.mapper";
 import { LocationEnum } from "../../domain/enums/location.enum";
 import { InventoryItemEntity } from "../../domain/entities/inventory-item.entity";
 import { EditInventoryItemDTO } from "../../application/dtos/edit-inventory-item.dto";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 
 export class InventoryFetchRepository implements InventoryRepository {
     constructor(
@@ -25,7 +26,7 @@ export class InventoryFetchRepository implements InventoryRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            return this.handleError(error, 'Register Inventory');
+            return handleError(error, 'Register Inventory');
         }
     } 
     async update(dto: UpdateInventoryDTO):Promise<Result<InventoryEntity, ErrorEntity>> {
@@ -38,7 +39,7 @@ export class InventoryFetchRepository implements InventoryRepository {
             return Result.success(result.data);
         } catch (error) {
             console.log(error);
-            return this.handleError(error, 'Update Inventory');
+            return handleError(error, 'Update Inventory');
         }
     }
 
@@ -50,7 +51,7 @@ export class InventoryFetchRepository implements InventoryRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            return this.handleError(error, 'Update Inventory');
+            return handleError(error, 'Update Inventory');
         }
     }
 
@@ -64,7 +65,7 @@ export class InventoryFetchRepository implements InventoryRepository {
             return Result.success(result.data);
         } catch (error) {
             console.log(error)
-            return this.handleError(error, 'Update Inventory');
+            return handleError(error, 'Update Inventory');
         }
     }
 
@@ -75,7 +76,22 @@ export class InventoryFetchRepository implements InventoryRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            return this.handleError(error, 'Find Inventory By BarCode');
+            return handleError(error, 'Find Inventory By BarCode');
+        }
+    }
+
+    async findBarcodeByInventoryId(inventoryId: bigint): Promise<Result<any, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<any>(
+                this.apiConfig.getEndpointUrl(`/reports/barcode/inventories/${inventoryId.toString()}`),
+                {
+                    'Content-Type': 'application/pdf'
+                }
+            );
+            console.log(result.data);
+            return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'findBarcodeByInventoryId');
         }
     }
 
@@ -86,26 +102,7 @@ export class InventoryFetchRepository implements InventoryRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            return this.handleError(error, 'Find Inventory by location and branch office');
+            return handleError(error, 'Find Inventory by location and branch office');
         }
-    }
-
-    /**
-     * Manejo centralizado de errores
-     */
-    private handleError(error: any, operation: string): Result<any, ErrorEntity> {
-        // Si es un error HTTP (del servidor)
-        if (error.status && error.data) {
-            return Result.failure(error.data as ErrorEntity);
-        }
-
-        // Si es un error de red o conexión
-        return Result.failure({
-            error: error?.message || error,
-            message: `No se pudo conectar al servidor durante: ${operation}`,
-            statusCode: error?.status || 500,
-            path: operation,
-            timestamp: new Date().toDateString()
-        } satisfies ErrorEntity);
     }
 }

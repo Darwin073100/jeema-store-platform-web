@@ -19,6 +19,9 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
     // const { } = useSale();
     return (
         <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
+            <td className="px-5 py-1 bg-blue-200 font-bold">
+                {saleDetail?.quantity ?? '0.00'}
+            </td>
             <th scope="row" className="px-5 py-1 font-medium whitespace-nowrap">
                 {saleDetail?.productBarCodeAtSale ?? 'S/C'}
             </th>
@@ -31,14 +34,14 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
                     { saleDetail?.saleFor ?? 'N/A'}
                 </Badge>
             </td>
-            <td className="px-5 py-1 bg-blue-200 font-bold">
-                {saleDetail?.quantity ?? '0.00'}
-            </td>
             <td className="px-5 py-1">
                 {saleDetail?.productUnitAtSale ?? 'S/P'}
             </td>
             <td className="px-5 py-1 bg-green-200">
                 $ {numberBasicFormat(saleDetail?.discountItem ?? 0.00)}
+            </td>
+            <td className="px-5 py-1 bg-blue-200 font-bold">
+                $ {numberBasicFormat((saleDetail?.subtotalItem ?? 0.00)+(saleDetail?.discountItem ?? 0.00))}
             </td>
             <td className="px-5 py-1 bg-blue-200 font-bold">
                 $ {numberBasicFormat(saleDetail?.subtotalItem ?? 0.00)}
