@@ -6,6 +6,7 @@ import { SaleMessages } from "@/features/sale/ui/SaleMessages";
 import { SaleProductList } from "@/features/sale/ui/SaleProductList";
 import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
 import { SaleSummary } from "@/features/sale/ui/SaleSummary";
+import { SaleSummaryMovile } from "@/features/sale/ui/SaleSummaryMovile";
 import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader"
 
@@ -49,6 +50,11 @@ export default async function() {
                         customers={currentCustomers}
                         paymentMethods={currentPaymentMethods} />
                 </article>
+                <SaleSummaryMovile
+                    inventoryItems={currentInventoryItems}
+                    customers={currentCustomers}
+                    paymentMethods={currentPaymentMethods} />
+
                 <SaleMessages />
             </TemplateHeader>
         </ProtectedRoute>

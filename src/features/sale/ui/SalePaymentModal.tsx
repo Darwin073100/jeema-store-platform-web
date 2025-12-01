@@ -33,10 +33,10 @@ const SalePaymentModal = () => {
           </div>
           <div className='flex gap-2 justify-center'>
             <div
-              className={clsx(`w-[200px] border border-blue-100 rounded-xl p-4 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
+              className={clsx(`w-[200px] max-sm:w-full border border-blue-100 rounded-xl p-4 max-sm:p-2 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
                 cashAmount > 0 && `bg-blue-100`
             )}>
-              <div className='flex justify-center'><FcMoneyTransfer className='w-20 h-20' /></div>
+              <div className='flex justify-center'><FcMoneyTransfer className='w-20 max-sm:w-15 h-20 max-sm:h-15' /></div>
               <span className='text-gray-600 font-bold'>Efectivo</span>
               <TextInput 
                 onChange={(e)=> setCashAmount(Number(e.target.value))}
@@ -45,10 +45,10 @@ const SalePaymentModal = () => {
                 placeholder='Monto'/>
             </div>
             <div
-              className={clsx(`w-[200px] border border-blue-100 rounded-xl p-4 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
+              className={clsx(`w-[200px] max-sm:w-full border border-blue-100 rounded-xl p-4 max-sm:p-2 flex gap-1 flex-col items-center justify-center transition-all duration-300`,
                 transferAmount > 0 && `bg-blue-100`
             )}>
-              <div className='flex justify-center'><FcSmartphoneTablet className='w-20 h-20' /></div>
+              <div className='flex justify-center'><FcSmartphoneTablet className='w-20 max-sm:w-15 h-20 max-sm:h-15' /></div>
               <span className='text-gray-600 font-bold'>Transferencia</span>
               <TextInput
                 min={0}
@@ -85,7 +85,7 @@ const SalePaymentModal = () => {
           </div>
         </div>
         {/* Botones del formulario */}
-        <div className="flex justify-end gap-3 flex-wrap pt-4">
+        <div className="flex justify-end gap-2 pt-4">
           <Button
             onClick={()=> handleFinishSale()}
             type="button"
@@ -95,7 +95,7 @@ const SalePaymentModal = () => {
           >
             { loading === 'finishSaleLoading'
               ? <><Spinner/></>
-              : <> <MdOutlinePaid className="w-4 h-4" />Posponer cobro</> 
+              : <> <MdOutlinePaid className="w-4 h-4" /><span className='max-sm:hidden'>{`Posponer cobro`}</span></> 
             }
           </Button>
           <Button
@@ -106,7 +106,7 @@ const SalePaymentModal = () => {
           >
             { loading === 'salePaymentLoading'
               ? <><Spinner/></>
-              : <> <MdOutlinePaid className="w-4 h-4" />Cobrar venta</> 
+              : <> <MdOutlinePaid className="w-4 h-4" /><span className='max-sm:hidden'>{`Cobrar venta`}</span></> 
             }
           </Button>
           <Button
@@ -116,7 +116,7 @@ const SalePaymentModal = () => {
             onClick={closeSaleModal}
           >
             <IoClose className="mr-2 w-4 h-4" />
-            Cerrar
+            <span className='max-sm:hidden'>{`Cerrar`}</span>
           </Button>
         </div>
       </div>

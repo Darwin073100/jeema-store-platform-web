@@ -34,6 +34,7 @@ const SaleDetailItemMovile = ({saleDetail}:Props) => {
                 <Badge type={saleDetail?.saleFor === SaleForEnum.ONE ? 'blue' : saleDetail?.saleFor === SaleForEnum.MANY ? 'green' : 'yellow'}>
                     {saleDetail?.saleFor ?? 'N/A'}
                 </Badge>
+                <Badge>{saleDetail.productUnitAtSale}</Badge>
             </div>
             <div>
                 <div className="flex flex-col justify-end saleDetails-end">

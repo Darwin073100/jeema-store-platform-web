@@ -72,7 +72,7 @@ const SaleProductList = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="flex flex-col items-center gap-4 w-full">
+            <div className="flex flex-col items-center gap-4 w-full lg:hidden">
                 {sale?.saleDetails?.map(item => <>
                     <SaleDetailItemMovile key={item.saleDetailId} 
                         saleDetail={item}/>

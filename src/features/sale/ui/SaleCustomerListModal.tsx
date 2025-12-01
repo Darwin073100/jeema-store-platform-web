@@ -27,44 +27,46 @@ const SaleCustomerListModal = () => {
               autoFocus={true}
               placeholder='Busca por nombre o apellidos de un cliente'/>
           </div>
-          <table className="w-full text-left rtl:text-right">
-            <thead>
-              <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Folio
-                </th>
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Nombre
-                </th>
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Categoría
-                </th>
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Ciudad
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              { filterCustomers.map(item => (<>
-                <tr key={item.customerId ?? new Date().getTime()} 
-                  onClick={()=> handleCustomerSelected(item)} 
-                  className={clsx(`text-sm ${customerSelected?.customerId === item.customerId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
-                  <td className="px-5 py-1">
-                    {item.customerId}
-                  </td>
-                  <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
-                    {`${item.firstName} ${item.lastName}`}
+          <div className='w-full overflow-auto'>
+            <table className="w-full text-left rtl:text-right">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Folio
                   </th>
-                  <td className="px-5 py-1">
-                    {item.customerType}
-                  </td>
-                  <td className="px-5 py-1">
-                    {item.address?.city}
-                  </td>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Nombre
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Categoría
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Ciudad
+                  </th>
                 </tr>
-              </>))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                { filterCustomers.map(item => (<>
+                  <tr key={item.customerId ?? new Date().getTime()} 
+                    onClick={()=> handleCustomerSelected(item)} 
+                    className={clsx(`text-sm ${customerSelected?.customerId === item.customerId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
+                    <td className="px-5 py-1">
+                      {item.customerId}
+                    </td>
+                    <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
+                      {`${item.firstName} ${item.lastName}`}
+                    </th>
+                    <td className="px-5 py-1">
+                      {item.customerType}
+                    </td>
+                    <td className="px-5 py-1">
+                      {item.address?.city}
+                    </td>
+                  </tr>
+                </>))}
+              </tbody>
+            </table>
+          </div>
         </div>
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">

@@ -29,83 +29,85 @@ const SaleInventoryListModal = () => {
               autoFocus={true}
               placeholder='Ingresa el nombre del producto que estas buscando'/>
           </div>
-          <table className="w-full text-left rtl:text-right">
-            <thead>
-              <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
-                {/* <th scope="col" className="px-6 py-4 font-semibold">
-                  Código
-                </th> */}
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  producto
-                </th>
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Precio unitario
-                </th>
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Precio mayoreo
-                </th>
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Cantidad mayoreo
-                </th>
-                <th scope="col" className="px-6 py-4 font-semibold">
-                  Stock
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              { filterInventoryItems.map(item => (<>
-                <tr key={item.inventory?.product?.sku ?? new Date().getTime()} 
-                  onClick={()=> handleSetItemSelected(item)} 
-                  className={clsx(`text-sm ${itemSelected?.inventoryItemId === item.inventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
-                  {/* <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
-                    {item.inventory?.internalBarCode}
+          <div className='w-full overflow-auto'>
+            <table className="w-full text-left rtl:text-right">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
+                  {/* <th scope="col" className="px-6 py-4 font-semibold">
+                    Código
                   </th> */}
-                  <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
-                    {item.inventory?.product?.name}
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    producto
                   </th>
-                  <td className="px-5 py-1">
-                    ${item.inventory?.salePriceOne}
-                  </td>
-                  <td className="px-5 py-1">
-                    ${item.inventory?.salePriceMany}
-                  </td>
-                  <td className="px-5 py-1">
-                    {item.inventory?.saleQuantityMany}
-                  </td>
-                  <td className="px-5 py-1">
-                    {item.quantityOnHan}
-                  </td>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Precio unitario
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Precio mayoreo
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Cantidad mayoreo
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    Stock
+                  </th>
                 </tr>
-                { itemSelected?.inventoryItemId === item.inventoryItemId && <>
-                  <tr className='bg-blue-100'>
-                    <th></th>
-                    <th className='p-1'>
-                      <TextInput
-                        min={0}
-                        value={ quantityInsert }
-                        onChange={(e)=>setQuantityInsert(Number(e.target.value))}
-                        className='font-medium'
-                        type='number'
-                        placeholder='Cantidad' />
+              </thead>
+              <tbody>
+                { filterInventoryItems.map(item => (<>
+                  <tr key={item.inventory?.product?.sku ?? new Date().getTime()} 
+                    onClick={()=> handleSetItemSelected(item)} 
+                    className={clsx(`text-sm ${itemSelected?.inventoryItemId === item.inventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
+                    {/* <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
+                      {item.inventory?.internalBarCode}
+                    </th> */}
+                    <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
+                      {item.inventory?.product?.name}
                     </th>
-                    <th>
-                      <Button
-                        disabled={loading==='addDetailToSaleLoading'}
-                        onClick={()=> handleAddDetail()} 
-                        className='font-medium'>
-                          { loading==='addDetailToSaleLoading'
-                            ? <Spinner/>
-                            :<><IoMdAdd /> Agregar</>  
-                          }
-                        </Button>
-                    </th>
-                    <th></th>
-                    <th></th>
+                    <td className="px-5 py-1">
+                      ${item.inventory?.salePriceOne}
+                    </td>
+                    <td className="px-5 py-1">
+                      ${item.inventory?.salePriceMany}
+                    </td>
+                    <td className="px-5 py-1">
+                      {item.inventory?.saleQuantityMany}
+                    </td>
+                    <td className="px-5 py-1">
+                      {item.quantityOnHan}
+                    </td>
                   </tr>
-                </>}
-              </>))}
-            </tbody>
-          </table>
+                  { itemSelected?.inventoryItemId === item.inventoryItemId && <>
+                    <tr className='bg-blue-100'>
+                      <th></th>
+                      <th className='p-1'>
+                        <TextInput
+                          min={0}
+                          value={ quantityInsert }
+                          onChange={(e)=>setQuantityInsert(Number(e.target.value))}
+                          className='font-medium'
+                          type='number'
+                          placeholder='Cantidad' />
+                      </th>
+                      <th>
+                        <Button
+                          disabled={loading==='addDetailToSaleLoading'}
+                          onClick={()=> handleAddDetail()} 
+                          className='font-medium'>
+                            { loading==='addDetailToSaleLoading'
+                              ? <Spinner/>
+                              :<><IoMdAdd /> Agregar</>  
+                            }
+                          </Button>
+                      </th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </>}
+                </>))}
+              </tbody>
+            </table>
+          </div>
         </div>
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">
