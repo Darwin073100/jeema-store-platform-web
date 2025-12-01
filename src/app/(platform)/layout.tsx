@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased bg-gradient-to-br from-blue-50 to-indigo-100">
         <NavBar/>
-        <main className="flex w-full py-4 pr-4">
+        <main className="flex py-4">
           <SideBar />
           <SideBarMovile />
           {children}

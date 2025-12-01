@@ -27,8 +27,8 @@ interface Props {
  */
 const TemplateHeader = ({ breadcrumbItems, title, detail, children }: Props) => {
     return (
-        <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
-            <div className="max-w-10xl p-6 space-y-6">
+        <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 max-md:p-1">
+            <div className="max-w-10xl p-6 max-md:p-2 space-y-4">
                 {/* Breadcrumb */}
                 <Breadcrumb items={breadcrumbItems} />
 

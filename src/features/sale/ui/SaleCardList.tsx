@@ -1,17 +1,27 @@
+'use client'
+import React, { useState } from 'react'
 import { Button } from '@/ui/components/buttons';
-import React from 'react'
 import { SaleEntity } from '../domain/entities/sale-entity';
 import { Badge } from '@/ui/components/badges/Badge';
 import { useSaleListBranch } from '../hooks/useSaleList';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
+import { useRouter } from 'next/navigation';
+import { FiExternalLink } from 'react-icons/fi';
+import { Spinner } from '@/ui/components/loadings/Spinner';
 
 interface Props {
     sales: SaleEntity[]
 }
 
 const SaleCardList = ({ sales }: Props) => {
+    const router = useRouter();
+    const [saleId, setSaleId] = useState(BigInt(0));
     const { handleBadgeType } = useSaleListBranch();
+    const handleRouter = (id: bigint)=> {
+        setSaleId(id);
+        router.push(`/sale/${id.toString()}`);
+    }
     return (<>
         {sales.map(sale => (
             <div className="bg-white p-4 mb-3 border border-gray-200 rounded-lg shadow-sm">
@@ -52,8 +62,8 @@ const SaleCardList = ({ sales }: Props) => {
                 </div>
 
                 {/* Botón de Acción (Detalles, usando tu color de acento Naranja) */}
-                <Button className='w-full mt-3'>
-                    Ver Detalles
+                <Button className='w-full mt-3' onClick={()=> handleRouter(sale.saleId)}>
+                    {saleId===sale.saleId? <Spinner size={14}/>: <FiExternalLink />} Ver Detalles
                 </Button>
             </div>
         ))}

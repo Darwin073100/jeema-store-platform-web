@@ -33,8 +33,8 @@ const SaleProductSearch = ({ cashSession }: Props) => {
             </section>
             <section className="flex w-1/3">
                 <Button className="w-full justify-center shadow-md hover:shadow-lg transition-all">
-                    <IoMdCheckmark className="text-xl" />
-                    <span className="flex-1">Agregar producto</span>
+                    <IoMdCheckmark className="text-xl max-sm:hidden" />
+                    <span className="flex-1 max-md:hidden">Agregar producto</span>
                     <span className="text-xs bg-white/20 px-2 py-1 rounded">ENTER</span>
                 </Button>
             </section>

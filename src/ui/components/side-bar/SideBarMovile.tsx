@@ -11,7 +11,7 @@ export const SideBarMovile = () => {
     return (<>
         { sideBar && <div className='absolute z-10 w-screen h-screen' onClick={()=> onToggelSideBar() }>
             <form 
-                className="fixed sm:hidden transition-all duration-300 flex flex-col gap-4 px-4 text-gray-700">
+                className="fixed md:hidden transition-all duration-300 flex flex-col gap-4 px-4 text-gray-700">
                 <SideMovileLink hover={hover} Icon={FcPaid} href='/sale' value='Ventas'/>
                 <SideMovileLink hover={hover} Icon={FcOrgUnit} href='/' value='Inicio'/>
                 <SideMovileLink hover={hover} Icon={FcMindMap} href='/products' value='Productos'/>

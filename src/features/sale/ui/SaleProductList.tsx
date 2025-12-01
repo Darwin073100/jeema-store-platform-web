@@ -10,9 +10,10 @@ import { useCancelSale } from "../hooks/useCancelSale";
 import { UpdateDetailModal } from "./UpdateDetailModal";
 import { useInventoryListModal } from "../hooks/useInventoryListModal";
 import { SaleTicketModal } from "./SaleTicketModal";
+import { SaleDetailItemMovile } from "./SaleDetailItemMovile";
 
 const SaleProductList = () => {
-    
+
     const { sale } = useSaleStore();
     const { openSaleModal } = useInventoryListModal();
     const { handleCheckerOpenModalCancelSale } = useCancelSale();
@@ -20,19 +21,19 @@ const SaleProductList = () => {
     return (
         <section className="flex-1">
             <div className="flex gap-4 mb-4">
-                <Button onClick={()=> openSaleModal('inventoryListModal')} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                <Button onClick={() => openSaleModal('inventoryListModal')} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosSearch className="text-lg" />
-                    <span>Catálogo de productos</span>
+                    <span className="max-sm:hidden">Catálogo de productos</span>
                 </Button>
-                <Button onClick={()=> handleCheckerOpenModalCancelSale()} color="red" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                <Button onClick={() => handleCheckerOpenModalCancelSale()} color="red" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosTrash className="text-lg" />
-                    <span>Cancelar venta</span>
+                    <span className="max-sm:hidden">Cancelar venta</span>
                 </Button>
                 <SaleTicketModal saleId={sale?.saleId ?? BigInt(0)} />
-            
+
                 <SaleInventoryListModal key='sale-inventory-items-modal' />
             </div>
-            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all">
+            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all max-md:hidden">
                 <table className="w-full text-left rtl:text-right">
                     <thead>
                         <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
@@ -65,11 +66,17 @@ const SaleProductList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        { sale?.saleDetails 
-                            ? sale.saleDetails.map(detail=> <SaleDetailItem key={detail.saleDetailId} saleDetail={detail}/>)
-                            : <SaleDetailItem/>}
+                        {sale?.saleDetails
+                            ? sale.saleDetails.map(detail => <SaleDetailItem key={detail.saleDetailId} saleDetail={detail} />)
+                            : <SaleDetailItem />}
                     </tbody>
                 </table>
+            </div>
+            <div className="flex flex-col items-center gap-4 w-full">
+                {sale?.saleDetails?.map(item => <>
+                    <SaleDetailItemMovile key={item.saleDetailId} 
+                        saleDetail={item}/>
+                </>)}
             </div>
             <UpdateDetailModal />
             <DeleteDetailConfirmModal />
