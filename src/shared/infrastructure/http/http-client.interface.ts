@@ -2,7 +2,7 @@
  * Interface para cliente HTTP genérico
  */
 export interface HttpClient {
-    get<T>(url: string, headers?: Record<string, string>): Promise<HttpResponse<T>>;
+    get<T>(url: string, body?: any, headers?: Record<string, string>): Promise<HttpResponse<T>>;
     post<T>(url: string, body?: any, headers?: Record<string, string>): Promise<HttpResponse<T>>;
     put<T>(url: string, body?: any, headers?: Record<string, string>): Promise<HttpResponse<T>>;
     patch<T>(url: string, body?: any, headers?: Record<string, string>): Promise<HttpResponse<T>>;

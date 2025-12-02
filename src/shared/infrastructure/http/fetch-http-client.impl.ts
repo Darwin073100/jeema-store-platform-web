@@ -6,8 +6,8 @@ import { HttpClient, HttpResponse, HttpError } from './http-client.interface';
 export class FetchHttpClient implements HttpClient {
     constructor(private readonly baseURL?: string) {}
 
-    async get<T>(url: string, headers?: Record<string, string>): Promise<HttpResponse<T>> {
-        return this.request<T>('GET', url, undefined, headers);
+    async get<T>(url: string, body?: any, headers?: Record<string, string>): Promise<HttpResponse<T>> {
+        return this.request<T>('GET', url, body, headers);
     }
 
     async post<T>(url: string, body?: any, headers?: Record<string, string>): Promise<HttpResponse<T>> {

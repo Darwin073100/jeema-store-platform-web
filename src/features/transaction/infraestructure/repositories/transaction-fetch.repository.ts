@@ -6,6 +6,8 @@ import { TransactionRepository } from "../../domain/repositories/transaction.rep
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { TransactionMapper } from "../mappers/transaction.mapper";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { ManyFilterTransactionsDTO } from "../../application/dtos/many-filter-transactions.dto";
 
 export class TransactionFectchRepository implements TransactionRepository {
     constructor(
@@ -25,26 +27,23 @@ export class TransactionFectchRepository implements TransactionRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'Register Transactions');
+            return handleError(error, 'save');
         }  
     }
+    async findAllManyFilter(dto: ManyFilterTransactionsDTO): Promise<Result<{transactions: TransactionEntity[]}, ErrorEntity>> {
+        try {
+            const httpDto = TransactionMapper.toManyFilterTransactionsHttp(dto);
+                console.log(httpDto);
+            const response = await this.httpClient.post<{transactions: TransactionEntity[]}>(
+                this.apiConfig.getEndpointUrl('/transactions/filters'),
+                httpDto
+            );
+            console.log(response.data.transactions);
+            return Result.success(response.data);
 
-    /**
-     * Manejo centralizado de errores
-     */
-    private handleError(error: any, operation: string): Result<any, ErrorEntity> {
-        // Si es un error HTTP (del servidor)
-        if (error.status && error.data) {
-            return Result.failure(error.data as ErrorEntity);
-        }
-
-        // Si es un error de red o conexión
-        return Result.failure({
-            error: error?.message || error,
-            message: `No se pudo conectar al servidor durante: ${operation}`,
-            statusCode: error?.status || 500,
-            path: operation,
-            timestamp: new Date().toDateString()
-        } satisfies ErrorEntity);
+        } catch (error: any) {
+            console.log(error);
+            return handleError(error, 'findAllManyFilter');
+        }  
     }
 }
