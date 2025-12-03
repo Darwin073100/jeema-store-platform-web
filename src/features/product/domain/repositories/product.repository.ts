@@ -12,5 +12,6 @@ export interface ProductRepository{
     update(dto: UpdateProductDTO):Promise<Result<ProductEntity, ErrorEntity>>;
     saveProductWithLotAndInventory(dto: RegisterInitialProductDTO):Promise<Result<ProductEntity, ErrorEntity>>;
     delete(productId: bigint): Promise<Result<any, ErrorEntity>|undefined>;
-    registerCompleteProduct(dto: RegisterCompleteProductDTO): Promise<Result<ProductEntity, ErrorEntity>>
+    registerCompleteProduct(dto: RegisterCompleteProductDTO): Promise<Result<ProductEntity, ErrorEntity>>;
+    findAllByEstablishment(establishmentId: bigint): Promise<Result<{products: ProductEntity[]}, ErrorEntity>>;
 }

@@ -10,16 +10,45 @@ import React, { useState } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
+import { ProductEntity } from '../../domain/entities/product.entity';
+import { downloadXLSX } from '@/shared/lib/utils/download.excel';
+import { ProductExcel } from '../../domain/excel-interfaces/product.excel';
+import { formatDateShort } from '@/shared/lib/utils/date-formatter';
+import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 interface Props{
-    productQuantity: number
+    products: ProductEntity[]
 }
-const ProductActionsBar = ({ productQuantity }:Props) => {
+const ProductActionsBar = ({ products }:Props) => {
     const [loading, setLoading] = useState(false);
     const newProductPage = ()=> {
         setLoading(true);
         router.push('products/new')
     }
     const router = useRouter();
+    const currentProducts = products.map(item => {
+        return {
+            "FOLIO": item.productId,
+            PRODUCTO: item.name ?? '',
+            "CODIGO UNIVERSAL": item.universalBarCode ?? '',
+            "CODIGO INTERNO": item.inventory?.internalBarCode ?? '',
+            CATEGORIA: item.category?.name ?? '',
+            MARCA: item.brand?.name ?? '',
+            TEMPORADA: item.season?.name ?? '',
+            UNIDAD: item.unitOfMeasure ?? '',
+            "VENTA MENUDEO": item.inventory?.salePriceOne ?? 0,
+            "CANTIDAD MAYOREO": item.inventory?.saleQuantityMany ?? 0,
+            "VENTA MAYOREO": item.inventory?.salePriceMany ?? 0,
+            "STOCK MIN GLOBAL": item.minStockGlobal ?? 0,
+            VENTA: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.SALE)[0]?.quantityOnHan ?? 0,
+            ALMACEN: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.STOCK)[0]?.quantityOnHan ?? 0,
+            VIAJANDO: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.TRAVELING)[0]?.quantityOnHan ?? 0,
+            DAÑADOS: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.DAMAGED)[0]?.quantityOnHan ?? 0,
+            "FECHA REGISTRO": formatDateShort(item.createdAt)
+        }
+    });
+    const handleDownloadExcel = ()=> {
+        downloadXLSX(currentProducts, 'Productos');
+    }
 
     const {modalOpen,setModalOpen} = useCategoryStore();
     const { modalOpen: brandModalOpen, setModalOpen: setBrandModalOpen} = useBrandStore();
@@ -46,12 +75,12 @@ const ProductActionsBar = ({ productQuantity }:Props) => {
             </div>
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
-                    <Button disabled={loading} color='green'>
+                    <Button disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
                     </Button>
                     <div>
-                        Productos<Badge>{productQuantity}</Badge>
+                        Productos<Badge>{products.length}</Badge>
                     </div>
                 </div>
             </div>

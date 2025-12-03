@@ -28,6 +28,18 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return this.handleError(error, 'findAll products');
         }
     }
+    async findAllByEstablishment(establishmentId: bigint): Promise<Result<{products: ProductEntity[]}, ErrorEntity>> {
+        try {
+            const response = await this.httpClient.get<{products: ProductEntity[]}>(
+                this.apiConfig.getEndpointUrl(`/products/all/establishments/${establishmentId.toString()}`)
+            );
+
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return this.handleError(error, 'findAllByEstablishment');
+        }
+    }
 
     async save(dto: RegisterProductDTO): Promise<Result<ProductEntity, ErrorEntity>> {
         try {
