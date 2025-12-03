@@ -43,7 +43,7 @@ export const NavBar = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-700/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
         <div className="flex flex-col">
-          <h1 className='text-lg font-semibold text-gray-800 max-sm:hidden'>
+          <h1 className='text-lg font-semibold text-gray-800 max-sm:hidden max-md:hidden max-lg:text-sm'>
             {establishment?.name ?? '--'}
           </h1>
           <span className="text-sm text-gray-500 max-sm:hidden">
