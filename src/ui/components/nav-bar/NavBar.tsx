@@ -50,7 +50,7 @@ export const NavBar = () => {
             {branchOffice?.name}
           </span>
         </div>
-        <div>
+        <div className='mx-2'>
           <Link
             href='/sale/new'
             className='text-sm flex flex-col items-center justify-center rounded-xl p-1 
@@ -63,7 +63,7 @@ export const NavBar = () => {
               src={Sale}
               width={30}
               height={30} />
-            <span>Nueva Venta</span>
+            <span className='max-sm:hidden max-md:hidden'>Nueva Venta</span>
           </Link>
         </div>
       </div>
