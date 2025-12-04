@@ -1,6 +1,6 @@
 import { ConfigurationOptions } from "@/features/configurations/presentation/ui/ConfigurationOptions";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 import { FcSettings } from "react-icons/fc";
 

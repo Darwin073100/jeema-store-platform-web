@@ -1,6 +1,6 @@
 import { findAllCashRegisterByBranchOfficeIdAction } from "@/features/cash/actions/find-all-cash-register-by-branch-office-id.action";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import CashRegisterItem from "@/features/cash/presentation/ui/CashRegisterItem";
 import { CashOptios } from "@/features/cash/presentation/ui/CashOptios";
 

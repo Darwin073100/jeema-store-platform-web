@@ -1,10 +1,10 @@
 'use client'
 import React from 'react'
 import clsx from 'clsx';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
-import { TextInput } from '@/ui/components/inputs';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
+import { TextInput } from '@/shared/ui/components/inputs';
 import { FcIdea } from 'react-icons/fc';
 import { useCustomerSale } from '../hooks/useCustomerSale';
 

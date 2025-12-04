@@ -2,7 +2,7 @@
 import { ProductEntity } from '../../domain/entities/product.entity';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import Barcode from 'react-barcode';
-import { InfoCard } from '@/ui/components/cards/InfoCard';
+import { InfoCard } from '@/shared/ui/components/cards/InfoCard';
 import {
     HiPlus,
     HiPencil,
@@ -23,13 +23,13 @@ import {
 } from 'react-icons/tb';
 import { UpdateProductModal } from './UpdateProductModal';
 import { useUpdateProductModal } from '../../hooks';
-import { BreadcrumbItem, TemplateHeader } from '@/ui/components/templates/TemplateHeader';
+import { BreadcrumbItem, TemplateHeader } from '@/shared/ui/components/templates/TemplateHeader';
 import { UpdateLotModal } from '@/features/lot/ui/UpdateLotModal';
 import { RegisterLotModal } from '@/features/lot/ui/RegisterLotModal';
 import { useUpdateLotModal } from '@/features/lot/hooks/useUpdateLotModal';
 import { useRegisterLotModal } from '@/features/lot/hooks/useRegisterLotModal';
 import { useRegisterLotUnitPurchaseModal } from '@/features/lot/hooks/useRegisterLotUnitPurchaseModal';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { RegisterLotUnitPurchaseModal } from '@/features/lot/ui/RegisterLotUnitPurchaseModal';
 import { useUpdateLotUnitPurchaseModal } from '@/features/lot/hooks/useUpdateLotUnitPurchaseModal';
 import { LotUnitPurchaseEntity } from '@/features/lot/domain/entities/lot-unit-purchase.entity';
@@ -56,7 +56,7 @@ import { ImPrinter } from 'react-icons/im';
 import { useEffect } from 'react';
 import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';
 import { useInventoryItemUIStore } from '@/features/inventory/infraestructura/stores/inventory-item-ui.store';
-import { FloatMessage } from '@/ui/components/messages';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import { LocalTransferInventoryItemModal } from '@/features/inventory/ui/LocalTransferInventoryModal';
 import { useLocalTransferInventoryItemModal } from '@/features/inventory/hooks/useLocalTransferInventoryItemModal';
 import { useProductUIStore } from '../../infraestructure/stores/product-ui.store';

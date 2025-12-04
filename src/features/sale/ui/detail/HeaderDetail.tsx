@@ -1,17 +1,17 @@
 'use client'
 import React from 'react'
 import { SaleStatusEnum } from '../../domain/enums/sale-status.enum';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { SaleEntity } from '../../domain/entities/sale-entity';
-import { Badge } from '@/ui/components/badges/Badge';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 import { usePayment } from '../../hooks/details/usePayment';
-import { FloatMessage } from '@/ui/components/messages';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import { useSaleUIStore } from '../../infraestructure/stores/sale.ui.store';
 import { SalePaymentDetailModal } from './SalePaymentModal';
 import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/payment-method-entity';
 import { IoBagHandle, IoPrintSharp, IoWalletSharp } from 'react-icons/io5';
 import { useSaleContinue } from '../../hooks/details/useSaleContinue';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { SaleTicketModal } from '../SaleTicketModal';
 
 interface Props {

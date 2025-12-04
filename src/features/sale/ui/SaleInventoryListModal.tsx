@@ -1,14 +1,14 @@
 'use client'
 import clsx from 'clsx';
 import React from 'react'
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
-import { TextInput } from '@/ui/components/inputs';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
+import { TextInput } from '@/shared/ui/components/inputs';
 import { FcIdea } from 'react-icons/fc';
 import { useInventoryListModal } from '../hooks/useInventoryListModal';
 import { IoMdAdd } from 'react-icons/io';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 
 const SaleInventoryListModal = () => {
   const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,

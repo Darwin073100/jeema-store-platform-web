@@ -1,14 +1,14 @@
 'use client'
 import React, { useState } from 'react'
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { SaleEntity } from '../domain/entities/sale-entity';
-import { Badge } from '@/ui/components/badges/Badge';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 import { useSaleListBranch } from '../hooks/useSaleList';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { useRouter } from 'next/navigation';
 import { FiExternalLink } from 'react-icons/fi';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 
 interface Props {
     sales: SaleEntity[]

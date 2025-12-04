@@ -2,14 +2,14 @@
 import Image from 'next/image';
 import logo from "src/ui/assets/images/logologo.png";
 import React from 'react'
-import { LabelInput } from '@/ui/components/labels';
-import { TextInput } from '@/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
+import { TextInput } from '@/shared/ui/components/inputs';
 import Link from 'next/link';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { IoMdArrowRoundForward } from 'react-icons/io';
 import { useLogin } from '../hooks/useLogin';
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { FloatMessage } from '@/ui/components/messages';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { FloatMessage } from '@/shared/ui/components/messages';
 
 const Login = () => {
     const { handleSubmit, errors, floatMessageState, 

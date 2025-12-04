@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
-import { Button } from '@/ui/components/buttons';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
+import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 import { useProductBarCodesModal } from '../../hooks/useProductBarCodesModal';
 import { useProductUIStore } from '../../infraestructure/stores/product-ui.store';

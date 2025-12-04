@@ -1,11 +1,11 @@
 'use client'
 import React from 'react';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
-import { TextInput } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
-import { Button } from '@/ui/components/buttons';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
+import { TextInput } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
+import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { LiaCashRegisterSolid } from 'react-icons/lia';
 import { useCashUIStore } from '@/features/cash/infraestructure/stores/cash-ui.store';
 import { useCashStore } from '@/features/cash/infraestructure/stores/cash.store';

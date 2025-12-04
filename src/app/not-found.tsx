@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import NotFoundImage from '@/ui/assets/images/404.svg';
+import NotFoundImage from '@/shared/ui/assets/images/404.svg';
 import Image from 'next/image';
-import { ButtonOutLine } from '@/ui/components/buttons/ButtonOutLine';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import { FcLink } from 'react-icons/fc';
  
 export default function NotFound() {

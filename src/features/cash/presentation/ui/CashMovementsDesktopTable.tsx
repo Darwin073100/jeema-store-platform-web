@@ -1,13 +1,13 @@
 'use client';
-import { Button } from '@/ui/components/buttons'
-import { BasicTable, BCol, BRow } from '@/ui/components/tables/BasicTable'
+import { Button } from '@/shared/ui/components/buttons'
+import { BasicTable, BCol, BRow } from '@/shared/ui/components/tables/BasicTable'
 import React from 'react'
 import { AiFillProfile } from 'react-icons/ai'
 import { useRouter } from 'next/navigation';
 import { CashSessionEntity } from '../../domain/entities/cash-session.entity';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
-import { Badge } from '@/ui/components/badges/Badge';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 interface Props {
     cashSessions: CashSessionEntity[]
 }

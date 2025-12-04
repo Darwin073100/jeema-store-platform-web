@@ -1,5 +1,5 @@
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
 import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";

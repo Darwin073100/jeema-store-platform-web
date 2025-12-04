@@ -2,7 +2,7 @@
 import { CashSessionEntity } from '@/features/cash/domain/entities/cash-session.entity';
 import { useCashStore } from '@/features/cash/infraestructure/stores/cash.store';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
-import { Badge } from '@/ui/components/badges/Badge';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 import clsx from 'clsx';
 import React, { useEffect } from 'react'
 import { FcBearish, FcBullish, FcComboChart, FcDebt } from 'react-icons/fc';

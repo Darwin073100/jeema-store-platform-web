@@ -1,6 +1,6 @@
 import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
-import { SelectMenu, SelectMenuOption, TextInput } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
+import { SelectMenu, SelectMenuOption, TextInput } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
 import React from 'react'
 import { useEmployeeForm } from '../../infraestructure/hooks/useEmployeeForm';
 

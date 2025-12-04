@@ -1,11 +1,11 @@
 'use client'
-import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
 import React from 'react'
 import { AiFillDelete } from 'react-icons/ai';
 import { MdEditSquare } from 'react-icons/md';
 import { useCategoryStore } from '../infraestructure/category.store';
 import { useDeleteCategory } from '../hooks/useDeleteCategory';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 
 const CategoryTable = () => {
     const { categories, setCategory } = useCategoryStore();

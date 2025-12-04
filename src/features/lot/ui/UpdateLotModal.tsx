@@ -1,10 +1,10 @@
-import { Button } from '@/ui/components/buttons';
-import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
-import { TextInput, SelectMenu } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { Modal } from '@/ui/components/modals';
-import { FloatMessage } from '@/ui/components/messages';
+import { Button } from '@/shared/ui/components/buttons';
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
+import { TextInput, SelectMenu } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { Modal } from '@/shared/ui/components/modals';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import React from 'react'
 import { HiPencil, HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';

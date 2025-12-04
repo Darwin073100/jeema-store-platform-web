@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@/ui/components/buttons'
+import { Button } from '@/shared/ui/components/buttons'
 import { HiPlus } from 'react-icons/hi'
 import { useRegisterLotModal } from '../hooks/useRegisterLotModal'
 import { RegisterLotModal } from './RegisterLotModal'

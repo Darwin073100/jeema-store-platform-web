@@ -1,8 +1,8 @@
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { Metadata } from "next";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
 import { ProductDetailsView } from "@/features/product/ui/product-detail/ProductDetailsView";
-import TemplateNotFoundDinamic from "@/ui/components/templates/TemplateNotFoundDinamic";
+import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request

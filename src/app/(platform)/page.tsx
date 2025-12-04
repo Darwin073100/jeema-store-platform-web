@@ -1,13 +1,13 @@
 "use client";
 import { HiPhoto } from "react-icons/hi2";
-import { CardLink } from "@/ui/components/cards/CardLink";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
+import { CardLink } from "@/shared/ui/components/cards/CardLink";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import Sale from '../../ui/assets/images/sale.svg';
 import Inventory from '../../ui/assets/images/inventary.svg';
 import Contability from '../../ui/assets/images/payCash.svg';
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { FaHistory } from "react-icons/fa";
-import { PCol, PrimaryTable, PRow } from "@/ui/components/tables/PrimaryTable";
+import { PCol, PrimaryTable, PRow } from "@/shared/ui/components/tables/PrimaryTable";
 import { FcNegativeDynamic, FcStatistics } from "react-icons/fc";
 
 const homeCards = [

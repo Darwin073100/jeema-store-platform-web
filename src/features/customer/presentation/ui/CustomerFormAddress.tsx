@@ -1,5 +1,5 @@
-import { TextInput } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
+import { TextInput } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
 import React from 'react'
 
 interface Props {

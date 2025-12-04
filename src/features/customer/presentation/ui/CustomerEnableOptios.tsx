@@ -1,5 +1,5 @@
 'use client'
-import { LabelInput } from '@/ui/components/labels'
+import { LabelInput } from '@/shared/ui/components/labels'
 import React from 'react'
 import { FcCableRelease } from 'react-icons/fc'
 

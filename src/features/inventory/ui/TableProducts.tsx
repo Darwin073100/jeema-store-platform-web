@@ -3,11 +3,11 @@ import { useMemo, useState } from "react";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductStore } from "@/features/product/infraestructure/stores/product.store";
 import { useRouter } from "next/navigation";
-import { BasicTable, BCol, BRow, BTableEmpty } from "@/ui/components/tables/BasicTable";
-import { Button } from "@/ui/components/buttons";
+import { BasicTable, BCol, BRow, BTableEmpty } from "@/shared/ui/components/tables/BasicTable";
+import { Button } from "@/shared/ui/components/buttons";
 import { FiExternalLink } from "react-icons/fi";
 import { InventoryItemEntity } from "../domain/entities/inventory-item.entity";
-import { Spinner } from "@/ui/components/loadings/Spinner";
+import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 
 interface TableProductProps {
     productList: ProductEntity[];

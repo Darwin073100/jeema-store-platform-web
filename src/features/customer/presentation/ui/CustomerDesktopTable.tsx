@@ -1,6 +1,6 @@
 'use client';
-import { Button } from '@/ui/components/buttons'
-import { BasicTable, BCol, BRow } from '@/ui/components/tables/BasicTable'
+import { Button } from '@/shared/ui/components/buttons'
+import { BasicTable, BCol, BRow } from '@/shared/ui/components/tables/BasicTable'
 import React from 'react'
 import { AiFillProfile } from 'react-icons/ai'
 import { useRouter } from 'next/navigation';

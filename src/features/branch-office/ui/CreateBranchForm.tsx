@@ -3,11 +3,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { LabelInput } from '../../../ui/components/labels';
-import { TextInput } from '../../../ui/components/inputs';
-import { Button } from '../../../ui/components/buttons';
-import { FloatMessage } from '@/ui/components/messages';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { LabelInput } from '../../../shared/ui/components/labels';
+import { TextInput } from '../../../shared/ui/components/inputs';
+import { Button } from '../../../shared/ui/components/buttons';
+import { FloatMessage } from '@/shared/ui/components/messages';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { createNewBranchOfficeAction } from '../actions/create.new.branch-office.action';
 import { useRouter } from 'next/navigation';
@@ -15,7 +15,7 @@ import { HiMiniArrowLongRight } from 'react-icons/hi2';
 import { CreateBranchOfficeDTO } from '../application/dtos/create-branch-office.dto';
 import { useEstablishmentStore } from '@/features/establishment/infraestructure/establishment.store';
 import { useBranchOfficeStore } from '../infraestructure/branch-office.store';
-import { TextArea } from '@/ui/components/inputs/TextInput copy';
+import { TextArea } from '@/shared/ui/components/inputs/TextInput copy';
 
 const schema = yup.object().shape({
     name: yup.string().trim()

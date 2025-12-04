@@ -1,10 +1,10 @@
 import React from 'react'
 import clsx from 'clsx';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { IoClose, IoSave } from 'react-icons/io5';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { TextInput } from '@/ui/components/inputs';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { TextInput } from '@/shared/ui/components/inputs';
 import { useUpdateDetailModal } from '../hooks/useUpdateDetailModal';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 import { FiGitCommit, FiGitPullRequest } from 'react-icons/fi';

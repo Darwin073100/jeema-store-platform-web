@@ -1,9 +1,9 @@
 import React from 'react'
-import { Button } from '@/ui/components/buttons';
-import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { Modal } from '@/ui/components/modals';
-import { FloatMessage } from '@/ui/components/messages';
+import { Button } from '@/shared/ui/components/buttons';
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { Modal } from '@/shared/ui/components/modals';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import { IoClose } from 'react-icons/io5';
 import { HiTrash } from 'react-icons/hi';
 import { useDeleteLotUnitPurchaseModal } from '../hooks/useDeleteLotUnitPurchaseModal';

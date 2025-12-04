@@ -1,8 +1,8 @@
 'use client'
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { Button } from "@/ui/components/buttons";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { Button } from "@/shared/ui/components/buttons";
 import { useState } from "react";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 
 export default function () {
     const breadcrumbItems: BreadcrumbItem[] = [

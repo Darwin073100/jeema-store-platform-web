@@ -1,7 +1,7 @@
 import { TransactionEntity } from '@/features/transaction/domain/entities/transaction.entity';
 import { formatTimeByDate } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
-import { Badge } from '@/ui/components/badges/Badge';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 import clsx from 'clsx';
 import React from 'react'
 interface Props {

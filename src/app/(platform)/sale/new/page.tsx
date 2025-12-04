@@ -7,8 +7,8 @@ import { SaleProductList } from "@/features/sale/ui/SaleProductList";
 import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
 import { SaleSummary } from "@/features/sale/ui/SaleSummary";
 import { SaleSummaryMovile } from "@/features/sale/ui/SaleSummaryMovile";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute"
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader"
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 
 export const revalidate = 0; // Revalidar en cada request
 export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico

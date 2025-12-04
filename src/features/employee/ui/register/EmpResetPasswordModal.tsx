@@ -1,14 +1,14 @@
 'use client'
 import React, { useEffect } from 'react';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
-import { SelectMenu, TextInput } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
+import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
 import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
 import { useEmpRegisterUserForm } from '../../infraestructure/hooks/useEmpRegisterUserForm';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { HiUserAdd } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useResetUser } from '../../infraestructure/hooks/useResetUser';
 import { MdLockReset } from 'react-icons/md';
 

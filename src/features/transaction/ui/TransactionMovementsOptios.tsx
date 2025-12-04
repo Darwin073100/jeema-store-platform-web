@@ -1,7 +1,7 @@
 'use client'
-import { Badge } from '@/ui/components/badges/Badge';
-import { Button } from '@/ui/components/buttons';
-import { TextInput } from '@/ui/components/inputs';
+import { Badge } from '@/shared/ui/components/badges/Badge';
+import { Button } from '@/shared/ui/components/buttons';
+import { TextInput } from '@/shared/ui/components/inputs';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";

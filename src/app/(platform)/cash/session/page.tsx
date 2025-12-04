@@ -3,10 +3,10 @@ import { CashMovementsDesktopTable } from "@/features/cash/presentation/ui/CashM
 import { CashMovementsOptios } from "@/features/cash/presentation/ui/CashMovementsOptios";
 import { findOneCustomerByEstablishmentAction } from "@/features/customer/actions/find-one-customer-by-establishment.action";
 import { CustomerSaleList } from "@/features/customer/presentation/ui/details/CustomerSaleList";
-import { Button } from "@/ui/components/buttons";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
-import TemplateNotFoundDinamic from "@/ui/components/templates/TemplateNotFoundDinamic";
+import { Button } from "@/shared/ui/components/buttons";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
+import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 import { Metadata } from "next";
 import Link from "next/link";
 import { FcComboChart, FcLink, FcTimeline } from "react-icons/fc";

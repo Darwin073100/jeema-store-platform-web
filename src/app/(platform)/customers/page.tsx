@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { ProtectedRoute } from '@/ui/components/routes/ProtectedRoute';
-import { BreadcrumbItem, TemplateHeader } from '@/ui/components/templates/TemplateHeader'
+import { ProtectedRoute } from '@/shared/ui/components/routes/ProtectedRoute';
+import { BreadcrumbItem, TemplateHeader } from '@/shared/ui/components/templates/TemplateHeader'
 import { findAllCustomerByEstablishmentAction } from '@/features/customer/actions/find-all-customer-by-establishment.action'
 import CustomerDesktopTable from '@/features/customer/presentation/ui/CustomerDesktopTable';
 import { CustomerOptios } from '@/features/customer/presentation/ui/CustomerOptios';

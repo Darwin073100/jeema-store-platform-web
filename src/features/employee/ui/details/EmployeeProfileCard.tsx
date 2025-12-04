@@ -1,11 +1,11 @@
 'use client'
-import { Badge } from '@/ui/components/badges/Badge';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 import React, { useEffect } from 'react'
 import { FcBusinessman, FcBusinesswoman, FcDecision } from 'react-icons/fc';
 import { GenderEnum } from '../../domain/enums/gender.enum';
 import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter';
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { HiPencil } from 'react-icons/hi';
 import { EmployeeUpdateModal } from '../register/EmployeeUpdateModal';
 import { useEmployeeUIStore } from '../../infraestructure/stores/employee-ui.store';

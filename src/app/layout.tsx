@@ -1,4 +1,4 @@
-import "../ui/styles/globals.css";
+import "../shared/ui/styles/globals.css";
 import { AuthProvider } from "@/shared/providers/auth-provider";
 
 export default async function RootLayout({

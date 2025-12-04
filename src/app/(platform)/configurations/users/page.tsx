@@ -1,10 +1,10 @@
 import { findAllByEstablishmentIdAction } from "@/features/auth/actions/find-all-by-establishment-id.action";
 import { UserTableDesktop } from "@/features/auth/ui/UserTableDesktop";
-import { Badge } from "@/ui/components/badges/Badge";
-import { Button } from "@/ui/components/buttons";
-import { TextInput } from "@/ui/components/inputs";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { Badge } from "@/shared/ui/components/badges/Badge";
+import { Button } from "@/shared/ui/components/buttons";
+import { TextInput } from "@/shared/ui/components/inputs";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 import { IoPersonAdd } from "react-icons/io5";
 

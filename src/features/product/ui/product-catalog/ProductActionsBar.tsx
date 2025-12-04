@@ -2,9 +2,9 @@
 import { useBrandStore } from '@/features/brand/infraestructure/brand.store';
 import { useCategoryStore } from '@/features/category/infraestructure/category.store';
 import { useSeasonStore } from '@/features/season/infraestructure/season.store';
-import { Badge } from '@/ui/components/badges/Badge';
-import { Button } from '@/ui/components/buttons';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Badge } from '@/shared/ui/components/badges/Badge';
+import { Button } from '@/shared/ui/components/buttons';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { IoMdAdd } from 'react-icons/io';

@@ -1,5 +1,5 @@
 'use client'
-import { Button } from '@/ui/components/buttons'
+import { Button } from '@/shared/ui/components/buttons'
 import React, { useState } from 'react'
 import { FaCashRegister, FaCircle } from 'react-icons/fa'
 import { MdClosedCaption, MdClosedCaptionDisabled } from 'react-icons/md'
@@ -10,7 +10,7 @@ import { BiPencil } from 'react-icons/bi'
 import { OpenCashSessionModal } from './OpenCashSessionModal'
 import { useOpenCashSession } from '../hooks/useOpenCashSession'
 import { useRouter } from 'next/navigation'
-import { Spinner } from '@/ui/components/loadings/Spinner'
+import { Spinner } from '@/shared/ui/components/loadings/Spinner'
 
 interface Props {
     cashRegister: CashRegisterEntity

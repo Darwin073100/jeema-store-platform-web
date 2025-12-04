@@ -1,16 +1,16 @@
 'use client'
 import React from 'react'
 import clsx from 'clsx';
-import { SelectMenu, SelectMenuOption, TextInput } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
+import { SelectMenu, SelectMenuOption, TextInput } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
 import { EmployeeFormAddress } from './EmployeeFormAddress';
 import { GenderEnum } from '../../domain/enums/gender.enum';
 import { useEmployeeForm } from '../../infraestructure/hooks/useEmployeeForm';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { EmployeeEnableOptios } from './EmployeeEnableOptios';
 import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
-import { FloatMessage } from '@/ui/components/messages';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { FloatMessage } from '@/shared/ui/components/messages';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { IoSave } from 'react-icons/io5';
 
 interface Props {

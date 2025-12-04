@@ -1,10 +1,10 @@
 'use client'
 import React, { useState } from 'react'
 import { SaleEntity } from '../../domain/entities/sale-entity';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { useRouter } from 'next/navigation';
 import { IoPersonSharp } from 'react-icons/io5';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { FcButtingIn } from 'react-icons/fc';
 interface Props {
     data: SaleEntity

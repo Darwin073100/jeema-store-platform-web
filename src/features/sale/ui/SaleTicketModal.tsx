@@ -1,9 +1,9 @@
 import React from 'react'
 import useTicketSale from '../hooks/useTicketSale';
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { useSaleUIStore } from '../infraestructure/stores/sale.ui.store';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 interface Props {
     saleId: bigint,

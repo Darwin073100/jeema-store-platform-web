@@ -1,13 +1,13 @@
 "use client"
-import { Button } from '@/ui/components/buttons';
-import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
-import { TextInput } from '@/ui/components/inputs';
-import { Modal } from '@/ui/components/modals/Modal';
+import { Button } from '@/shared/ui/components/buttons';
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
+import { TextInput } from '@/shared/ui/components/inputs';
+import { Modal } from '@/shared/ui/components/modals/Modal';
 import React from 'react'
 import { IoClose } from 'react-icons/io5';
-import { FloatMessage } from '@/ui/components/messages';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { CategoryEntity } from '../domain/entities/category.entity';
 import { MdCleaningServices } from 'react-icons/md';
 import { useCategoryModal } from '../hooks/useCategoryModal';

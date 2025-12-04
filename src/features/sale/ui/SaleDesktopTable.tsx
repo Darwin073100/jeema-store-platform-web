@@ -3,11 +3,11 @@ import React from 'react'
 import { SaleEntity } from '../domain/entities/sale-entity'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
-import { Badge } from '@/ui/components/badges/Badge';
-import { Button } from '@/ui/components/buttons';
+import { Badge } from '@/shared/ui/components/badges/Badge';
+import { Button } from '@/shared/ui/components/buttons';
 import { FiExternalLink } from 'react-icons/fi';
 import { useSaleListBranch } from '../hooks/useSaleList';
-import { BasicTable, BCol, BRow, BTableEmpty } from '@/ui/components/tables/BasicTable';
+import { BasicTable, BCol, BRow, BTableEmpty } from '@/shared/ui/components/tables/BasicTable';
 import { useRouter } from 'next/navigation';
 
 interface Props {

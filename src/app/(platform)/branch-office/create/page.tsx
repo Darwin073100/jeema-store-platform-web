@@ -1,7 +1,7 @@
 import Logo from "@/ui/assets/images/logologo.png"
 import Image from "next/image";
 import { CreateBranchForm } from "@/features/branch-office/ui/CreateBranchForm";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 
 export default function (){
     return (

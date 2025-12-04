@@ -1,14 +1,14 @@
 'use client'
 import React from 'react'
-import { Badge } from '@/ui/components/badges/Badge';
-import { Button } from '@/ui/components/buttons';
-import { ButtonOutLine } from '@/ui/components/buttons/ButtonOutLine';
+import { Badge } from '@/shared/ui/components/badges/Badge';
+import { Button } from '@/shared/ui/components/buttons';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import { LiaCashRegisterSolid } from 'react-icons/lia';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { CashRegisterEntity } from '../../domain/entities/cash-register.entity';
 import { useCashUIStore } from '../../infraestructure/stores/cash-ui.store';
 import { RegisterCashRegisterModal } from './RegisterCashRegisterModal';
-import { FloatMessage } from '@/ui/components/messages';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import { GrTransaction } from "react-icons/gr";
 import { useRouter } from 'next/navigation';
 interface Props {

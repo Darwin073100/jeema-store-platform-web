@@ -1,11 +1,11 @@
 'use client'
 import React from 'react'
 import clsx from 'clsx';
-import { SelectMenu, TextInput } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
-import { Button } from '@/ui/components/buttons';
-import { FloatMessage } from '@/ui/components/messages';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
+import { Button } from '@/shared/ui/components/buttons';
+import { FloatMessage } from '@/shared/ui/components/messages';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { IoSave } from 'react-icons/io5';
 import { useCustomerForm } from '../hooks/useCustomerForm';
 import { CustomerFormAddress } from './CustomerFormAddress';

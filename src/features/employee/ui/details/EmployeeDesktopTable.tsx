@@ -1,12 +1,12 @@
 'use client'
 import React, { useState } from 'react'
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
-import { BasicTable, BCol, BRow } from '@/ui/components/tables/BasicTable';
-import { Badge } from '@/ui/components/badges/Badge';
-import { Button } from '@/ui/components/buttons';
+import { BasicTable, BCol, BRow } from '@/shared/ui/components/tables/BasicTable';
+import { Badge } from '@/shared/ui/components/badges/Badge';
+import { Button } from '@/shared/ui/components/buttons';
 import { AiFillProfile } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 interface Props {
     employees: EmployeeEntity[]
 }

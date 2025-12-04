@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import "../../ui/styles/globals.css";
-import { NavBar } from "@/ui/components/nav-bar/NavBar";
-import { SideBar } from "@/ui/components/side-bar/SideBar";
-import { SideBarMovile } from "@/ui/components/side-bar/SideBarMovile";
+import "../../shared/ui/styles/globals.css";
+import { NavBar } from "@/shared/ui/components/nav-bar/NavBar";
+import { SideBar } from "@/shared/ui/components/side-bar/SideBar";
+import { SideBarMovile } from "@/shared/ui/components/side-bar/SideBarMovile";
 
 export const metadata: Metadata = {
   title: "EdYOf Platform",

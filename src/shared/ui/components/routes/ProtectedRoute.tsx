@@ -3,7 +3,7 @@
 import { useAuth } from "@/shared/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
-import { Spinner } from "@/ui/components/loadings/Spinner";
+import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 
 interface ProtectedRouteProps {
   children: ReactNode;

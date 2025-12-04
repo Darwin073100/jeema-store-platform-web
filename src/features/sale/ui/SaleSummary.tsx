@@ -1,5 +1,5 @@
 'use client';
-import { Button } from "@/ui/components/buttons";
+import { Button } from "@/shared/ui/components/buttons";
 import { IoIosCash, IoIosPerson } from "react-icons/io";
 import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { useSaleSummary } from "../hooks/useSaleSummary";

@@ -1,15 +1,15 @@
 "use client"
 import React from 'react'
-import { Button } from '@/ui/components/buttons';
-import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
-import { SelectMenu, TextInput } from '@/ui/components/inputs';
-import { Modal } from '@/ui/components/modals/Modal';
+import { Button } from '@/shared/ui/components/buttons';
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
+import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
+import { Modal } from '@/shared/ui/components/modals/Modal';
 import { IoClose } from 'react-icons/io5';
 import { HiPencil, HiSave } from 'react-icons/hi';
-import { Spinner } from '@/ui/components/loadings/Spinner';
-import { LabelInput } from '@/ui/components/labels';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { LabelInput } from '@/shared/ui/components/labels';
 import { useUpdateProductModal } from '../../hooks';
-import { FloatMessage } from '@/ui/components/messages/FloatMessage';
+import { FloatMessage } from '@/shared/ui/components/messages/FloatMessage';
 import { ForSaleEnum } from '../../domain/enums/for-sale.enum';
 import { forSaleObject } from '../../domain/enums/for-sale.object';
 import { useProductDescriptionInput } from '../../hooks/useProductDescriptionInput';

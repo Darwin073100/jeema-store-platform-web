@@ -1,8 +1,8 @@
 import { findAllEmployeesByEstablishmentIdAction } from "@/features/employee/actions/find-all-employees-by-establishment-id.action";
 import { EmployeeDesktopTable } from "@/features/employee/ui/details/EmployeeDesktopTable";
 import { EmployeeOptios } from "@/features/employee/ui/details/EmployeeOptios";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

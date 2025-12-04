@@ -5,8 +5,8 @@ import { ProductActionsBar } from "@/features/product/ui/product-catalog/Product
 import { ProductSearch } from "@/features/product/ui/product-catalog/ProductSearch";
 import { BrandModal } from "@/features/brand/ui/BrandModal";
 import { SeasonModal } from "@/features/season/ui/SeasonModal";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
 import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";

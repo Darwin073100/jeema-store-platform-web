@@ -1,12 +1,12 @@
 'use client'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
-import { Badge } from '@/ui/components/badges/Badge';
-import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
+import { Badge } from '@/shared/ui/components/badges/Badge';
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
 import React from 'react'
 import { BiTrash } from 'react-icons/bi';
 import { SaleForEnum } from '../domain/enums/sale-for.enum';
 import { HiPencilSquare } from 'react-icons/hi2';
-import { Button } from '@/ui/components/buttons';
+import { Button } from '@/shared/ui/components/buttons';
 import { SaleDetailEntity } from '../domain/entities/sale-detail-entity';
 import { useDeleteDetail } from '../hooks/useDeleteDetail';
 import { useUpdateDetailModal } from '../hooks/useUpdateDetailModal';

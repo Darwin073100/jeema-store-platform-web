@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { RoleEntity } from "@/features/auth/domain/entities/role.entity";
 import { RegisterUserDTO } from "@/features/auth/application/dtos/register-user.dto";
 import { useEmployeeUIStore } from "../stores/employee-ui.store";
-import { SelectMenuOption } from "@/ui/components/inputs";
+import { SelectMenuOption } from "@/shared/ui/components/inputs";
 import { registerUserAction } from "@/features/auth/actions/register-user.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 

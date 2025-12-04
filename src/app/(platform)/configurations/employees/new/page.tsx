@@ -1,8 +1,8 @@
 import { findAllRoleAction } from "@/features/auth/actions/find-all-role.action";
 import { findAllEmployeeRolesAction } from "@/features/employee/actions/find-all-employee-roles.action";
 import { EmployeeForms } from "@/features/employee/ui/register/EmployeeForms";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

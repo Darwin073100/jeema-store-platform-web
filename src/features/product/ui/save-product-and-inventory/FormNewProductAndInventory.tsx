@@ -5,18 +5,18 @@ import { CategoryEntity } from '@/features/category/domain/entities/category.ent
 import { useCategoryStore } from '@/features/category/infraestructure/category.store';
 import { SeasonEntity } from '@/features/season/domain/entities/season.entity';
 import { useSeasonStore } from '@/features/season/infraestructure/season.store';
-import { Button } from '@/ui/components/buttons';
-import { SelectMenu, TextInput } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
+import { Button } from '@/shared/ui/components/buttons';
+import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
 import React, { useEffect, useState } from 'react'
 import { TbExchange } from 'react-icons/tb';
 import { useSaveProduct } from '../../hooks/useSaveProduct';
-import { FloatMessage } from '@/ui/components/messages';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { ForSaleEnum } from '../../domain/enums/for-sale.enum';
-import { RoundedButton } from '@/ui/components/buttons/RoundedButton';
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
 import { forSaleObject } from '../../domain/enums/for-sale.object';
 
 interface Props {

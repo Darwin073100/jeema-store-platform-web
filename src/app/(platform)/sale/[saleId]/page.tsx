@@ -1,10 +1,10 @@
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { Metadata } from "next";
-import { Button } from "@/ui/components/buttons";
+import { Button } from "@/shared/ui/components/buttons";
 import Link from "next/link";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
 import { ProductDetailsView } from "@/features/product/ui/product-detail/ProductDetailsView";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { FcPaid, FcSearch, FcSurvey } from "react-icons/fc";
 import { findSaleInfoByIdAction } from "@/features/sale/actions/find-sale-info-by-id.action";
 import { SaleStatusEnum } from "@/features/sale/domain/enums/sale-status.enum";

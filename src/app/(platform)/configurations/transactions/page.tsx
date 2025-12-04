@@ -5,8 +5,8 @@ import { findAllManyFilterTransactionsAction } from "@/features/transaction/acti
 import { ManyFilterTransactionsDTO } from "@/features/transaction/application/dtos/many-filter-transactions.dto";
 import { TransactionMovementsDesktopTable } from "@/features/transaction/ui/TransactionMovementsDesktopTable";
 import { TransactionMovementsOptios } from "@/features/transaction/ui/TransactionMovementsOptios";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos

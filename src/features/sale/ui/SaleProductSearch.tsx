@@ -1,10 +1,10 @@
 'use client'
 import React, { useEffect } from "react";
-import { Button } from "@/ui/components/buttons";
-import { TextInput } from "@/ui/components/inputs";
+import { Button } from "@/shared/ui/components/buttons";
+import { TextInput } from "@/shared/ui/components/inputs";
 import { IoIosBarcode, IoMdCheckmark } from "react-icons/io";
 import { useSale } from "../hooks/useSale";
-import { Spinner } from "@/ui/components/loadings/Spinner";
+import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 import { CashSessionEntity } from "@/features/cash/domain/entities/cash-session.entity";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 interface Props {

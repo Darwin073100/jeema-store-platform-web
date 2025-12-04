@@ -1,8 +1,8 @@
 import { findAllSaleByBranchOfficeAction } from "@/features/sale/actions/find-all-sale-by-branch-office.action";
 import { SaleCardList } from "@/features/sale/ui/SaleCardList";
 import { SaleDesktopTable } from "@/features/sale/ui/SaleDesktopTable";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 
 export const metadata = {
     title: 'Ventas'

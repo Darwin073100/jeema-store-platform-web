@@ -1,16 +1,16 @@
 import React from 'react'
-import { Button } from '@/ui/components/buttons';
-import { TextInput, SelectMenu } from '@/ui/components/inputs';
-import { LabelInput } from '@/ui/components/labels';
-import { Spinner } from '@/ui/components/loadings/Spinner';
+import { Button } from '@/shared/ui/components/buttons';
+import { TextInput, SelectMenu } from '@/shared/ui/components/inputs';
+import { LabelInput } from '@/shared/ui/components/labels';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { HiPencil } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { TemplateModal } from '@/ui/components/modals/TemplateModal';
+import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { useLocalTransferInventoryItemModal } from '../hooks/useLocalTransferInventoryItemModal';
 import { useInventoryItemUIStore } from '../infraestructura/stores/inventory-item-ui.store';
 import { FcDeployment, FcShipped, FcShop, FcWorkflow } from 'react-icons/fc';
 import { TbTransfer } from 'react-icons/tb';
-import { TextArea } from '@/ui/components/inputs/TextInput copy';
+import { TextArea } from '@/shared/ui/components/inputs/TextInput copy';
 
 const LocalTransferInventoryItemModal = () => {
     const {

@@ -5,9 +5,9 @@ import { EmployeeLaboralInformation } from "@/features/employee/ui/details/Emplo
 import { EmployeeProfileCard } from "@/features/employee/ui/details/EmployeeProfileCard";
 import { EmployeeUserInformation } from "@/features/employee/ui/details/EmployeeUserInformation";
 import { formatDateWithOutTime } from "@/shared/lib/utils/date-formatter";
-import { Button } from "@/ui/components/buttons";
-import { ProtectedRoute } from "@/ui/components/routes/ProtectedRoute";
-import { BreadcrumbItem, TemplateHeader } from "@/ui/components/templates/TemplateHeader";
+import { Button } from "@/shared/ui/components/buttons";
+import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
 import Link from "next/link";
 

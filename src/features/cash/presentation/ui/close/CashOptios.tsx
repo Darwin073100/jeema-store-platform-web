@@ -1,11 +1,11 @@
 'use client'
-import { Badge } from '@/ui/components/badges/Badge';
-import { Button } from '@/ui/components/buttons';
-import { ButtonOutLine } from '@/ui/components/buttons/ButtonOutLine';
+import { Badge } from '@/shared/ui/components/badges/Badge';
+import { Button } from '@/shared/ui/components/buttons';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import React from 'react'
 import { LiaCashRegisterSolid } from 'react-icons/lia';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
-import { FloatMessage } from '@/ui/components/messages';
+import { FloatMessage } from '@/shared/ui/components/messages';
 import { CashSessionEntity } from '@/features/cash/domain/entities/cash-session.entity';
 import { useCashUIStore } from '@/features/cash/infraestructure/stores/cash-ui.store';
 import { CashSessionCloseModal } from './CashSessionCloseModal';

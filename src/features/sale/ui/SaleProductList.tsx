@@ -1,5 +1,5 @@
 'use client';
-import { Button } from "@/ui/components/buttons";
+import { Button } from "@/shared/ui/components/buttons";
 import { IoIosSearch, IoIosTrash } from "react-icons/io";
 import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { SaleDetailItem } from "./SaleDetailItem";
