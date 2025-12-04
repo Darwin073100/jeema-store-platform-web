@@ -20,7 +20,7 @@ const TemplateNotFoundDinamic = ({
      <ProtectedRoute>
         <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
             <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
-                <div className="text-6xl mb-4"><FcSearch /></div>
+                <div className="text-8xl mb-4 flex justify-center"><FcSearch/></div>
                 <h2 className="text-xl font-bold mb-2">{title}</h2>
                 <p className="text-red-700">{description}</p>
                 <div className="mt-6">

@@ -2,12 +2,12 @@
 import { ProductEntity } from "../domain/entities/product.entity";
 import { Result } from "@/shared/features/result";
 
-export const viewProductByIdAction = async (productId: string): Promise<Result<ProductEntity>> => {
+export const viewProductByIdAction = async (productId: bigint): Promise<Result<ProductEntity>> => {
     try {
         // Aquí iría la implementación real con tu servicio de productos
         // Por ahora voy a usar una implementación temporal que busque en tu API
         
-        const response = await fetch(`${process.env.URL_EDYOF_PLATFORM_API}${process.env.PREFIX_EDYOF_PLATFORM_API}/products/${productId}`, {
+        const response = await fetch(`${process.env.URL_EDYOF_PLATFORM_API}${process.env.PREFIX_EDYOF_PLATFORM_API}/products/${productId.toString()}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
