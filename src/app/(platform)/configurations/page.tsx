@@ -2,7 +2,6 @@ import { ConfigurationOptions } from "@/features/configurations/presentation/ui/
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
-import { FcSettings } from "react-icons/fc";
 
 export const metadata: Metadata = {
     title: 'Configurations'

@@ -1,10 +1,9 @@
 "use client";
-import { HiPhoto } from "react-icons/hi2";
 import { CardLink } from "@/shared/ui/components/cards/CardLink";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
-import Sale from '../../ui/assets/images/sale.svg';
-import Inventory from '../../ui/assets/images/inventary.svg';
-import Contability from '../../ui/assets/images/payCash.svg';
+import Sale from '../../shared/ui/assets/images/sale.svg';
+import Inventory from '../../shared/ui/assets/images/inventary.svg';
+import Contability from '../../shared/ui/assets/images/payCash.svg';
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { FaHistory } from "react-icons/fa";
 import { PCol, PrimaryTable, PRow } from "@/shared/ui/components/tables/PrimaryTable";
