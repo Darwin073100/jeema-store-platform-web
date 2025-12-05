@@ -1,6 +1,6 @@
 import { CreateEstablishmentForm } from "@/features/establishment/ui/CreateEstablishmentForm";
 import Image from "next/image";
-import Logo from "@/ui/assets/images/logologo.png"
+import Logo from "@/shared/ui/assets/images/logologo.png"
 
 export const metadata = {
   title: 'Crear Establecimeinto'

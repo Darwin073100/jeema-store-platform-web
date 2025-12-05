@@ -1,4 +1,4 @@
-import Logo from "@/ui/assets/images/logologo.png"
+import Logo from "@/shared/ui/assets/images/logologo.png"
 import { CreateBranchForm } from "@/features/branch-office/ui/CreateBranchForm"
 import Image from "next/image"
 

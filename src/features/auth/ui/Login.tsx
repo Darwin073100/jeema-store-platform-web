@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image';
-import logo from "src/ui/assets/images/logologo.png";
+import logo from "src/shared/ui/assets/images/logologo.png";
 import React from 'react'
 import { LabelInput } from '@/shared/ui/components/labels';
 import { TextInput } from '@/shared/ui/components/inputs';
