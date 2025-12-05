@@ -15,12 +15,23 @@ export class EstablishmentFetchRepositoryImpl implements EstablishmentRepository
     async save(data:CreateEstablishmentDTO):Promise<Result<EstablishmentEntity,ErrorEntity>>{
         try {
             const response = await this.httpClient.post<EstablishmentEntity>(
-                this.apiConfig.getEndpointUrl('/establisments'),
+                this.apiConfig.getEndpointUrl('/establishments'),
                 data
             );
             return Result.success(response.data);
         } catch (error:any) {
             return handleError(error, 'EstablishmentFetchRepositoryImpl.save');
+        }
+    }
+    async findById(establishmentId: bigint):Promise<Result<EstablishmentEntity,ErrorEntity>>{
+        try {
+            const response = await this.httpClient.get<EstablishmentEntity>(
+                this.apiConfig.getEndpointUrl(`/establishments/${establishmentId.toString()}`),
+            );
+            return Result.success(response.data);
+        } catch (error:any) {
+            console.log(error)
+            return handleError(error, 'EstablishmentFetchRepositoryImpl.findById');
         }
     }
 }
