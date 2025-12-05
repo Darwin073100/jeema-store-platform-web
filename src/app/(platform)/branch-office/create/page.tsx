@@ -1,4 +1,4 @@
-import Logo from "@/ui/assets/images/logologo.png"
+import Logo from "@/shared/ui/assets/images/logologo.png"
 import Image from "next/image";
 import { CreateBranchForm } from "@/features/branch-office/ui/CreateBranchForm";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";

@@ -3,19 +3,10 @@ import { CashIn } from "@/features/cash/presentation/ui/close/CashIn";
 import { CashInfo } from "@/features/cash/presentation/ui/close/CashInfo";
 import { CashCloseOptios } from "@/features/cash/presentation/ui/close/CashOptios";
 import { CashOut } from "@/features/cash/presentation/ui/close/CashOut";
-import { CashTransaction } from "@/features/cash/presentation/ui/close/CashTransaction";
-import { findOneCustomerByEstablishmentAction } from "@/features/customer/actions/find-one-customer-by-establishment.action";
-import { CustomerSaleList } from "@/features/customer/presentation/ui/details/CustomerSaleList";
-import { formatDate, formatDateShort, formatTime, formatTimeByDate } from "@/shared/lib/utils/date-formatter";
-import { numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
-import { Badge } from "@/shared/ui/components/badges/Badge";
-import { Button } from "@/shared/ui/components/buttons";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 import { Metadata } from "next";
-import Link from "next/link";
-import { FcBearish, FcBullish, FcComboChart, FcLink, FcTimeline } from "react-icons/fc";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
