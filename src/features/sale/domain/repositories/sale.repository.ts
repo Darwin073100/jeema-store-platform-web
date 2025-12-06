@@ -78,5 +78,5 @@ export interface SaleRepository {
      * Este metodo retorna un ticket de venta.
      * @param saleId 
      */
-    findTickedBySaleId(saleId: bigint): Promise<Result<Blob, ErrorEntity>>;
+    findTickedBySaleId(saleId: bigint): Promise<Result<Blob | any, ErrorEntity>>;
 }

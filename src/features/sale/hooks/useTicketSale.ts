@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
+import { findTicketBySaleIdAction } from "../actions/find-ticket-by-sale-id.action";
 interface Props {
     saleId: bigint,
 }
@@ -8,7 +9,7 @@ const useTicketSale = ({saleId}:Props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     
-    const { viewTicket, saleModals } = useSaleUIStore();
+    const { saleModals } = useSaleUIStore();
 
     const handlePrint = async () => {
         setLoading(true);
@@ -16,11 +17,14 @@ const useTicketSale = ({saleId}:Props) => {
             if(saleId===BigInt(0)){
                 return;
             }
-            const result = await fetch(`http://localhost:3001/api/v1/reports/tickets/sales/${saleId.toString()}`);
+            const result = await findTicketBySaleIdAction(saleId);
             if (!result.ok ) {
                 return;
             }
-            const blobUrl = URL.createObjectURL(await result.blob());
+            if (!result.value ) {
+                return;
+            }
+            const blobUrl = URL.createObjectURL(await result.value);
             setPdfUrl(blobUrl);
         } catch (error) {
             setError("No se pudo cargar el documento.");

@@ -1,26 +1,20 @@
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { Metadata } from "next";
-import { Button } from "@/shared/ui/components/buttons";
-import Link from "next/link";
-import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
-import { ProductDetailsView } from "@/features/product/ui/product-detail/ProductDetailsView";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import { FcPaid, FcSearch, FcSurvey } from "react-icons/fc";
+import { FcSurvey } from "react-icons/fc";
 import { findSaleInfoByIdAction } from "@/features/sale/actions/find-sale-info-by-id.action";
-import { SaleStatusEnum } from "@/features/sale/domain/enums/sale-status.enum";
 import { HeaderDetail } from "@/features/sale/ui/detail/HeaderDetail";
 import { SaleDetailList } from "@/features/sale/ui/detail/SaleDetailList";
 import { FinancialSummary } from "@/features/sale/ui/detail/FinancialSummary";
-import { numberBasicFormat, numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
 import { SaleCustomerInfo } from "@/features/sale/ui/detail/SaleCustomerInfo";
-import { formatDate } from "@/shared/lib/utils/date-formatter";
 import { SaleEmployeeInfo } from "@/features/sale/ui/detail/SaleEmployeeInfo";
 import { SalePayments } from "@/features/sale/ui/detail/SalePayments";
 import { findAllPaymentMethodAction } from "@/features/payment-method/actions/find-all-payment-method.action";
+import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
-export const revalidate = 0; // Revalidar en cada request
-export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
+// export const revalidate = 0; // Revalidar en cada request
+// export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
 
 export const metadata: Metadata = {
     title: 'Detalles del Producto'
@@ -32,18 +26,18 @@ interface Props {
     }
 }
 
-export default async function SaleInformationPage({ params }: Props) {
+export default async function ({ params }: Props) {
     try {
+        const { saleId } = await params;
         const breadcrumbItems: BreadcrumbItem[] = [
             {
                 label: 'ventas',
                 href: '/sale'
             },
             {
-                label: `Venta #${params.saleId}`
+                label: `Venta #${saleId ?? 'N/A'}`
             }
         ]
-        const { saleId } = await params;
 
         // Obtener los detalles del producto
         const saleResult = await findSaleInfoByIdAction(BigInt(saleId));
@@ -53,20 +47,11 @@ export default async function SaleInformationPage({ params }: Props) {
         if (!saleResult.ok || !saleResult.value) {
             return (
                 <ProtectedRoute>
-                    <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
-                        <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
-                            <div className="text-6xl mb-4 flex w-full justify-center"><FcSearch /></div>
-                            <h2 className="text-xl font-bold mb-2">¡Oops! No pudimos encontrar la informacion de la venta</h2>
-                            <p className="text-red-700">La venta solicitada no existe en nuestra base de datos o no se pudo cargar en este momento.</p>
-                            <div className="mt-6">
-                                <Link href="/sale">
-                                    <Button color="red">
-                                        <span><FcPaid /></span> Volver a la lista de ventas
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </main>
+                    <TemplateNotFoundDinamic 
+                        title="¡Oops! No pudimos encontrar la informacion de la venta"
+                        description="La venta solicitada no existe en nuestra base de datos o no se pudo cargar en este momento."
+                        linkHref="/sale"
+                        linkText="Volver a la lista de ventas"/>
                 </ProtectedRoute>
             );
         }
@@ -75,7 +60,7 @@ export default async function SaleInformationPage({ params }: Props) {
 
         return (
             <ProtectedRoute>
-                <TemplateHeader title={`Folio de la venta #${params.saleId}`} detail="Vista general de ventas" breadcrumbItems={breadcrumbItems}>
+                <TemplateHeader title={`Folio de la venta #${saleId}`} detail="Vista general de ventas" breadcrumbItems={breadcrumbItems}>
                     {/* ENCABEZADO Y ACCIONES PRINCIPALES */}
                     <HeaderDetail 
                         sale={data}
@@ -126,20 +111,11 @@ export default async function SaleInformationPage({ params }: Props) {
     } catch (error) {
         return (
             <ProtectedRoute>
-                <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
-                    <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
-                        <div className="text-6xl mb-4 flex w-full justify-center"><FcSearch /></div>
-                        <h2 className="text-xl font-bold mb-2">¡Oops! No pudimos encontrar la informacion de la venta</h2>
-                        <p className="text-red-700">La venta solicitada no existe en nuestra base de datos o no se pudo cargar en este momento.</p>
-                        <div className="mt-6">
-                            <Link href="/sale">
-                                <Button color="red">
-                                    <span><FcPaid /></span> Volver a la lista de ventas
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </main>
+                <TemplateNotFoundDinamic 
+                    title="¡Oops! No pudimos encontrar la informacion de la venta"
+                    description="La venta solicitada no existe en nuestra base de datos o no se pudo cargar en este momento."
+                    linkHref="/sale"
+                    linkText="Volver a la lista de ventas"/>
             </ProtectedRoute>
         );
     }
