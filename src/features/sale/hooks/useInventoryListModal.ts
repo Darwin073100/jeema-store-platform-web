@@ -81,7 +81,7 @@ const useInventoryListModal = () => {
             const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, quantityInsert);
             initLoading('addDetailToSaleLoading');
             const result = await CreateSaleAndAddDetailAction(
-                saleId, BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0), 
+                saleId,customers.length >0? BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0): BigInt(0), 
                 cashSessionActive.cashRegisterId, 
                 addDetailToSaleDTO);
             if (!result.ok) {
@@ -93,7 +93,7 @@ const useInventoryListModal = () => {
                 });
                 setTimeout(() => {
                     setFloatMessageState({});
-                }, 2000);
+                }, 3000);
             } else {
                 // Validar que venga un value para actualizar el estado de la venta.
                 result.value ?

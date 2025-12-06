@@ -11,6 +11,7 @@ export class CreateSaleAndAddDetailUseCase {
     ) { }
 
     async execute(saleId: bigint, saveSaleDTO: RegisterSaleDto, addDetailDTO: AddDetailToSaleDto) {
+        console.log(saveSaleDTO, addDetailDTO, saleId);
         try {
             //Validar el dto AddDetailToSaleDto
             if(addDetailDTO.productBarCodeAtSale === '' && addDetailDTO.productUnitAtSale===''){
@@ -38,6 +39,15 @@ export class CreateSaleAndAddDetailUseCase {
                 return Result.failure<ErrorEntity>({
                     error: 'BadRequest',
                     message: 'Hubo un error al agregar el producto a la venta.',
+                    path: '/sale/new',
+                    statusCode: 500,
+                    timestamp: new Date().toDateString()
+                });
+            }
+            if(saveSaleDTO.customerId === BigInt(0)){
+                return Result.failure<ErrorEntity>({
+                    error: 'BadRequest',
+                    message: 'Asegurate de tener creado el cliente por defecto(Publico en General)',
                     path: '/sale/new',
                     statusCode: 500,
                     timestamp: new Date().toDateString()

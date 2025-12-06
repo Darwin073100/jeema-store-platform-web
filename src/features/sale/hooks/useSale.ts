@@ -123,7 +123,7 @@ const useSale = () => {
             const detailDto = hancleCalculateDetailPrice(foundInventory, finalQuantity);
             const resultSale = await CreateSaleAndAddDetailAction(
                 saleId, 
-                BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0), 
+                customers.length >0? BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0): BigInt(0), 
                 cashSessionActive.cashRegisterId, 
                 detailDto
             );
