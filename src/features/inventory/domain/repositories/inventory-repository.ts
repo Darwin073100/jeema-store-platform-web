@@ -14,5 +14,5 @@ export interface InventoryRepository{
     findAllByLocationAndBranchOffice(branchOfficeId: bigint, location: LocationEnum): Promise<Result<{items:InventoryItemEntity[]}, ErrorEntity>>;
     editItem(dto: EditInventoryItemDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
     addStockItem(itemId: bigint, addQuantity: number):Promise<Result<InventoryItemEntity, ErrorEntity>>;
-    findBarcodeByInventoryId(inventoryId: bigint): Promise<Result<Blob, ErrorEntity>>;
+    findBarcodeByInventoryId(inventoryId: bigint): Promise<Result<Blob | any, ErrorEntity>>;
 }

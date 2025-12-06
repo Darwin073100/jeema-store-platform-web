@@ -80,16 +80,10 @@ export class InventoryFetchRepository implements InventoryRepository {
         }
     }
 
-    async findBarcodeByInventoryId(inventoryId: bigint): Promise<Result<any, ErrorEntity>> {
+    async findBarcodeByInventoryId(inventoryId: bigint): Promise<Result<any | Blob, ErrorEntity>> {
         try {
-            const result = await this.httpClient.get<any>(
-                this.apiConfig.getEndpointUrl(`/reports/barcode/inventories/${inventoryId.toString()}`),
-                {
-                    'Content-Type': 'application/pdf'
-                }
-            );
-            console.log(result.data);
-            return Result.success(result.data);
+            const result = await fetch(this.apiConfig.getEndpointUrl(`/reports/barcode/inventories/${inventoryId.toString()}`));
+            return Result.success(result.blob());
         } catch (error) {
             return handleError(error, 'findBarcodeByInventoryId');
         }
