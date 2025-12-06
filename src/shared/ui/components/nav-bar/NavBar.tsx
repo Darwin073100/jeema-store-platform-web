@@ -31,7 +31,7 @@ export const NavBar = () => {
     <nav className="flex justify-between items-center py-3 px-6 bg-white shadow-md hover:shadow-lg transition-all w-full">
       {/* Brand Section */}
       <div className='flex items-center gap-4'>
-        <div className={clsx(`relative group ${sideBar? 'rotate-90': 'rotate-0'} transition-all duration-300 sm:rotate-0`)} onClick={()=> onToggelSideBar()}>
+        <div className={clsx(`relative group ${sideBar? 'rotate-90': 'rotate-0'} transition-all duration-300 md:rotate-0`)} onClick={()=> onToggelSideBar()}>
           <Image
             className="rounded-lg shadow-sm group-hover:shadow-md transition-all"
             src={Logo}

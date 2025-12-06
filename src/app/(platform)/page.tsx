@@ -25,7 +25,7 @@ const homeCards = [
   {
     title: 'Finanzas',
     description: 'Revisa los ingresos y egresos',
-    to: '/',
+    to: '/configurations/transactions',
     image: Contability
   }
 ];
