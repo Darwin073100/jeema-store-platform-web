@@ -5,6 +5,8 @@ import { RegisterProductDTO } from "../../application/dtos/register-product.dto"
 import { RegisterInitialProductDTO } from "../../application/dtos/register-initial-product.dto";
 import { UpdateProductDTO } from "../../application/dtos/update-product.dto";
 import { RegisterCompleteProductDTO } from "../../application/dtos/register-complete-product.dto";
+import { ProductsTopByBranchOfficeResponseDto } from "../../application/dtos/products-top-by-branch-office-response.dto";
+import { FilterTopRequestDTO } from "../../application/dtos/filter-top.dto";
 
 export interface ProductRepository{
     findAll():Promise<Result<{products: ProductEntity[]}, ErrorEntity>>;
@@ -14,4 +16,5 @@ export interface ProductRepository{
     delete(productId: bigint): Promise<Result<any, ErrorEntity>|undefined>;
     registerCompleteProduct(dto: RegisterCompleteProductDTO): Promise<Result<ProductEntity, ErrorEntity>>;
     findAllByEstablishment(establishmentId: bigint): Promise<Result<{products: ProductEntity[]}, ErrorEntity>>;
+    findTopProductsByBranchOffice(branchOfficeId: bigint, filter: FilterTopRequestDTO): Promise<Result<{products: ProductsTopByBranchOfficeResponseDto[]}, ErrorEntity>>;
 }

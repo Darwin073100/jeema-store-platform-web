@@ -1,4 +1,3 @@
-"use client";
 import { CardLink } from "@/shared/ui/components/cards/CardLink";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import Sale from '../../shared/ui/assets/images/sale.svg';
@@ -7,7 +6,11 @@ import Contability from '../../shared/ui/assets/images/payCash.svg';
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { FaHistory } from "react-icons/fa";
 import { PCol, PrimaryTable, PRow } from "@/shared/ui/components/tables/PrimaryTable";
-import { FcNegativeDynamic, FcStatistics } from "react-icons/fc";
+import { FcCurrencyExchange, FcNegativeDynamic, FcSalesPerformance, FcScatterPlot, FcStatistics } from "react-icons/fc";
+import { findTopProductsByBranchOfficeAction } from "@/features/product/actions/find-top-products-by-branch-office.action";
+import { FilterTopEnum } from "@/features/product/domain/enums/filter-top-enum";
+import { numberBasicFormat, numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
+import { Badge } from "@/shared/ui/components/badges/Badge";
 
 const homeCards = [
   {
@@ -30,7 +33,12 @@ const homeCards = [
   }
 ];
 
-export default function Home() {
+export default async function Home() {
+  const resultTopQuantity = await findTopProductsByBranchOfficeAction({filterBy: FilterTopEnum.QUANTITY_SALES});
+  const productsTopQuantity = resultTopQuantity.value?.products ?? []  
+  const resultTopTotal = await findTopProductsByBranchOfficeAction({filterBy: FilterTopEnum.TOTAL_SALES});
+  const productsTopTotal = resultTopTotal.value?.products ?? []  
+
   const breadCrumbItems: BreadcrumbItem[] = [
     {
       label: 'Home'
@@ -52,64 +60,37 @@ export default function Home() {
             ))}
           </form>
           
-          <div className="w-full pt-8 flex justify-between gap-4">
+          <div className="w-full pt-8 grid grid-cols-2 max-md:grid-cols-1 gap-4">
             <div>
-              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl"><FcStatistics />Productos mas vendidos</h2>
-              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Cantidad']}>
-                <PRow>
-                  <PCol>1</PCol>
-                  <PCol>Sombrilla doble tela</PCol>
-                  <PCol>$20,000</PCol>
-                  <PCol>300</PCol>
-                  <PCol><FaHistory/></PCol>
-                </PRow>
-                <PRow>
-                  <PCol>1</PCol>
-                  <PCol>Sombrilla doble tela</PCol>
-                  <PCol>$20,000</PCol>
-                  <PCol>300</PCol>
-                  <PCol><FaHistory/></PCol>
-                </PRow>
-                <PRow>
-                  <PCol>1</PCol>
-                  <PCol>Sombrilla doble tela</PCol>
-                  <PCol>$20,000</PCol>
-                  <PCol>300</PCol>
-                  <PCol><FaHistory/></PCol>
-                </PRow>
-                <PRow>
-                  <PCol>1</PCol>
-                  <PCol>Sombrilla doble tela</PCol>
-                  <PCol>$20,000</PCol>
-                  <PCol>300</PCol>
-                  <PCol><FaHistory/></PCol>
-                </PRow>
+              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl">
+                <FcScatterPlot />
+                Más vendido por volumen
+              </h2>
+              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Cantidad']} isActions={false}>
+                  {productsTopQuantity.map((item, i) => <>
+                    <PRow>
+                      <PCol>{i+1}</PCol>
+                      <PCol>{item.name}</PCol>
+                      <PCol>{numberMoneyFormat(item.totalSales)}</PCol>
+                      <PCol><Badge type="green">{numberBasicFormat(item.quantitySales)}</Badge></PCol>
+                    </PRow>
+                  </>)}
               </PrimaryTable>
             </div>
             <div>
-              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl"><FcNegativeDynamic />Productos con bajo stock</h2>
-              <PrimaryTable theadList={['Top', 'Producto', 'Stock min.', 'Stock total']}>
-                <PRow>
-                  <PCol>1</PCol>
-                  <PCol>Sombrilla doble tela</PCol>
-                  <PCol>20</PCol>
-                  <PCol>24</PCol>
-                  <PCol><FaHistory/></PCol>
-                </PRow>
-                <PRow>
-                  <PCol>1</PCol>
-                  <PCol>Sombrilla doble tela</PCol>
-                  <PCol>20</PCol>
-                  <PCol>24</PCol>
-                  <PCol><FaHistory/></PCol>
-                </PRow>
-                <PRow>
-                  <PCol>1</PCol>
-                  <PCol>Sombrilla doble tela</PCol>
-                  <PCol>20</PCol>
-                  <PCol>24</PCol>
-                  <PCol><FaHistory/></PCol>
-                </PRow>
+              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl">
+                <FcSalesPerformance />
+                Más vendido por monto
+              </h2>
+              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Cantidad']} isActions={false}>
+                {productsTopTotal.map((item, i) => <>
+                    <PRow>
+                      <PCol>{i+1}</PCol>
+                      <PCol>{item.name}</PCol>
+                      <PCol><Badge type="green">{numberMoneyFormat(item.totalSales)}</Badge></PCol>
+                      <PCol>{numberBasicFormat(item.quantitySales)}</PCol>
+                    </PRow>
+                  </>)}
               </PrimaryTable>
             </div>
           </div>

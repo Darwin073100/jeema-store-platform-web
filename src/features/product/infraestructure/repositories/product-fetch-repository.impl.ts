@@ -9,6 +9,9 @@ import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { UpdateProductDTO } from "../../application/dtos/update-product.dto";
 import { RegisterCompleteProductDTO } from "../../application/dtos/register-complete-product.dto";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { ProductsTopByBranchOfficeResponseDto } from "../../application/dtos/products-top-by-branch-office-response.dto";
+import { FilterTopRequestDTO } from "../../application/dtos/filter-top.dto";
 
 export class ProductFetchRepositoryImpl implements ProductRepository {
     constructor(
@@ -25,7 +28,7 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'findAll products');
+            return handleError(error, 'findAll products');
         }
     }
     async findAllByEstablishment(establishmentId: bigint): Promise<Result<{products: ProductEntity[]}, ErrorEntity>> {
@@ -37,7 +40,18 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'findAllByEstablishment');
+            return handleError(error, 'findAllByEstablishment');
+        }
+    }
+    async findTopProductsByBranchOffice(branchOfficeId: bigint, filter: FilterTopRequestDTO): Promise<Result<{products: ProductsTopByBranchOfficeResponseDto[]}, ErrorEntity>> {
+        try {
+            const response = await this.httpClient.post<{products: ProductsTopByBranchOfficeResponseDto[]}>(
+                this.apiConfig.getEndpointUrl(`/products/all/top-branch/${branchOfficeId.toString()}`),
+                filter
+            );
+            return Result.success(response.data );
+        } catch (error: any) {
+            return handleError(error, 'findTopProductsByBranchOffice');
         }
     }
 
@@ -51,7 +65,7 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'save product');
+            return handleError(error, 'save product');
         }
     }
 
@@ -65,7 +79,7 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'update product');
+            return handleError(error, 'update product');
         }
     }
     async delete(productId: bigint): Promise<Result<any, ErrorEntity>|undefined> {
@@ -77,7 +91,7 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'Delete product');
+            return handleError(error, 'Delete product');
         }
     }
     
@@ -92,7 +106,7 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'save product with lot and inventory');
+            return handleError(error, 'save product with lot and inventory');
         }  
     }
     async registerCompleteProduct(dto: RegisterCompleteProductDTO): Promise<Result<ProductEntity, ErrorEntity>> {
@@ -106,26 +120,7 @@ export class ProductFetchRepositoryImpl implements ProductRepository {
             return Result.success(response.data);
 
         } catch (error: any) {
-            return this.handleError(error, 'save product with lot and inventory');
+            return handleError(error, 'save product with lot and inventory');
         }  
-    }
-
-    /**
-     * Manejo centralizado de errores
-     */
-    private handleError(error: any, operation: string): Result<any, ErrorEntity> {
-        // Si es un error HTTP (del servidor)
-        if (error.status && error.data) {
-            return Result.failure(error.data as ErrorEntity);
-        }
-
-        // Si es un error de red o conexión
-        return Result.failure({
-            error: error?.message || error,
-            message: `No se pudo conectar al servidor durante: ${operation}`,
-            statusCode: error?.status || 500,
-            path: operation,
-            timestamp: new Date().toDateString()
-        } satisfies ErrorEntity);
     }
 }
