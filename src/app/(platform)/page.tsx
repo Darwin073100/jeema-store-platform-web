@@ -66,7 +66,7 @@ export default async function Home() {
                 <FcScatterPlot />
                 Más vendido por volumen
               </h2>
-              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Cantidad']} isActions={false}>
+              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
                   {productsTopQuantity.map((item, i) => <>
                     <PRow>
                       <PCol>{i+1}</PCol>
@@ -82,7 +82,7 @@ export default async function Home() {
                 <FcSalesPerformance />
                 Más vendido por monto
               </h2>
-              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Cantidad']} isActions={false}>
+              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
                 {productsTopTotal.map((item, i) => <>
                     <PRow>
                       <PCol>{i+1}</PCol>
