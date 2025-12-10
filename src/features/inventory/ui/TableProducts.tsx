@@ -36,15 +36,15 @@ export function TableProduct({ productList = [] }: TableProductProps) {
 
         const filtered = productList.filter(item =>
             item && item.name &&
-            item.name.toLowerCase().includes(searchCharacter.toLowerCase())
+            item.name.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
         );
         const filteredByBarCode = productList.filter(item =>
             item && item.inventory?.internalBarCode &&
-            item.inventory.internalBarCode?.toLowerCase().includes(searchCharacter.toLowerCase())
+            item.inventory.internalBarCode?.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
         );
         const filteredByCategory = productList.filter(item =>
             item && item.category?.name &&
-            item.category.name?.toLowerCase().includes(searchCharacter.toLowerCase())
+            item.category.name?.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
         );
         const combinedFilters = [...new Set([...filtered, ...filteredByBarCode, ...filteredByCategory])];
 
