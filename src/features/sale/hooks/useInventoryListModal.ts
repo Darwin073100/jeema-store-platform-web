@@ -38,7 +38,12 @@ const useInventoryListModal = () => {
     useEffect(() => {
         const regex = new RegExp(searchProductValue, 'i');
         const newInventoryFilter = inventoryItems.filter(item => regex.test(item.inventory?.product?.name ?? ''));
-        setFilterInventoryItems(newInventoryFilter);
+        const barCodeFilter = inventoryItems.filter(item => 
+            regex.test(item.inventory?.internalBarCode ?? '') ||
+            regex.test(item.inventory?.product?.universalBarCode ?? '')
+        );
+        const combinedFilters = [...new Set([...newInventoryFilter, ...barCodeFilter])];    
+        setFilterInventoryItems(combinedFilters);
     }, [searchProductValue]);
 
     const handleVerifyExistDetail = (sale: SaleEntity, inventory?: InventoryEntity, )=>{

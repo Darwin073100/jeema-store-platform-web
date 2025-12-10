@@ -23,11 +23,13 @@ const SaleInventoryListModal = () => {
               <FcIdea className='w-9 h-9'/> 
               <span>Para agregar el producto a la venta, da click al producto que desees agregar y en el dialogo anota la cantidad y la unidad.</span>
             </span>
-            <TextInput
-              value={searchProductValue}
-              onChange={(e)=> setSearchProductValue(e.target.value)}
-              autoFocus={true}
-              placeholder='Ingresa el nombre del producto que estas buscando'/>
+            <div className='flex items-center gap-2'>
+              <TextInput
+                value={searchProductValue}
+                onChange={(e)=> setSearchProductValue(e.target.value)}
+                autoFocus={true}
+                placeholder='Filtrar por nombre o código de barras'/>
+            </div>
           </div>
           <div className='w-full overflow-auto'>
             <table className="w-full text-left rtl:text-right">
@@ -79,8 +81,7 @@ const SaleInventoryListModal = () => {
                   </tr>
                   { itemSelected?.inventoryItemId === item.inventoryItemId && <>
                     <tr className='bg-blue-100'>
-                      <th></th>
-                      <th className='p-1'>
+                      <th className='p-1 flex items-center gap-2'>
                         <TextInput
                           min={0}
                           value={ quantityInsert }
@@ -88,8 +89,6 @@ const SaleInventoryListModal = () => {
                           className='font-medium'
                           type='number'
                           placeholder='Cantidad' />
-                      </th>
-                      <th>
                         <Button
                           disabled={loading==='addDetailToSaleLoading'}
                           onClick={()=> handleAddDetail()} 
@@ -100,6 +99,9 @@ const SaleInventoryListModal = () => {
                             }
                           </Button>
                       </th>
+                      <th>
+                      </th>
+                      <th></th>
                       <th></th>
                       <th></th>
                     </tr>
