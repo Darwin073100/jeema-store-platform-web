@@ -58,26 +58,26 @@ const ProductActionsBar = ({ products }:Props) => {
             <div className='flex items-center gap-2'>
                 <Button color="blue" size="md" onClick={()=> newProductPage()}>
                     {loading? <Spinner/>: <IoMdAdd size={14}/>}
-                    Nuevo Producto
+                    <span className='max-sm:hidden'>Nuevo Producto</span>
                 </Button>
                 <Button color="yellow" size="md" onClick={() => setModalOpen(!modalOpen)}>
                     <MdCategory />
-                    Categorias
+                    <span className='max-sm:hidden'>Categorias</span>
                 </Button>
                 <Button color="green" size="md" onClick={()=> setBrandModalOpen(!brandModalOpen)}>
                     <IoMdAdd />
-                    Marcas
+                    <span className='max-sm:hidden'>Marcas</span>
                 </Button>
                 <Button color="gray" size="md" onClick={()=> setSeasonModalOpen(!seasonModalOpen)}>
                     <MdOutlineViewTimeline />
-                    Temporadas
+                    <span className='max-sm:hidden'>Temporadas</span>
                 </Button>
             </div>
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
                     <Button disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
                         <PiMicrosoftExcelLogoFill />
-                        Exportar a Excel
+                        <span className='max-md:hidden'>Exportar a Excel</span>
                     </Button>
                     <div>
                         Productos<Badge>{products.length}</Badge>
