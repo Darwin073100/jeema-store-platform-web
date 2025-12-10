@@ -38,8 +38,17 @@ export function TableProduct({ productList = [] }: TableProductProps) {
             item && item.name &&
             item.name.toLowerCase().includes(searchCharacter.toLowerCase())
         );
+        const filteredByBarCode = productList.filter(item =>
+            item && item.inventory?.internalBarCode &&
+            item.inventory.internalBarCode?.toLowerCase().includes(searchCharacter.toLowerCase())
+        );
+        const filteredByCategory = productList.filter(item =>
+            item && item.category?.name &&
+            item.category.name?.toLowerCase().includes(searchCharacter.toLowerCase())
+        );
+        const combinedFilters = [...new Set([...filtered, ...filteredByBarCode, ...filteredByCategory])];
 
-        return filtered;
+        return combinedFilters;
     }, [productList, searchCharacter]);
 
     const handleViewProduct = (productId: string) => {

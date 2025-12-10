@@ -10,7 +10,7 @@ function ProductSearch() {
   };
   return (
     <form className="flex gap-2"  onSubmit={(e) => e.preventDefault()}>
-        <TextInput placeholder="Buscar producto" onChange={handleSearchChange} />
+        <TextInput placeholder="Filtrar por nombre, códigos de barras o categorías" onChange={handleSearchChange} />
     </form>
   )
 }
