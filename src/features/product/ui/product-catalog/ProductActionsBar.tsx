@@ -12,7 +12,6 @@ import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { ProductEntity } from '../../domain/entities/product.entity';
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
-import { ProductExcel } from '../../domain/excel-interfaces/product.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 interface Props{
@@ -25,28 +24,49 @@ const ProductActionsBar = ({ products }:Props) => {
         router.push('products/new')
     }
     const router = useRouter();
+    const compras = products.map(item=> {
+        const com = item.lots?.map(lot=>{
+            return Object.fromEntries([
+                ["PRECIO COMPRA", lot.purchasePrice],
+                ["FECHA", formatDateShort(lot.receivedDate)]
+            ]);
+        });
+    });
+
+    // Determine maximum number of lots across all products so we can create fixed columns for each lot
+    const maxLots = products.reduce((max, p) => Math.max(max, (p.lots?.length ?? 0)), 0);
+
     const currentProducts = products.map(item => {
-        return {
-            "FOLIO": item.productId,
+        const base = {
+            FOLIO: item.productId,
             PRODUCTO: item.name ?? '',
-            "CODIGO UNIVERSAL": item.universalBarCode ?? '',
-            "CODIGO INTERNO": item.inventory?.internalBarCode ?? '',
+            'CODIGO UNIVERSAL': item.universalBarCode ?? '',
+            'CODIGO INTERNO': item.inventory?.internalBarCode ?? '',
             CATEGORIA: item.category?.name ?? '',
             MARCA: item.brand?.name ?? '',
             TEMPORADA: item.season?.name ?? '',
             UNIDAD: item.unitOfMeasure ?? '',
-            "VENTA MENUDEO": item.inventory?.salePriceOne ?? 0,
-            "CANTIDAD MAYOREO": item.inventory?.saleQuantityMany ?? 0,
-            "VENTA MAYOREO": item.inventory?.salePriceMany ?? 0,
-            "STOCK MIN GLOBAL": item.minStockGlobal ?? 0,
-            VENTA: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.SALE)[0]?.quantityOnHan ?? 0,
-            ALMACEN: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.STOCK)[0]?.quantityOnHan ?? 0,
-            VIAJANDO: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.TRAVELING)[0]?.quantityOnHan ?? 0,
-            DAÑADOS: item.inventory?.inventoryItems?.filter(item=> item.location === LocationEnum.DAMAGED)[0]?.quantityOnHan ?? 0,
-            "FECHA REGISTRO": formatDateShort(item.createdAt)
+            'VENTA MENUDEO': item.inventory?.salePriceOne ?? 0,
+            'CANTIDAD MAYOREO': item.inventory?.saleQuantityMany ?? 0,
+            'VENTA MAYOREO': item.inventory?.salePriceMany ?? 0,
+            'STOCK MIN GLOBAL': item.minStockGlobal ?? 0,
+            VENTA: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.SALE)[0]?.quantityOnHan ?? 0,
+            ALMACEN: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.STOCK)[0]?.quantityOnHan ?? 0,
+            VIAJANDO: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.TRAVELING)[0]?.quantityOnHan ?? 0,
+            DAÑADOS: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.DAMAGED)[0]?.quantityOnHan ?? 0,
+            'FECHA REGISTRO': formatDateShort(item.createdAt),
+        } as Record<string, any>;
+        for (let i = 0; i < maxLots; i++) {
+            const lot = item.lots?.[i];
+            base[`PRECIO COMPRA ${i + 1}`] = lot?.purchasePrice.toFixed(2) ?? '';
+            base[`CANTIDAD COMPRA ${i + 1}`] = lot?.initialQuantity.toFixed(4) ?? '';
+            base[`FECHA ${i + 1}`] = lot?.receivedDate ? formatDateShort(lot.receivedDate) : '';
         }
+
+        return base;
     });
     const handleDownloadExcel = ()=> {
+        console.log(currentProducts);
         downloadXLSX(currentProducts, 'Productos');
     }
 
