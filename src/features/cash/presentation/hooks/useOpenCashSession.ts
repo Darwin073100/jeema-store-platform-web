@@ -7,7 +7,7 @@ import { useCashStore } from '../../infraestructure/stores/cash.store';
 import { CashRegisterEntity } from '../../domain/entities/cash-register.entity';
 import { openCashSessionAction } from '../../actions/open-cash-session.action';
 import { OpenCashSessionDTO } from '../../application/dtos/open-cash-session.dto';
-import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
+import { formatDateForInput, formatDateTimeForInput } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 
 const schema = yup.object().shape({
@@ -39,7 +39,7 @@ const useOpenCashSession = () => {
         const dto = {
             cashRegisterId: cashRegisterSelected?.cashRegisterId ?? BigInt(0),
             startBalance: data.startBalance,
-            startTime: new Date(formatDateForInput(new Date()))
+            startTime: new Date(formatDateTimeForInput(new Date()))
         }
         const result = await openCashSessionAction(dto);
         stopLoading();

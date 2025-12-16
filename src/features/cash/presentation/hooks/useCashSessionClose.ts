@@ -3,7 +3,7 @@ import { useCashUIStore } from '../../infraestructure/stores/cash-ui.store';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCashStore } from '../../infraestructure/stores/cash.store';
-import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
+import { formatDateForInput, formatDateTimeForInput } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { closeCashSessionAction } from '../../actions/close-cash-session.action';
 import { useCashInformation } from './useCashInformation';
@@ -52,7 +52,7 @@ const useCashSessionClose = () => {
             expectedBalance: handleTotalClose(),
             diference: data.diference ?? 0,
             actualBalance: (handleTotalClose() + (data.diference ?? 0)),
-            endTime: new Date(formatDateForInput(new Date())),
+            endTime: new Date(formatDateTimeForInput(new Date())),
             closingNotes: data.closingNotes ?? null,
         }
         const result = await closeCashSessionAction(cashSessionId, dto);

@@ -5,7 +5,7 @@ import React from 'react'
 import { AiFillProfile } from 'react-icons/ai'
 import { useRouter } from 'next/navigation';
 import { CashSessionEntity } from '../../domain/entities/cash-session.entity';
-import { formatDateShort } from '@/shared/lib/utils/date-formatter';
+import { formatDateShort, formatTimeByDate } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 interface Props {
@@ -19,9 +19,9 @@ const CashMovementsDesktopTable = ({ cashSessions }: Props) => {
             {cashSessions.map(item => (
                 <BRow>
                     <BCol>{item.cashSessionId}</BCol>
-                    <BCol>{formatDateShort(item.startTime)}</BCol>
+                    <BCol>{formatDateShort(item.startTime)}{` : `}{formatTimeByDate(item.startTime)}</BCol>
                     <BCol>{numberMoneyFormat(item.startBalance)}</BCol>
-                    <BCol>{formatDateShort(item.endTime)}</BCol>
+                    <BCol>{formatDateShort(item.endTime)}{` : `}{formatTimeByDate(item.endTime)}</BCol>
                     <BCol>{numberMoneyFormat(Number(item.actualBalance ?? 0)+item.startBalance)}</BCol>
                     <BCol><Badge type='green'>{item.cashRegister?.name}</Badge></BCol>
                     <BCol>{`${item.employee?.firstName}`}</BCol>

@@ -141,3 +141,25 @@ export const formatDateForInput = (date: Date | string | null | undefined): stri
         return '';
     }
 };
+
+export const formatDateTimeForInput = (date: Date | string | null | undefined): string => {
+    if (!date) return '';
+    
+    try {
+        const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+        // Validar si la fecha es inválida después de la conversión
+        if (isNaN(dateObj.getTime())) return '';
+
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const hours = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+
+        // El formato para <input type="datetime-local"> requiere una 'T' entre fecha y hora
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    } catch {
+        return '';
+    }
+};
