@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { ProtectedRoute } from '../routes/ProtectedRoute';
 import { BsBackspaceFill } from "react-icons/bs";

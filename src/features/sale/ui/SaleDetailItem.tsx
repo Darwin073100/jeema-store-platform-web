@@ -19,31 +19,34 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
     // const { } = useSale();
     return (
         <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
-            <td className="px-5 py-1 bg-blue-200 font-bold">
+            <td className="px-2 py-1 bg-blue-200 font-bold">
                 {saleDetail?.quantity ?? '0.00'}
             </td>
-            <th scope="row" className="px-5 py-1 font-medium whitespace-nowrap text-[12px]">
+            <th className="px-1 py-1 font-medium text-[12px]">
                 {saleDetail?.productBarCodeAtSale ?? 'S/C'}
             </th>
-            <td className="px-5 py-1 font-bold">
+            <td className="px-1 py-1 font-bold">
                 {saleDetail?.productNameAtSale ?? 'S/N'}
             </td>
-            <td className="px-5 py-1 flex justify-between items-center">
+            <td className="px-2 py-1">
+                {saleDetail?.productUnitAtSale ?? 'S/P'}
+            </td>
+            <td className="px-2 py-1">
+                <span>$ {numberBasicFormat(saleDetail?.regularPriceAtSale ?? 0.00)}</span>
+            </td>
+            <td className="px-2 py-1 bg-blue-200 font-bold">
+                $ {numberBasicFormat((saleDetail?.subtotalItem ?? 0.00)+(saleDetail?.discountItem ?? 0.00))}
+            </td>
+            <td className="px-2 py-1 flex justify-between items-center">
                 <span>$ {numberBasicFormat(saleDetail?.unitPriceAtSale ?? 0.00)}</span>
                 <Badge type={saleDetail?.saleFor === SaleForEnum.ONE? 'blue': saleDetail?.saleFor === SaleForEnum.MANY? 'green': 'yellow'}>
                     { saleDetail?.saleFor ?? 'N/A'}
                 </Badge>
             </td>
-            <td className="px-5 py-1">
-                {saleDetail?.productUnitAtSale ?? 'S/P'}
-            </td>
-            <td className="px-5 py-1 bg-green-200">
+            <td className="px-2 py-1 bg-green-200">
                 $ {numberBasicFormat(saleDetail?.discountItem ?? 0.00)}
             </td>
-            <td className="px-5 py-1 bg-blue-200 font-bold">
-                $ {numberBasicFormat((saleDetail?.subtotalItem ?? 0.00)+(saleDetail?.discountItem ?? 0.00))}
-            </td>
-            <td className="px-5 py-1 bg-blue-200 font-bold">
+            <td className="px-2 py-1 bg-blue-200 font-bold">
                 $ {numberBasicFormat(saleDetail?.subtotalItem ?? 0.00)}
             </td>
             <td className="px-2 py-1 flex justify-center gap-1">

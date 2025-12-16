@@ -37,28 +37,31 @@ const SaleProductList = () => {
                 <table className="w-full text-left rtl:text-right">
                     <thead>
                         <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
-                            <th scope="col" className="px-6 py-4 font-semibold">
+                            <th scope="col" className="px-2 py-4 font-semibold">
                                 #
                             </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
+                            <th scope="col" className="px-2 py-4 font-semibold">
                                 Código
                             </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
+                            <th scope="col" className="px-2 py-4 font-semibold">
                                 Producto
                             </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
-                                Precio Unit.
-                            </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
+                            <th scope="col" className="px-2 py-4 font-semibold">
                                 Ud.
                             </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
-                                Desc.
+                            <th scope="col" className="px-2 py-4 font-semibold">
+                                P. Regular
                             </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
+                            <th scope="col" className="px-2 py-4 font-semibold">
                                 S.total
                             </th>
-                            <th scope="col" className="px-6 py-4 font-semibold">
+                            <th scope="col" className="px-2 py-4 font-semibold">
+                                P. Unitario
+                            </th>
+                            <th scope="col" className="px-2 py-4 font-semibold">
+                                Desc.
+                            </th>
+                            <th scope="col" className="px-2 py-4 font-semibold">
                                 Total
                             </th>
                             <th scope="col" className="px-2 py-2">
