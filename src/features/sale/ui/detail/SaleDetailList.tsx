@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { SaleEntity } from '../../domain/entities/sale-entity'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
@@ -9,7 +10,7 @@ const SaleDetailList = ({ data }: Props) => {
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full text-sm text-left">
-                <thead className="text-xs text-gray-600 uppercase bg-blue-50/50 font-semibold sticky top-0"> {/* Fondo ligeramente azul para la cabecera */}
+                <thead className='text-xs text-gray-600 uppercase bg-blue-50/50 font-semibold sticky top-0'>
                     <tr>
                         <th scope="col" className="px-2 py-3">Producto</th>
                         <th scope="col" className="px-2 py-3 text-center">Cant.</th>

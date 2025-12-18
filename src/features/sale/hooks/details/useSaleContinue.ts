@@ -1,3 +1,4 @@
+'use client'
 import { useEffect } from "react";
 import { SaleEntity } from "../../domain/entities/sale-entity"
 import { useSaleProcessStore } from "../../infraestructure/stores/sale.process.store";

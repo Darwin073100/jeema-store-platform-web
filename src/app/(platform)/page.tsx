@@ -51,7 +51,7 @@ export default async function Home() {
           <form className="flex max-md:flex-col gap-4 w-full text-gray-700">
             {homeCards.map(item => (
               <CardLink 
-                key={item.title}
+                key={item.title.toString()}
                 title={item.title}
                 description={item.description}
                 to={item.to}
@@ -66,15 +66,15 @@ export default async function Home() {
                 <FcScatterPlot />
                 Más vendido por volumen
               </h2>
-              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
-                  {productsTopQuantity.map((item, i) => <>
-                    <PRow>
+              <PrimaryTable key='topQuantity' theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
+                  {productsTopQuantity.map((item, i) =>(
+                    <PRow key={item.productId}>
                       <PCol>{i+1}</PCol>
                       <PCol>{item.name}</PCol>
                       <PCol>{numberMoneyFormat(item.totalSales)}</PCol>
                       <PCol><Badge type="green">{numberBasicFormat(item.quantitySales)}</Badge></PCol>
                     </PRow>
-                  </>)}
+                  ))}
               </PrimaryTable>
             </div>
             <div>
@@ -82,15 +82,15 @@ export default async function Home() {
                 <FcSalesPerformance />
                 Más vendido por monto
               </h2>
-              <PrimaryTable theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
-                {productsTopTotal.map((item, i) => <>
-                    <PRow>
+              <PrimaryTable key='topTotal' theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
+                {productsTopTotal.map((item, i) =>(
+                    <PRow key={item.productId}>
                       <PCol>{i+1}</PCol>
                       <PCol>{item.name}</PCol>
                       <PCol><Badge type="green">{numberMoneyFormat(item.totalSales)}</Badge></PCol>
                       <PCol>{numberBasicFormat(item.quantitySales)}</PCol>
                     </PRow>
-                  </>)}
+                ))}
               </PrimaryTable>
             </div>
           </div>

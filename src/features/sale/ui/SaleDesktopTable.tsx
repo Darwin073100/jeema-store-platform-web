@@ -21,8 +21,8 @@ const SaleDesktopTable = ({ sales }: Props) => {
     return (
         <BasicTable theadList={tableColumns} isActions={true}>
             {/* Cuerpo de la tabla */}
-            {sales.map(sale => (<>
-                <BRow key={sale.saleId} >
+            {sales.map(sale => (
+                <BRow key={sale.saleId.toString()} >
                     <BCol>{sale.saleId}</BCol>
                     <BCol>{`${sale.customer?.firstName} ${sale.customer?.lastName}`}</BCol>
                     <BCol>{`${sale.employee?.firstName} ${sale.employee?.lastName}`}</BCol>
@@ -39,7 +39,7 @@ const SaleDesktopTable = ({ sales }: Props) => {
                         </Button>
                     </BCol>
                 </BRow>
-            </>))}
+            ))}
             {(!sales || sales.length === 0) && (
                 <BTableEmpty colsNumber={tableColumns.length + 1} />
             )}
