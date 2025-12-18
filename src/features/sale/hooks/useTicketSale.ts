@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { findTicketBySaleIdAction } from "../actions/find-ticket-by-sale-id.action";
-import { useSaleStore } from "../infraestructure/stores/sale.store";
 interface Props {
     saleId: bigint,
 }
@@ -11,7 +10,6 @@ const useTicketSale = ({saleId}:Props) => {
     const [error, setError] = useState<string | null>(null);
     
     const { saleModals } = useSaleUIStore();
-    const { sale } = useSaleStore();
 
     const handlePrint = async () => {
         setLoading(true);
@@ -37,7 +35,7 @@ const useTicketSale = ({saleId}:Props) => {
     
     useEffect(() => {
         handlePrint();
-    }, [saleModals==='saleTicketModal']);
+    }, [saleId, saleModals==='saleTicketModal', pdfUrl]);
 
     return {
         pdfUrl,
