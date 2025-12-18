@@ -220,9 +220,9 @@ const useSalePayment = () => {
                     });
                     setTimeout(() => {
                         closeSaleModal();
+                        openSaleModal('saleTicketModal');
                         resetSaleStore();
                         resetSaleProcessStore();
-                        openSaleModal('saleTicketModal');
                     }, 1000);
                 }
             setTimeout(()=>{

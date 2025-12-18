@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { findTicketBySaleIdAction } from "../actions/find-ticket-by-sale-id.action";
-import { useSaleStore } from "../infraestructure/stores/sale.store";
 interface Props {
     saleId: bigint,
 }
-const useTicketSale = ({saleId}:Props) => {
+const useReprintTicketSale = ({saleId}:Props) => {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     
     const { saleModals } = useSaleUIStore();
-    const { sale } = useSaleStore();
 
     const handlePrint = async () => {
         setLoading(true);
@@ -34,11 +32,12 @@ const useTicketSale = ({saleId}:Props) => {
             setLoading(false);
         }
     };
-    
-    useEffect(() => {
-        handlePrint();
-    }, [saleModals==='saleTicketModal']);
 
+    useEffect(() => {
+        if(saleModals==='saleTicketReprintModal'){
+            handlePrint();
+        }
+    }, [saleId, saleModals==='saleTicketReprintModal']);
     return {
         pdfUrl,
         loading,
@@ -46,4 +45,4 @@ const useTicketSale = ({saleId}:Props) => {
     }
 }
 
-export default useTicketSale
+export default useReprintTicketSale

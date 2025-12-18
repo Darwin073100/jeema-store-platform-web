@@ -1,22 +1,22 @@
 import React from 'react'
-import useTicketSale from '../hooks/useTicketSale';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { useSaleUIStore } from '../infraestructure/stores/sale.ui.store';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
+import useReprintTicketSale from '../hooks/useReprintTicketSale';
 interface Props {
     saleId: bigint,
 }
-const SaleTicketModal = ({ saleId }: Props) => {
+const SaleReprintTicketModal = ({ saleId }: Props) => {
     const { saleModals, closeSaleModal } = useSaleUIStore();
-    const { error, loading, pdfUrl } = useTicketSale({ saleId });
+    const { error, loading, pdfUrl } = useReprintTicketSale({ saleId });
 
     if (!pdfUrl) {
         return;
     }
     return (
-        <TemplateModal isOpen={saleModals === 'saleTicketModal'} onClose={closeSaleModal} title='Vista previa del ticket'>
+        <TemplateModal isOpen={saleModals === 'saleTicketReprintModal'} onClose={closeSaleModal} title='Vista previa del ticket'>
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
@@ -49,4 +49,4 @@ const SaleTicketModal = ({ saleId }: Props) => {
     )
 }
 
-export { SaleTicketModal };
+export { SaleReprintTicketModal };

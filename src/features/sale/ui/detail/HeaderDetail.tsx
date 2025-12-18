@@ -13,6 +13,7 @@ import { IoBagHandle, IoPrintSharp, IoWalletSharp } from 'react-icons/io5';
 import { useSaleContinue } from '../../hooks/details/useSaleContinue';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { SaleTicketModal } from '../SaleTicketModal';
+import { SaleReprintTicketModal } from '../SaleReprintTicketModal';
 
 interface Props {
     sale: SaleEntity;
@@ -66,7 +67,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                 </Badge>
             </div>
             <SalePaymentDetailModal />
-            <SaleTicketModal saleId={sale?.saleId ?? BigInt(0)} />
+            <SaleReprintTicketModal saleId={sale?.saleId ?? BigInt(0)} />
             <FloatMessage 
                 {...floatMessageState} />
         </div>
