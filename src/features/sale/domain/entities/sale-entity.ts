@@ -14,6 +14,8 @@ export interface SaleEntity extends BaseEntity {
     subTotalAmount: number;
     discountAmount: number;
     taxAmount: number;
+    inAmount: number;
+    outAmount: number;
     totalAmount: number;
     status: SaleStatusEnum;
     notes: string |null;

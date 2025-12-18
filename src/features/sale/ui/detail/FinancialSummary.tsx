@@ -27,7 +27,14 @@ const FinancialSummary = ({ data }: Props) => {
                         -{numberMoneyFormat(data.discountAmount)}
                     </span>
                 </div>
-
+                <div className="flex justify-between items-center py-1">
+                    <span className="text-gray-700">Monto recibido:</span>
+                    <span className="font-medium text-gray-800">{numberMoneyFormat(data.inAmount)}</span>
+                </div>
+                <div className="flex justify-between items-center py-1">
+                    <span className="text-gray-700">Cambio:</span>
+                    <span className="font-medium text-gray-800">{numberMoneyFormat(data.outAmount)}</span>
+                </div>
                 <div className="pt-3 mt-3 border-t border-gray-300 flex justify-between items-center">
                     <span className="text-xl font-bold text-gray-800">TOTAL FINAL:</span>
                     <span className="text-3xl font-extrabold text-blue-700">
