@@ -215,7 +215,7 @@ const useRegisterCompleteProduct = () => {
         
         reset({
             inventoryItems: defaultInventoryItems,
-            lotUnitPurchases: defaultLotUnitPurchases,
+            lotUnitPurchases: [],
             brandId: '',
             categoryId: '',
             description: '',
@@ -240,7 +240,7 @@ const useRegisterCompleteProduct = () => {
         });
         
         setInventoryItems(defaultInventoryItems);
-        setLotUnitPurchases(defaultLotUnitPurchases);
+        setLotUnitPurchases([]);
     }, [reset]);
 
     const [lotUnitPurchases, setLotUnitPurchases] = useState<LotUnitPurchaseType[]>([]);
@@ -380,11 +380,11 @@ const useRegisterCompleteProduct = () => {
         const defaultLotUnitPurchases = [{ purchasePrice: 0, purchaseQuantity: 0, unit: "", unitsInPurchaseUnit: 0 }];
         const defaultInventoryItems = [{ location: "", quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0, internalBarCode: "" }];
         
-        setLotUnitPurchases(defaultLotUnitPurchases);
+        setLotUnitPurchases([]);
         setInventoryItems(defaultInventoryItems);
         
         reset({
-            inventoryItems: defaultInventoryItems, lotUnitPurchases: defaultLotUnitPurchases,
+            inventoryItems: defaultInventoryItems, lotUnitPurchases: [],
             brandId: '', categoryId: '',description: '', expirationDate: new Date(), imageUrl: null, initialQuantity: 0,
             internalBarCode: '', universalBarCode: '', manufacturingDate: new Date(), maxStockBranch: 0, minStockBranch: 0,
             minStockGlobal: 0, name: '', purchasePrice: 0, purchaseUnit: '', receivedDate: new Date(), salePriceMany: 0, salePriceOne: 0,
