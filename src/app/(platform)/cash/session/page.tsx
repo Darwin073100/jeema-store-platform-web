@@ -39,8 +39,7 @@ export default async function SaleInformationPage() {
                 <CashMovementsOptios
                     cashSessions={data} />
                 <div className="hidden md:block">
-                    <CashMovementsDesktopTable
-                        cashSessions={data} />
+                    <CashMovementsDesktopTable />
                 </div>
                 <div className="md:hidden">
                     {/* <SaleCardList

@@ -163,3 +163,12 @@ export const formatDateTimeForInput = (date: Date | string | null | undefined): 
         return '';
     }
 };
+
+export function getLocalDate() {
+    const now = new Date();
+    // getTimezoneOffset devuelve la diferencia en minutos
+    const offset = now.getTimezoneOffset(); 
+    const localDate = new Date(now.getTime() - offset);
+    
+    return localDate;
+}

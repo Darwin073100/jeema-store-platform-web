@@ -2,24 +2,19 @@
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { TextInput } from '@/shared/ui/components/inputs';
-import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
-import { IoPersonAdd } from 'react-icons/io5';
+import React from 'react'
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { CashSessionEntity } from '../../domain/entities/cash-session.entity';
 import { FaFilter } from 'react-icons/fa';
+import { useCashMovementsOptions } from '../hooks/useCashMovementsOptions';
+import { useCashStore } from '../../infraestructure/stores/cash.store';
+import { LabelInput } from '@/shared/ui/components/labels';
 interface Props {
     cashSessions: CashSessionEntity[]
 }
-const CashMovementsOptios = ({ cashSessions }: Props) => {
-    const router = useRouter();
-    const [loading, setLoading] = React.useState(false);
-
-    const handleNewEmployee = () => {
-        setLoading(true);
-        router.push('/customers/new');
-    }
+const CashMovementsOptios = ({ cashSessions: data }: Props) => {
+    const { loading, errors, handleSubmit, onSubmit, register } = useCashMovementsOptions({data});
+    const { cashSessions, dateFinish, dateInit } = useCashStore();
 
     return (
         <>
@@ -35,24 +30,32 @@ const CashMovementsOptios = ({ cashSessions }: Props) => {
                     </div>
                 </div>
             </div>
-            <div className='flex gap-4'>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4'>
                 <div>
-                    Fecha de inicio
+                    <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.'/>
                     <TextInput
-                    type='date' />
+                        {...register('dateInit')}
+                        error={!!errors.dateInit?.message}
+                        errorMessage={errors.dateInit?.message}
+                        name='dateInit'
+                        type='date' />
                 </div>
                 <div>
-                    Fecha de límite
+                    <LabelInput value='Fecha de límite' description='Si borras la fécha límite tomará la del día en transcurso por default.'/>
                     <TextInput
-                    type='date' />
+                        {...register('dateFinish')}
+                        error={!!errors.dateFinish?.message}
+                        errorMessage={errors.dateFinish?.message}
+                        name='dateFinish'
+                        type='date' />
                 </div>
                 <div className='flex items-end'>
-                    <Button disabled={loading} color='yellow'>
+                    <Button color='yellow'>
                         <FaFilter />
                         Aplicar filtro
                     </Button>
                 </div>
-            </div>
+            </form>
         </>
     )
 }

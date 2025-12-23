@@ -3,6 +3,12 @@ import { CashRegisterEntity } from "../../domain/entities/cash-register.entity";
 import { CashSessionEntity } from "../../domain/entities/cash-session.entity";
 
 interface State {
+    cashSessions: CashSessionEntity[],
+    setCashSessions: (entities: CashSessionEntity[])=> void,
+    dateInit: Date | null,
+    dateFinish: Date | null,
+    setDateInit: (date: Date | null)=> void,
+    setDateFinish: (date: Date | null)=> void,
     totalIn: number,
     totalOut: number,
     totalClose: number,
@@ -27,6 +33,9 @@ const initialState = {
     totalOut: 0,
     totalClose: 0,
     startBalance: 0,
+    cashSessions: [],
+    dateInit: null,
+    dateFinish: null,
 }
 
 export const useCashStore = create<State>()((set, get) => ({
@@ -55,5 +64,20 @@ export const useCashStore = create<State>()((set, get) => ({
     },
     setDiference: (payload: number)=> {
         set(()=>({diference: payload}));
-    }
+    },
+    setCashSessions(entities) {
+        set(()=>({
+            cashSessions: entities
+        }));
+    },
+    setDateInit(date) {
+        set(()=>({
+            dateInit: date
+        }));
+    },
+    setDateFinish(date) {
+        set(()=>({
+            dateFinish: date
+        }));
+    },
 }));
