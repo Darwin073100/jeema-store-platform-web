@@ -16,7 +16,7 @@ import { ReturnsEntity } from '../../domain/entities/returns.entity';
 interface Props{
     returns: ReturnsEntity[]
 }
-const ProductActionsBar = ({ returns }:Props) => {
+const ReturnsActionsBar = ({ returns }:Props) => {
     const [loading, setLoading] = useState(false);
     const newProductPage = ()=> {
         setLoading(true);
@@ -43,10 +43,6 @@ const ProductActionsBar = ({ returns }:Props) => {
     return (
         <div className="flex justify-between gap-2">
             <div className='flex items-center gap-2'>
-                <Button color="blue" size="md" onClick={()=> newProductPage()}>
-                    {loading? <Spinner/>: <IoMdAdd size={14}/>}
-                    <span className='max-sm:hidden'>Nuevo Producto</span>
-                </Button>
             </div>
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
@@ -63,4 +59,4 @@ const ProductActionsBar = ({ returns }:Props) => {
     )
 }
 
-export { ProductActionsBar };
+export { ReturnsActionsBar };
