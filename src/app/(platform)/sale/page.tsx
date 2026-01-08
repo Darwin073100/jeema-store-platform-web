@@ -1,4 +1,5 @@
 import { findAllSaleByBranchOfficeAction } from "@/features/sale/actions/find-all-sale-by-branch-office.action";
+import { SaleActionsBar } from "@/features/sale/ui/SaleActionsBar";
 import { SaleCardList } from "@/features/sale/ui/SaleCardList";
 import { SaleDesktopTable } from "@/features/sale/ui/SaleDesktopTable";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
@@ -18,6 +19,8 @@ export default async function(){
     return (
         <ProtectedRoute>
             <TemplateHeader title="Ventas" detail="Vista general de ventas" breadcrumbItems={breadcrumbItems}>
+                <SaleActionsBar
+                    sales={currentSales}/>
                 <div className="hidden md:block">
                     <SaleDesktopTable
                         sales={currentSales}/>

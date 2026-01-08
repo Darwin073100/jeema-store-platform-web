@@ -5,4 +5,5 @@ import { ReturnsProductsDTO } from "../../application/dtos/returns-products.dto"
 
 export interface ReturnsRepository {
     saveAll(dto: ReturnsProductsDTO):Promise<Result<ReturnsEntity[], ErrorEntity>>;
+    findAllByBranchOfficeId(branchOfficeId: bigint): Promise<Result<{returns: ReturnsEntity[]}, ErrorEntity>>;
 }

@@ -11,7 +11,6 @@ export class ReturnsProductsUseCase {
     ) { }
 
     async execute(dto: ReturnsProductsDTO) {
-        console.log(dto);
         if (dto.branchOfficeId <= BigInt(0)) {
             return Result.failure<ErrorEntity>({
                 error: 'No pudimos realizar la devolución.',

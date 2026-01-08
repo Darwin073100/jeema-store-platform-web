@@ -26,5 +26,15 @@ export class FetchReturnsRepository implements ReturnsRepository{
             return handleError(error, 'return.saveAll');
         }
     }
+    async findAllByBranchOfficeId(branchOfficeId: bigint): Promise<Result<{returns: ReturnsEntity[]}, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<{returns: ReturnsEntity[]}>(
+                this.apiConfig.getEndpointUrl(`/returns/all/branch-offices/${branchOfficeId.toString()}`),
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'return.findAllByBranchOfficeId');
+        }
+    }
 
 }

@@ -7,8 +7,9 @@ import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { FiExternalLink } from 'react-icons/fi';
 import { useSaleListBranch } from '../hooks/useSaleList';
-import { BasicTable, BCol, BRow, BTableEmpty } from '@/shared/ui/components/tables/BasicTable';
+import { BCol, BRow, BTableEmpty } from '@/shared/ui/components/tables/BasicTable';
 import { useRouter } from 'next/navigation';
+import { PrimaryTable } from '@/shared/ui/components/tables/PrimaryTable';
 
 interface Props {
     sales: SaleEntity[]
@@ -19,7 +20,7 @@ const SaleDesktopTable = ({ sales }: Props) => {
     const { handleBadgeType } = useSaleListBranch();
     const router = useRouter();
     return (
-        <BasicTable theadList={tableColumns} isActions={true}>
+        <PrimaryTable theadList={tableColumns} isActions={true}>
             {/* Cuerpo de la tabla */}
             {sales.map(sale => (
                 <BRow key={sale.saleId.toString()} >
@@ -43,7 +44,7 @@ const SaleDesktopTable = ({ sales }: Props) => {
             {(!sales || sales.length === 0) && (
                 <BTableEmpty colsNumber={tableColumns.length + 1} />
             )}
-        </BasicTable>
+        </PrimaryTable>
     )
 }
 
