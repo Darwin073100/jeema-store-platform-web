@@ -2,11 +2,15 @@
 import React from 'react'
 import { SaleEntity } from '../../domain/entities/sale-entity'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
+import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton'
+import { IoReturnDownForward } from 'react-icons/io5'
+import { ReturnsPoductsModal } from './ReturnsProductsModal'
+import { useReturnsProducts } from '../../hooks/details/useReturnsProducts'
 interface Props {
     data: SaleEntity
 }
 const SaleDetailList = ({ data }: Props) => {
-
+    const { handleSelectDetailToReturn } = useReturnsProducts();
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full text-sm text-left">
@@ -19,13 +23,14 @@ const SaleDetailList = ({ data }: Props) => {
                         <th scope="col" className="px-2 py-3 text-center text-orange-600">P. Unitario</th>
                         <th scope="col" className="px-2 py-3 text-center">Descuento</th>
                         <th scope="col" className="px-2 py-3 text-center">Total</th>
+                        <th scope="col" className="px-2 py-3 text-center">Dev.</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {data.saleDetails?.map(item => (
+                    {data.saleDetails?.map(item => (<>
                         <tr
                             key={item.saleDetailId}
-                            className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors duration-150" // Efecto hover sutil
+                            className="bg-white hover:bg-blue-50/30 transition-colors duration-150" // Efecto hover sutil
                         >
                             <td className="px-2 py-3">
                                 <p className="font-semibold text-gray-800">{item.productNameAtSale}</p>
@@ -48,10 +53,37 @@ const SaleDetailList = ({ data }: Props) => {
                             <td className="px-2 py-3 text-center font-bold text-gray-900">
                                 {numberMoneyFormat(item.subtotalItem)}
                             </td>
+                            <td className="px-2 py-3 text-center font-bold text-gray-900">
+                                <RoundedButton onClick={()=> handleSelectDetailToReturn(item)} title='Devolución de producto' color='yellow'>
+                                    <IoReturnDownForward/>
+                                </RoundedButton>
+                            </td>
                         </tr>
-                    ))}
+                        <tr>
+                            <td colSpan={8}>{ item.returns.map((subItem, i)=> (
+                                <div className='flex flex-col w-full p-2 pl-8 mb-2 bg-amber-100 border-2 border-amber-500 rounded-2xl'>
+                                    <div className='flex gap-4'>
+                                        <h1 className='uppercase font-bold'>{`${i+1} - Devolución`}</h1>
+                                        <div>
+                                            <span>Cantidad devuelta:</span>
+                                            <span className='font-bold'>{` ${subItem.quantityReturn}`}</span>
+                                        </div>
+                                        <div>
+                                            <span>Dinéro devuelto:</span>
+                                            <span className='font-bold'>{` ${numberMoneyFormat(subItem.amountReturn)}`}</span>
+                                        </div>
+                                    </div>
+                                    <div className='text-gray-800 text-sm'>
+                                        <span>Ejecutó: </span>
+                                        <span className='font-semibold'>{` ${subItem.employee?.firstName} ${subItem.employee?.lastName}`}</span>
+                                    </div>
+                                </div>
+                            ))}</td>
+                        </tr>
+                    </>))}
                 </tbody>
             </table>
+            <ReturnsPoductsModal/>
         </div>
     )
 }

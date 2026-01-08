@@ -63,7 +63,7 @@ const SaleInventoryListModal = () => {
                     {/* <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
                       {item.inventory?.internalBarCode}
                     </th> */}
-                    <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
+                    <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold min-w-[200px]">
                       {item.inventory?.product?.name}
                     </th>
                     <td className="px-5 py-1">
