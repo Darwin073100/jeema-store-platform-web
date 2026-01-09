@@ -6,6 +6,7 @@ import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton'
 import { IoReturnDownForward } from 'react-icons/io5'
 import { ReturnsPoductsModal } from './ReturnsProductsModal'
 import { useReturnsProducts } from '../../hooks/details/useReturnsProducts'
+import { SaleStatusEnum } from '../../domain/enums/sale-status.enum'
 interface Props {
     data: SaleEntity
 }
@@ -54,9 +55,13 @@ const SaleDetailList = ({ data }: Props) => {
                                 {numberMoneyFormat(item.subtotalItem)}
                             </td>
                             <td className="px-2 py-3 text-center font-bold text-gray-900">
-                                <RoundedButton onClick={()=> handleSelectDetailToReturn(item)} title='Devolución de producto' color='yellow'>
-                                    <IoReturnDownForward/>
-                                </RoundedButton>
+                                { data.status === SaleStatusEnum.COMPLETED && 
+                                    (
+                                        <RoundedButton onClick={()=> handleSelectDetailToReturn(item)} title='Devolución de producto' color='yellow'>
+                                            <IoReturnDownForward/>
+                                        </RoundedButton>
+                                    )
+                                }
                             </td>
                         </tr>
                         <tr>

@@ -1,8 +1,4 @@
-import { findCashMovementsByBranchOfficeIdAction } from "@/features/cash/actions/find-cash-movements-by-branch-office-id.action";
-import { CashMovementsDesktopTable } from "@/features/cash/presentation/ui/CashMovementsDesktopTable";
-import { CashMovementsOptios } from "@/features/cash/presentation/ui/CashMovementsOptios";
 import { findAllManyFilterTransactionsAction } from "@/features/transaction/actions/find-cash-movements-by-branch-office-id.action";
-import { ManyFilterTransactionsDTO } from "@/features/transaction/application/dtos/many-filter-transactions.dto";
 import { TransactionMovementsDesktopTable } from "@/features/transaction/ui/TransactionMovementsDesktopTable";
 import { TransactionMovementsOptios } from "@/features/transaction/ui/TransactionMovementsOptios";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
@@ -38,7 +34,7 @@ export default async function SaleInformationPage() {
 
     return (
         <ProtectedRoute>
-            <TemplateHeader title='Movimeintos Financieros' detail="Consulta los movimientos de tu establecimiento." breadcrumbItems={breadcrumbItems}>
+            <TemplateHeader title='Movimientos Financieros' detail="Consulta los movimientos de tu establecimiento." breadcrumbItems={breadcrumbItems}>
                 <TransactionMovementsOptios
                     transactions={data} />
                 <div className="hidden md:block">

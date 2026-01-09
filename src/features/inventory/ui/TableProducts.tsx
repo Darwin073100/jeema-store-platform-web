@@ -3,11 +3,11 @@ import { useMemo, useState } from "react";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductStore } from "@/features/product/infraestructure/stores/product.store";
 import { useRouter } from "next/navigation";
-import { BasicTable, BCol, BRow, BTableEmpty } from "@/shared/ui/components/tables/BasicTable";
 import { Button } from "@/shared/ui/components/buttons";
 import { FiExternalLink } from "react-icons/fi";
 import { InventoryItemEntity } from "../domain/entities/inventory-item.entity";
 import { Spinner } from "@/shared/ui/components/loadings/Spinner";
+import { PCol, PrimaryTable, PRow, PTableEmpty } from "@/shared/ui/components/tables/PrimaryTable";
 
 interface TableProductProps {
     productList: ProductEntity[];
@@ -82,18 +82,18 @@ export function TableProduct({ productList = [] }: TableProductProps) {
 
     return (
         <div>
-            <BasicTable theadList={head} isActions={true}>
+            <PrimaryTable theadList={head} isActions={true}>
                 {finalProducts.map(item => (
-                    <BRow key={item?.productId || Math.random()}>
-                        <BCol>{item?.universalBarCode || '-'}</BCol>
-                        <BCol>{item?.name || '-'}</BCol>
-                        <BCol>{totalStock(item?.inventory?.inventoryItems ?? [])}</BCol>
-                        {/* <BCol>{item?.inventory?.inventoryItems?.[0]?.location || '-'}</BCol> */}
-                        {/* <BCol>${item?.lots?.[0]?.purchasePrice || '0.00'}</BCol> */}
-                        <BCol>${item?.inventory?.salePriceOne || '0.00'}</BCol>
-                        <BCol>${item?.inventory?.salePriceMany || '0.00'}</BCol>
-                        <BCol>{item?.category?.name || '-'}</BCol>
-                        <BCol className="flex justify-end">
+                    <PRow key={item?.productId || Math.random()}>
+                        <PCol>{item?.universalBarCode || '-'}</PCol>
+                        <PCol>{item?.name || '-'}</PCol>
+                        <PCol>{totalStock(item?.inventory?.inventoryItems ?? [])}</PCol>
+                        {/* <PCol>{item?.inventory?.inventoryItems?.[0]?.location || '-'}</PCol> */}
+                        {/* <PCol>${item?.lots?.[0]?.purchasePrice || '0.00'}</PCol> */}
+                        <PCol>${item?.inventory?.salePriceOne || '0.00'}</PCol>
+                        <PCol>${item?.inventory?.salePriceMany || '0.00'}</PCol>
+                        <PCol>{item?.category?.name || '-'}</PCol>
+                        <PCol className="flex justify-end">
                             <Button
                                 size="sm"
                                 color="yellow"
@@ -105,13 +105,13 @@ export function TableProduct({ productList = [] }: TableProductProps) {
                                     :<FiExternalLink size={14} /> }
                                 <span>Detalles</span>
                             </Button>
-                        </BCol>
-                    </BRow>
+                        </PCol>
+                    </PRow>
                 ))}
                 {(!finalProducts || finalProducts.length === 0) && (
-                    <BTableEmpty colsNumber={head.length + 1} />
+                    <PTableEmpty colsNumber={head.length + 1} />
                 )}
-            </BasicTable>
+            </PrimaryTable>
         </div>
     )
 }

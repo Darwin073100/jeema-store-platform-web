@@ -1,6 +1,5 @@
 'use client';
 import { Button } from '@/shared/ui/components/buttons'
-import { BasicTable, BCol, BRow } from '@/shared/ui/components/tables/BasicTable'
 import React from 'react'
 import { AiFillProfile } from 'react-icons/ai'
 import { useRouter } from 'next/navigation';
@@ -8,6 +7,7 @@ import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { TransactionEntity } from '../domain/entities/transaction.entity';
+import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
 interface Props {
     transactions: TransactionEntity[]
 }
@@ -16,24 +16,24 @@ const TransactionMovementsDesktopTable = ({ transactions }: Props) => {
     const headTable = ['Folio', 'Monto', 'Tipo', 'F. Corte', 'Empleado', 'Sucursal', 'Fecha'];
 
     return (
-        <BasicTable theadList={headTable}>
+        <PrimaryTable theadList={headTable}>
             {transactions.map(item => (
-                <BRow key={item.transactionId}>
-                    <BCol>{item.transactionId}</BCol>
-                    <BCol>{numberMoneyFormat(item.amount ?? 0)}</BCol>
-                    <BCol><Badge type={item.transactionType?.accountType==='Ingreso'? 'green': 'red'}>{item.transactionType?.accountType}</Badge></BCol>
-                    <BCol>{item.description}</BCol>
-                    <BCol>{item.employee?.firstName}</BCol>
-                    <BCol>{item.branchOffice?.name}</BCol>
-                    <BCol>{formatDateShort(item.createdAt)}</BCol>
-                    <BCol className="text-right flex justify-end">
+                <PRow key={item.transactionId}>
+                    <PCol>{item.transactionId}</PCol>
+                    <PCol>{numberMoneyFormat(item.amount ?? 0)}</PCol>
+                    <PCol><Badge type={item.transactionType?.accountType==='Ingreso'? 'green': 'red'}>{item.transactionType?.accountType}</Badge></PCol>
+                    <PCol>{item.description}</PCol>
+                    <PCol>{item.employee?.firstName}</PCol>
+                    <PCol>{item.branchOffice?.name}</PCol>
+                    <PCol>{formatDateShort(item.createdAt)}</PCol>
+                    <PCol className="text-right flex justify-end">
                         <Button onClick={()=> router.push(`session/${item.transactionId}`)} color='yellow' size='sm' title='Da click para ver el perfil del cliente.'>
                             <AiFillProfile size={14} /><span>Info.</span>
                         </Button>
-                    </BCol>
-                </BRow>
+                    </PCol>
+                </PRow>
             ))}
-        </BasicTable>
+        </PrimaryTable>
     )
 }
 

@@ -1,12 +1,12 @@
 'use client'
 import React, { useState } from 'react'
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
-import { BasicTable, BCol, BRow } from '@/shared/ui/components/tables/BasicTable';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { AiFillProfile } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
 interface Props {
     employees: EmployeeEntity[]
 }
@@ -19,24 +19,24 @@ const EmployeeDesktopTable = ({ employees }: Props) => {
         router.push(`/configurations/employees/${id.toString()}`);
     }
     return (
-        <BasicTable theadList={heads} isActions={true}>
+        <PrimaryTable theadList={heads} isActions={true}>
             {employees.map(item => (<>
-                <BRow>
-                    <BCol>{item.employeeId}</BCol>
-                    <BCol>{`${item.firstName} ${item.lastName}`}</BCol>
-                    <BCol>{item.phoneNumber}</BCol>
-                    <BCol>{item.email}</BCol>
-                    <BCol><Badge type="green">{item.employeeRole?.name}</Badge></BCol>
-                    <BCol>{item.entryTime}</BCol>
-                    <BCol>{item.exitTime}</BCol>
-                    <BCol className="text-right flex justify-end">
+                <PRow>
+                    <PCol>{item.employeeId}</PCol>
+                    <PCol>{`${item.firstName} ${item.lastName}`}</PCol>
+                    <PCol>{item.phoneNumber}</PCol>
+                    <PCol>{item.email}</PCol>
+                    <PCol><Badge type="green">{item.employeeRole?.name}</Badge></PCol>
+                    <PCol>{item.entryTime}</PCol>
+                    <PCol>{item.exitTime}</PCol>
+                    <PCol className="text-right flex justify-end">
                         <Button onClick={() => handleRouter(item.employeeId)} color='yellow' size='sm' title='Da click para ver el perfil del empleado.'>
                             {employeeId===item.employeeId ? <Spinner size={14} /> : <AiFillProfile size={14} />}<span>Perfil</span>
                         </Button>
-                    </BCol>
-                </BRow>
+                    </PCol>
+                </PRow>
             </>))}
-        </BasicTable>
+        </PrimaryTable>
     )
 }
 

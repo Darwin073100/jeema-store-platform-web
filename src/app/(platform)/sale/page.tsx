@@ -4,6 +4,8 @@ import { SaleCardList } from "@/features/sale/ui/SaleCardList";
 import { SaleDesktopTable } from "@/features/sale/ui/SaleDesktopTable";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
+export const revalidate = 0; // Revalidar en cada request
+export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
 
 export const metadata = {
     title: 'Ventas'
