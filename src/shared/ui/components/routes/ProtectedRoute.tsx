@@ -51,7 +51,7 @@ export function ProtectedRoute({
 
   if (!hasRequiredRole || !hasRequiredPermission) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="w-full flex items-center justify-center min-h-screen">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-red-600 mb-4">Acceso Denegado</h2>
           <p className="text-gray-600">No tienes los permisos necesarios para acceder a esta página.</p>

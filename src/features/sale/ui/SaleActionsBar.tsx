@@ -11,6 +11,7 @@ import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { SaleEntity } from '../domain/entities/sale-entity';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 import { IoReturnDownBack } from 'react-icons/io5';
+import { HideElement } from '@/features/auth/ui/HideElement';
 interface Props{
     sales: SaleEntity[]
 }
@@ -47,10 +48,12 @@ const SaleActionsBar = ({ sales }:Props) => {
             </div>
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
-                    <Button disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
-                        <PiMicrosoftExcelLogoFill />
-                        <span className='max-md:hidden'>Exportar a Excel</span>
-                    </Button>
+                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                        <Button disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
+                            <PiMicrosoftExcelLogoFill />
+                            <span className='max-md:hidden'>Exportar a Excel</span>
+                        </Button>
+                    </HideElement>
                     <div>
                         Ventas<Badge>{sales.length}</Badge>
                     </div>

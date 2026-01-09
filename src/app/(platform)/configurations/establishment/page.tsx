@@ -12,7 +12,7 @@ export default async function Dashboard() {
   const establishment = data.value ?? null;
 
   return (
-    <ProtectedRoute>
+    <ProtectedRoute requiredRoles={['global_admin','establishment_manager', 'branch_office_management']}>
       <TemplateHeader title={establishment?.name ?? 'Establecimiento'} detail="Vista general del establecimeinto." breadcrumbItems={[]}>
             {/* Información del Workspace */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">

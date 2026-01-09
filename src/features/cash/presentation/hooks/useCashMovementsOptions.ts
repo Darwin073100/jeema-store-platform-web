@@ -34,6 +34,14 @@ const useCashMovementsOptions = ({ data }: Props) => {
         setCashSessions(data);
     }, [data]);
 
+    const cashSessionTotalAmount = ()=> {
+        let total = 0;
+        for(let i = 0; i < cashSessions.length; i++){
+            total = total + (cashSessions[i].actualBalance ?? 0);
+        }
+        return total;
+    }
+
     const onSubmit = (info: FormData) => {
         // 1. Clonamos para no modificar las fechas originales y "limpiamos" el tiempo
         const init = new Date(info.dateInit ?? new Date('1970-01-01'));
@@ -57,6 +65,7 @@ const useCashMovementsOptions = ({ data }: Props) => {
     }
 
     return {
+        cashSessionTotalAmount,
         loading,
         cashSessions,
         setCashSessions,

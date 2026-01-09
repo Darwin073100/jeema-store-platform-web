@@ -21,7 +21,7 @@ export default async function(){
     const data = userResponse?.value?.users ?? [];
 
     return (
-        <ProtectedRoute>
+        <ProtectedRoute requiredRoles={['global_admin','establishment_manager', 'branch_office_management']}>
             <TemplateHeader title="Usuarios del sistema" detail="Lista de los usuarios de este establecimeinto." breadcrumbItems={breadCrumbItems}>
                 <div className="flex gap-4 items-center justify-between">
                     <Button><IoPersonAdd /> Nuevo usuario</Button>

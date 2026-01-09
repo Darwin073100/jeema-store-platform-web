@@ -19,7 +19,7 @@ export default async function(){
         }
     ]
     return (
-        <ProtectedRoute>
+        <ProtectedRoute requiredRoles={['global_admin','establishment_manager', 'branch_office_management']}>
             <TemplateHeader title="Ventas" detail="Vista general de ventas" breadcrumbItems={breadcrumbItems}>
                 <SaleActionsBar
                     sales={currentSales}/>

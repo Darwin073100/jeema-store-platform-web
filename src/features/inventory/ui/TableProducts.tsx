@@ -84,7 +84,7 @@ export function TableProduct({ productList = [] }: TableProductProps) {
         <div>
             <PrimaryTable theadList={head} isActions={true}>
                 {finalProducts.map(item => (
-                    <PRow key={item?.productId || Math.random()}>
+                    <PRow key={item?.productId || Math.random()} className={totalStock(item?.inventory?.inventoryItems ?? [])<= 0? 'text-red-500 bg-red-200': 'text-black bg-white'}>
                         <PCol>{item?.universalBarCode || '-'}</PCol>
                         <PCol>{item?.name || '-'}</PCol>
                         <PCol>{totalStock(item?.inventory?.inventoryItems ?? [])}</PCol>

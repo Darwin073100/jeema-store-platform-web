@@ -34,7 +34,7 @@ export default async function SaleInformationPage() {
     ]
 
     return (
-        <ProtectedRoute>
+        <ProtectedRoute >
             <TemplateHeader title='Movimeintos' detail="Consulta las aperturas y cierres de caja." breadcrumbItems={breadcrumbItems}>
                 <CashMovementsOptios
                     cashSessions={data} />

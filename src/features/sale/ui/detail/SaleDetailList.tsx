@@ -7,6 +7,7 @@ import { IoReturnDownForward } from 'react-icons/io5'
 import { ReturnsPoductsModal } from './ReturnsProductsModal'
 import { useReturnsProducts } from '../../hooks/details/useReturnsProducts'
 import { SaleStatusEnum } from '../../domain/enums/sale-status.enum'
+import { HideElement } from '@/features/auth/ui/HideElement'
 interface Props {
     data: SaleEntity
 }
@@ -55,13 +56,15 @@ const SaleDetailList = ({ data }: Props) => {
                                 {numberMoneyFormat(item.subtotalItem)}
                             </td>
                             <td className="px-2 py-3 text-center font-bold text-gray-900">
-                                { data.status === SaleStatusEnum.COMPLETED && 
-                                    (
-                                        <RoundedButton onClick={()=> handleSelectDetailToReturn(item)} title='Devolución de producto' color='yellow'>
-                                            <IoReturnDownForward/>
-                                        </RoundedButton>
-                                    )
-                                }
+                                <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                                    { data.status === SaleStatusEnum.COMPLETED && 
+                                        (
+                                            <RoundedButton onClick={()=> handleSelectDetailToReturn(item)} title='Devolución de producto' color='yellow'>
+                                                <IoReturnDownForward/>
+                                            </RoundedButton>
+                                        )
+                                    }
+                                </HideElement>
                             </td>
                         </tr>
                         <tr>

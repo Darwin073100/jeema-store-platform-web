@@ -11,6 +11,7 @@ import { RegisterCashRegisterModal } from './RegisterCashRegisterModal';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { GrTransaction } from "react-icons/gr";
 import { useRouter } from 'next/navigation';
+import { HideElement } from '@/features/auth/ui/HideElement';
 interface Props {
     cashes: CashRegisterEntity[]
 }
@@ -22,14 +23,16 @@ const CashOptios = ({ cashes }: Props) => {
         <>
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
-                    <ButtonOutLine onClick={()=> openCashModal('registerCashRegister')}>
-                        <LiaCashRegisterSolid />
-                        Agregar nueva caja
-                    </ButtonOutLine>
-                    <ButtonOutLine color='green' onClick={()=> router.push('cash/session')}>
-                        <GrTransaction />
-                        Ver movimientos
-                    </ButtonOutLine>
+                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                        <ButtonOutLine onClick={()=> openCashModal('registerCashRegister')}>
+                            <LiaCashRegisterSolid />
+                            Agregar nueva caja
+                        </ButtonOutLine>
+                        <ButtonOutLine color='green' onClick={()=> router.push('cash/session')}>
+                            <GrTransaction />
+                            Ver movimientos
+                        </ButtonOutLine>
+                    </HideElement>
                 </div>
                 <div className='flex gap-4 items-center'>
                     <Button color='green'>

@@ -4,6 +4,7 @@ import { useWorkspace } from '@/shared/hooks/useAuth';
 import { FcCollaboration, FcComboChart, FcConferenceCall, FcDepartment, FcReadingEbook, FcSerialTasks, FcSettings} from 'react-icons/fc';
 import { ContainerConfig } from './ContainerConfig';
 import { ItemConfig } from './ItemConfig';
+import { HideElement } from '@/features/auth/ui/HideElement';
 
 const ConfigurationOptions = () => {
     const { employee } = useWorkspace();
@@ -15,22 +16,26 @@ const ConfigurationOptions = () => {
                     <h2 className="text-lg">General</h2>
                 </div>
                 <ContainerConfig>
-                    <ItemConfig link='/configurations/establishment'>
-                        <FcDepartment className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                        <span>Establecimiento</span>
-                    </ItemConfig>
+                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                        <ItemConfig link='/configurations/establishment'>
+                            <FcDepartment className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
+                            <span>Establecimiento</span>
+                        </ItemConfig>
+                    </HideElement>
                     <ItemConfig link={`configurations/employees/${employee?.employeeId}`}>
                         <FcReadingEbook className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
                         <span>Mi perfil</span>
                     </ItemConfig>
-                    <ItemConfig link='/configurations/users'>
-                        <FcConferenceCall className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                        <span>Usuarios</span>
-                    </ItemConfig>
-                    <ItemConfig link='/configurations/employees'>
-                        <FcCollaboration className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                        <span>Empleados</span>
-                    </ItemConfig>
+                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                        <ItemConfig link='/configurations/users'>
+                            <FcConferenceCall className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
+                            <span>Usuarios</span>
+                        </ItemConfig>
+                        <ItemConfig link='/configurations/employees'>
+                            <FcCollaboration className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
+                            <span>Empleados</span>
+                        </ItemConfig>
+                    </HideElement>
                 </ContainerConfig>
             </div>
             <div className="w-full">
@@ -39,10 +44,12 @@ const ConfigurationOptions = () => {
                     <h2 className="text-lg">Información financiera</h2>
                 </div>
                 <ContainerConfig>
-                    <ItemConfig link='/configurations/transactions'>
-                        <FcComboChart className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                        <span>Movimientos Generales</span>
-                    </ItemConfig>
+                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                        <ItemConfig link='/configurations/transactions'>
+                            <FcComboChart className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
+                            <span>Movimientos Generales</span>
+                        </ItemConfig>
+                    </HideElement>
                 </ContainerConfig>
             </div>
         </>

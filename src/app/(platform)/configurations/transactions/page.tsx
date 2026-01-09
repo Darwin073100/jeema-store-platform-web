@@ -33,7 +33,7 @@ export default async function SaleInformationPage() {
     ]
 
     return (
-        <ProtectedRoute>
+        <ProtectedRoute requiredRoles={['global_admin','establishment_manager', 'branch_office_management']}>
             <TemplateHeader title='Movimientos Financieros' detail="Consulta los movimientos de tu establecimiento." breadcrumbItems={breadcrumbItems}>
                 <TransactionMovementsOptios
                     transactions={data} />

@@ -18,7 +18,7 @@ export default async function(){
     const data = userResponse?.value?.employees ?? [];
 
     return (
-        <ProtectedRoute>
+        <ProtectedRoute requiredRoles={['global_admin','establishment_manager', 'branch_office_management']}>
             <TemplateHeader title="Empleados del establecimiento" detail="Lista de los empleados de este establecimeinto." breadcrumbItems={breadCrumbItems}>
                 <EmployeeOptios
                     employeesNo={data.length}/>

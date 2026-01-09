@@ -11,6 +11,7 @@ import { findTopProductsByBranchOfficeAction } from "@/features/product/actions/
 import { FilterTopEnum } from "@/features/product/domain/enums/filter-top-enum";
 import { numberBasicFormat, numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
 import { Badge } from "@/shared/ui/components/badges/Badge";
+import { HideElement } from "@/features/auth/ui/HideElement";
 
 const homeCards = [
   {
@@ -61,38 +62,40 @@ export default async function Home() {
           </form>
           
           <div className="w-full pt-8 grid grid-cols-2 max-md:grid-cols-1 gap-4">
-            <div>
-              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl">
-                <FcScatterPlot />
-                Más vendido por volumen
-              </h2>
-              <PrimaryTable key='topQuantity' theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
-                  {productsTopQuantity.map((item, i) =>(
-                    <PRow key={item.productId}>
-                      <PCol>{i+1}</PCol>
-                      <PCol>{item.name}</PCol>
-                      <PCol>{numberMoneyFormat(item.totalSales)}</PCol>
-                      <PCol><Badge type="green">{numberBasicFormat(item.quantitySales)}</Badge></PCol>
-                    </PRow>
+            <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+              <div>
+                <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl">
+                  <FcScatterPlot />
+                  Más vendido por volumen
+                </h2>
+                <PrimaryTable key='topQuantity' theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
+                    {productsTopQuantity.map((item, i) =>(
+                      <PRow key={item.productId}>
+                        <PCol>{i+1}</PCol>
+                        <PCol>{item.name}</PCol>
+                        <PCol>{numberMoneyFormat(item.totalSales)}</PCol>
+                        <PCol><Badge type="green">{numberBasicFormat(item.quantitySales)}</Badge></PCol>
+                      </PRow>
+                    ))}
+                </PrimaryTable>
+              </div>
+              <div>
+                <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl">
+                  <FcSalesPerformance />
+                  Más vendido por monto
+                </h2>
+                <PrimaryTable key='topTotal' theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
+                  {productsTopTotal.map((item, i) =>(
+                      <PRow key={item.productId}>
+                        <PCol>{i+1}</PCol>
+                        <PCol>{item.name}</PCol>
+                        <PCol><Badge type="green">{numberMoneyFormat(item.totalSales)}</Badge></PCol>
+                        <PCol>{numberBasicFormat(item.quantitySales)}</PCol>
+                      </PRow>
                   ))}
-              </PrimaryTable>
-            </div>
-            <div>
-              <h2 className="flex items-center justify-center gap-4 mb-4 uppercase text-2xl">
-                <FcSalesPerformance />
-                Más vendido por monto
-              </h2>
-              <PrimaryTable key='topTotal' theadList={['Top', 'Producto', 'Total', 'Uds']} isActions={false}>
-                {productsTopTotal.map((item, i) =>(
-                    <PRow key={item.productId}>
-                      <PCol>{i+1}</PCol>
-                      <PCol>{item.name}</PCol>
-                      <PCol><Badge type="green">{numberMoneyFormat(item.totalSales)}</Badge></PCol>
-                      <PCol>{numberBasicFormat(item.quantitySales)}</PCol>
-                    </PRow>
-                ))}
-              </PrimaryTable>
-            </div>
+                </PrimaryTable>
+              </div>
+            </HideElement>
           </div>
         </div>
       </TemplateHeader>

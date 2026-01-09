@@ -9,12 +9,16 @@ import { FaFilter } from 'react-icons/fa';
 import { useCashMovementsOptions } from '../hooks/useCashMovementsOptions';
 import { useCashStore } from '../../infraestructure/stores/cash.store';
 import { LabelInput } from '@/shared/ui/components/labels';
+import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
+import { useWorkspace } from '@/shared/hooks/useAuth';
 interface Props {
     cashSessions: CashSessionEntity[]
 }
 const CashMovementsOptios = ({ cashSessions: data }: Props) => {
-    const { loading, errors, handleSubmit, onSubmit, register } = useCashMovementsOptions({data});
+    const { loading, errors, handleSubmit, onSubmit, register, cashSessionTotalAmount } = useCashMovementsOptions({data});
     const { cashSessions, dateFinish, dateInit } = useCashStore();
+    const { workspace } = useWorkspace();
+    console.log(workspace);
 
     return (
         <>
@@ -30,32 +34,38 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
                     </div>
                 </div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4'>
-                <div>
-                    <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.'/>
-                    <TextInput
-                        {...register('dateInit')}
-                        error={!!errors.dateInit?.message}
-                        errorMessage={errors.dateInit?.message}
-                        name='dateInit'
-                        type='date' />
+            <div className='w-full flex justify-between'>
+                <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4'>
+                    <div>
+                        <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.'/>
+                        <TextInput
+                            {...register('dateInit')}
+                            error={!!errors.dateInit?.message}
+                            errorMessage={errors.dateInit?.message}
+                            name='dateInit'
+                            type='date' />
+                    </div>
+                    <div>
+                        <LabelInput value='Fecha de límite' description='Si borras la fécha límite tomará la del día en transcurso por default.'/>
+                        <TextInput
+                            {...register('dateFinish')}
+                            error={!!errors.dateFinish?.message}
+                            errorMessage={errors.dateFinish?.message}
+                            name='dateFinish'
+                            type='date' />
+                    </div>
+                    <div className='flex items-end'>
+                        <Button color='yellow'>
+                            <FaFilter />
+                            Aplicar filtro
+                        </Button>
+                    </div>
+                </form>
+                <div className='flex items-center gap-2'>
+                    <span>Total: </span>
+                    <span className='text-blue-700 font-bold text-xl'>{numberMoneyFormat(cashSessionTotalAmount())}</span>
                 </div>
-                <div>
-                    <LabelInput value='Fecha de límite' description='Si borras la fécha límite tomará la del día en transcurso por default.'/>
-                    <TextInput
-                        {...register('dateFinish')}
-                        error={!!errors.dateFinish?.message}
-                        errorMessage={errors.dateFinish?.message}
-                        name='dateFinish'
-                        type='date' />
-                </div>
-                <div className='flex items-end'>
-                    <Button color='yellow'>
-                        <FaFilter />
-                        Aplicar filtro
-                    </Button>
-                </div>
-            </form>
+            </div>
         </>
     )
 }
