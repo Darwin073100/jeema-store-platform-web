@@ -17,7 +17,6 @@ export async function findAllEmployeesByEstablishmentIdAction(){
         establishment = cookieStore.get('establishmentCookie')?.value ?? null;
         if(establishment){
             establishment = JSON.parse(establishment) as EstablishmentEntity;
-            console.log(establishment);
             const result = await useCase.execute(establishment.establishmentId);
             return {
                 ...result

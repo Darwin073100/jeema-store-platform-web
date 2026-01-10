@@ -18,7 +18,6 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
     const { loading, errors, handleSubmit, onSubmit, register, cashSessionTotalAmount } = useCashMovementsOptions({data});
     const { cashSessions, dateFinish, dateInit } = useCashStore();
     const { workspace } = useWorkspace();
-    console.log(workspace);
 
     return (
         <>

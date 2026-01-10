@@ -38,7 +38,6 @@ export class InventoryFetchRepository implements InventoryRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            console.log(error);
             return handleError(error, 'Update Inventory');
         }
     }
@@ -56,7 +55,6 @@ export class InventoryFetchRepository implements InventoryRepository {
     }
 
     async addStockItem(itemId: bigint, addQuantity: number): Promise<Result<InventoryItemEntity, ErrorEntity>> {
-        console.log('AddStockItem');
         try {
             const result = await this.httpClient.patch<InventoryItemEntity>(
                 this.apiConfig.getEndpointUrl(`/inventories/add/items/${itemId.toString()}`),
@@ -64,7 +62,6 @@ export class InventoryFetchRepository implements InventoryRepository {
             );
             return Result.success(result.data);
         } catch (error) {
-            console.log(error)
             return handleError(error, 'Update Inventory');
         }
     }

@@ -345,7 +345,7 @@ export const usePerformanceMonitoring = () => {
         const observer = new PerformanceObserver((list) => {
             list.getEntries().forEach((entry) => {
                 if (entry.entryType === 'navigation') {
-                    console.log('Page load time:', entry.duration);
+                    // Page load time: entry.duration
                 }
             });
         });

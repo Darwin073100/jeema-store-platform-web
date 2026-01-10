@@ -67,7 +67,6 @@ const ProductActionsBar = ({ products }:Props) => {
         return base;
     });
     const handleDownloadExcel = ()=> {
-        console.log(currentProducts);
         downloadXLSX(currentProducts, 'Productos');
     }
 

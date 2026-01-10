@@ -21,7 +21,6 @@ export class SaveEmployeeUseCase{
             const result = await this.repository.save(currentEmployeeDTO);
             return result;
         } catch (error) {
-            console.log(error);
             return Result.failure<ErrorEntity>({
                 error: '500: ¡Error!',
                 message: 'Error insperado',

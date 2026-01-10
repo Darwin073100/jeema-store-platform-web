@@ -22,7 +22,6 @@ export class FindBarCodeByInventoryIdUseCase {
             const result =  await this.inventoryRepository.findBarcodeByInventoryId(inventoryId);
             return result;
         } catch (error) {
-            console.log(error);
             const errorEmpty: ErrorEntity = {
                 error: 'No se encontró la etiqueta',
                 message: 'No pudimos encontrar el codigo de barras.',

@@ -33,16 +33,13 @@ export class TransactionFectchRepository implements TransactionRepository {
     async findAllManyFilter(dto: ManyFilterTransactionsDTO): Promise<Result<{transactions: TransactionEntity[]}, ErrorEntity>> {
         try {
             const httpDto = TransactionMapper.toManyFilterTransactionsHttp(dto);
-                console.log(httpDto);
             const response = await this.httpClient.post<{transactions: TransactionEntity[]}>(
                 this.apiConfig.getEndpointUrl('/transactions/filters'),
                 httpDto
             );
-            console.log(response.data.transactions);
             return Result.success(response.data);
 
         } catch (error: any) {
-            console.log(error);
             return handleError(error, 'findAllManyFilter');
         }  
     }

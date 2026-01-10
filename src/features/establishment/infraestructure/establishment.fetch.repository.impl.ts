@@ -30,7 +30,6 @@ export class EstablishmentFetchRepositoryImpl implements EstablishmentRepository
             );
             return Result.success(response.data);
         } catch (error:any) {
-            console.log(error)
             return handleError(error, 'EstablishmentFetchRepositoryImpl.findById');
         }
     }

@@ -50,7 +50,6 @@ export class InventoryItemFetchRepositoryImpl implements InventoryItemRepository
             return Result.success(result.data);
 
         } catch (error: any) {
-            console.log(error)
             return this.handleError(error, 'Update Inventory Item')
         }
     }

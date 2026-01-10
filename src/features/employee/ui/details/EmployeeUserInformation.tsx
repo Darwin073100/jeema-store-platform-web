@@ -25,10 +25,6 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
     const { openEmployeeModal, floatMessageState, loading } = useEmployeeUIStore();
     const { employee } = useWorkspace();
     const { handleDeleteUser } = useStateUser();
-    console.log(data.employeeId);
-    console.log(employee?.employeeId);
-    console.log((data?.employeeId === BigInt(employee?.employeeId ?? 0)));
-    console.log((data?.employeeId !== BigInt(employee?.employeeId ?? 0)));
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
             <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4 pb-3 border-b border-gray-100">

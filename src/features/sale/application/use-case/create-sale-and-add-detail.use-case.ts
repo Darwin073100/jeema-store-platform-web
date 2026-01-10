@@ -11,7 +11,6 @@ export class CreateSaleAndAddDetailUseCase {
     ) { }
 
     async execute(saleId: bigint, saveSaleDTO: RegisterSaleDto, addDetailDTO: AddDetailToSaleDto) {
-        console.log(saveSaleDTO, addDetailDTO, saleId);
         try {
             //Validar el dto AddDetailToSaleDto
             if(addDetailDTO.productBarCodeAtSale === '' && addDetailDTO.productUnitAtSale===''){
