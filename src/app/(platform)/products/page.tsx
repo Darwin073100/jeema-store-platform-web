@@ -44,10 +44,9 @@ export default async function ProductsPage() {
                 <TemplateHeader title="Catalogo de productos" detail="Lista de todos los productos en diferentes ubicaciones" breadcrumbItems={breadcrumbItems}>
                     <main className="flex flex-col gap-4 w-full">
                         <ProductActionsBar
-                            products={items} />
+                            data={items} />
                         <ProductSearch />
-                        <TableProduct
-                            productList={items} />
+                        <TableProduct />
                         <CategoryModal
                             categoryList={categories}
                         />
@@ -65,16 +64,12 @@ export default async function ProductsPage() {
         return (
             <ProtectedRoute>
                 <main className="flex flex-col gap-4 w-full">
-                    <ProductActionsBar products={[]} />
+                    <ProductActionsBar data={[]} />
                     <ProductSearch />
                     <h1 className="text-xl">Lista de productos</h1>
                     <div className="w-full bg-gray-100 border border-gray-400 text-red-700 px-4 py-3 rounded">
                         Error al cargar los productos. Por favor, recarga la página.
                     </div>
-                    <TableProduct productList={[]} />
-                    <CategoryModal categoryList={[]} />
-                    <BrandModal brandList={[]} />
-                    <SeasonModal seasonList={[]} />
                 </main>
             </ProtectedRoute>
         );

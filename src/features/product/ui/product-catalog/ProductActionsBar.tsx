@@ -5,70 +5,24 @@ import { useSeasonStore } from '@/features/season/infraestructure/season.store';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { ProductEntity } from '../../domain/entities/product.entity';
-import { downloadXLSX } from '@/shared/lib/utils/download.excel';
-import { formatDateShort } from '@/shared/lib/utils/date-formatter';
-import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { HideElement } from '@/features/auth/ui/HideElement';
+import { useProductStore } from '../../infraestructure/stores/product.store';
+import { useProductActionsBar } from '../../hooks/useProductActionsBar';
 interface Props{
-    products: ProductEntity[]
+    data: ProductEntity[]
 }
-const ProductActionsBar = ({ products }:Props) => {
-    const [loading, setLoading] = useState(false);
-    const newProductPage = ()=> {
-        setLoading(true);
-        router.push('products/new')
-    }
-    const router = useRouter();
-    const compras = products.map(item=> {
-        const com = item.lots?.map(lot=>{
-            return Object.fromEntries([
-                ["PRECIO COMPRA", lot.purchasePrice],
-                ["FECHA", formatDateShort(lot.receivedDate)]
-            ]);
-        });
-    });
-
-    // Determine maximum number of lots across all products so we can create fixed columns for each lot
-    const maxLots = products.reduce((max, p) => Math.max(max, (p.lots?.length ?? 0)), 0);
-
-    const currentProducts = products.map(item => {
-        const base = {
-            FOLIO: item.productId,
-            PRODUCTO: item.name ?? '',
-            'CODIGO UNIVERSAL': item.universalBarCode ?? '',
-            'CODIGO INTERNO': item.inventory?.internalBarCode ?? '',
-            CATEGORIA: item.category?.name ?? '',
-            MARCA: item.brand?.name ?? '',
-            TEMPORADA: item.season?.name ?? '',
-            UNIDAD: item.unitOfMeasure ?? '',
-            'VENTA MENUDEO': item.inventory?.salePriceOne ?? 0,
-            'CANTIDAD MAYOREO': item.inventory?.saleQuantityMany ?? 0,
-            'VENTA MAYOREO': item.inventory?.salePriceMany ?? 0,
-            'STOCK MIN GLOBAL': item.minStockGlobal ?? 0,
-            VENTA: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.SALE)[0]?.quantityOnHan ?? 0,
-            ALMACEN: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.STOCK)[0]?.quantityOnHan ?? 0,
-            VIAJANDO: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.TRAVELING)[0]?.quantityOnHan ?? 0,
-            DAÑADOS: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.DAMAGED)[0]?.quantityOnHan ?? 0,
-            'FECHA REGISTRO': formatDateShort(item.createdAt),
-        } as Record<string, any>;
-        for (let i = 0; i < maxLots; i++) {
-            const lot = item.lots?.[i];
-            base[`PRECIO COMPRA ${i + 1}`] = lot?.purchasePrice.toFixed(2) ?? '';
-            base[`CANTIDAD COMPRA ${i + 1}`] = lot?.initialQuantity.toFixed(4) ?? '';
-            base[`FECHA ${i + 1}`] = lot?.receivedDate ? formatDateShort(lot.receivedDate) : '';
-        }
-
-        return base;
-    });
-    const handleDownloadExcel = ()=> {
-        downloadXLSX(currentProducts, 'Productos');
-    }
+const ProductActionsBar = ({ data }:Props) => {
+    const { productsFiltered, setProducts } = useProductStore();
+    const {newProductPage, handleDownloadExcel, loading} = useProductActionsBar();
+    
+    useEffect(()=>{
+        setProducts(data);
+    },[data]);
 
     const {modalOpen,setModalOpen} = useCategoryStore();
     const { modalOpen: brandModalOpen, setModalOpen: setBrandModalOpen} = useBrandStore();
@@ -104,7 +58,7 @@ const ProductActionsBar = ({ products }:Props) => {
                         </Button>
                     </HideElement>
                     <div>
-                        Productos<Badge>{products.length}</Badge>
+                        Productos<Badge>{productsFiltered.length}</Badge>
                     </div>
                 </div>
             </div>
