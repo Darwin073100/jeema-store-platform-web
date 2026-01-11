@@ -106,7 +106,19 @@ const useProductActionsBar = () => {
     });
 
     const handleColorRow = (product: ProductEntity)=> {
+        const currentStock = totalStock(product.inventory?.inventoryItems ?? []);
+        const stockMinGlobal = product.minStockGlobal;
+        const stockMinBranch = product.inventory?.minStockBranch ?? 0;
         
+        if(currentStock <= stockMinGlobal && currentStock > stockMinBranch){
+            return 'text-green-600 bg-green-100';
+        }
+        if(currentStock <= stockMinBranch && currentStock > 0){
+            return 'text-blue-600 bg-blue-100';
+        }
+        if(currentStock <= 0){
+            return 'text-red-600 bg-red-100';
+        }
     }
     const handleDownloadExcel = () => {
         downloadXLSX(currentProducts, 'Productos');
@@ -118,7 +130,8 @@ const useProductActionsBar = () => {
         totalStock,
         handleViewProduct,
         loading,
-        productId
+        productId,
+        handleColorRow,
     }
 }
 

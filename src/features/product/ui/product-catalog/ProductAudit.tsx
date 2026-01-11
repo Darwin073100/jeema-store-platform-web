@@ -8,7 +8,7 @@ import clsx from 'clsx';
 const ProductAudit = () => {
     const { lowStock, setLowStock } = useProductStore();
     return (
-        <div className='flex items-center gap-2'>
+        <div className='flex justify-between items-center gap-2'>
         <ButtonOutLine
             onClick={()=> setLowStock(!lowStock)}
             size='sm' color='red' className={clsx(`duration-75 ${lowStock? 'bg-red-600 text-white': ''}`)}>

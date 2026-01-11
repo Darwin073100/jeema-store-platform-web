@@ -36,7 +36,7 @@ const PrimaryTable = ({ isActions = true, theadList, children }: Props) => {
           }
         </tr>
       </thead>
-      <tbody>
+      <tbody className='bg-white'>
         {children}
       </tbody>
     </table>
