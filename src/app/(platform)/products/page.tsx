@@ -11,6 +11,7 @@ import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/fin
 import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 import { viewAllProductsByEstablishmentAction } from "@/features/product/actions/view-all-products-by-establishment.action";
+import { ProductAudit } from "@/features/product/ui/product-catalog/ProductAudit";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -46,6 +47,7 @@ export default async function ProductsPage() {
                         <ProductActionsBar
                             data={items} />
                         <ProductSearch />
+                        <ProductAudit />
                         <TableProduct />
                         <CategoryModal
                             categoryList={categories}

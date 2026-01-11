@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { ProductEntity } from "../../domain/entities/product.entity";
 
 type State = {
+    lowStock: boolean;
+    setLowStock: (lowStock: boolean)=> void,
     searchCharacter: string,
     setSearchCharacter: (value: string) => void,
     products: ProductEntity[]|[],
@@ -17,6 +19,12 @@ type State = {
 
 export const useProductStore = create<State>()((set, get)=>({
     searchCharacter: "",
+    lowStock: false,
+    setLowStock: (lowStock: boolean)=> {
+        set(()=>({
+            lowStock
+        }));
+    },
     setSearchCharacter: (value) => set(() => ({ searchCharacter: value })),
     product: null,
     products:[],
