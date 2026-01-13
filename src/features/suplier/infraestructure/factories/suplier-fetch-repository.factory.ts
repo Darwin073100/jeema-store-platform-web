@@ -1,4 +1,4 @@
-import { SuplierFetchRepository } from "../mappers/suplier-fetch.repository";
+import { SuplierFetchRepository } from "../repositories/suplier-fetch.repository";
 import { DependencyFactory } from "@/shared/infrastructure/di/dependency-factory";
 import { SuplierRepository } from "../../domain/repositories/suplier.repository";
 

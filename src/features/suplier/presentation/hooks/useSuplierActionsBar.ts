@@ -32,7 +32,7 @@ const useSuplierActionsBar = () => {
 
     const newSuplierPage = () => {
         setLoading(true);
-        router.push('products/supliers/new')
+        router.push('supliers/new')
     }
 
     const currentProducts = supliersFiltered.map(item => {
