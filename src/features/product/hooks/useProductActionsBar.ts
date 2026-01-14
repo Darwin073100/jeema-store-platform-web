@@ -35,7 +35,18 @@ const useProductActionsBar = () => {
             const filteredByStockGlobal = products.filter(item =>
                 item && totalStock(item.inventory?.inventoryItems ?? []) <= item.minStockGlobal
             );
-            setProductsFiltered([...new Set([...filtered, ...filteredByStockBrnch, ...filteredByStockGlobal])]);
+            setProductsFiltered([...new Set([
+                ...filtered,
+                ...filteredByStockBrnch,
+                ...filteredByStockGlobal,
+            ])]);
+            if (searchCharacter.trim().length > 0) {
+                const filteredByCategory = productsFiltered.filter(item =>
+                    item && item.category?.name &&
+                    item.category.name?.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
+                );
+                setProductsFiltered(filteredByCategory);
+            }
         } else {
             const filtered = products.filter(item =>
                 item && item.name &&
@@ -105,18 +116,18 @@ const useProductActionsBar = () => {
         return base;
     });
 
-    const handleColorRow = (product: ProductEntity)=> {
+    const handleColorRow = (product: ProductEntity) => {
         const currentStock = totalStock(product.inventory?.inventoryItems ?? []);
         const stockMinGlobal = product.minStockGlobal;
         const stockMinBranch = product.inventory?.minStockBranch ?? 0;
-        
-        if(currentStock <= stockMinGlobal && currentStock > stockMinBranch){
+
+        if (currentStock <= stockMinGlobal && currentStock > stockMinBranch) {
             return 'text-green-600 bg-green-100';
         }
-        if(currentStock <= stockMinBranch && currentStock > 0){
+        if (currentStock <= stockMinBranch && currentStock > 0) {
             return 'text-blue-600 bg-blue-100';
         }
-        if(currentStock <= 0){
+        if (currentStock <= 0) {
             return 'text-red-600 bg-red-100';
         }
     }
