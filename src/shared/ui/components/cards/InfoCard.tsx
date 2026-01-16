@@ -9,7 +9,7 @@ interface Props {
 
 export function InfoCard({ label, value, icon, className = '' }: Props) {
     return (
-        <div className={`bg-gray-50 border border-gray-200 rounded-lg p-4 ${className}`}>
+        <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2 ${className}`}>
             <div className="flex items-center gap-2 mb-1">
                 {icon && <span className="text-gray-600">{icon}</span>}
                 <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">

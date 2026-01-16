@@ -12,7 +12,7 @@ export class LotMapper {
         const httpDto: UpdateLotHttpDTO = {
             lotId: dto.lotId.toString(),
             productId: dto.productId.toString(),
-            suplierId: dto.suplierId?.toString() ?? undefined,
+            suplierId: dto.suplierId && dto.suplierId > BigInt(0)? dto.suplierId?.toString(): undefined,
             lotNumber: dto.lotNumber,
             initialQuantity: dto.initialQuantity,
             purchasePrice: dto.purchasePrice,
@@ -27,7 +27,7 @@ export class LotMapper {
     static toRegisterLotHttpRequest(dto: RegisterLotDTO){
         const httpDto: RegisterLotHttpDTO = {
             productId: dto.productId.toString(),
-            suplierId: dto.suplierId?.toString() ?? undefined,
+            suplierId: dto.suplierId && dto.suplierId > BigInt(0)? dto.suplierId?.toString(): undefined,
             lotNumber: dto.lotNumber,
             initialQuantity: dto.initialQuantity,
             purchasePrice: dto.purchasePrice,

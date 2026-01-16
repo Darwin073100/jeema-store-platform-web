@@ -2,6 +2,7 @@ import { ProductEntity } from "../../../product/domain/entities/product.entity";
 import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 import { LotUnitPurchaseEntity } from "./lot-unit-purchase.entity";
 import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
+import { SuplierEntity } from "@/features/suplier/domain/entities/suplier.entity";
 
 export interface LotEntity {
   lotId              : bigint;
@@ -15,7 +16,8 @@ export interface LotEntity {
   manufacturingDate? : Date | null;
   product?           : ProductEntity | null;
   receivedDate       : Date;
-  lotUnitPurchases?  : LotUnitPurchaseEntity[]|null,
+  lotUnitPurchases?  : LotUnitPurchaseEntity[]|null;
+  suplier?           : SuplierEntity | null;
   createdAt          : Date;
   updatedAt?         : Date | null;
   deletedAt?         : Date | null;

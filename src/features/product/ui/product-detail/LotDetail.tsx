@@ -14,7 +14,7 @@ import { Button } from '@/shared/ui/components/buttons'
 import { InfoCard } from '@/shared/ui/components/cards'
 import React from 'react'
 import { HiOutlineCalendar, HiPencil, HiPlus, HiTrash } from 'react-icons/hi'
-import { TbBoxMultiple, TbBuildingWarehouse, TbCurrencyDollar, TbPackage } from 'react-icons/tb'
+import { TbBoxMultiple, TbBuildingWarehouse, TbCurrencyDollar, TbMail, TbPackage, TbPhone, TbUser } from 'react-icons/tb'
 import { ProductEntity } from '../../domain/entities/product.entity'
 import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity'
 
@@ -32,23 +32,24 @@ const LotDetail = ({ product, supliers }: Props) => {
     return (
         <>
             <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
-                <h4 className="font-medium text-gray-700 flex items-center gap-2 ml-4">
+                <h4 className="font-medium text-gray-700 flex items-center gap-2 ml-6 mb-0">
                     <TbBuildingWarehouse className="w-5 h-5" />
                     Lotes comprados
                 </h4>
                 {product.lots && product.lots.length > 0 ? (
                     <>
-                        <UpdateLotModal />
+                        <UpdateLotModal
+                            supliers={supliers} />
                         <DeleteLotModal />
-                        <div className="p-6 space-y-6">
+                        <div className="px-6 py-2">
                             {product.lots.map((lot, index) => (
-                                <div key={lot.lotId} className="border border-gray-200 rounded-lg p-4">
+                                <div key={lot.lotId} className="border border-gray-200 rounded-lg p-4 bg-white">
                                     <div className="flex justify-between items-center mb-4">
                                         <h3 className="font-semibold text-gray-800 flex items-center gap-2">
                                             <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                                                 {index + 1}
                                             </span>
-                                            Lote #{lot.lotNumber}
+                                            FOLIO #{lot.lotId}
                                         </h3>
                                         <div className="flex gap-2">
                                             <Button color='yellow' onClick={() => handleOpenUpdateLotModal(lot)}>
@@ -92,6 +93,64 @@ const LotDetail = ({ product, supliers }: Props) => {
                                             icon={<HiOutlineCalendar className="w-4 h-4" />}
                                         />
                                     </div>
+                                    {lot.suplier && (
+                                        <div className='border border-gray-300 rounded-2xl flex flex-col gap-4 p-4 mb-2'>
+                                            <span>Información del proveedor</span>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                                <InfoCard
+                                                    label="Proveedor"
+                                                    value={`${lot.suplier.name}`}
+                                                    icon={<TbPackage className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Contacto"
+                                                    value={`${lot.suplier.contactPerson}`}
+                                                    icon={<TbUser className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Teléfono"
+                                                    value={lot.suplier.phoneNumber}
+                                                    icon={<TbPhone className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Email"
+                                                    value={lot.suplier.email}
+                                                    icon={<TbMail className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Pais"
+                                                    value={lot.suplier.address?.country}
+                                                    icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="ciudad"
+                                                    value={lot.suplier.address?.city}
+                                                    icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Municipio"
+                                                    value={lot.suplier.address?.municipality}
+                                                    icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Calle"
+                                                    value={lot.suplier.address?.street}
+                                                    icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Código Postal"
+                                                    value={lot.suplier.address?.postalCode}
+                                                    icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                />
+                                                <InfoCard
+                                                    label="Referencia"
+                                                    value={lot.suplier.address?.reference}
+                                                    icon={<TbBoxMultiple className="w-4 h-4" />}
+                                                />
+
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* Unidades de compra */}
                                     <RegisterLotUnitPurchaseModal />

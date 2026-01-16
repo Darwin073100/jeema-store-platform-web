@@ -1,6 +1,6 @@
 import { Button } from '@/shared/ui/components/buttons';
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
-import { TextInput, SelectMenu } from '@/shared/ui/components/inputs';
+import { TextInput, SelectMenu, SelectMenuOption } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { Modal } from '@/shared/ui/components/modals';
@@ -12,8 +12,12 @@ import { useUpdateLotModal } from '../hooks/useUpdateLotModal';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
 import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
-
-const UpdateLotModal = () => {
+import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
+interface Props {
+    supliers: SuplierEntity[]
+}
+const UpdateLotModal = ({ supliers }:Props) => {
+    const suplierOptions: SelectMenuOption[] = supliers.map(item => ({text: item.name, value: item.suplierId.toString()}));
     const {
         handleCloseUpdateLotModal, 
         openModal, 
@@ -44,15 +48,18 @@ const UpdateLotModal = () => {
                     <div className="flex-1 overflow-y-auto">
                         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {/* <div className="md:col-span-2">
-                                    <LabelInput value="Número de lote *" />
-                                    <TextInput
-                                        placeholder="Número del lote"
-                                        error={!!errors.lotNumber}
-                                        errorMessage={errors.lotNumber?.message}
-                                        {...register('lotNumber')}
+                                <div className="md:col-span-1">
+                                    <LabelInput 
+                                        value="Proveedor"
+                                        description={lotDescription.purchasePrice}
+                                        required='no' />
+                                    <SelectMenu
+                                        items={suplierOptions}
+                                        error={!!errors.suplierId}
+                                        errorMessage={errors.suplierId?.message}
+                                        {...register('suplierId')}
                                     />
-                                </div> */}
+                                </div>
                                <div className="md:col-span-1">
                                     <LabelInput 
                                         value="Precio de compra"

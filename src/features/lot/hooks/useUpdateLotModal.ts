@@ -121,7 +121,7 @@ const useUpdateLotModal = () => {
         try {
             const updateData: UpdateLotDTO = {
                 lotId: lot.lotId,
-                suplierId: lot.suplierId,
+                suplierId: BigInt(data.suplierId),
                 initialQuantity: data.initialQuantity,
                 lotNumber: lot.lotNumber,
                 productId: lot.productId,
