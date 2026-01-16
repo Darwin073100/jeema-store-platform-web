@@ -1,3 +1,4 @@
+'use client'
 import clsx from 'clsx'
 import React, { useEffect } from 'react'
 import { ImSpinner, ImSpinner3, ImSpinner5, ImSpinner8, ImSpinner9 } from 'react-icons/im'

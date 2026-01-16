@@ -1,0 +1,166 @@
+'use client'
+import { HideElement } from '@/features/auth/ui/HideElement'
+import { UpdateLotModal, useUpdateLotModal } from '@/features/lot'
+import { useDeleteLotModal } from '@/features/lot/hooks/useDeleteLotModal'
+import { useDeleteLotUnitPurchaseModal } from '@/features/lot/hooks/useDeleteLotUnitPurchaseModal'
+import { useRegisterLotUnitPurchaseModal } from '@/features/lot/hooks/useRegisterLotUnitPurchaseModal'
+import { useUpdateLotUnitPurchaseModal } from '@/features/lot/hooks/useUpdateLotUnitPurchaseModal'
+import { DeleteLotModal } from '@/features/lot/ui/DeleteLotModal'
+import { DeleteLotUnitPurchaseModal } from '@/features/lot/ui/DeleteLotUnitPurchaseModal'
+import { RegisterLotUnitPurchaseModal } from '@/features/lot/ui/RegisterLotUnitPurchaseModal'
+import { UpdateLotUnitPurchaseModal } from '@/features/lot/ui/UpdateLotUnitPurchaseModal'
+import { formatDate } from '@/shared/lib/utils/date-formatter'
+import { Button } from '@/shared/ui/components/buttons'
+import { InfoCard } from '@/shared/ui/components/cards'
+import React from 'react'
+import { HiOutlineCalendar, HiPencil, HiPlus, HiTrash } from 'react-icons/hi'
+import { TbBoxMultiple, TbBuildingWarehouse, TbCurrencyDollar, TbPackage } from 'react-icons/tb'
+import { ProductEntity } from '../../domain/entities/product.entity'
+import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity'
+
+interface Props {
+    product: ProductEntity,
+    supliers: SuplierEntity[]
+}
+
+const LotDetail = ({ product, supliers }: Props) => {
+    const { handleOpenUpdateLotModal } = useUpdateLotModal();
+    const { handleSelectedLotUnitPurchase: handleSelectedLotId } = useRegisterLotUnitPurchaseModal();
+    const { handleSelectedLotUnitPurchase } = useUpdateLotUnitPurchaseModal();
+    const { handleOpenModalDeleteLotUnitPurchase } = useDeleteLotUnitPurchaseModal();
+    const { handleOpenModalDeleteLot } = useDeleteLotModal();
+    return (
+        <>
+            <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
+                <h4 className="font-medium text-gray-700 flex items-center gap-2 ml-4">
+                    <TbBuildingWarehouse className="w-5 h-5" />
+                    Lotes comprados
+                </h4>
+                {product.lots && product.lots.length > 0 ? (
+                    <>
+                        <UpdateLotModal />
+                        <DeleteLotModal />
+                        <div className="p-6 space-y-6">
+                            {product.lots.map((lot, index) => (
+                                <div key={lot.lotId} className="border border-gray-200 rounded-lg p-4">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                                            <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                                                {index + 1}
+                                            </span>
+                                            Lote #{lot.lotNumber}
+                                        </h3>
+                                        <div className="flex gap-2">
+                                            <Button color='yellow' onClick={() => handleOpenUpdateLotModal(lot)}>
+                                                <HiPencil className="w-4 h-4" /> Modificar
+                                            </Button>
+                                            <Button color='red' onClick={() => handleOpenModalDeleteLot(lot.lotId)}>
+                                                <HiTrash className="w-4 h-4" /> Eliminar
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                        <InfoCard
+                                            label="Unidad báse"
+                                            value={`${lot.purchaseUnit.toUpperCase()}`}
+                                            icon={<TbPackage className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Precio de compra"
+                                            value={`$${lot.purchasePrice}`}
+                                            icon={<TbCurrencyDollar className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Cantidad comprada"
+                                            value={lot.initialQuantity.toString()}
+                                            icon={<TbBoxMultiple className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Fecha de ingreso"
+                                            value={formatDate(lot.receivedDate)}
+                                            icon={<HiOutlineCalendar className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Fecha de fabricación"
+                                            value={lot.manufacturingDate ? formatDate(lot.manufacturingDate) : 'No especificada'}
+                                            icon={<HiOutlineCalendar className="w-4 h-4" />}
+                                        />
+                                        <InfoCard
+                                            label="Fecha de caducidad"
+                                            value={lot.expirationDate ? formatDate(lot.expirationDate) : 'No especificada'}
+                                            icon={<HiOutlineCalendar className="w-4 h-4" />}
+                                        />
+                                    </div>
+
+                                    {/* Unidades de compra */}
+                                    <RegisterLotUnitPurchaseModal />
+                                    <div className="flex items-center mb-3 gap-4">
+                                        <h4 className="font-medium text-gray-700">Unidades de compra</h4>
+                                        <Button color='blue' type='button' onClick={() => handleSelectedLotId(lot.lotId)}>
+                                            <HiPlus className="w-4 h-4" /> Agregar unidad
+                                        </Button>
+                                    </div>
+                                    {lot.lotUnitPurchases && lot.lotUnitPurchases.length > 0 && (
+                                        <div className="mb-4">
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                                                    <UpdateLotUnitPurchaseModal />
+                                                    <DeleteLotUnitPurchaseModal />
+                                                    {lot.lotUnitPurchases.map((unitPurchase) => (
+                                                        <div key={unitPurchase.lotUnitPurchaseId} className="border border-gray-300 rounded-2xl p-4 space-y-2">
+                                                            <div className='flex justify-between gap-2'>
+                                                                <Button color='yellow' onClick={() => handleSelectedLotUnitPurchase(unitPurchase)}>
+                                                                    <HiPencil className="w-4 h-4" />
+                                                                    Modificar
+                                                                </Button>
+                                                                <Button color='red' onClick={() => handleOpenModalDeleteLotUnitPurchase(lot.lotId, unitPurchase.lotUnitPurchaseId)}>
+                                                                    <HiTrash className="w-4 h-4" />
+                                                                    Eliminar
+                                                                </Button>
+                                                            </div>
+                                                            <InfoCard
+                                                                label="Unidad"
+                                                                value={unitPurchase.unit}
+                                                                className="bg-white"
+                                                            />
+                                                            <InfoCard
+                                                                label="Cantidad comprada"
+                                                                value={unitPurchase.purchaseQuantity.toString()}
+                                                                className="bg-white"
+                                                            />
+                                                            <InfoCard
+                                                                label="Costo de la unidad"
+                                                                value={`$${unitPurchase.purchasePrice}`}
+                                                                className="bg-white"
+                                                            />
+                                                            <InfoCard
+                                                                label="Unidades base en esta unidad"
+                                                                value={unitPurchase.unitsInPurchaseUnit.toString()}
+                                                                className="bg-white"
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <div className="p-6">
+                        <div className="text-center py-12">
+                            <TbBoxMultiple className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                            <p className="text-gray-600 font-medium">No hay lotes registrados para este producto</p>
+                            <p className="text-gray-500 text-sm mt-1">Agrega un lote para comenzar a gestionar el inventario</p>
+                        </div>
+                    </div>
+                )}
+            </HideElement>
+        </>
+    )
+}
+
+export default LotDetail

@@ -3,6 +3,7 @@ import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 export interface UpdateLotDTO {
     lotId: bigint;
     productId: bigint;
+    suplierId: bigint | null;
     lotNumber: string;
     purchasePrice: number;
     purchaseUnit: ForSaleEnum;

@@ -1,3 +1,4 @@
+'use client'
 import { useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { useDeleteLotUnitPurchaseStore } from "../infraestructure/store/delete-lot-unit-purchase.store";

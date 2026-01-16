@@ -81,7 +81,7 @@ const useProductActionsBar = () => {
 
     const newProductPage = () => {
         setLoading(true);
-        router.push('products/new')
+        router.push('/products/new')
     }
     // Determine maximum number of lots across all products so we can create fixed columns for each lot
     const maxLots = productsFiltered.reduce((max, p) => Math.max(max, (p.lots?.length ?? 0)), 0);

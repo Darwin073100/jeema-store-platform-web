@@ -1,3 +1,4 @@
+'use client'
 import * as yup from 'yup';
 import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,6 +19,11 @@ export const registerLotSchema = yup.object().shape({
             .optional()
             .default('0')
             .typeError(`Asegurate de ingresar la información correcta, Ej: (${Object.values(LocationEnum)}).`),
+    suplierId: yup
+            .string()
+            .optional()
+            .default('0')
+            .typeError(`Asegurate de ingresar la información correcta.`),
     purchasePrice: yup
         .number()
         .required('El precio de compra es obligatorio.')
@@ -82,6 +88,7 @@ const useRegisterLotModal = () => {
     useEffect(() => {
         if (openModal && selectedProductId) {
             reset({
+                suplierId: undefined,
                 purchasePrice: 0,
                 initialQuantity: 0,
                 purchaseUnit: ForSaleEnum.PC,
@@ -95,6 +102,7 @@ const useRegisterLotModal = () => {
     const resetFormRegisterLot = () => {
         setSelectedProductId('');
         reset({
+            suplierId: undefined,
             purchasePrice: 0,
             initialQuantity: 0,
             purchaseUnit: ForSaleEnum.PC,
@@ -103,7 +111,7 @@ const useRegisterLotModal = () => {
             receivedDate: formatDateForInput(new Date()),
             inventoryItemId: undefined
         });
-        clearErrors(['purchasePrice', 'initialQuantity', 
+        clearErrors(['purchasePrice', 'initialQuantity', 'suplierId', 
             'purchaseUnit', 'expirationDate', 'manufacturingDate', 'receivedDate'
         ]);
         setFloatMessageState({});
@@ -122,6 +130,7 @@ const useRegisterLotModal = () => {
             const registerData: RegisterLotDTO = {
                 productId: selectedProductId,
                 lotNumber: UUID(),
+                suplierId: data.suplierId? BigInt(data.suplierId): null,
                 purchasePrice: data.purchasePrice,
                 initialQuantity: data.initialQuantity,
                 purchaseUnit: data.purchaseUnit,

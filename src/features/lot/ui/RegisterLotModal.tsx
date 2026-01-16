@@ -1,3 +1,4 @@
+'use client'
 import { Button } from '@/shared/ui/components/buttons';
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
 import { TextInput, SelectMenu } from '@/shared/ui/components/inputs';
@@ -10,7 +11,6 @@ import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterLotModal } from '../hooks/useRegisterLotModal';
-import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
 import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
 import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';

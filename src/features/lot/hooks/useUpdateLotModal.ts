@@ -1,3 +1,4 @@
+'use client'
 import { LotEntity } from "../domain/entities/lot.entity";
 import { useLotStore } from "../infraestructure/store/lot.store";
 import * as yup from 'yup';
@@ -16,7 +17,11 @@ export const updateLotSchema = yup.object().shape({
         .required('El precio de compra es obligatorio.')
         .test('max-decimals', 'El precio de compra debe ser un número con hasta 4 decimales.', 
               value => value === undefined || Number(value.toFixed(4)) === value),
-
+    suplierId: yup
+        .string()
+        .optional()
+        .default('0')
+        .typeError(`Asegurate de ingresar la información correcta.`),
     initialQuantity: yup
         .number()
         .required('La cantidad inicial es obligatoria.')
@@ -72,6 +77,7 @@ const useUpdateLotModal = () => {
     useEffect(() => {
         if (lot && openModal) {
             reset({
+                suplierId: lot.suplierId? lot.suplierId.toString(): undefined, 
                 purchasePrice: lot.purchasePrice,
                 initialQuantity: lot.initialQuantity,
                 purchaseUnit: lot.purchaseUnit,
@@ -115,6 +121,7 @@ const useUpdateLotModal = () => {
         try {
             const updateData: UpdateLotDTO = {
                 lotId: lot.lotId,
+                suplierId: lot.suplierId,
                 initialQuantity: data.initialQuantity,
                 lotNumber: lot.lotNumber,
                 productId: lot.productId,

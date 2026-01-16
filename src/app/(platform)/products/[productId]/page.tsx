@@ -1,8 +1,13 @@
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { Metadata } from "next";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
-import { ProductDetailsView } from "@/features/product/ui/product-detail/ProductDetailsView";
 import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
+import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
+import ProductDetail from "@/features/product/ui/product-detail/ProductDetail";
+import InventoryDetail from "@/features/product/ui/product-detail/InventoryDetail";
+import { RegisterLotModal } from "@/features/lot";
+import LotDetail from "@/features/product/ui/product-detail/LotDetail";
+import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -12,18 +17,20 @@ export const metadata: Metadata = {
     title: 'Detalles del Producto'
 }
 
+
 interface Props {
     params: {
         productId: string;
     }
 }
-
 export default async function ProductDetailsPage({ params }: Props) {
     try {
         const { productId } = await params;
 
         // Obtener los detalles del producto
         const productResult = await viewProductByIdAction(BigInt(productId));
+        const suplierResponse = await findAllSuplierByEstablishmentId();
+        const supliers = suplierResponse.value?.supliers?? [];
 
         if (!productResult.ok || !productResult.value) {
             return (
@@ -39,9 +46,24 @@ export default async function ProductDetailsPage({ params }: Props) {
 
         const product = productResult.value;
 
+        const breadcrumbItems: BreadcrumbItem[] = [
+            { label: 'Productos', href: '/products' },
+            { label: 'Catalogo', href: '/products/list' },
+            { label: product.name }
+        ];
+
         return (
             <ProtectedRoute>
-                <ProductDetailsView product={product} />
+                <TemplateHeader title={product.name} detail='Detalles del producto' breadcrumbItems={breadcrumbItems}>
+                    <ProductDetail product={product} />
+                    <RegisterLotModal />
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <InventoryDetail product={product} />
+                    </div>
+                    <LotDetail 
+                        product={product} 
+                        supliers={supliers}/>
+                </TemplateHeader>
             </ProtectedRoute>
         );
     } catch {

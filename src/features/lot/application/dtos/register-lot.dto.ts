@@ -2,6 +2,7 @@ import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 
 export interface RegisterLotDTO {
     productId: string;
+    suplierId: bigint | null;
     lotNumber: string;
     purchasePrice: number;
     purchaseUnit: ForSaleEnum;

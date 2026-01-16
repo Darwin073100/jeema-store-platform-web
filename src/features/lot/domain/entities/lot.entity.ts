@@ -6,6 +6,7 @@ import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.
 export interface LotEntity {
   lotId              : bigint;
   productId          : bigint;
+  suplierId          : bigint | null;
   lotNumber          : string;
   purchasePrice      : number;
   initialQuantity    : number;

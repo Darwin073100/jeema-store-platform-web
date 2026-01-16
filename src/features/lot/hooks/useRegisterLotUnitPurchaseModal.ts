@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react';
 import { useSaveLotUnitPurchaseStore } from '../infraestructure/store/save-lot-unit-purchase.store';
 import * as yup from 'yup';
@@ -7,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { AddLotUnitPurchaseDTO } from '../application/dtos/add-lot-unit-purchase.dto';
 import { registerLotUniPurchaseAction } from '../actions/register-lot-unit-purchase.action';
-import { LotUnitPurchaseEntity } from '../domain/entities/lot-unit-purchase.entity';
 
 const registerSchema = yup.object().shape({
     purchasePrice: yup
