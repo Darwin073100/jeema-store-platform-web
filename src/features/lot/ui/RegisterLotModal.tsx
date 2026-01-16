@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/shared/ui/components/buttons';
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
-import { TextInput, SelectMenu } from '@/shared/ui/components/inputs';
+import { TextInput, SelectMenu, SelectMenuOption } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { Modal } from '@/shared/ui/components/modals';
@@ -14,8 +14,12 @@ import { useRegisterLotModal } from '../hooks/useRegisterLotModal';
 import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
 import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
 import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';
-
-const RegisterLotModal = () => {
+import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
+interface Props {
+    supliers: SuplierEntity[]
+}
+const RegisterLotModal = ({ supliers }:Props) => {
+    const suplierOptions: SelectMenuOption[] = supliers.map(item => ({text: item.name, value: item.suplierId.toString()}));
     const {
         handleCloseRegisterLotModal, 
         openModal,
@@ -62,6 +66,18 @@ const RegisterLotModal = () => {
                                         {...register('lotNumber')}
                                     />
                                 </div> */}
+                                <div className="md:col-span-1">
+                                    <LabelInput 
+                                        value="Proveedor"
+                                        description={lotDescription.purchasePrice}
+                                        required='no' />
+                                    <SelectMenu
+                                        items={suplierOptions}
+                                        error={!!errors.suplierId}
+                                        errorMessage={errors.suplierId?.message}
+                                        {...register('suplierId')}
+                                    />
+                                </div>
                                 <div className="md:col-span-1">
                                     <LabelInput 
                                         value="Precio de compra"

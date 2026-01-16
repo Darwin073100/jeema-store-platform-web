@@ -5,7 +5,6 @@ import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNo
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import ProductDetail from "@/features/product/ui/product-detail/ProductDetail";
 import InventoryDetail from "@/features/product/ui/product-detail/InventoryDetail";
-import { RegisterLotModal } from "@/features/lot";
 import LotDetail from "@/features/product/ui/product-detail/LotDetail";
 import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
 
@@ -56,7 +55,6 @@ export default async function ProductDetailsPage({ params }: Props) {
             <ProtectedRoute>
                 <TemplateHeader title={product.name} detail='Detalles del producto' breadcrumbItems={breadcrumbItems}>
                     <ProductDetail product={product} />
-                    <RegisterLotModal />
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                         <InventoryDetail product={product} />
                     </div>

@@ -1,6 +1,6 @@
 'use client'
 import { HideElement } from '@/features/auth/ui/HideElement'
-import { UpdateLotModal, useUpdateLotModal } from '@/features/lot'
+import { RegisterLotModal, UpdateLotModal, useUpdateLotModal } from '@/features/lot'
 import { useDeleteLotModal } from '@/features/lot/hooks/useDeleteLotModal'
 import { useDeleteLotUnitPurchaseModal } from '@/features/lot/hooks/useDeleteLotUnitPurchaseModal'
 import { useRegisterLotUnitPurchaseModal } from '@/features/lot/hooks/useRegisterLotUnitPurchaseModal'
@@ -35,6 +35,8 @@ const LotDetail = ({ product, supliers }: Props) => {
                 <h4 className="font-medium text-gray-700 flex items-center gap-2 ml-6 mb-0">
                     <TbBuildingWarehouse className="w-5 h-5" />
                     Lotes comprados
+                    <RegisterLotModal
+                        supliers={supliers} />
                 </h4>
                 {product.lots && product.lots.length > 0 ? (
                     <>
