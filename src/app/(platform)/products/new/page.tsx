@@ -4,6 +4,7 @@ import { FindAllCategoriesByEstablishmentAction } from "@/features/category/acti
 import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 import { FormRegisterCompleteProduct } from "@/features/product/ui/register-complete-product/FormRegisterCompleteProduct";
+import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
 
 export default async function () {
     const viewAllCategories = await FindAllCategoriesByEstablishmentAction();
@@ -12,6 +13,8 @@ export default async function () {
     const brandItems = viewAllBrands.ok ? viewAllBrands.value?.brands ?? [] : [];
     const viewAllSeasons = await findAllSeasonsBYEstablishmentAction();
     const seasonItems = viewAllSeasons.ok ? viewAllSeasons.value?.seasons ?? [] : [];
+    const suplierResponse = await findAllSuplierByEstablishmentId();
+    const supliers = suplierResponse.value?.supliers?? [];
 
     const breadcrumbItems: BreadcrumbItem[] = [
         {label: 'Productos', href: '/products'},
@@ -23,7 +26,8 @@ export default async function () {
                 <FormRegisterCompleteProduct
                     brandList={brandItems}
                     seasonList={seasonItems}
-                    categoryList={categoryItems} />
+                    categoryList={categoryItems}
+                    suplierList={supliers} />
             </TemplateHeader>
         </ProtectedRoute>
     );

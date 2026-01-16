@@ -31,6 +31,14 @@ export const schema = yup.object().shape({
     
     //? VALIDACION PARA EL LOTE
     lotCheck: yup.boolean().required(),
+    suplierId: yup.string().when('lotCheck',{
+        is: true,
+        then: (schema)=> schema
+            .optional()
+            .default('0')
+            .typeError(`Asegurate de ingresar la información correcta.`),
+        otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
+    }),
     purchaseUnit: yup.string().when('lotCheck',{
         is: true,
         then: (schema)=> schema
@@ -198,8 +206,8 @@ const useRegisterCompleteProduct = () => {
         resolver: yupResolver(schema),
         mode: 'onChange',
         defaultValues: {
-            expirationDate: new Date(),
-            manufacturingDate: new Date(),
+            // expirationDate: new Date(),
+            // manufacturingDate: new Date(),
             lotUnitPurchases: [],
             inventoryItems: [
                 { location: '', quantityOnHand: 0 }
@@ -218,13 +226,14 @@ const useRegisterCompleteProduct = () => {
             lotUnitPurchases: [],
             brandId: '',
             categoryId: '',
+            suplierId: '',
             description: '',
-            expirationDate: new Date(),
+            expirationDate: undefined,
             imageUrl: null,
             initialQuantity: 0,
             internalBarCode: '',
             universalBarCode: '',
-            manufacturingDate: new Date(),
+            manufacturingDate: undefined,
             maxStockBranch: 0,
             minStockBranch: 0,
             minStockGlobal: 0,
@@ -384,13 +393,13 @@ const useRegisterCompleteProduct = () => {
         setInventoryItems(defaultInventoryItems);
         
         reset({
-            inventoryItems: defaultInventoryItems, lotUnitPurchases: [],
-            brandId: '', categoryId: '',description: '', expirationDate: new Date(), imageUrl: null, initialQuantity: 0,
-            internalBarCode: '', universalBarCode: '', manufacturingDate: new Date(), maxStockBranch: 0, minStockBranch: 0,
+            inventoryItems: defaultInventoryItems, lotUnitPurchases: [], suplierId: '',
+            brandId: '', categoryId: '',description: '', expirationDate: undefined, imageUrl: null, initialQuantity: 0,
+            internalBarCode: '', universalBarCode: '', manufacturingDate: undefined, maxStockBranch: 0, minStockBranch: 0,
             minStockGlobal: 0, name: '', purchasePrice: 0, purchaseUnit: '', receivedDate: new Date(), salePriceMany: 0, salePriceOne: 0,
             saleQuantityMany: 0, seasonId: '', unitOfMeasure: ''          
         });
-        clearErrors(['brandId', 'categoryId', 'seasonId', 'brandId', 'unitOfMeasure', 'minStockGlobal',
+        clearErrors(['brandId', 'categoryId', 'seasonId', 'brandId', 'unitOfMeasure', 'minStockGlobal', 'suplierId',
             'universalBarCode', 'imageUrl', 'name', 'description', 'purchasePrice', 'receivedDate',
             'salePriceOne', 'salePriceMany','saleQuantityMany', 'minStockBranch', 'maxStockBranch', 'lotUnitPurchases', 
             'inventoryItems']);
@@ -423,6 +432,7 @@ const useRegisterCompleteProduct = () => {
 
         let rcpLot: RCPLot | null = lotCheck? {
             initialQuantity: Number(data.initialQuantity ?? 0),
+            suplierId: data.suplierId && data.suplierId.trim().toUpperCase()!== '0'? data.suplierId : null,
             purchaseUnit: data.purchaseUnit as ForSaleEnum,
             lotUnitPurchases:data.lotUnitPurchases? data.lotUnitPurchases?.map(purchase => ({
                 purchasePrice: Number(purchase.purchasePrice ?? 0),

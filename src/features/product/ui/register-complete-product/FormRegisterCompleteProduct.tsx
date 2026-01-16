@@ -6,7 +6,7 @@ import { useCategoryStore } from '@/features/category/infraestructure/category.s
 import { SeasonEntity } from '@/features/season/domain/entities/season.entity';
 import { useSeasonStore } from '@/features/season/infraestructure/season.store';
 import { Button } from '@/shared/ui/components/buttons';
-import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
+import { SelectMenu, SelectMenuOption, TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
 import React, { useEffect } from 'react'
 import { TbExchange } from 'react-icons/tb';
@@ -21,14 +21,16 @@ import { useRegisterCompleteProduct } from '../../hooks/useRegisterCompleteProdu
 import { AiFillProduct } from 'react-icons/ai';
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import { MdInventory2 } from 'react-icons/md';
+import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
 
 interface Props {
     categoryList: CategoryEntity[],
     brandList: BrandEntity[],
     seasonList: SeasonEntity[],
+    suplierList: SuplierEntity[],
 }
 
-const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList }: Props) => {
+const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, suplierList }: Props) => {
     const {
         errors, floatMessageState, handleSubmit, isLoading, addLotUnitPurchase, removeLotUnitPurchase,
         onSubmit, register, handleBarCodeMatch, handleStockGlobalToBranch, updateLotUnitPurchase, lotUnitPurchases,
@@ -50,20 +52,21 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList }: Pr
         value: item.categoryId.toString(),
         text: item.name
     }));
-
     const brandOptions = brands.map(item => ({
         value: item.brandId.toString(),
         text: item.name
     }));
-
     const seasonOptions = seasons.map(item => ({
         value: item.seasonId.toString(),
         text: item.name
     }));
-
     const locationOptions = Object.values(LocationEnum).map(item => ({
         value: item.toString(),
         text: item.toString()
+    }));
+    const suplierOptions: SelectMenuOption[] = suplierList.map(item => ({
+        text: item.name, 
+        value: item.suplierId.toString()
     }));
 
     return (
@@ -208,7 +211,19 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList }: Pr
                             </h2>
                         </div>
                         <div className=" rounded-2xl bg-gradient-to-r from-gray-50 to-gray-50 border-l border-r border-b border-gray-200 p-4 lg:p-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 lg:gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+                                <div className="md:col-span-1">
+                                    <LabelInput 
+                                        value="Proveedor"
+                                        description="Selecciona el proveedor al que compraste la mercancia."
+                                        required='no' />
+                                    <SelectMenu
+                                        items={suplierOptions}
+                                        error={!!errors.suplierId}
+                                        errorMessage={errors.suplierId?.message}
+                                        {...register('suplierId')}
+                                    />
+                                </div>
                                 <div>
                                     <LabelInput 
                                         required='yes' 

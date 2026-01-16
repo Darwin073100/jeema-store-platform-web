@@ -24,6 +24,7 @@ export interface RCPInventory{
 
 export interface RCPLot{
     // Lot
+    suplierId: string | null;
     lotNumber: string;
     purchasePrice: number;
     initialQuantity: number;

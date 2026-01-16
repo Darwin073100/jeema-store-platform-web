@@ -97,12 +97,13 @@ export class ProductMapper{
             }: undefined,
             lot: dto.lot? {
                 // Lot
+                suplierId: dto.lot.suplierId ?? undefined,
                 lotNumber: dto.lot.lotNumber,
                 purchasePrice: dto.lot.purchasePrice,
                 initialQuantity: dto.lot.initialQuantity,
                 purchaseUnit: dto.lot.purchaseUnit,
-                expirationDate: dto.lot.expirationDate?.toJSON() || null,
-                manufacturingDate: dto.lot.manufacturingDate?.toJSON() || null,
+                expirationDate: dto.lot.expirationDate?.toJSON() ?? undefined,
+                manufacturingDate: dto.lot.manufacturingDate?.toJSON() ?? undefined,
                 receivedDate: dto.lot.receivedDate.toJSON(),
                 lotUnitPurchases: dto.lot.lotUnitPurchases?.map(purchase => ({
                     purchasePrice: purchase.purchasePrice,
