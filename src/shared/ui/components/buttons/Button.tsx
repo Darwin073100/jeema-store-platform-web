@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode
-  color?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple' |'white' | 'orange'
+  color?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple' |'white' | 'orange' | 'teal'
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   fullWidth?: boolean           // ⬅️ nuevo prop
   className?: string

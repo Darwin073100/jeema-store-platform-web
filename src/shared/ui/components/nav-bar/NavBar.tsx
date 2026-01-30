@@ -12,12 +12,14 @@ import { Button } from '../buttons';
 import Link from 'next/link';
 import { useSideStore } from '../side-bar/side.store';
 import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 
 export const NavBar = () => {
   const { user } = useAuth();
   const { establishment, branchOffice } = useWorkspace();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { onToggelSideBar, sideBar } = useSideStore();
+  const router = useRouter();
 
   const handleOpenLogoutModal = () => {
     setIsLogoutModalOpen(true);

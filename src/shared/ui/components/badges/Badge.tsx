@@ -10,7 +10,7 @@ interface Props {
 
 const Badge = ({ children, type='blue', className, size='xs' }: Props) => {
     return (
-        <span className={clsx(`flex items-center justify-center px-2 py-0.5 rounded-full text-${size} font-medium bg-${type}-100 text-${type}-800 border border-${type}-300`, className)}>
+        <span className={clsx(`flex items-center justify-center px-2 py-1 rounded-full text-${size} font-bold bg-${type}-50 text-${type}-400`, className)}>
             <p>{children}</p>
         </span>
     )
