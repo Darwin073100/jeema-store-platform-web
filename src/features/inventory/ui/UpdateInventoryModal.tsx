@@ -12,6 +12,9 @@ import { useUpdateInventoryModal } from '../hooks/useUpdateInventoryModal';
 import { ProductEntity } from '@/features/product/domain/entities/product.entity';
 import { HiMiniSwatch } from 'react-icons/hi2';
 import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
+import { useProductUIStore } from '@/features/product/infraestructure/stores/product-ui.store';
+import { useRegisterCompleteProduct } from '@/features/product/hooks/useRegisterCompleteProduct';
+import { BiBarcode } from 'react-icons/bi';
 
 const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
     const {
@@ -23,8 +26,10 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
         errors,
         floatMessageState,
         isLoading,
-        handleUseUniversalBarCodeToLocal
+        handleUseUniversalBarCodeToLocal,
+        handleGenerateBarcode
     } = useUpdateInventoryModal();
+    const { loading } = useProductUIStore();
 
     const inventoryDescription = useInventoryDescriptionInput;
 
@@ -58,6 +63,7 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                             <HiMiniSwatch/> 
                                             Usar código del producto
                                         </Button>
+                                        <Button color='purple' size='sm' type='button' onClick={()=> handleGenerateBarcode()}>{loading==='generateBarcode'? <Spinner size={12}/> : <BiBarcode/>}Generar</Button>
                                     </div>
                                     <TextInput
                                         placeholder="Codigo de barra interno"

@@ -9,10 +9,12 @@ import React from 'react'
 import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
-import { ForSaleEnum } from '@/features/product/domain/enums/for-sale.enum';
 import { useRegisterInventoryModal } from '../hooks/useRegisterInventoryModal';
 import { HiMiniSwatch } from 'react-icons/hi2';
 import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
+import { useRegisterCompleteProduct } from '@/features/product/hooks/useRegisterCompleteProduct';
+import { BiBarcode } from 'react-icons/bi';
+import { useProductUIStore } from '@/features/product/infraestructure/stores/product-ui.store';
 
 const RegisterInventoryModal = () => {
     const {
@@ -27,6 +29,8 @@ const RegisterInventoryModal = () => {
         floatMessageState,
         isLoading
     } = useRegisterInventoryModal();
+    const { handleGenerateBarcode } = useRegisterCompleteProduct();
+    const { loading } = useProductUIStore();
 
     const inventoryDescription = useInventoryDescriptionInput;
 
@@ -60,6 +64,7 @@ const RegisterInventoryModal = () => {
                                             <HiMiniSwatch/> 
                                             Usar código del producto
                                         </Button>
+                                        <Button color='purple' size='sm' type='button' onClick={()=> handleGenerateBarcode()}>{loading==='generateBarcode'? <Spinner size={12}/> : <BiBarcode/>}Generar</Button>
                                     </div>
                                     <TextInput
                                         placeholder="Codigo de barra interno"

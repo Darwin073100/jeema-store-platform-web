@@ -9,6 +9,8 @@ import { InventoryEntity } from "../domain/entities/inventory.entity";
 import { UpdateInventoryDTO } from "../application/dtos/update-inventory.dto";
 import { updateInventoryAction } from "../actions/update-inventory.action";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
+import { generateBarcodeAction } from "../actions/generate-barcode.action";
+import { useProductUIStore } from "@/features/product/infraestructure/stores/product-ui.store";
 
 const registerFormData = yup.object().shape({
     internalBarCode: yup
@@ -54,6 +56,7 @@ const useUpdateInventoryModal = () => {
         selectedBranchOfficeId, selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId,
         selectedProduct, setSelectedProduct
     } = useUpdateInventoryStore();
+    const {initLoading, finishLoading} = useProductUIStore();
     
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ floatMessageState, setFloatMessageState ] = useState<FloatMessageType>({});
@@ -75,6 +78,34 @@ const useUpdateInventoryModal = () => {
             });
         }
     }, [reset, updateOpenModal, selectedBranchOfficeId, selectedLotId, selectedProductId]);
+
+    const handleGenerateBarcode = async ()=>{
+            initLoading('generateBarcode');
+            const response = await generateBarcodeAction();
+            finishLoading();
+            if (response.ok && response.value) {
+                setValue('internalBarCode', response.value.barcode);
+                setFloatMessageState(() => ({
+                    description: 'Código generado',
+                    summary: '¡Correcto!',
+                    isActive: true,
+                    type: 'green'
+                }));
+                setTimeout(() => {
+                    setFloatMessageState(() => ({}));
+                }, 2000);
+            } else {
+                setFloatMessageState(() => ({
+                    description: 'No se pudo generrar el código de barra.',
+                    summary: '¡Error!',
+                    isActive: true,
+                    type: 'red'
+                }));
+                setTimeout(() => {
+                    setFloatMessageState(() => ({}));
+                }, 4000);
+            }
+        }
 
     const resetFormUpdateInventory = ()=> {
         setSelectedBranchOfficeId(null);
@@ -190,7 +221,8 @@ const useUpdateInventoryModal = () => {
         // UI states
         floatMessageState,
         isLoading,
-        handleUseUniversalBarCodeToLocal
+        handleUseUniversalBarCodeToLocal,
+        handleGenerateBarcode
     }
 }
 
