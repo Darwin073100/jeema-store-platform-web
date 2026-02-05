@@ -11,6 +11,7 @@ import { LocationEnum } from "../../domain/enums/location.enum";
 import { InventoryItemEntity } from "../../domain/entities/inventory-item.entity";
 import { EditInventoryItemDTO } from "../../application/dtos/edit-inventory-item.dto";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { BarcodeTypeEnum } from "@/features/product/domain/enums/barcode-type.enum";
 
 export class InventoryFetchRepository implements InventoryRepository {
     constructor(
@@ -77,9 +78,15 @@ export class InventoryFetchRepository implements InventoryRepository {
         }
     }
 
-    async findBarcodeByInventoryId(inventoryId: bigint): Promise<Result<any | Blob, ErrorEntity>> {
+    async findBarcodeByInventoryId(inventoryId: bigint, barcodeType: BarcodeTypeEnum): Promise<Result<any | Blob, ErrorEntity>> {
         try {
-            const result = await fetch(this.apiConfig.getEndpointUrl(`/reports/barcode/inventories/${inventoryId.toString()}`));
+            const result = await fetch(this.apiConfig.getEndpointUrl(`/reports/barcode/inventories/${inventoryId.toString()}`),{
+                body: JSON.stringify({barcodeType}),
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST'
+            });
             return Result.success(result.blob());
         } catch (error) {
             return handleError(error, 'findBarcodeByInventoryId');

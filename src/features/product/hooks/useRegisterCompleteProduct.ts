@@ -24,7 +24,7 @@ export const schema = yup.object().shape({
     seasonId: yup.string()
         .required('Debes elegir la temporada en la que se vende el producto.')
         .test('not-empty', 'Debes elegir la temporada en la que se vende el producto.', value => value !== undefined && value !== null && value !== ''),
-    universalBarCode: yup.string().required('El codigo de barra universal es obligatorio.'),
+    universalBarCode: yup.string().required('El codigo de barra universal es obligatorio.').max(13, 'El código de barra no puede ser mayor a 13 caracteres.'),
     unitOfMeasure: yup.string().required('La unidad de medida por defecto para venta es obligatoria'),
     minStockGlobal: yup.number().required('El stock minimo por establecimeinto es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
     imageUrl: yup.string().notRequired().optional().nullable(),
@@ -131,6 +131,7 @@ export const schema = yup.object().shape({
         is: true,
         then: (schema)=> schema
             .required('El codigo de barra interno es obligatorio.')
+            .max(13, 'El código de barra no puede ser mayor a 13 caracteres.')
             .typeError('Asegurate de ingresar la información correcta.'),
         otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
     }),

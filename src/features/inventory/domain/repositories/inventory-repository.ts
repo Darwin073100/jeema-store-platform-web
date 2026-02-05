@@ -6,6 +6,7 @@ import { ErrorEntity } from "@/shared/features/error.entity";
 import { InventoryItemEntity } from "../entities/inventory-item.entity";
 import { LocationEnum } from "../enums/location.enum";
 import { EditInventoryItemDTO } from "../../application/dtos/edit-inventory-item.dto";
+import { BarcodeTypeEnum } from "@/features/product/domain/enums/barcode-type.enum";
 
 export interface InventoryRepository{
     save(dto: RegisterInventoryDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
@@ -14,5 +15,5 @@ export interface InventoryRepository{
     findAllByLocationAndBranchOffice(branchOfficeId: bigint, location: LocationEnum): Promise<Result<{items:InventoryItemEntity[]}, ErrorEntity>>;
     editItem(dto: EditInventoryItemDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
     addStockItem(itemId: bigint, addQuantity: number):Promise<Result<InventoryItemEntity, ErrorEntity>>;
-    findBarcodeByInventoryId(inventoryId: bigint): Promise<Result<Blob | any, ErrorEntity>>;
+    findBarcodeByInventoryId(inventoryId: bigint, barcodeType: BarcodeTypeEnum): Promise<Result<Blob | any, ErrorEntity>>;
 }
