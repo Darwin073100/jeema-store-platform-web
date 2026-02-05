@@ -103,7 +103,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                     <div className='flex gap-2'>
                                         <LabelInput
                                             required='yes' 
-                                            value="Código de barras universal"
+                                            value="C. de barras universal"
                                             description='Ingresa el código de barras EAN/UPC que viene impreso en el producto. Este código es único para cada producto. Ej: 7501234567890.' />
                                         <Button color='purple' size='sm' type='button' onClick={()=> handleGenerateBarcode()}>{loading==='generateBarcode'? <Spinner size={12}/> : <BiBarcode/>}Generar</Button>
                                     </div>
@@ -642,7 +642,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                             <h4 className="font-medium text-indigo-800 mb-3">𝄃𝄃𝄂𝄂𝄀 Código de barra interno</h4>
                                         <div className='flex gap-4'>
                                             <LabelInput 
-                                                value="Código de barras int." 
+                                                value="C. de barras int." 
                                                 required='yes'
                                                 description='Código de barras interno el usuario tendra que aisgnar uno o utilizar el universal. Se usa cuando el producto no tiene código de barras universal o se necesita un identificador adicional.' />
                                             <Button 
