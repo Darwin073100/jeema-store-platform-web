@@ -19,9 +19,10 @@ import { forSaleObject } from '../../domain/enums/for-sale.object';
 import { ProductEnableOptios } from './ProductEnableOptios';
 import { useRegisterCompleteProduct } from '../../hooks/useRegisterCompleteProduct';
 import { AiFillProduct } from 'react-icons/ai';
-import { BiSolidPurchaseTag } from "react-icons/bi";
+import { BiBarcode, BiSolidPurchaseTag } from "react-icons/bi";
 import { MdInventory2 } from 'react-icons/md';
 import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
+import { useProductUIStore } from '../../infraestructure/stores/product-ui.store';
 
 interface Props {
     categoryList: CategoryEntity[],
@@ -35,12 +36,12 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
         errors, floatMessageState, handleSubmit, isLoading, addLotUnitPurchase, removeLotUnitPurchase,
         onSubmit, register, handleBarCodeMatch, handleStockGlobalToBranch, updateLotUnitPurchase, lotUnitPurchases,
         addInventoryItem, removeInventoryItem, updateInventoryItem, inventoryItems, handleInitialQuantityToquantityOnHand,
-        inventoryCheck, lotCheck,
+        inventoryCheck, lotCheck, handleGenerateBarcode,
     } = useRegisterCompleteProduct();
-
     const { categories, setCategories } = useCategoryStore();
     const { seasons, setSeasons } = useSeasonStore();
     const { brands, setBrands } = useBrandStore();
+    const { loading } = useProductUIStore();
 
     useEffect(() => {
         setCategories(categoryList);
@@ -99,10 +100,13 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                 </div>
                                 
                                 <div>
-                                    <LabelInput
-                                        required='yes' 
-                                        value="Código de barras universal"
-                                        description='Ingresa el código de barras EAN/UPC que viene impreso en el producto. Este código es único para cada producto. Ej: 7501234567890.' />
+                                    <div className='flex gap-2'>
+                                        <LabelInput
+                                            required='yes' 
+                                            value="Código de barras universal"
+                                            description='Ingresa el código de barras EAN/UPC que viene impreso en el producto. Este código es único para cada producto. Ej: 7501234567890.' />
+                                        <Button color='purple' size='sm' type='button' onClick={()=> handleGenerateBarcode()}>{loading==='generateBarcode'? <Spinner size={12}/> : <BiBarcode/>}Generar</Button>
+                                    </div>
                                     <TextInput
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {

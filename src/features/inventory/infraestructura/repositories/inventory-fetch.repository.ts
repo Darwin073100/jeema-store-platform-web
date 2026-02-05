@@ -77,6 +77,16 @@ export class InventoryFetchRepository implements InventoryRepository {
             return handleError(error, 'Find Inventory By BarCode');
         }
     }
+    async generateBarcode( establishmentId: bigint, branchOfficeId: bigint ): Promise<Result<{barcode: string}, ErrorEntity>> {
+        try {
+            const result = await this.httpClient.get<{barcode: string}>(
+                this.apiConfig.getEndpointUrl(`/inventories/barcode/establishments/${establishmentId.toString()}/branch-offices/${branchOfficeId.toString()}`)
+            );
+            return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'generateBarcode');
+        }
+    }
 
     async findBarcodeByInventoryId(inventoryId: bigint, barcodeType: BarcodeTypeEnum): Promise<Result<any | Blob, ErrorEntity>> {
         try {

@@ -16,4 +16,5 @@ export interface InventoryRepository{
     editItem(dto: EditInventoryItemDTO):Promise<Result<InventoryEntity, ErrorEntity>>;
     addStockItem(itemId: bigint, addQuantity: number):Promise<Result<InventoryItemEntity, ErrorEntity>>;
     findBarcodeByInventoryId(inventoryId: bigint, barcodeType: BarcodeTypeEnum): Promise<Result<Blob | any, ErrorEntity>>;
+    generateBarcode( establishmentId: bigint, branchOfficeId: bigint ): Promise<Result<{barcode: string}, ErrorEntity>>;
 }

@@ -1,7 +1,7 @@
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { create } from "zustand";
 type ProductModalsType = 'none' | 'printLabels' | 'printLabels-51x25';
-type ProductLoadingsType = 'none' | 'printLabels';
+type ProductLoadingsType = 'none' | 'printLabels' | 'generateBarcode';
 
 interface UIState {
     //? Modales

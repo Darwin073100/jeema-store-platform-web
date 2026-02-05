@@ -10,6 +10,8 @@ import { ForSaleEnum } from '../domain/enums/for-sale.enum';
 import { RCPInventory, RCPLot, RegisterCompleteProductDTO } from '../application/dtos/register-complete-product.dto';
 import { registerCompleteProductAction } from '../actions/register-complete-product.action';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
+import { generateBarcodeAction } from '@/features/inventory/actions/generate-barcode.action';
+import { useProductUIStore } from '../infraestructure/stores/product-ui.store';
 
 export const schema = yup.object().shape({
     //Product
@@ -202,6 +204,7 @@ const useRegisterCompleteProduct = () => {
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [isLoading, setIsLoading] = useState(false);
     const { product, setProduct } = useProductStore();
+    const { initLoading, finishLoading } = useProductUIStore();
 
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -406,6 +409,35 @@ const useRegisterCompleteProduct = () => {
             'inventoryItems']);
     }
 
+    const handleGenerateBarcode = async ()=>{
+        initLoading('generateBarcode');
+        const response = await generateBarcodeAction();
+        finishLoading();
+        if (response.ok && response.value) {
+            setValue('universalBarCode', response.value.barcode);
+            setValue('internalBarCode', response.value.barcode);
+            setFloatMessageState(() => ({
+                description: 'Código generado',
+                summary: '¡Correcto!',
+                isActive: true,
+                type: 'green'
+            }));
+            setTimeout(() => {
+                setFloatMessageState(() => ({}));
+            }, 2000);
+        } else {
+            setFloatMessageState(() => ({
+                description: 'No se pudo generrar el código de barra.',
+                summary: '¡Error!',
+                isActive: true,
+                type: 'red'
+            }));
+            setTimeout(() => {
+                setFloatMessageState(() => ({}));
+            }, 4000);
+        }
+    }
+
     const lotCheck = watch('lotCheck');
     const inventoryCheck = watch('inventoryCheck');
 
@@ -516,6 +548,7 @@ const useRegisterCompleteProduct = () => {
         inventoryItems,
         lotCheck,
         inventoryCheck,
+        handleGenerateBarcode,
     }
 }
 
