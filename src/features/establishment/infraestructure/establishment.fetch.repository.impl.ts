@@ -23,6 +23,17 @@ export class EstablishmentFetchRepositoryImpl implements EstablishmentRepository
             return handleError(error, 'EstablishmentFetchRepositoryImpl.save');
         }
     }
+    async update(establishmentId: bigint, name: string):Promise<Result<EstablishmentEntity,ErrorEntity>>{
+        try {
+            const response = await this.httpClient.patch<EstablishmentEntity>(
+                this.apiConfig.getEndpointUrl(`/establishments/${establishmentId.toString()}`),
+                {name}
+            );
+            return Result.success(response.data);
+        } catch (error:any) {
+            return handleError(error, 'EstablishmentFetchRepositoryImpl.update');
+        }
+    }
     async findById(establishmentId: bigint):Promise<Result<EstablishmentEntity,ErrorEntity>>{
         try {
             const response = await this.httpClient.get<EstablishmentEntity>(

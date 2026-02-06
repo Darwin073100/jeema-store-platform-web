@@ -6,4 +6,5 @@ import { CreateEstablishmentDTO } from "../../application/dtos/create-establishm
 export interface EstablishmentRepository{
     save(data: CreateEstablishmentDTO):Promise<Result<EstablishmentEntity,ErrorEntity>>;
     findById(establishmentId: bigint):Promise<Result<EstablishmentEntity,ErrorEntity>>;
+    update(establishmentId: bigint, name: string):Promise<Result<EstablishmentEntity,ErrorEntity>>;
 }

@@ -19,4 +19,4 @@ export const useEstablishmentStore = create<State>()(
         name: 'establishment-storage', // clave que usará en localStorage
       }
     )
-  );
+);

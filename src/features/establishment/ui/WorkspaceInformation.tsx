@@ -5,12 +5,15 @@ import { Badge } from '@/shared/ui/components/badges/Badge'
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine'
 import { BiAddToQueue, BiCalendar, BiPencil } from 'react-icons/bi'
 import { EstablishmentEntity } from '../domain/entities/establishment.entity'
+import { useEstablishmentUIStore } from '../infraestructure/establishment-ui.store'
+import { EstablishmentUpdateModal } from './EstablishmentUpdateModal'
 
 interface Props {
     establishment: EstablishmentEntity
 }
 
 const WorkspaceInformation = ({ establishment }: Props) => {
+    const { openEstablishmentModal } = useEstablishmentUIStore();
     return (
         <div className="bg-white rounded-lg shadow-md w-full p-6 flex flex-col justify-center gap-4">
             <div className="flex items-center gap-4">
@@ -25,9 +28,11 @@ const WorkspaceInformation = ({ establishment }: Props) => {
                 <span className="text-sm font-bold text-gray-400"><BiCalendar></BiCalendar> {formatDateWithOutTime(establishment?.createdAt)}</span>
             </div>
             <div className="flex flex-col w-full gap-2">
-                <ButtonOutLine className="w-full"><BiPencil></BiPencil>Editar información</ButtonOutLine>
+                <ButtonOutLine className="w-full" onClick={()=> openEstablishmentModal('update-establishment')}><BiPencil></BiPencil>Editar información</ButtonOutLine>
                 <ButtonOutLine color="purple" className="w-full"><BiAddToQueue></BiAddToQueue>Agregar sucursal</ButtonOutLine>
             </div>
+            <EstablishmentUpdateModal 
+                establishment={establishment}/>
         </div>
     )
 }
