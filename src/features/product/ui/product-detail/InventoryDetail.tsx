@@ -24,6 +24,7 @@ import { useUpdateInventoryItemModal } from '@/features/inventory/hooks/useUpdat
 import { useDeleteInventoryItemModal } from '@/features/inventory/hooks/useDeleteInventoryItemModal'
 import { useLocalTransferInventoryItemModal } from '@/features/inventory/hooks/useLocalTransferInventoryItemModal'
 import { ProductBarCode51x25Modal } from './ProductBarCodes51x25Modal'
+import { ProductPrice27x13Modal } from './ProductPrice27x13Modal'
 
 interface Props {
     product: ProductEntity
@@ -85,9 +86,6 @@ const InventoryDetail = ({ product }: Props) => {
                             <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="text-gray-600"> <HiOutlineQrcode /> </span>
-                                    <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                                        C. B. interno
-                                    </label>
                                     <Button
                                         size='sm'
                                         title='Imprimir código de barras'
@@ -96,15 +94,25 @@ const InventoryDetail = ({ product }: Props) => {
                                         <ImPrinter />
                                     </Button>
                                     <Button
+                                    color='yellow'
                                         size='sm'
                                         title='Imprimir código de barras'
                                         onClick={() => openProductModal('printLabels-51x25')}>
                                         51x25
                                         <ImPrinter />
                                     </Button>
+                                    <Button
+                                        color='purple'
+                                        size='sm'
+                                        title='Imprimir precios de mayoreo y menudeo'
+                                        onClick={() => openProductModal('print-labels-prices-27x13')}>
+                                        Precios
+                                        <ImPrinter />
+                                    </Button>
                                 </div>
                                 <ProductBarCodeModal inventoryId={product.inventory.inventoryId} />
                                 <ProductBarCode51x25Modal inventoryId={product.inventory.inventoryId} />
+                                <ProductPrice27x13Modal inventoryId={product.inventory.inventoryId} />
                                 <div className="text-gray-900 font-semibold">
                                     <div className='printable-content'>
                                         <Barcode

@@ -12,4 +12,6 @@ export enum BarcodeTypeEnum{
      * donde esta incluido los precios de mayoreo y menudeo.
      */
     BARCODE51X25_PRICE = '51x25-prices',
+
+    PRICES27X13_PRICE = '27x13-prices',
 }
