@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { FcConferenceCall, FcCurrencyExchange, FcMindMap, FcOrgUnit, FcPaid, FcServices, FcShop } from "react-icons/fc";
+import { FcConferenceCall, FcCurrencyExchange, FcMindMap, FcOrgUnit, FcPaid, FcServices, FcShipped, FcShop } from "react-icons/fc";
 import { SideLink } from './SideLink'
 import { HideElement } from '@/features/auth/ui/HideElement';
 
@@ -21,6 +21,9 @@ export const SideBar = () => {
         <SideLink hover={hover} Icon={FcOrgUnit} href='/' value='Inicio'/>
         <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
             <SideLink hover={hover} Icon={FcPaid} href='/sale' value='Ventas'/>
+        </HideElement>
+        <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+            <SideLink hover={hover} Icon={FcShipped} href='/purchases' value='Compras'/>
         </HideElement>
         <SideLink hover={hover} Icon={FcMindMap} href='/products' value='Productos'/>
         <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
