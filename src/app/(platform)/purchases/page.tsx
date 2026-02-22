@@ -17,7 +17,7 @@ const homeCards = [
     {
         title: 'Catalogo Compras',
         description: 'Revisa la lista de compras sucursal.',
-        to: '/products/list',
+        to: '/purchases/list',
         image: Inventory
     },
     {

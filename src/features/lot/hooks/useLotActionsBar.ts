@@ -5,10 +5,28 @@ import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { InventoryItemEntity } from '@/features/inventory/domain/entities/inventory-item.entity';
 import { useLotStore } from '../infraestructure/store/lot.store';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { findReportsLotsAction } from '../actions/find-report-lots.action';
+import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
+import { useLotUIStore } from '../infraestructure/store/lot-ui.store';
+
+const schema = yup.object().shape({
+    dateInit: yup.date()
+        .transform((value, originalValue) => originalValue === '' ? null : value)
+        .optional().notRequired().nullable(),
+    dateFinish: yup.date()
+        .transform((value, originalValue) => originalValue === '' ? null : value)
+        .optional().notRequired().nullable(),
+}).required();
+
+type FormData = yup.InferType<typeof schema>;
 
 const useLotActionsBar = () => {
     const [loading, setLoading] = useState(false);
-    const { searchCharacter, lotsFiltered, setLotsFiltered, lots } = useLotStore();
+    const { searchCharacter, lotsFiltered, setLotsFiltered,setLots, lots } = useLotStore();
+    const { initLoading, finishLoading } = useLotUIStore();
     const [productId, setProductId] = useState('0');
     const router = useRouter();
 
@@ -16,6 +34,12 @@ const useLotActionsBar = () => {
         setProductId(productId);
         router.push(`/products/${productId}`);
     };
+
+    const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+        mode: 'onChange',
+        
+    });
 
     useEffect(() => {
         if (!lots || !Array.isArray(lots)) setLotsFiltered([]);
@@ -54,25 +78,38 @@ const useLotActionsBar = () => {
         router.push('/products/new')
     }
 
+    const onSubmit = async (info: FormData) => {
+        initLoading('find-report-lots');
+        const lotsResponse = await findReportsLotsAction(info.dateInit ?? null, info.dateFinish ?? null);
+        finishLoading();
+        if(lotsResponse.ok && lotsResponse.value){
+            setLotsFiltered(lotsResponse.value.lots);
+            setLots(lotsResponse.value.lots);
+        }
+    }
+
     const currentProducts = lotsFiltered.map(item => {
         const base = {
             FOLIO: item.productId,
-            PRODUCTO: item.product?.name ?? '',
-            'CODIGO UNIVERSAL': item.product?.universalBarCode ?? '',
-            'CODIGO INTERNO': item.product?.inventory?.internalBarCode ?? '',
+            'FECHA REGISTRO': formatDateShort(item.receivedDate),
             CATEGORIA: item.product?.category?.name ?? '',
-            TEMPORADA: item.product?.season?.name ?? '',
+            PRODUCTO: item.product?.name ?? '',
+            'CANTIDAD': item.initialQuantity ?? '',
             UNIDAD: item.product?.unitOfMeasure ?? '',
+            'COSTO': item.purchasePrice,
+            'PRECIO+PRORRATEO': item.purchasePrice,
             'VENTA MENUDEO': item.product?.inventory?.salePriceOne ?? 0,
-            'CANTIDAD MAYOREO': item.product?.inventory?.saleQuantityMany ?? 0,
             'VENTA MAYOREO': item.product?.inventory?.salePriceMany ?? 0,
-            'FECHA REGISTRO': formatDateShort(item.createdAt),
+            'CANTIDAD MAYOREO': item.product?.inventory?.saleQuantityMany ?? 0,
+            '': '',
+            'TOTAL DE COMPRA': item.initialQuantity*item.purchasePrice,
+            'PROVEEDOR': item.suplier?.name ?? 'N/A',
         } as Record<string, any>;
         return base;
     });
 
     const handleDownloadExcel = () => {
-        downloadXLSX(currentProducts, 'Productos');
+        downloadXLSX(currentProducts, 'Compras');
     }
 
     return {
@@ -82,6 +119,10 @@ const useLotActionsBar = () => {
         handleViewProduct,
         loading,
         productId,
+        onSubmit,
+        handleSubmit,
+        register,
+        errors,
     }
 }
 

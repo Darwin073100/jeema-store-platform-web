@@ -15,7 +15,7 @@ interface TableLotsProps {
 export function TableLotsDesktop({}: TableLotsProps) {
     const { lotsFiltered } = useLotStore();
     const { handleViewProduct, productId } = useLotActionsBar();
-    const head = ['FOLIO', 'PRODUCTO', 'PRECIO', 'UNIDAD', 'CANTIDAD', 'PROVEEDOR', 'FECHA'];
+    const head = ['FOLIO', 'PRODUCTO', 'PRECIO', 'UNIDAD', 'CANTIDAD', 'TOTAL', 'PROVEEDOR', 'FECHA'];
 
     return (
         <div>
@@ -27,6 +27,7 @@ export function TableLotsDesktop({}: TableLotsProps) {
                         <PCol>{numberMoneyFormat(item?.purchasePrice ?? 0)}</PCol>
                         <PCol><Badge>{item?.purchaseUnit.toUpperCase()}</Badge></PCol>
                         <PCol>{item?.initialQuantity || '0'}</PCol>
+                        <PCol>{numberMoneyFormat(item.initialQuantity*item.purchasePrice)}</PCol>
                         <PCol>{item?.suplier?.name || 'N/A'}</PCol>
                         <PCol>{formatDateShort(item?.receivedDate)}</PCol>
                         <PCol className="flex justify-end">
