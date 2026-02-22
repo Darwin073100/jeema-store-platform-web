@@ -52,12 +52,11 @@ const Login = () => {
                             </div>
                         </div>
                         <div>
-                            <Button  className='w-full flex justify-center items-center'>
-                                {isLoading ? <Spinner /> : 
-                                    <>
-                                        Iniciar
-                                        <IoMdArrowRoundForward />
-                                    </>
+                            <Button  className='w-full flex justify-center items-center' disabled={isLoading}>
+                                Iniciar
+                                {isLoading 
+                                    ? <Spinner size={14}/> 
+                                    : <IoMdArrowRoundForward />
                                 }
                             </Button>
                         </div>

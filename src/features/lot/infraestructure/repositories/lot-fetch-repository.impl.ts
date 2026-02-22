@@ -10,6 +10,7 @@ import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { AddLotUnitPurchaseDTO } from "../../application/dtos/add-lot-unit-purchase.dto";
 import { LotUnitPurchaseEntity } from "../../domain/entities/lot-unit-purchase.entity";
 import { UpdateLotUnitPurchaseDTO } from "../../application/dtos/update-lot-unit-purchase.dto";
+import { FindReportLotsHttpDTO } from "../dtos/find-report-lots-http.dto";
 
 export class LotFetchRepositoryImpl implements LotRepository {
 
@@ -28,6 +29,22 @@ export class LotFetchRepositoryImpl implements LotRepository {
             return Result.success(result.data)
         } catch (error: any) {
             return this.handleError(error, 'Save Lot');
+        }
+    }
+    async findReportLots(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<Result<{lots: LotEntity[]}, ErrorEntity>> {
+        try {
+            const httpDto:FindReportLotsHttpDTO = {
+                dateFinish: dateFinish.toISOString(),
+                dateInit: dateInit.toISOString()
+            }
+            const result = await this.httpClient.post<{lots: LotEntity[]}>(
+                this.apiConfig.getEndpointUrl(`/lots/reports/branch-offices/${branchOfficeId.toString()}`),
+                httpDto
+            )
+
+            return Result.success(result.data)
+        } catch (error: any) {
+            return this.handleError(error, 'LotFetchRepositoryImpl.findReportLots');
         }
     }
 
