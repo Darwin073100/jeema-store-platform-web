@@ -5,7 +5,7 @@ import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 
 const breadcrumbItems: BreadcrumbItem[] = [
-    {label: 'Productos', href: '/products'},
+    {label: 'Compras', href: '/purchases'},
     {label: 'Proveedores'},
 ]
 export default async function(){

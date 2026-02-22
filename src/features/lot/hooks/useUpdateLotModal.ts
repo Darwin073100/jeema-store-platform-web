@@ -127,9 +127,9 @@ const useUpdateLotModal = () => {
                 productId: lot.productId,
                 purchasePrice: data.purchasePrice,
                 purchaseUnit: data.purchaseUnit,
-                receivedDate: new Date(data.receivedDate),
-                expirationDate: data.expirationDate ? new Date(data.expirationDate) : null,
-                manufacturingDate: data.manufacturingDate ? new Date(data.manufacturingDate) : null
+                receivedDate: new Date(formatDateForInput(data.receivedDate)),
+                expirationDate: data.expirationDate ? new Date(formatDateForInput(data.expirationDate)) : null,
+                manufacturingDate: data.manufacturingDate ? new Date(formatDateForInput(data.manufacturingDate)) : null
             }
 
             const result = await updateLotAction(updateData);

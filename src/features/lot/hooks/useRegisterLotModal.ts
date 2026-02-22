@@ -56,7 +56,6 @@ export const registerLotSchema = yup.object().shape({
         .nullable()
         .test('is-valid-date', 'La fecha de fabricación debe ser una fecha válida (YYYY-MM-DD).', 
               value => !value || !isNaN(Date.parse(value))),
-
     receivedDate: yup
         .string()
         .required('La fecha de recepción es obligatoria.')
@@ -134,9 +133,9 @@ const useRegisterLotModal = () => {
                 purchasePrice: data.purchasePrice,
                 initialQuantity: data.initialQuantity,
                 purchaseUnit: data.purchaseUnit,
-                receivedDate: new Date(data.receivedDate),
-                expirationDate: data.expirationDate ? new Date(data.expirationDate) : null,
-                manufacturingDate: data.manufacturingDate ? new Date(data.manufacturingDate) : null
+                receivedDate: new Date(formatDateForInput(data.receivedDate)),
+                expirationDate: data.expirationDate ? new Date(formatDateForInput(data.expirationDate)) : null,
+                manufacturingDate: data.manufacturingDate ? new Date(formatDateForInput(data.manufacturingDate)) : null
             }
 
             const result = await registerLotWithInventoryItemAction(registerData, BigInt(data.inventoryItemId ?? 0));

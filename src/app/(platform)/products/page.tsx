@@ -2,7 +2,6 @@ import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 import Product from '../../../shared/ui/assets/images/product.svg';
 import Inventory from '../../../shared/ui/assets/images/inventary.svg';
-import Suplier from '../../../shared/ui/assets/images/supliers.svg';
 import { CardLink } from "@/shared/ui/components/cards";
 
 export const metadata = {
@@ -25,12 +24,6 @@ const homeCards = [
         description: 'Revisa la lista de productos de tu establecimiento.',
         to: '/products/list',
         image: Inventory
-    },
-    {
-        title: 'Proveedores',
-        description: 'Agrega y revisa todos tus proveedores',
-        to: '/products/supliers',
-        image: Suplier
     }
 ];
 export default function () {

@@ -111,8 +111,30 @@ export function formatDateShort(date: Date | string | null | undefined): string 
     if (!date) return 'N/A';
     
     try {
+        // Si es string, parseamos directamente la fecha sin crear objeto Date
+        if (typeof date === 'string') {
+            // Extraemos solo la parte de la fecha (YYYY-MM-DD)
+            const datePart = date.split('T')[0];
+            const [year, month, day] = datePart.split('-').map(Number);
+            
+            // Creamos la fecha usando la zona horaria local
+            return new Date(year, month - 1, day).toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric'
+            });
+        }
+
         const dateObj = typeof date === 'string' ? new Date(date) : date;
-        return dateObj.toLocaleDateString('es-ES');
+        return new Date(
+            dateObj.getFullYear(), 
+            dateObj.getMonth(), 
+            dateObj.getDate()
+        ).toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric'
+        });
     } catch (error) {
         return 'Fecha inválida';
     }

@@ -1,10 +1,8 @@
 import { AddLotUnitPurchaseDTO } from "../../application/dtos/add-lot-unit-purchase.dto";
-import { FindReportLotsDTO } from "../../application/dtos/find-report-lots.dto";
 import { RegisterLotDTO } from "../../application/dtos/register-lot.dto";
 import { UpdateLotUnitPurchaseDTO } from "../../application/dtos/update-lot-unit-purchase.dto";
 import { UpdateLotDTO } from "../../application/dtos/update-lot.dto";
 import { AddLotUnitPurchaseHttpDTO } from "../dtos/add-lot-unit-purchase-http.dto";
-import { FindReportLotsHttpDTO } from "../dtos/find-report-lots-http.dto";
 import { RegisterLotHttpDTO } from "../dtos/register-lot-http.dto";
 import { UpdateLotHttpDTO } from "../dtos/update-lot-http.dto";
 import { UpdateLotUnitPurchaseHttpDTO } from "../dtos/update-lot-unit-purchase-http.dto";
@@ -23,7 +21,6 @@ export class LotMapper {
             expirationDate: dto.expirationDate?.toJSON(),
             manufacturingDate: dto.manufacturingDate?.toJSON()
         }
-
         return httpDto;
     }
     static toRegisterLotHttpRequest(dto: RegisterLotDTO){
@@ -63,14 +60,6 @@ export class LotMapper {
             unitsInPurchaseUnit: dto.unitsInPurchaseUnit
         }
 
-        return httpDto;
-    }
-
-    static toFindReportLotsHttp(dto: FindReportLotsDTO){
-        const httpDto: FindReportLotsHttpDTO = {
-            dateInit: dto.dateInit.toISOString(),
-            dateFinish: dto.dateFinish.toISOString()
-        }
         return httpDto;
     }
 }

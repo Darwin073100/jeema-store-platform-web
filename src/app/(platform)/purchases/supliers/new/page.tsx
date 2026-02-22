@@ -4,14 +4,14 @@ import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Nuevo cliente'
+    title: 'Nuevo Proveedor'
 }
 
 export default async function(){
 
     const breadCrumbItems: BreadcrumbItem[] = [
-        {label: 'Productos', href: '/products'},
-        {label: 'Proveedores', href: '/products/supliers'},
+        {label: 'Compras', href: '/purchases'},
+        {label: 'Proveedores', href: '/purchases/supliers'},
         {label: 'Nuevo proveedor'},
     ]
 

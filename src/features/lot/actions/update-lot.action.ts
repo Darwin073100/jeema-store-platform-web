@@ -10,7 +10,7 @@ export async function updateLotAction(dto: UpdateLotDTO){
 
     const result = await updateLotUseCase.execute(dto);
     
-    if(!!result.ok){
+    if(result.ok){
         revalidatePath('/products');
     }
 

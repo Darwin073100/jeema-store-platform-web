@@ -10,6 +10,7 @@ import { registerInitialProductAction } from '../actions/register-initial-produc
 import { RegisterInitialProductDTO } from '../application/dtos/register-initial-product.dto';
 import { useWorkspace } from '@/shared/hooks/useAuth';
 import { ForSaleEnum } from '../domain/enums/for-sale.enum';
+import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
 
 export const schema = yup.object().shape({
     // Establishment and Branch Office
@@ -355,9 +356,9 @@ const useSaveProduct = () => {
             })) || [],
             lotNumber: data.lotNumber,
             purchasePrice: data.purchasePrice,
-            receivedDate: data.receivedDate,
-            expirationDate: data.expirationDate,
-            manufacturingDate: data.manufacturingDate,
+            receivedDate: new Date(formatDateForInput(data.receivedDate)),
+            expirationDate: data.expirationDate ? new Date(formatDateForInput(data.expirationDate)): undefined,
+            manufacturingDate: data.manufacturingDate ? new Date(formatDateForInput(data.manufacturingDate)): undefined,
             branchOfficeId: data.branchOfficeId || branchOffice?.branchOfficeId || '0',
             isSellable: data.isSellable ?? true,
             maxStockBranch: data.maxStockBranch,
