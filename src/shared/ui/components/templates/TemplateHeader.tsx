@@ -28,8 +28,8 @@ interface Props {
  */
 const TemplateHeader = ({ breadcrumbItems, title, detail, children }: Props) => {
     return (
-        <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 max-md:p-1">
-            <div className="max-w-10xl p-6 max-md:p-2 space-y-4">
+        <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-2 max-md:px-1">
+            <div className="max-w-10xl px-2 max-md:px-2">
                 {/* Breadcrumb */}
                 <Breadcrumb items={breadcrumbItems} />
 
@@ -37,7 +37,7 @@ const TemplateHeader = ({ breadcrumbItems, title, detail, children }: Props) => 
                 <div className="flex justify-between items-center">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-                        <p className="text-gray-600 mt-1">{ detail }</p>
+                        <p className="text-gray-600 my-1">{ detail }</p>
                     </div>
                 </div>
                 {children}

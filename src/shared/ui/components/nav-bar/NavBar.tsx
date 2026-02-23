@@ -13,6 +13,9 @@ import Link from 'next/link';
 import { useSideStore } from '../side-bar/side.store';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
+import { HideElement } from '@/features/auth/ui/HideElement';
+import { NavLink } from './NavLink';
+import { FcMindMap, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
 
 export const NavBar = () => {
   const { user } = useAuth();
@@ -30,7 +33,7 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center py-3 px-6 bg-white shadow-md hover:shadow-lg transition-all w-full">
+    <nav className="flex justify-between items-center py-1.5 px-6 bg-white shadow-md hover:shadow-lg transition-all w-full">
       {/* Brand Section */}
       <div className='flex items-center gap-4'>
         <div className={clsx(`relative group ${sideBar? 'rotate-90': 'rotate-0'} transition-all duration-300 md:rotate-0`)} onClick={()=> onToggelSideBar()}>
@@ -52,22 +55,14 @@ export const NavBar = () => {
             {branchOffice?.name}
           </span>
         </div>
-        <div className='mx-2'>
-          <Link
-            href='/sale/new'
-            className='text-sm flex flex-col items-center justify-center rounded-xl p-1 
-                   bg-emerald-500 text-white 
-                   hover:bg-emerald-300 shadow 
-                   transition-all duration-500' // Cambio aquí
-          >
-            <Image
-              alt='NewSale'
-              src={Sale}
-              width={30}
-              height={30} />
-            <span className='max-sm:hidden max-md:hidden'>Nueva Venta</span>
-          </Link>
-        </div>
+        <NavLink hover='' Icon={FcPaid} href='/sale/new' value='Nueva Venta'/>
+        <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+          <NavLink  hover='' Icon={FcShop} href='/sale' value='Ventas'/>
+        </HideElement>
+        <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+          <NavLink  hover='' Icon={FcShipped} href='/purchases' value='Compras'/>
+        </HideElement>
+        <NavLink hover='' Icon={FcMindMap} href='/products' value='Productos'/>
       </div>
 
       {/* Actions Section */}

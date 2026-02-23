@@ -12,7 +12,7 @@ interface Props {
 
 export function Breadcrumb({ items }: Props) {
     return (
-        <nav className="flex items-center space-x-1 text-sm text-gray-600 mb-4">
+        <nav className="flex items-center space-x-1 text-sm text-gray-600 mb-1">
             {items.map((item, index) => (
                 <div key={index} className="flex items-center">
                     {index > 0 && <FiChevronRight className="w-4 h-4 mx-2 text-gray-400" />}

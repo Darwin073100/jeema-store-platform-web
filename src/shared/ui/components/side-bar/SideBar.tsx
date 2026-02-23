@@ -17,15 +17,14 @@ export const SideBar = () => {
 
     return (
     <form 
-        className="max-md:hidden transition-all duration-300 flex flex-col gap-4 px-4 text-gray-700">
+        className="max-md:hidden transition-all duration-300 flex flex-col gap-4 px-4">
         <SideLink hover={hover} Icon={FcOrgUnit} href='/' value='Inicio'/>
-        <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+        {/* <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
             <SideLink hover={hover} Icon={FcPaid} href='/sale' value='Ventas'/>
         </HideElement>
         <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
             <SideLink hover={hover} Icon={FcShipped} href='/purchases' value='Compras'/>
-        </HideElement>
-        <SideLink hover={hover} Icon={FcMindMap} href='/products' value='Productos'/>
+        </HideElement> */}
         <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
             <SideLink hover={hover} Icon={FcConferenceCall} href='/customers' value='Clientes'/>
         </HideElement>
