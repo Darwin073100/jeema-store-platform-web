@@ -34,7 +34,7 @@ const TemplateHeader = ({ breadcrumbItems, title, detail, children }: Props) => 
                 <Breadcrumb items={breadcrumbItems} />
 
                 {/* Header con título y acciones */}
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-2">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
                         <p className="text-gray-600 my-1">{ detail }</p>

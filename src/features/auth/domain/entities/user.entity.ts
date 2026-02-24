@@ -1,4 +1,5 @@
 import { EmployeeEntity } from "@/features/employee/domain/entities/employee.entity";
+import { UserRoleEntity } from "./user-role.entity";
 
 export interface UserEntity{
     userId: bigint;
@@ -9,7 +10,7 @@ export interface UserEntity{
     isActive: boolean;
     lastLogin?: Date | null;
     createdAt: Date;
-    userRoles?: any[];
+    userRoles?: UserRoleEntity[];
     employee?: EmployeeEntity|null;
     updatedAt?: Date | null;
     deletedAt?: Date | null;

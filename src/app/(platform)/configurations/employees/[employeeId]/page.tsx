@@ -71,7 +71,7 @@ export default async function SaleInformationPage({ params }: Props) {
         }
         return (
             <ProtectedRoute>
-                <TemplateHeader title={`${data?.firstName ?? ''} ${data?.lastName ?? ''}`} detail="Información del perfil del empleado." breadcrumbItems={breadcrumbItems}>
+                <TemplateHeader title={`${data?.firstName ?? ''} ${data?.lastName ?? ''}`} detail="Información del perfil del empleado, como nota adicional, el correo personal del empleado es diferente del correo para acceso al sistema, pero puedes utilizar el mismo." breadcrumbItems={breadcrumbItems}>
                         {/* LAYOUT PRINCIPAL: 1/3 Ficha Personal y 2/3 Datos Laborales/Gestión */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 

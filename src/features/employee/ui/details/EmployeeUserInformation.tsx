@@ -32,12 +32,17 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
             </h2>
 
             {data.user ? (
-                // Opción 1: EL EMPLEADO YA TIENE USUARIO ASIGNADO
+            <>
                 <AlertMessage>
                     <p className="font-bold mb-1">Email de Acceso Asignado</p>
                     <div className="flex justify-between items-center text-sm">
                         <div>
-                            <span className="font-semibold text-gray-700">Email:</span> <span className="font-mono text-gray-900">{data.user.email}</span>
+                            <div>
+                                <span className="font-semibold text-gray-700">Email:</span> <span className="font-mono text-gray-900">{data.user.email}</span>
+                            </div>
+                            <div>
+                                <span className="font-semibold text-gray-700">Nombre de usuario:</span> <span className="font-mono text-gray-900">{data.user.username}</span>
+                            </div>
                         </div>
                         <div className='flex gap-4'>
                             <ButtonOutLine size='sm' color='yellow' onClick={()=> openEmployeeModal('resetPassword')}>
@@ -62,6 +67,18 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                     <EmpResetPasswordModal 
                         userId={data.user.userId}/>
                 </AlertMessage>
+                <AlertMessage className='mt-4'>
+                    <p className="font-bold mb-1">Roles Asignados</p>
+                    <div className="text-sm">
+                        { data.user.userRoles?.map(item => (
+                            <div>
+                                <span className="font-semibold text-gray-700">{item.role?.name}: </span> 
+                                <span className="font-mono text-gray-900">{item.role?.description}</span>
+                            </div>
+                        ))}
+                    </div>
+                </AlertMessage>
+            </>
             ) : (
                 // Opción 2: DAR DE ALTA USUARIO (SOLUCIÓN AL REQUERIMIENTO)
                 <AlertMessage color='orange' className='flex justify-between items-center'>
