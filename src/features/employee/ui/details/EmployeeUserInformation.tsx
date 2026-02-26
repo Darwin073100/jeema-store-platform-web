@@ -17,6 +17,8 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { EmpResetPasswordModal } from '../register/EmpResetPasswordModal';
 import { useWorkspace } from '@/shared/hooks/useAuth';
+import { BiPencil } from 'react-icons/bi';
+import { EmployeeUpdateUserModal } from '../register/EmployeeUpdateUserModal';
 interface Props {
     data: EmployeeEntity,
     userRoles: RoleEntity[]
@@ -34,7 +36,10 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
             {data.user ? (
             <>
                 <AlertMessage>
-                    <p className="font-bold mb-1">Email de Acceso Asignado</p>
+                    <div className='flex gap-4 items-center'>
+                        <p className="font-bold">Inicio de sesión</p>
+                        <Button size='sm' color='yellow' onClick={ ()=> openEmployeeModal('editUser')}><BiPencil/> Editar</Button>
+                    </div>
                     <div className="flex justify-between items-center text-sm">
                         <div>
                             <div>
@@ -94,6 +99,7 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                         userRoles={userRoles} />
                 </AlertMessage>
             )}
+            <EmployeeUpdateUserModal />
             <FloatMessage 
                 {...floatMessageState}/>
         </div>

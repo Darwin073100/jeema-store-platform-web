@@ -21,7 +21,7 @@ const EmployeeProfileCard = ({ data, employeeRoles }: Props) => {
     const { setEmployee } = useEmployeeStore()
     useEffect(()=>{
         setEmployee(data);
-    },[]);
+    },[data]);
     return (
         <aside className="lg:col-span-1 space-y-6">
 
