@@ -11,6 +11,7 @@ import { EmployeeUpdateModal } from '../register/EmployeeUpdateModal';
 import { useEmployeeUIStore } from '../../infraestructure/stores/employee-ui.store';
 import { EmployeeRoleEntity } from '../../domain/entities/employee-role.entity';
 import { useEmployeeStore } from '../../infraestructure/stores/employee-store';
+import { EmployeeAddressCard } from './EmployeeAddressCard';
 interface Props {
     data        : EmployeeEntity,
     employeeRoles: EmployeeRoleEntity[],
@@ -67,6 +68,7 @@ const EmployeeProfileCard = ({ data, employeeRoles }: Props) => {
                     </div>
                 </dl>
             </div>
+            <EmployeeAddressCard />
             <EmployeeUpdateModal
                 employeeRoles={employeeRoles} 
                 employee={data}/>

@@ -18,10 +18,10 @@ const Login = () => {
 
     return (
         <main className="py-4 flex flex-col h-screen items-center justify-center gap-4">
-            <div className='bg-white shadow-xl rounded-xl pt-8'>
+            <div className='bg-white shadow-xl rounded-4xl pt-8'>
                 <div className="flex flex-col items-center gap-4">
                     <Image
-                        className="rounded-xl shadow"
+                        className="rounded-2xl shadow"
                         src={logo} alt="logotipo"
                         width={150} height={150} />
                     <h1 className="text-3xl text-gray-500">Inicio de sesión</h1>
