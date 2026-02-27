@@ -74,7 +74,7 @@ export class UserFetchRepositoryImpl implements UserRepository {
     async addRoleToUser(dto: AddRoleToUserDTO): Promise<Result<UserRoleEntity, ErrorEntity>> {
         try {
             const httpDto: AddRoleToUserHttpDTO = UserMapper.toAddRoleToUserHttpDTO(dto);
-            const result = await this.httpClient.patch<UserRoleEntity>(
+            const result = await this.httpClient.post<UserRoleEntity>(
                 this.apiConfig.getEndpointUrl(`/users/add-role`),
                 httpDto
             );

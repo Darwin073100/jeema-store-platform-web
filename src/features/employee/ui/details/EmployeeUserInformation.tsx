@@ -21,6 +21,7 @@ import { BiAddToQueue, BiPencil, BiTrash } from 'react-icons/bi';
 import { EmployeeUpdateUserModal } from '../register/EmployeeUpdateUserModal';
 import { EmployeeUpdateUserRoleModal } from '../register/EmployeeUpdateUserRoleModal';
 import { useEmployeeUpdateUserRoleModal } from '../../infraestructure/hooks/useEmployeeUpdateUserRoleModal';
+import { EmployeeAddRoleToUserModal } from '../register/EmployeeAddRoleToUserModal';
 interface Props {
     data: EmployeeEntity,
     userRoles: RoleEntity[]
@@ -78,7 +79,7 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                 <AlertMessage className='mt-4'>
                     <div className="font-bold mb-1 flex gap-2">
                         <span>Roles Asignados</span> 
-                        <Button color='blue' size='sm'><BiAddToQueue/> Agregar</Button>
+                        <Button color='blue' size='sm' onClick={()=> openEmployeeModal('addRoleToUser')}><BiAddToQueue/> Agregar</Button>
                     </div>
                     <div className="text-sm flex gap-2 flex-col">
                         { data.user.userRoles?.map(item => (
@@ -112,6 +113,8 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                 </AlertMessage>
             )}
             <EmployeeUpdateUserRoleModal 
+                roles={userRoles}/>
+            <EmployeeAddRoleToUserModal 
                 roles={userRoles}/>
             <EmployeeUpdateUserModal />
             <FloatMessage 
