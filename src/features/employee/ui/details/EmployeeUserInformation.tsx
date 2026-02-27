@@ -22,6 +22,9 @@ import { EmployeeUpdateUserModal } from '../register/EmployeeUpdateUserModal';
 import { EmployeeUpdateUserRoleModal } from '../register/EmployeeUpdateUserRoleModal';
 import { useEmployeeUpdateUserRoleModal } from '../../infraestructure/hooks/useEmployeeUpdateUserRoleModal';
 import { EmployeeAddRoleToUserModal } from '../register/EmployeeAddRoleToUserModal';
+import { useEmployeeDeleteUserRoleModal } from '../../infraestructure/hooks/useEmployeeDeleteUserRoleModal';
+import { EmployeeDeleteUserRoleModal } from '../register/EmployeeDeleteUserRoleModal';
+import { handleOptionUserRole } from '@/shared/lib/utils/role-formatter';
 interface Props {
     data: EmployeeEntity,
     userRoles: RoleEntity[]
@@ -29,6 +32,7 @@ interface Props {
 const EmployeeUserInformation = ({ data, userRoles }:Props) => {
     const { openEmployeeModal, floatMessageState, loading } = useEmployeeUIStore();
     const { handleOpenModal } = useEmployeeUpdateUserRoleModal();
+    const { handleOpenModalUserRoleDelete } = useEmployeeDeleteUserRoleModal();
     const { employee } = useWorkspace();
     const { handleDeleteUser } = useStateUser();
     return (
@@ -86,10 +90,10 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                             <div className='border p-4 rounded-lg'>
                                 <div className='flex gap-2'>
                                     <Button color='yellow' size='sm' onClick={()=> handleOpenModal(item)}><BiPencil/> Editar</Button>
-                                    <Button color='red' size='sm'><BiTrash/> Eliminar</Button>
+                                    {((data.user?.userRoles?.length ?? 0) > 1)? <Button color='red' size='sm' onClick={()=> handleOpenModalUserRoleDelete(item)}><BiTrash/> Eliminar</Button> : null }
                                 </div>
                                 <div>
-                                    <span className="font-semibold text-gray-700">{item.role?.name}: </span> 
+                                    <span className="font-semibold text-gray-700">{handleOptionUserRole(item.role).text}: </span> 
                                     <span className="font-mono text-gray-900">{item.role?.description}</span>
                                 </div>
                             </div>
@@ -116,6 +120,7 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                 roles={userRoles}/>
             <EmployeeAddRoleToUserModal 
                 roles={userRoles}/>
+            <EmployeeDeleteUserRoleModal />
             <EmployeeUpdateUserModal />
             <FloatMessage 
                 {...floatMessageState}/>
