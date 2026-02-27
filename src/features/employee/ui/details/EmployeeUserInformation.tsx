@@ -17,7 +17,7 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { EmpResetPasswordModal } from '../register/EmpResetPasswordModal';
 import { useWorkspace } from '@/shared/hooks/useAuth';
-import { BiPencil } from 'react-icons/bi';
+import { BiAddToQueue, BiPencil, BiTrash } from 'react-icons/bi';
 import { EmployeeUpdateUserModal } from '../register/EmployeeUpdateUserModal';
 interface Props {
     data: EmployeeEntity,
@@ -73,12 +73,21 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                         userId={data.user.userId}/>
                 </AlertMessage>
                 <AlertMessage className='mt-4'>
-                    <p className="font-bold mb-1">Roles Asignados</p>
-                    <div className="text-sm">
+                    <div className="font-bold mb-1 flex gap-2">
+                        <span>Roles Asignados</span> 
+                        <Button color='blue' size='sm'><BiAddToQueue/> Agregar</Button>
+                    </div>
+                    <div className="text-sm flex gap-2 flex-col">
                         { data.user.userRoles?.map(item => (
-                            <div>
-                                <span className="font-semibold text-gray-700">{item.role?.name}: </span> 
-                                <span className="font-mono text-gray-900">{item.role?.description}</span>
+                            <div className='border p-4 rounded-lg'>
+                                <div className='flex gap-2'>
+                                    <Button color='yellow' size='sm'><BiPencil/> Editar</Button>
+                                    <Button color='red' size='sm'><BiTrash/> Eliminar</Button>
+                                </div>
+                                <div>
+                                    <span className="font-semibold text-gray-700">{item.role?.name}: </span> 
+                                    <span className="font-mono text-gray-900">{item.role?.description}</span>
+                                </div>
                             </div>
                         ))}
                     </div>
