@@ -19,12 +19,15 @@ import { EmpResetPasswordModal } from '../register/EmpResetPasswordModal';
 import { useWorkspace } from '@/shared/hooks/useAuth';
 import { BiAddToQueue, BiPencil, BiTrash } from 'react-icons/bi';
 import { EmployeeUpdateUserModal } from '../register/EmployeeUpdateUserModal';
+import { EmployeeUpdateUserRoleModal } from '../register/EmployeeUpdateUserRoleModal';
+import { useEmployeeUpdateUserRoleModal } from '../../infraestructure/hooks/useEmployeeUpdateUserRoleModal';
 interface Props {
     data: EmployeeEntity,
     userRoles: RoleEntity[]
 }
 const EmployeeUserInformation = ({ data, userRoles }:Props) => {
     const { openEmployeeModal, floatMessageState, loading } = useEmployeeUIStore();
+    const { handleOpenModal } = useEmployeeUpdateUserRoleModal();
     const { employee } = useWorkspace();
     const { handleDeleteUser } = useStateUser();
     return (
@@ -81,7 +84,7 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                         { data.user.userRoles?.map(item => (
                             <div className='border p-4 rounded-lg'>
                                 <div className='flex gap-2'>
-                                    <Button color='yellow' size='sm'><BiPencil/> Editar</Button>
+                                    <Button color='yellow' size='sm' onClick={()=> handleOpenModal(item)}><BiPencil/> Editar</Button>
                                     <Button color='red' size='sm'><BiTrash/> Eliminar</Button>
                                 </div>
                                 <div>
@@ -108,6 +111,8 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                         userRoles={userRoles} />
                 </AlertMessage>
             )}
+            <EmployeeUpdateUserRoleModal 
+                roles={userRoles}/>
             <EmployeeUpdateUserModal />
             <FloatMessage 
                 {...floatMessageState}/>
