@@ -30,19 +30,36 @@ const TransactionMovementsOptios = ({ transactions }: Props) => {
         EMPLEADO: `${item.employee?.firstName ?? ''} ${item.employee?.lastName ?? ''}`,
         SUCURSAL: item.branchOffice?.name ?? '',
         CAJA: '',
-        FECHA: formatDateShort(item.updatedAt?? item.createdAt)
+        FECHA: formatDateShort(item.updatedAt ?? item.createdAt)
     }));
     const handleExport = () => {
-    // Llama a la función de descarga con tu array y el nombre deseado
-        downloadXLSX(dataExcel, 'reporte_movimientos');
+        // Llama a la función de descarga con tu array y el nombre deseado
+        downloadXLSX(dataExcel, 'Movimientos Financieros');
     };
 
     return (
         <>
-            <div className="flex gap-4 items-center justify-between">
-                <span></span>
+            <div className="flex gap-4 items-center justify-between mb-2">
+                <div className='flex gap-4'>
+                    <div>
+                        Fecha de inicio
+                        <TextInput
+                            type='date' />
+                    </div>
+                    <div>
+                        Fecha de límite
+                        <TextInput
+                            type='date' />
+                    </div>
+                    <div className='flex items-end'>
+                        <Button disabled={loading} color='yellow'>
+                            <FaFilter />
+                            Aplicar filtro
+                        </Button>
+                    </div>
+                </div>
                 <div className='flex gap-4 items-center'>
-                    <Button disabled={loading} color='green' onClick={()=> handleExport()}>
+                    <Button disabled={loading} color='green' onClick={() => handleExport()}>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
                     </Button>
@@ -52,22 +69,6 @@ const TransactionMovementsOptios = ({ transactions }: Props) => {
                 </div>
             </div>
             <div className='flex gap-4'>
-                <div>
-                    Fecha de inicio
-                    <TextInput
-                    type='date' />
-                </div>
-                <div>
-                    Fecha de límite
-                    <TextInput
-                    type='date' />
-                </div>
-                <div className='flex items-end'>
-                    <Button disabled={loading} color='yellow'>
-                        <FaFilter />
-                        Aplicar filtro
-                    </Button>
-                </div>
             </div>
         </>
     )

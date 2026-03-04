@@ -14,7 +14,7 @@ interface Props {
 export const CardLink = ({ title, description, image, to }:Props) => {
     const [redirect, setRedirect] = React.useState(false);
     return (
-        <Link href={ to } className="relative transition-all duration-300 bg-white hover:bg-gray-100 rounded-xl p-4 shadow-xl flex flex-col max-md:flex-row items-center justify-center gap-1">
+        <Link href={ to } className="relative transition-all duration-300 bg-white rounded-xl p-4 shadow-xl flex flex-col max-md:flex-row items-center justify-center gap-1 hover:bg-blue-200 border-2 border-white hover:border-2 hover:border-blue-700">
             <Image
                 src={ image }
                 alt={ title }
