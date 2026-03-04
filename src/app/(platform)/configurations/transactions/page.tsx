@@ -38,8 +38,7 @@ export default async function SaleInformationPage() {
                 <TransactionMovementsOptios
                     transactions={data} />
                 <div className="hidden md:block">
-                    <TransactionMovementsDesktopTable
-                        transactions={data} />
+                    <TransactionMovementsDesktopTable />
                 </div>
                 <div className="md:hidden">
                     {/* <SaleCardList

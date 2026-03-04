@@ -4,8 +4,9 @@ import { TransactionRepositoryFactory } from '../infraestructure/factories/trans
 import { findAllManyFilterTransactionsUseCase } from '../application/use-cases/find-all-many-filter-transactions.use-case';
 import { ManyFilterTransactionsDTO } from '../application/dtos/many-filter-transactions.dto';
 import { EstablishmentEntity } from '@/features/establishment/domain/entities/establishment.entity';
+import { BranchOfficeEntity } from '@/features/branch-office/domain/entities/branch-office.entity';
 
-export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTransactionsDTO, 'establishmentId'>){
+export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTransactionsDTO, 'establishmentId'|'branchOfficeId'>){
     noStore(); // Evitar que se cachée este server action
     
     try {
@@ -20,10 +21,16 @@ export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTr
         if (establishment) {
             establishmentId = (JSON.parse(establishment) as EstablishmentEntity).establishmentId;
         }
+        let branchOffice = cookieStore.get('branchOfficeCookie')?.value ?? null;
+        let branchOfficeId = BigInt(0);
+        if (branchOffice) {
+            branchOfficeId = (JSON.parse(branchOffice) as BranchOfficeEntity).branchOfficeId;
+        }
 
         const currentDTO: ManyFilterTransactionsDTO = {
             ...dto,
-            establishmentId
+            establishmentId,
+            branchOfficeId
         }
 
         const result = await useCase.execute(currentDTO);

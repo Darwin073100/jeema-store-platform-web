@@ -6,18 +6,18 @@ import { useRouter } from 'next/navigation';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
-import { TransactionEntity } from '../domain/entities/transaction.entity';
 import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
+import { useTransactionStore } from '../infraestructure/stores/transaction.store';
 interface Props {
-    transactions: TransactionEntity[]
 }
-const TransactionMovementsDesktopTable = ({ transactions }: Props) => {
+const TransactionMovementsDesktopTable = ({ }: Props) => {
     const router = useRouter();
+    const { transactionsFiltered} = useTransactionStore();
     const headTable = ['Folio', 'Monto', 'Tipo', 'F. Corte', 'Empleado', 'Sucursal', 'Fecha'];
 
     return (
         <PrimaryTable theadList={headTable}>
-            {transactions.map(item => (
+            {transactionsFiltered.map(item => (
                 <PRow key={item.transactionId}>
                     <PCol>{item.transactionId}</PCol>
                     <PCol>{numberMoneyFormat(item.amount ?? 0)}</PCol>

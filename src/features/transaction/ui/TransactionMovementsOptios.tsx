@@ -2,71 +2,70 @@
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { TextInput } from '@/shared/ui/components/inputs';
-import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { FaFilter } from 'react-icons/fa';
 import { TransactionEntity } from '../domain/entities/transaction.entity';
-import { downloadXLSX } from '@/shared/lib/utils/download.excel';
-import { TransactionExcel } from '../domain/excel-interfaces/transaction.excel';
-import { formatDateShort } from '@/shared/lib/utils/date-formatter';
+import { useTransactionMovementsOptios } from '../infraestructure/hooks/useTransactionMovementsOptios';
+import { useTransactionStore } from '../infraestructure/stores/transaction.store';
+import { useTransactionUIStore } from '../infraestructure/stores/transaction-ui.store';
+import { FloatMessage } from '@/shared/ui/components/messages';
+import { LabelInput } from '@/shared/ui/components/labels';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+
 interface Props {
     transactions: TransactionEntity[]
 }
-const TransactionMovementsOptios = ({ transactions }: Props) => {
-    const router = useRouter();
-    const [loading, setLoading] = React.useState(false);
 
-    const handleNewEmployee = () => {
-        setLoading(true);
-        router.push('/customers/new');
-    }
-    const dataExcel: TransactionExcel[] = transactions.map(item => ({
-        FOLIO: item.transactionId,
-        MONTO: Number(item.amount.toFixed(2)),
-        TIPO: item.transactionType?.accountType ?? '',
-        DESCRIPCION: item.transactionType?.name ?? '',
-        NOTA: item.description ?? '',
-        EMPLEADO: `${item.employee?.firstName ?? ''} ${item.employee?.lastName ?? ''}`,
-        SUCURSAL: item.branchOffice?.name ?? '',
-        CAJA: '',
-        FECHA: formatDateShort(item.updatedAt ?? item.createdAt)
-    }));
-    const handleExport = () => {
-        // Llama a la función de descarga con tu array y el nombre deseado
-        downloadXLSX(dataExcel, 'Movimientos Financieros');
-    };
+const TransactionMovementsOptios = ({ transactions }: Props) => {
+    const { handleExport, errors, handleSubmit, onSubmit, register } = useTransactionMovementsOptios();
+    const { setTransactions, transactionsFiltered } = useTransactionStore();
+    const { loading, floatMessageState } = useTransactionUIStore();
+
+    useEffect(() => {
+        setTransactions(transactions);
+    }, [transactions]);
 
     return (
         <>
             <div className="flex gap-4 items-center justify-between mb-2">
-                <div className='flex gap-4'>
+                <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4'>
                     <div>
-                        Fecha de inicio
+                        <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.' />
                         <TextInput
+                            {...register('dateInit')}
+                            error={!!errors.dateInit?.message}
+                            errorMessage={errors.dateInit?.message}
+                            name='dateInit'
                             type='date' />
                     </div>
                     <div>
-                        Fecha de límite
+                        <LabelInput value='Fecha de límite' description='Si borras la fécha límite tomará la del día en transcurso por default.' />
                         <TextInput
+                            {...register('dateFinish')}
+                            error={!!errors.dateFinish?.message}
+                            errorMessage={errors.dateFinish?.message}
+                            name='dateFinish'
                             type='date' />
                     </div>
                     <div className='flex items-end'>
-                        <Button disabled={loading} color='yellow'>
-                            <FaFilter />
+                        <Button color='yellow' disabled={loading === 'filterTransaction'}>
+                            {loading === 'filterTransaction' ? <Spinner size={14} /> : <FaFilter size={14} />}
                             Aplicar filtro
                         </Button>
                     </div>
-                </div>
+                </form>
                 <div className='flex gap-4 items-center'>
-                    <Button disabled={loading} color='green' onClick={() => handleExport()}>
+                    <Button color='green' onClick={() => handleExport()}>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
                     </Button>
                     <div>
-                        Movimientos<Badge>{transactions.length}</Badge>
+                        Movimientos<Badge>{transactionsFiltered.length}</Badge>
                     </div>
                 </div>
+                <FloatMessage
+                    {...floatMessageState} />
             </div>
             <div className='flex gap-4'>
             </div>
