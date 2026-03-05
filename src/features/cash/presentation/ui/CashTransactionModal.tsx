@@ -7,21 +7,22 @@ import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TransactionTypeEntity } from '@/features/transaction/domain/entities/transaction-type.entity';
-import { useSaleUIStore } from '../infraestructure/stores/sale.ui.store';
-import { useSaleCashTransactionModal } from '../hooks/useSaleCashTransactionModal';
+import { useSaleUIStore } from '../../../sale/infraestructure/stores/sale.ui.store';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { TextArea } from '@/shared/ui/components/inputs/TextInput copy';
 import { BiSave } from 'react-icons/bi';
 import { FcBearish, FcBullish, FcRules, FcSalesPerformance } from 'react-icons/fc';
+import { useCashTransactionModal } from '../hooks/useCashTransactionModal';
+import { useCashUIStore } from '../../infraestructure/stores/cash-ui.store';
 interface Props {
     incomes: TransactionTypeEntity[],
     expenses: TransactionTypeEntity[],
 }
-const SaleCashTransactionModal = ({ expenses, incomes}:Props) => {
-  const { saleModals, closeSaleModal } = useSaleUIStore();
-  const { handleTransactionsTypeInput } = useSaleCashTransactionModal();
+const CashTransactionModal = ({ expenses, incomes}:Props) => {
+  const { cashModal, closeCashModal } = useCashUIStore();
+  const { handleTransactionsTypeInput } = useCashTransactionModal();
   return (
-    <TemplateModal size='full' isOpen={saleModals==='cashTransaction'} onClose={closeSaleModal} title='Movimientos de efectivo'>
+    <TemplateModal size='full' isOpen={cashModal==='cashTransaction'} onClose={closeCashModal} title='Movimientos de efectivo'>
       <div className="p-6 space-y-4">
         <div>
           <p>
@@ -59,7 +60,7 @@ const SaleCashTransactionModal = ({ expenses, incomes}:Props) => {
             Registrar
           </Button>
           <Button
-            onClick={()=> closeSaleModal()}
+            onClick={()=> closeCashModal()}
             type="button"
             color="gray"
             className="flex items-center"
@@ -73,4 +74,4 @@ const SaleCashTransactionModal = ({ expenses, incomes}:Props) => {
   )
 }
 
-export { SaleCashTransactionModal }
+export { CashTransactionModal }

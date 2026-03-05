@@ -33,10 +33,6 @@ export default async function() {
     const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
     const resultCashSession = await findCashSessionByEmployeeIdAction();
     const currentCashSession = resultCashSession.value ?? null;
-    const resultExpenseAcounts = await findAllTransactionsTypeAction(AccountTypeEnum.EXPENSE);
-    const currentExpenseAcounts = resultExpenseAcounts.value?.transactionsType ?? [];
-    const resultIncomeAcounts = await findAllTransactionsTypeAction(AccountTypeEnum.INCOME);
-    const currentIncomeAcounts = resultIncomeAcounts.value?.transactionsType ?? [];
 
     return (
         <ProtectedRoute>
@@ -49,9 +45,7 @@ export default async function() {
                     cashSession={currentCashSession} />
                 <article className="flex gap-6 items-start w-full mt-6">
                     {/* Potential Component: SaleProductList */}
-                    <SaleProductList
-                        incomes = {currentIncomeAcounts} 
-                        expenses= {currentExpenseAcounts} />
+                    <SaleProductList />
                     {/* Potential Component: SaleSummary */}
                     <SaleSummary 
                         inventoryItems={currentInventoryItems}

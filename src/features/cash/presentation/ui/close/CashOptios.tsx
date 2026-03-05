@@ -12,10 +12,15 @@ import { CashSessionCloseModal } from './CashSessionCloseModal';
 import { useCashStore } from '@/features/cash/infraestructure/stores/cash.store';
 import clsx from 'clsx';
 import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter';
+import { IoCashSharp } from 'react-icons/io5';
+import { TransactionTypeEntity } from '@/features/transaction/domain/entities/transaction-type.entity';
+import { CashTransactionModal } from '../CashTransactionModal';
 interface Props {
-    cashSession: CashSessionEntity
+    cashSession: CashSessionEntity,
+    incomes: TransactionTypeEntity[],
+    expenses: TransactionTypeEntity[],
 }
-const CashCloseOptios = ({ cashSession }: Props) => {
+const CashCloseOptios = ({ cashSession, incomes, expenses }: Props) => {
     const { openCashModal, floatMessageState  } = useCashUIStore();
     const { cashSessionSelected } = useCashStore();
 
@@ -27,7 +32,11 @@ const CashCloseOptios = ({ cashSession }: Props) => {
                         disabled={!!cashSessionSelected?.isClosed} 
                         className={clsx(`${!!cashSessionSelected?.isClosed?'bg-white text-gray-800 hover:bg-white': ''}`)}>
                         <LiaCashRegisterSolid />
-                        Hacer el corte
+                        <span className="max-sm:hidden">Hacer el corte</span>
+                    </Button>
+                    <Button color="green" className="shadow-sm hover:shadow-md transition-all" onClick={()=> openCashModal('cashTransaction')}>
+                        <IoCashSharp className="text-lg" />
+                        <span className="max-sm:hidden">Realizar movimiento</span>
                     </Button>
                     {!!cashSessionSelected?.isClosed && <div className=' flex gap-2 items-center'>
                         <span>Corte realizado: </span>
@@ -44,6 +53,9 @@ const CashCloseOptios = ({ cashSession }: Props) => {
                     </div>
                 </div>
             </div>
+            <CashTransactionModal 
+                expenses={expenses}
+                incomes={incomes}/>
             <CashSessionCloseModal/>
             <FloatMessage
                 {...floatMessageState} />
