@@ -10,6 +10,7 @@ export class TransactionMapper {
             branchOfficeId: dto.branchOfficeId.toString(),
             saleId: dto.saleId?.toString() ?? undefined,
             purchaseId: dto.purchaseId?.toString() ?? undefined,
+            cashSessionId: dto.cashSessionId?.toString() ?? undefined,
             employeeId: dto.employeeId.toString(),
             amount: dto.amount,
             description: dto.description,

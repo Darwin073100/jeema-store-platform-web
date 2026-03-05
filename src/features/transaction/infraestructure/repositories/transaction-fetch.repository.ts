@@ -8,6 +8,8 @@ import { ApiConfig } from "@/shared/infrastructure/config/api-config";
 import { TransactionMapper } from "../mappers/transaction.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { ManyFilterTransactionsDTO } from "../../application/dtos/many-filter-transactions.dto";
+import { TransactionTypeEntity } from "../../domain/entities/transaction-type.entity";
+import { AccountTypeEnum } from "../../domain/enums/account-type.enum";
 
 export class TransactionFectchRepository implements TransactionRepository {
     constructor(
@@ -41,6 +43,18 @@ export class TransactionFectchRepository implements TransactionRepository {
 
         } catch (error: any) {
             return handleError(error, 'findAllManyFilter');
+        }  
+    }
+    async findAllTransactionsType(accountType: AccountTypeEnum): Promise<Result<{transactionsType: TransactionTypeEntity[]}, ErrorEntity>> {
+        try {
+            const response = await this.httpClient.post<{transactionsType: TransactionTypeEntity[]}>(
+                this.apiConfig.getEndpointUrl('/transactions/types'),
+                {accountType}
+            );
+            return Result.success(response.data);
+
+        } catch (error: any) {
+            return handleError(error, 'findAllTransactionsType');
         }  
     }
 }

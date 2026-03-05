@@ -16,7 +16,7 @@ interface Props {
 const TemplateModal = ({ children, isOpen, onClose, title='Ventana', size='full', className}: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} >
-          <div className={clsx(`w-${size} max-w-2xl max-h-[90dvh] mx-4 text-gray-700 bg-white rounded-lg shadow-xl overflow-hidden flex flex-col`,
+          <div className={clsx(`w-${size} max-w-5xl max-h-[90dvh] mx-4 text-gray-700 bg-white rounded-lg shadow-xl overflow-hidden flex flex-col`,
             className
           )}>
             {/* Header fijo */}

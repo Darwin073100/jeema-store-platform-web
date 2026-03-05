@@ -7,6 +7,8 @@ import { SaleProductList } from "@/features/sale/ui/SaleProductList";
 import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
 import { SaleSummary } from "@/features/sale/ui/SaleSummary";
 import { SaleSummaryMovile } from "@/features/sale/ui/SaleSummaryMovile";
+import { findAllTransactionsTypeAction } from "@/features/transaction/actions/find-all-transactions-type.action";
+import { AccountTypeEnum } from "@/features/transaction/domain/enums/account-type.enum";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 
@@ -31,6 +33,10 @@ export default async function() {
     const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
     const resultCashSession = await findCashSessionByEmployeeIdAction();
     const currentCashSession = resultCashSession.value ?? null;
+    const resultExpenseAcounts = await findAllTransactionsTypeAction(AccountTypeEnum.EXPENSE);
+    const currentExpenseAcounts = resultExpenseAcounts.value?.transactionsType ?? [];
+    const resultIncomeAcounts = await findAllTransactionsTypeAction(AccountTypeEnum.INCOME);
+    const currentIncomeAcounts = resultIncomeAcounts.value?.transactionsType ?? [];
 
     return (
         <ProtectedRoute>
@@ -43,7 +49,9 @@ export default async function() {
                     cashSession={currentCashSession} />
                 <article className="flex gap-6 items-start w-full mt-6">
                     {/* Potential Component: SaleProductList */}
-                    <SaleProductList />
+                    <SaleProductList
+                        incomes = {currentIncomeAcounts} 
+                        expenses= {currentExpenseAcounts} />
                     {/* Potential Component: SaleSummary */}
                     <SaleSummary 
                         inventoryItems={currentInventoryItems}

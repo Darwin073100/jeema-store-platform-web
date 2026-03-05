@@ -1,2 +1,2 @@
 export type SaleModalsType = 'none' | 'cancelSaleModal' | 'deleteDetailModal' | 'customerListModal' | 'saleTicketModal' |
-    'saleTicketReprintModal' | 'inventoryListModal' | 'paymentModal' | 'updateDetailModal' | 'returnsModal';
+    'saleTicketReprintModal' | 'inventoryListModal' | 'paymentModal' | 'updateDetailModal' | 'returnsModal' | 'cashTransaction';

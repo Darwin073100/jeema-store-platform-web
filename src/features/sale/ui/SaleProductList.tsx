@@ -11,8 +11,14 @@ import { UpdateDetailModal } from "./UpdateDetailModal";
 import { useInventoryListModal } from "../hooks/useInventoryListModal";
 import { SaleTicketModal } from "./SaleTicketModal";
 import { SaleDetailItemMovile } from "./SaleDetailItemMovile";
-
-const SaleProductList = () => {
+import { IoCashSharp } from "react-icons/io5";
+import { SaleCashTransactionModal } from "./SaleCashTransactionModal";
+import { TransactionTypeEntity } from "@/features/transaction/domain/entities/transaction-type.entity";
+interface Props {
+    incomes: TransactionTypeEntity[],
+    expenses: TransactionTypeEntity[],
+}
+const SaleProductList = ({expenses, incomes}:Props) => {
 
     const { sale } = useSaleStore();
     const { openSaleModal } = useInventoryListModal();
@@ -29,9 +35,14 @@ const SaleProductList = () => {
                     <IoIosTrash className="text-lg" />
                     <span className="max-sm:hidden">Cancelar venta</span>
                 </Button>
+                <Button onClick={() => openSaleModal('cashTransaction')} color="green" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                    <IoCashSharp className="text-lg" />
+                    <span className="max-sm:hidden">Movimiento</span>
+                </Button>
                 <SaleTicketModal saleId={sale?.saleId ?? BigInt(0)} />
-
                 <SaleInventoryListModal key='sale-inventory-items-modal' />
+                <SaleCashTransactionModal
+                    {...{incomes, expenses}} />
             </div>
             <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all max-md:hidden">
                 <table className="w-full text-left rtl:text-right">
