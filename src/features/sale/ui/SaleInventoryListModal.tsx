@@ -94,9 +94,10 @@ const SaleInventoryListModal = () => {
                           onClick={()=> handleAddDetail()} 
                           className='font-medium'>
                             { loading==='addDetailToSaleLoading'
-                              ? <Spinner/>
-                              :<><IoMdAdd /> Agregar</>  
+                              ? <Spinner size={15}/>
+                              : <IoMdAdd />  
                             }
+                            Agregar
                           </Button>
                       </th>
                       <th>

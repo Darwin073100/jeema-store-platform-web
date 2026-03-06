@@ -16,7 +16,7 @@ const SaleReprintTicketModal = ({ saleId }: Props) => {
         return;
     }
     return (
-        <TemplateModal isOpen={saleModals === 'saleTicketReprintModal'} onClose={closeSaleModal} title='Vista previa del ticket'>
+        <TemplateModal isOpen={saleModals === 'saleTicketReprintModal'} size='xl' onClose={closeSaleModal} title='Vista previa del ticket'>
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>

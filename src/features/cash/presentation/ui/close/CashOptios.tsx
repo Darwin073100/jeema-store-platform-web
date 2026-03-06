@@ -34,10 +34,12 @@ const CashCloseOptios = ({ cashSession, incomes, expenses }: Props) => {
                         <LiaCashRegisterSolid />
                         <span className="max-sm:hidden">Hacer el corte</span>
                     </Button>
-                    <Button color="green" className="shadow-sm hover:shadow-md transition-all" onClick={()=> openCashModal('cashTransaction')}>
-                        <IoCashSharp className="text-lg" />
-                        <span className="max-sm:hidden">Realizar movimiento</span>
-                    </Button>
+                    {!cashSessionSelected?.isClosed &&
+                        <Button color="green" className="shadow-sm hover:shadow-md transition-all" onClick={()=> openCashModal('cashTransaction')}>
+                            <IoCashSharp className="text-lg" />
+                            <span className="max-sm:hidden">Realizar movimiento</span>
+                        </Button>
+                    } 
                     {!!cashSessionSelected?.isClosed && <div className=' flex gap-2 items-center'>
                         <span>Corte realizado: </span>
                         <Badge>{formatDateWithOutTime(cashSessionSelected.endTime)}</Badge>

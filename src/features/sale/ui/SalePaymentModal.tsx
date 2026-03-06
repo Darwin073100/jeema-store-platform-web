@@ -22,7 +22,7 @@ const SalePaymentModal = () => {
   const { handleFinishSale, loading, handlePaidSale, paidAmountMessage, saleModals, closeSaleModal } = useSalePayment();
 
   return (
-    <TemplateModal isOpen={saleModals==='paymentModal'} onClose={closeSaleModal} title='Cobro de la venta'>
+    <TemplateModal isOpen={saleModals==='paymentModal'} size='xl' onClose={closeSaleModal} title='Cobro de la venta'>
       <div className="p-6 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className="text-center">

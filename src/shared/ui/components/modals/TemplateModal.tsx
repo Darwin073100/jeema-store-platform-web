@@ -5,7 +5,7 @@ import { IoClose } from 'react-icons/io5'
 import clsx from 'clsx'
 
 interface Props {
-    size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+    size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
     title?: string
     children?: any,
     onClose: ()=> void,
