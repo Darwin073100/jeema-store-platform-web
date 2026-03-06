@@ -20,7 +20,6 @@ export class TransactionFectchRepository implements TransactionRepository {
     async save(dto: RegisterTransactionDTO): Promise<Result<TransactionEntity, ErrorEntity>> {
         try {
             const httpDto = TransactionMapper.toRegisterTransactionHttpDTO(dto);
-
             const response = await this.httpClient.post<TransactionEntity>(
                 this.apiConfig.getEndpointUrl('/transactions'),
                 httpDto

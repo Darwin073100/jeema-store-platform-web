@@ -53,7 +53,7 @@ const CashCloseOptios = ({ cashSession, incomes, expenses }: Props) => {
                     </div>
                 </div>
             </div>
-            <CashTransactionModal 
+            <CashTransactionModal
                 expenses={expenses}
                 incomes={incomes}/>
             <CashSessionCloseModal/>
