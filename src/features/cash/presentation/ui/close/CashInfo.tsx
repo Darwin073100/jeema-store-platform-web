@@ -19,11 +19,8 @@ const CashInfo = ({ cashSession }: Props) => {
         setCashSessionSelected(cashSession)
     },[cashSession]);
   return (
-    <section className="flex flex-col gap-4">
-        <div className="bg-blue-100 p-4 rounded-2xl flex gap-4 items-center text-lg shadow-lg">
-            <FcComboChart /> <span>Corte</span>
-        </div>
-        <div className={clsx(`p-4 rounded-2xl bg-blue-100 shadow-lg flex justify-between`)}>
+    <section className="w-full flex gap-4 my-4">
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
             <div className="flex flex-col justify-center items-center">
                 <Badge type='green'>Ingresos</Badge>
                 <FcBullish size={30}/>
@@ -33,7 +30,7 @@ const CashInfo = ({ cashSession }: Props) => {
                 <span>{numberMoneyFormat(handleTotalIn())}</span>
             </div>
         </div>
-        <div className={clsx(`p-4 rounded-2xl bg-blue-100 shadow-lg flex justify-between`)}>
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
             <div className="flex flex-col justify-center items-center">
                 <Badge type='red'>Egresos</Badge>
                 <FcBearish size={30}/>
@@ -43,7 +40,7 @@ const CashInfo = ({ cashSession }: Props) => {
                 <span>{`- ${numberMoneyFormat(handleTotalOut())}`}</span>
             </div>
         </div>
-        <div className={clsx(`p-4 rounded-2xl bg-blue-100 shadow-lg flex justify-between`)}>
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
             <div className="flex flex-col justify-center items-center">
                 <Badge type='blue'>Corte</Badge>
                 <FcDebt size={30}/>
