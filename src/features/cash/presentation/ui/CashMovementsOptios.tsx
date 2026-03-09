@@ -22,18 +22,6 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
     return (
         <>
             <div className="flex gap-4 items-center justify-between">
-                <span></span>
-                <div className='flex gap-4 items-center'>
-                    <Button disabled={loading} color='green'>
-                        <PiMicrosoftExcelLogoFill />
-                        Exportar a Excel
-                    </Button>
-                    <div>
-                        Movimientos<Badge>{cashSessions.length}</Badge>
-                    </div>
-                </div>
-            </div>
-            <div className='w-full flex justify-between'>
                 <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4'>
                     <div>
                         <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.'/>
@@ -60,6 +48,18 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
                         </Button>
                     </div>
                 </form>
+                <div className='flex gap-4 items-center'>
+                    <Button disabled={loading==='movementsCashSession'} color='green'>
+                        <PiMicrosoftExcelLogoFill />
+                        Exportar a Excel
+                    </Button>
+                    <div>
+                        Movimientos<Badge>{cashSessions.length}</Badge>
+                    </div>
+                </div>
+            </div>
+            <div className='w-full flex justify-between'>
+                <span></span>
                 <div className='flex items-center gap-2'>
                     <span>Total: </span>
                     <span className='text-blue-700 font-bold text-xl'>{numberMoneyFormat(cashSessionTotalAmount())}</span>
