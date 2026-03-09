@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 }
 
 export default async function SaleInformationPage() {
-    const customer = await findCashMovementsByBranchOfficeIdAction();
+    const customer = await findCashMovementsByBranchOfficeIdAction({dateInit: null,dateFinish: null});
     const data = customer?.value?.cashSessions ?? [];
 
     const breadcrumbItems: BreadcrumbItem[] = [

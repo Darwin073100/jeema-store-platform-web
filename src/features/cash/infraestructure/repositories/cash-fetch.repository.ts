@@ -10,6 +10,7 @@ import { CashMapper } from "../mappers/cash-mapper";
 import { CashSessionEntity } from "../../domain/entities/cash-session.entity";
 import { RegisterCashRegisterDTO } from "../../application/dtos/register-cash-register.dto";
 import { CloseCashSessionDTO } from "../../application/dtos/close-cash-session.dto";
+import { FindCashMovementsByBranchOfficeHttpDTO } from "../dtos/find-cash-movements-by-branch-office-http.dto";
 
 export class CashFetchRepository implements CashRepository {
     constructor(
@@ -85,10 +86,11 @@ export class CashFetchRepository implements CashRepository {
             return handleError(error, 'registerCashRegister');
         }
     }
-    async findMovementsByBranchOfficeId(branchOfficeId: bigint): Promise<Result<{cashSessions: CashSessionEntity[]}, ErrorEntity>> {
+    async findMovementsByBranchOfficeId(branchOfficeId: bigint, dto: FindCashMovementsByBranchOfficeHttpDTO): Promise<Result<{cashSessions: CashSessionEntity[]}, ErrorEntity>> {
         try {
-            const result = await this.httpClient.get<{cashSessions: CashSessionEntity[]}>(
-                this.apiConfig.getEndpointUrl(`cash-registers/all/sessions/all/branch-offices/${branchOfficeId.toString()}`)
+            const result = await this.httpClient.post<{cashSessions: CashSessionEntity[]}>(
+                this.apiConfig.getEndpointUrl(`cash-registers/all/sessions/all/branch-offices/${branchOfficeId.toString()}`),
+                dto
             );
             return Result.success(result.data);
         } catch (error) {

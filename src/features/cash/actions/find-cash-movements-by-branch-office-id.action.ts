@@ -3,8 +3,9 @@ import { unstable_noStore as noStore } from 'next/cache';import { cookies } from
 import { CashFetchRepositoryFactory } from '../infraestructure/factories/cash-fetch-repository.factory';
 import { BranchOfficeEntity } from '@/features/branch-office/domain/entities/branch-office.entity';
 import { FindCashMovementsByBranchOfficeIdUseCase } from '../application/use-cases/find-cash-movements-by-branch-office-id.use-case';
+import { FindCashMovementsByBranchOfficeDTO } from '../application/dtos/find-cash-movements-by-branch-office.dto';
 
-export async function findCashMovementsByBranchOfficeIdAction(){
+export async function findCashMovementsByBranchOfficeIdAction(dto: FindCashMovementsByBranchOfficeDTO){
     noStore(); // Evitar que se cachée este server action
     
     try {
@@ -19,7 +20,7 @@ export async function findCashMovementsByBranchOfficeIdAction(){
         if (branchOffice) {
             branchOfficeId = (JSON.parse(branchOffice) as BranchOfficeEntity).branchOfficeId;
         }
-        const result = await useCase.execute(branchOfficeId);
+        const result = await useCase.execute(branchOfficeId, dto);
 
         return {
             ...result
