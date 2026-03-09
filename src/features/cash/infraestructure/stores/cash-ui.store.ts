@@ -1,8 +1,8 @@
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { create } from "zustand";
 
-type ModalType  = 'registerCashRegister' | 'openCashSession' | 'closeCashSession' | 'none' | 'cashTransaction';
-type LoadingType = 'registerCashRegister' | 'openCashSession' | 'closeCashSession' | 'movementsCashSession' | 'none' | 'cashTransaction';
+type ModalType  = 'registerCashRegister' | 'openCashSession' | 'closeCashSession' | 'none' | 'cashTransaction' | 'cashClosedTicket';
+type LoadingType = 'registerCashRegister' | 'openCashSession' | 'closeCashSession' | 'movementsCashSession' | 'none' | 'cashTransaction' | 'cashClosedTicket';
 
 interface State {
     //? Modals

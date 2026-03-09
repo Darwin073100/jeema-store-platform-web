@@ -16,11 +16,11 @@ export class CashFetchRepository implements CashRepository {
     constructor(
         private readonly httpClient: HttpClient,
         private readonly apiConfig: ApiConfig
-    ){}
+    ) { }
 
-    async findAllCashRegisterByBranchOfficeId(branchOfficeId: bigint): Promise<Result<{ cashRegisters: CashRegisterEntity[]}, ErrorEntity>> {
+    async findAllCashRegisterByBranchOfficeId(branchOfficeId: bigint): Promise<Result<{ cashRegisters: CashRegisterEntity[] }, ErrorEntity>> {
         try {
-            const result = await this.httpClient.get<{ cashRegisters: CashRegisterEntity[]}>(
+            const result = await this.httpClient.get<{ cashRegisters: CashRegisterEntity[] }>(
                 this.apiConfig.getEndpointUrl(`cash-registers/all/branch-offices/${branchOfficeId.toString()}`)
             );
             return Result.success(result.data);
@@ -51,7 +51,7 @@ export class CashFetchRepository implements CashRepository {
     async openCashSession(dto: OpenCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>> {
         try {
             const httpDTO = CashMapper.toOpenCashSessionHttpDTO(dto);
-            
+
             const result = await this.httpClient.post<CashSessionEntity>(
                 this.apiConfig.getEndpointUrl(`cash-registers/${dto.cashRegisterId.toString()}/sessions`),
                 httpDTO
@@ -76,7 +76,7 @@ export class CashFetchRepository implements CashRepository {
     async registerCashRegister(dto: RegisterCashRegisterDTO): Promise<Result<CashRegisterEntity, ErrorEntity>> {
         try {
             const httpDTO = CashMapper.toRegisterCashRegisterHttpDTO(dto);
-            
+
             const result = await this.httpClient.post<CashRegisterEntity>(
                 this.apiConfig.getEndpointUrl(`cash-registers`),
                 httpDTO
@@ -86,13 +86,23 @@ export class CashFetchRepository implements CashRepository {
             return handleError(error, 'registerCashRegister');
         }
     }
-    async findMovementsByBranchOfficeId(branchOfficeId: bigint, dto: FindCashMovementsByBranchOfficeHttpDTO): Promise<Result<{cashSessions: CashSessionEntity[]}, ErrorEntity>> {
+    async findMovementsByBranchOfficeId(branchOfficeId: bigint, dto: FindCashMovementsByBranchOfficeHttpDTO): Promise<Result<{ cashSessions: CashSessionEntity[] }, ErrorEntity>> {
         try {
-            const result = await this.httpClient.post<{cashSessions: CashSessionEntity[]}>(
+            const result = await this.httpClient.post<{ cashSessions: CashSessionEntity[] }>(
                 this.apiConfig.getEndpointUrl(`cash-registers/all/sessions/all/branch-offices/${branchOfficeId.toString()}`),
                 dto
             );
             return Result.success(result.data);
+        } catch (error) {
+            return handleError(error, 'findMovementsByBranchOfficeId');
+        }
+    }
+    async findTicketCashSession(cashSessionId: bigint ): Promise<Result<Blob | any, ErrorEntity>> {
+        try {
+            const result = await fetch(
+                this.apiConfig.getEndpointUrl(`reports/tickets/cash-sessions/${cashSessionId.toString()}`),
+            );
+            return Result.success(await result.blob());
         } catch (error) {
             return handleError(error, 'findMovementsByBranchOfficeId');
         }

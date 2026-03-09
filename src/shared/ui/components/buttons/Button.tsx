@@ -5,11 +5,12 @@ import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode
-  color?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple' |'white' | 'orange' | 'teal'
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-  fullWidth?: boolean           // ⬅️ nuevo prop
-  className?: string
+  children?: React.ReactNode;
+  color?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple' |'white' | 'orange' | 'teal';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  fullWidth?: boolean; // ⬅️ nuevo prop
+  className?: string;
+  disabled?: boolean;
 }
 
 const sizeConfig = {
@@ -26,12 +27,14 @@ export function Button({
   size = 'md',
   className,
   fullWidth = false,
+  disabled = false,
   ...props
 }: Props) {
   const { txt, space } = sizeConfig[size]
 
   return (
     <button
+      disabled = {!!disabled}
       className={twMerge(
         clsx(
           `cursor-pointer transition-all duration-500 flex justify-center items-center ${size==='sm'? 'rounded-lg':'rounded-xl'} shadow-sm hover:shadow-lg ${ color=='white'? 'text-black': 'text-white'}`,
@@ -40,6 +43,7 @@ export function Button({
           txt,
           `gap-${space} px-${space} py-${space}`,
           `bg-${color}-500 hover:bg-${color}-600`,
+          `${!!disabled? `bg-${color}-300`: ''}`,
           className // lo último para que pueda sobrescribir
         )
       )}
