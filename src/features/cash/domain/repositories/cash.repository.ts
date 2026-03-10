@@ -16,4 +16,6 @@ export interface CashRepository{
     closeCashSession(cashSessionId: bigint, dto: CloseCashSessionDTO): Promise<Result<CashSessionEntity, ErrorEntity>>;
     findMovementsByBranchOfficeId(branchOfficeId: bigint, dto: FindCashMovementsByBranchOfficeHttpDTO): Promise<Result<{cashSessions: CashSessionEntity[]}, ErrorEntity>>;
     findTicketCashSession(cashSessionId: bigint ): Promise<Result<Blob | any, ErrorEntity>>;
+    findTicketCashSessionList(branchOfficeId: bigint, dto: FindCashMovementsByBranchOfficeHttpDTO): Promise<Result<Blob | any, ErrorEntity>>;
+    
 }

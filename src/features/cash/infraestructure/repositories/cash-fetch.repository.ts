@@ -97,10 +97,27 @@ export class CashFetchRepository implements CashRepository {
             return handleError(error, 'findMovementsByBranchOfficeId');
         }
     }
-    async findTicketCashSession(cashSessionId: bigint ): Promise<Result<Blob | any, ErrorEntity>> {
+    async findTicketCashSession(cashSessionId: bigint): Promise<Result<Blob | any, ErrorEntity>> {
         try {
             const result = await fetch(
                 this.apiConfig.getEndpointUrl(`reports/tickets/cash-sessions/${cashSessionId.toString()}`),
+            );
+            return Result.success(await result.blob());
+        } catch (error) {
+            return handleError(error, 'findMovementsByBranchOfficeId');
+        }
+    }
+    async findTicketCashSessionList(branchOfficeId: bigint, dto: FindCashMovementsByBranchOfficeHttpDTO): Promise<Result<Blob | any, ErrorEntity>> {
+        try {
+            const result = await fetch(
+                this.apiConfig.getEndpointUrl(`reports/tickets/cash-sessions/all/branch-offices/${branchOfficeId.toString()}`),
+                {
+                    "method": "POST",
+                    "headers":{
+                        "Content-Type": "application/json"
+                    },
+                    "body": JSON.stringify(dto)
+                }
             );
             return Result.success(await result.blob());
         } catch (error) {

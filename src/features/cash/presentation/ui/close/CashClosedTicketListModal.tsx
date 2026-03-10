@@ -3,20 +3,18 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { useCashClosedTicketModal } from '../../hooks/useCashClosedTicketModal';
 import { useCashUIStore } from '@/features/cash/infraestructure/stores/cash-ui.store';
-interface Props {
-    cashSessionId: bigint,
-}
-const CashClosedTicketModal = ({ cashSessionId }: Props) => {
+import { useCashClosedTicketListModal } from '../../hooks/useCashClosedTicketListModal';
+
+const CashClosedTicketListModal = () => {
     const { cashModal, closeCashModal } = useCashUIStore();
-    const { error, pdfUrl } = useCashClosedTicketModal({ cashSessionId });
+    const { error, pdfUrl } = useCashClosedTicketListModal();
 
     if (!pdfUrl) {
         return;
     }
     return (
-        <TemplateModal isOpen={cashModal === 'cashClosedTicket'} size='2xl' onClose={closeCashModal} title='Vista previa del ticket'>
+        <TemplateModal isOpen={cashModal === 'cashClosedTicketList'} size='2xl' onClose={closeCashModal} title='Vista previa del ticket'>
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
@@ -49,4 +47,4 @@ const CashClosedTicketModal = ({ cashSessionId }: Props) => {
     )
 }
 
-export { CashClosedTicketModal };
+export { CashClosedTicketListModal };

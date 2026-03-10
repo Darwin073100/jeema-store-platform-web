@@ -3,7 +3,7 @@ import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { TextInput } from '@/shared/ui/components/inputs';
 import React from 'react'
-import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { PiMicrosoftExcelLogoFill, PiPrinter } from "react-icons/pi";
 import { CashSessionEntity } from '../../domain/entities/cash-session.entity';
 import { FaFilter } from 'react-icons/fa';
 import { useCashMovementsOptions } from '../hooks/useCashMovementsOptions';
@@ -11,13 +11,16 @@ import { useCashStore } from '../../infraestructure/stores/cash.store';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { useWorkspace } from '@/shared/hooks/useAuth';
+import { CashClosedTicketListModal } from './close/CashClosedTicketListModal';
+import { useCashUIStore } from '../../infraestructure/stores/cash-ui.store';
+import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 interface Props {
     cashSessions: CashSessionEntity[]
 }
 const CashMovementsOptios = ({ cashSessions: data }: Props) => {
-    const { loading, errors, handleSubmit, onSubmit, register, cashSessionTotalAmount } = useCashMovementsOptions({data});
+    const { errors, handleSubmit, onSubmit, register, cashSessionTotalAmount } = useCashMovementsOptions({data});
     const { cashSessions, dateFinish, dateInit } = useCashStore();
-    const { workspace } = useWorkspace();
+    const { openCashModal, loading } = useCashUIStore();
 
     return (
         <>
@@ -42,14 +45,14 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
                             type='date' />
                     </div>
                     <div className='flex items-end'>
-                        <Button color='yellow'>
-                            <FaFilter />
+                        <Button color='yellow' disabled={loading==='movementsCashSession'}>
+                            {loading ==='movementsCashSession'? <Spinner size={15} />: <FaFilter />}
                             Aplicar filtro
                         </Button>
                     </div>
                 </form>
                 <div className='flex gap-4 items-center'>
-                    <Button disabled={loading==='movementsCashSession'} color='green'>
+                    <Button color='green'>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
                     </Button>
@@ -58,13 +61,19 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
                     </div>
                 </div>
             </div>
-            <div className='w-full flex justify-between'>
-                <span></span>
+            <div className='w-full flex justify-between my-2'>
+                <span>
+                    <Button color='blue' onClick={()=> openCashModal('cashClosedTicketList')}>
+                        <PiPrinter />
+                        Imprimir cortes
+                    </Button>
+                </span>
                 <div className='flex items-center gap-2'>
                     <span>Total: </span>
                     <span className='text-blue-700 font-bold text-xl'>{numberMoneyFormat(cashSessionTotalAmount())}</span>
                 </div>
             </div>
+            <CashClosedTicketListModal />
         </>
     )
 }

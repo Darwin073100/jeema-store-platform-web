@@ -47,6 +47,8 @@ const useCashMovementsOptions = ({ data }: Props) => {
         stopLoading();
         if(lotsResponse.ok && lotsResponse.value){
             setCashSessions(lotsResponse.value.cashSessions);
+            setDateInit(info.dateInit ?? null);
+            setDateFinish(info.dateFinish ?? null);
         }
     }
 
