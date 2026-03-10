@@ -32,6 +32,8 @@ const useCashTransactionModal = () => {
             .filter(item => item.name !== 'Apertura de Caja')
             .filter(item => item.name !== 'Devolución por Venta al Cliente')
             .filter(item => item.name !== 'Ingreso por Sobrante en caja')
+            .filter(item => item.name !== 'Intereses Ganados')
+            .filter(item => item.name !== 'Retiro de efectivo/Corte de caja')
             .map(item => ({
                 value: item.transactionTypeId.toString(),
                 text: `${item.accountType.toUpperCase()} - ${item.name.toUpperCase()}`,

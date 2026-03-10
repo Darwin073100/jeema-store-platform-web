@@ -5,7 +5,7 @@ import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import clsx from 'clsx';
 import React, { useEffect } from 'react'
-import { FcBearish, FcBullish, FcComboChart, FcDebt } from 'react-icons/fc';
+import { FcBearish, FcBullish, FcComboChart, FcDebt, FcLibrary, FcMultipleInputs } from 'react-icons/fc';
 import { useCashInformation } from '../../hooks/useCashInformation';
 
 interface Props {
@@ -20,6 +20,16 @@ const CashInfo = ({ cashSession }: Props) => {
     },[cashSession]);
   return (
     <section className="w-full flex gap-4 my-4">
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
+            <div className="flex flex-col justify-center items-center">
+                <Badge type='purple'>Fondo</Badge>
+                <FcLibrary size={30}/>
+            </div>
+            <div className="flex justify-between gap-2 text-purple-700 items-center font-bold text-lg">
+                <span>Total:</span>
+                <span>{numberMoneyFormat(cashSession.startBalance)}</span>
+            </div>
+        </div>
         <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
             <div className="flex flex-col justify-center items-center">
                 <Badge type='green'>Ingresos</Badge>
@@ -46,7 +56,7 @@ const CashInfo = ({ cashSession }: Props) => {
                 <FcDebt size={30}/>
             </div>
             <div className="flex justify-between gap-2 text-blue-700 items-center font-bold text-2xl">
-                <span>Total del corte:</span>
+                <span>Total:</span>
                 <span>{numberMoneyFormat(handleTotalClose())}</span>
             </div>
         </div>
