@@ -10,6 +10,14 @@ export class UpdateInventoryUseCase{
     ){}
 
     async execute(dto: UpdateInventoryDTO): Promise<Result<InventoryEntity, ErrorEntity>>{
+        if(!dto.salePriceMany || !dto.saleQuantityMany){
+            const result = await this.repository.update({
+                ...dto,
+                salePriceMany: null,
+                saleQuantityMany: null
+            });
+            return result;
+        }
         const result = await this.repository.update(dto);
         return result;
     }

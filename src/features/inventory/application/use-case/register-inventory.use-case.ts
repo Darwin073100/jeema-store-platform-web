@@ -10,6 +10,14 @@ export class RegisterInventoryUseCase{
     ){}
 
     async execute(dto: RegisterInventoryDTO): Promise<Result<InventoryEntity, ErrorEntity>>{
+        if(!dto.salePriceMany || !dto.saleQuantityMany){
+            const result = await this.repository.save({
+                ...dto,
+                salePriceMany: null,
+                saleQuantityMany: null
+            });
+            return result;
+        }
         const result = await this.repository.save(dto);
         return result;
     }

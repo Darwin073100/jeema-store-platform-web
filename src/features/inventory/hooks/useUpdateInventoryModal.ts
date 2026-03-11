@@ -24,17 +24,13 @@ const registerFormData = yup.object().shape({
             .typeError('Asegurate de ingresar la información correcta.')
             .default(0),
     salePriceMany    : yup
-            .number()
-            .required('El precio de venta por mayoreo es obligatorio.')
-            .positive('El precio de venta por mayoreo debe ser positivo')
-            .typeError('Asegurate de ingresar la información correcta.')
-            .default(0),
+            .string()
+            .optional()
+            .typeError('Asegurate de ingresar la información correcta.'),
     saleQuantityMany : yup
-            .number()
-            .required('La cantidad para vender por mayoreo es obligatorio.')
-            .positive('La cantidad para vender por mayoreo debe ser positivo')
-            .typeError('Asegurate de ingresar la información correcta.')
-            .default(0),
+            .string()
+            .optional()
+            .typeError('Asegurate de ingresar la información correcta.'),
     minStockBranch   : yup
             .number()
             .required('El stock mínimo es obligatorio.')
@@ -71,8 +67,8 @@ const useUpdateInventoryModal = () => {
             reset({
                 internalBarCode: inventory?.internalBarCode ?? '',
                 salePriceOne: inventory?.salePriceOne ?? 0,
-                salePriceMany: inventory?.salePriceMany ?? 0,
-                saleQuantityMany: inventory?.saleQuantityMany ?? 0,
+                salePriceMany: inventory?.salePriceMany? inventory?.salePriceMany.toString(): undefined,
+                saleQuantityMany: inventory?.saleQuantityMany? inventory?.saleQuantityMany.toString():  undefined,
                 minStockBranch: inventory?.minStockBranch ?? 0,
                 maxStockBranch: inventory?.maxStockBranch ?? 0
             });
@@ -115,8 +111,8 @@ const useUpdateInventoryModal = () => {
         reset({
             internalBarCode: '',
             salePriceOne: 0,
-            salePriceMany: 0,
-            saleQuantityMany: 0,
+            salePriceMany: '0',
+            saleQuantityMany: '0',
             minStockBranch: 0,
             maxStockBranch: 0
         });
@@ -153,9 +149,9 @@ const useUpdateInventoryModal = () => {
                 isSellable: inventory?.isSellable ?? true,
                 internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,
-                salePriceMany: data.salePriceMany,
+                salePriceMany: data.salePriceMany? Number(data.salePriceMany): null,
                 salePriceSpecial: inventory?.salePriceSpecial,
-                saleQuantityMany: data.saleQuantityMany,
+                saleQuantityMany: data.saleQuantityMany? Number(data.saleQuantityMany): null,
                 maxStockBranch: data.maxStockBranch,
                 minStockBranch: data.minStockBranch
             }

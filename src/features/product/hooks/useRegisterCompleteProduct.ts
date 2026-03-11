@@ -96,18 +96,19 @@ export const schema = yup.object().shape({
             .typeError('Asegurate de ingresar la información correcta.'),
         otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
     }),
-    salePriceMany: yup.number().when('inventoryCheck',{
+    salePriceMany: yup.string().when('inventoryCheck',{
         is: true,
         then: (schema)=> schema
-            .required('El precio de venta por mayoreo es obligatorio.')
+            .notRequired()
+            .optional()
             .typeError('Asegurate de ingresar la información correcta.'),
         otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
     }),
-    saleQuantityMany: yup.number().when('inventoryCheck',{
+    saleQuantityMany: yup.string().when('inventoryCheck',{
         is: true,
         then: (schema)=> schema
-            .required('La cantidad de producto por mayoreo es obligatorio.')
-            .positive('El número debe ser positivo.')
+            .notRequired()
+            .optional()
             .typeError('Asegurate de ingresar la información correcta.'),
         otherwise: (schema)=> schema.optional().transform(value=> (value === ''? undefined: value))
     }),
@@ -238,16 +239,16 @@ const useRegisterCompleteProduct = () => {
             internalBarCode: '',
             universalBarCode: '',
             manufacturingDate: undefined,
-            maxStockBranch: 0,
+            maxStockBranch: 100,
             minStockBranch: 0,
-            minStockGlobal: 0,
+            minStockGlobal: 1,
             name: '',
             purchasePrice: 0.0,
             purchaseUnit: '',
             receivedDate: new Date(),
-            salePriceMany: 0,
+            salePriceMany: '0',
             salePriceOne: 0,
-            saleQuantityMany: 0,
+            saleQuantityMany: '0',
             seasonId: '',
             unitOfMeasure: ''
         });
@@ -399,9 +400,9 @@ const useRegisterCompleteProduct = () => {
         reset({
             inventoryItems: defaultInventoryItems, lotUnitPurchases: [], suplierId: '',
             brandId: '', categoryId: '',description: '', expirationDate: undefined, imageUrl: null, initialQuantity: 0,
-            internalBarCode: '', universalBarCode: '', manufacturingDate: undefined, maxStockBranch: 0, minStockBranch: 0,
-            minStockGlobal: 0, name: '', purchasePrice: 0, purchaseUnit: '', receivedDate: new Date(), salePriceMany: 0, salePriceOne: 0,
-            saleQuantityMany: 0, seasonId: '', unitOfMeasure: ''          
+            internalBarCode: '', universalBarCode: '', manufacturingDate: undefined, maxStockBranch: 100, minStockBranch: 0,
+            minStockGlobal: 1, name: '', purchasePrice: 0, purchaseUnit: '', receivedDate: new Date(), salePriceMany: '0', salePriceOne: 0,
+            saleQuantityMany: '0', seasonId: '', unitOfMeasure: ''          
         });
         clearErrors(['brandId', 'categoryId', 'seasonId', 'brandId', 'unitOfMeasure', 'minStockGlobal', 'suplierId',
             'universalBarCode', 'imageUrl', 'name', 'description', 'purchasePrice', 'receivedDate',
@@ -450,10 +451,10 @@ const useRegisterCompleteProduct = () => {
             isSellable: true,
             maxStockBranch: data.maxStockBranch ?? undefined,
             minStockBranch: data.minStockBranch ?? undefined,
-            salePriceMany: data.salePriceMany ?? undefined,
+            salePriceMany: data.salePriceMany? Number(data.salePriceMany): undefined,
             salePriceOne: data.salePriceOne ?? undefined,
             salePriceSpecial: undefined,
-            saleQuantityMany: data.saleQuantityMany ?? undefined,
+            saleQuantityMany: data.saleQuantityMany? Number(data.saleQuantityMany): undefined,
             internalBarCode: data.internalBarCode ?? undefined,
             inventoryItems:data.inventoryItems? data.inventoryItems?.map(item => ({
                 location: item.location as LocationEnum ?? LocationEnum.STOCK,

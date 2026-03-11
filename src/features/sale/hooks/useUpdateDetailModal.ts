@@ -49,10 +49,17 @@ const useUpdateDetailModal = () => {
 
     // Actualizar el precio del detalle, dependiendo si es mayoreo o menudeo
     const currencyDetailPrice = () => {
-        if (saleFor === SaleForEnum.MANY && itemMatchDetail?.inventory?.salePriceMany) {
-            setDetailPrice(itemMatchDetail?.inventory?.salePriceMany);
-        } else if (saleFor === SaleForEnum.ONE && itemMatchDetail?.inventory?.salePriceOne) {
-            setDetailPrice(itemMatchDetail?.inventory?.salePriceOne);
+        if(
+            (!itemMatchDetail?.inventory?.salePriceMany || (itemMatchDetail?.inventory?.salePriceMany && itemMatchDetail?.inventory?.salePriceMany <= 0)) ||
+            (!itemMatchDetail?.inventory?.saleQuantityMany || (itemMatchDetail?.inventory?.saleQuantityMany && itemMatchDetail?.inventory?.saleQuantityMany <= 0))
+        ){
+            setDetailPrice(itemMatchDetail?.inventory?.salePriceOne ?? 0);
+        } else {
+            if (saleFor === SaleForEnum.MANY && itemMatchDetail?.inventory?.salePriceMany) {
+                setDetailPrice(itemMatchDetail?.inventory?.salePriceMany);
+            } else if (saleFor === SaleForEnum.ONE && itemMatchDetail?.inventory?.salePriceOne) {
+                setDetailPrice(itemMatchDetail?.inventory?.salePriceOne);
+            }
         }
     }
 
@@ -62,10 +69,17 @@ const useUpdateDetailModal = () => {
     }, [saleModals]);
 
     useEffect(() => {
-        if (itemMatchDetail?.inventory?.saleQuantityMany && detailQuantity >= itemMatchDetail?.inventory?.saleQuantityMany) {
-            setSaleFor(SaleForEnum.MANY);
-        } else if (itemMatchDetail?.inventory?.saleQuantityMany && detailQuantity < itemMatchDetail?.inventory?.saleQuantityMany) {
+        if(
+            (!itemMatchDetail?.inventory?.salePriceMany || (itemMatchDetail?.inventory?.salePriceMany && itemMatchDetail?.inventory?.salePriceMany <= 0)) ||
+            (!itemMatchDetail?.inventory?.saleQuantityMany || (itemMatchDetail?.inventory?.saleQuantityMany && itemMatchDetail?.inventory?.saleQuantityMany <= 0))
+        ){
             setSaleFor(SaleForEnum.ONE);
+        } else {
+            if (itemMatchDetail?.inventory?.saleQuantityMany && detailQuantity >= itemMatchDetail?.inventory?.saleQuantityMany) {
+                setSaleFor(SaleForEnum.MANY);
+            } else if (itemMatchDetail?.inventory?.saleQuantityMany && detailQuantity < itemMatchDetail?.inventory?.saleQuantityMany) {
+                setSaleFor(SaleForEnum.ONE);
+            }
         }
         currencyDetailPrice();
     }, [detailQuantity]);
@@ -92,15 +106,32 @@ const useUpdateDetailModal = () => {
             return;
         }
         if(detail){
+            let currentSaleFor = detail.saleFor === SaleForEnum.ONE? SaleForEnum.MANY
+                : detail.saleFor === SaleForEnum.MANY? SaleForEnum.ONE 
+                : SaleForEnum.SPECIAL;
+            if(
+                (!itemMatchDetail?.inventory?.salePriceMany || (itemMatchDetail?.inventory?.salePriceMany && itemMatchDetail?.inventory?.salePriceMany <= 0)) ||
+                (!itemMatchDetail?.inventory?.saleQuantityMany || (itemMatchDetail?.inventory?.saleQuantityMany && itemMatchDetail?.inventory?.saleQuantityMany <= 0))
+            ){
+                currentSaleFor = SaleForEnum.ONE;
+                setFloatMessageState({
+                    type: 'yellow',
+                    summary: '¡Accion no realizada!',
+                    description: 'Este producto no cuenta con precio por mayoreo.',
+                    isActive: true,
+                });
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 2000);
+                return;
+            }
             const currentDetail: AddDetailToSaleDto = {
                 productBarCodeAtSale: detail.productBarCodeAtSale,
                 productUnitAtSale: detail.productUnitAtSale,
                 quantity: detailQuantity,
                 notes: detail.notes ?? undefined,
                 specialprice: specialprice ? Number(specialprice): detail.unitPriceAtSale,
-                saleFor:  detail.saleFor === SaleForEnum.ONE? SaleForEnum.MANY
-                : detail.saleFor === SaleForEnum.MANY? SaleForEnum.ONE 
-                : SaleForEnum.SPECIAL
+                saleFor:  currentSaleFor,
             }
             initLoading('aplyManualSaleForLoading');
             const result = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, currentDetail);

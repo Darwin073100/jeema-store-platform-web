@@ -61,7 +61,12 @@ const useSale = () => {
         let finalPrice: number | undefined;
         let saleFor: SaleForEnum;
 
-        if (quantity >= Number(inventory.saleQuantityMany ?? 0)) {
+        if(
+            (!inventory.salePriceMany || (inventory.salePriceMany && inventory.salePriceMany <= 0)) ||
+            (!inventory.saleQuantityMany || (inventory.saleQuantityMany && inventory.saleQuantityMany <= 0))
+        ){
+            saleFor = SaleForEnum.ONE;
+        } else if (quantity >= Number(inventory.saleQuantityMany)) {
             saleFor = SaleForEnum.MANY;
         } else if (quantity < Number(inventory.saleQuantityMany ?? 0)) {
             saleFor = SaleForEnum.ONE;

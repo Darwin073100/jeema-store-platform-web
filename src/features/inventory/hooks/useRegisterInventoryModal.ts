@@ -8,6 +8,8 @@ import { RegisterInventoryDTO } from "../application/dtos/register-inventory.dto
 import { registerInventoryAction } from "../actions/register-inventory.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
+import { useProductUIStore } from "@/features/product/infraestructure/stores/product-ui.store";
+import { generateBarcodeAction } from "../actions/generate-barcode.action";
 
 const registerFormData = yup.object().shape({
     internalBarCode: yup
@@ -21,17 +23,17 @@ const registerFormData = yup.object().shape({
             .typeError('Asegurate de ingresar la información correcta.')
             .default(0),
     salePriceMany    : yup
-            .number()
-            .required('El precio de venta por mayoreo es obligatorio.')
-            .positive('El precio de venta por mayoreo debe ser positivo')
-            .typeError('Asegurate de ingresar la información correcta.')
-            .default(0),
+            .string()
+            .notRequired()
+            .optional()
+            .nullable()
+            .typeError('Asegurate de ingresar la información correcta.'),
     saleQuantityMany : yup
-            .number()
-            .required('La cantidad para vender por mayoreo es obligatorio.')
-            .positive('La cantidad para vender por mayoreo debe ser positivo')
-            .typeError('Asegurate de ingresar la información correcta.')
-            .default(0),
+            .string()
+            .notRequired()
+            .optional()
+            .nullable()
+            .typeError('Asegurate de ingresar la información correcta.'),
     minStockBranch   : yup
             .number()
             .required('El stock mínimo es obligatorio.')
@@ -53,6 +55,7 @@ const useRegisterInventoryModal = () => {
          selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId
     } = useRegisterInventoryStore();
     const { branchOffice } = useWorkspace();
+    const {initLoading, finishLoading} = useProductUIStore();
     
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ floatMessageState, setFloatMessageState ] = useState<FloatMessageType>({});
@@ -67,8 +70,8 @@ const useRegisterInventoryModal = () => {
             reset({
                 internalBarCode: '',
                 salePriceOne: 0,
-                salePriceMany: 0,
-                saleQuantityMany: 0,
+                salePriceMany: '0',
+                saleQuantityMany: '0',
                 minStockBranch: 0,
                 maxStockBranch: 0
             });
@@ -83,8 +86,8 @@ const useRegisterInventoryModal = () => {
         reset({
             internalBarCode: '',
             salePriceOne: 0,
-            salePriceMany: 0,
-            saleQuantityMany: 0,
+            salePriceMany: '0',
+            saleQuantityMany: '0',
             minStockBranch: 0,
             maxStockBranch: 0
         });
@@ -108,6 +111,34 @@ const useRegisterInventoryModal = () => {
         });
     }
 
+    const handleGenerateBarcode = async ()=>{
+            initLoading('generateBarcode');
+            const response = await generateBarcodeAction();
+            finishLoading();
+            if (response.ok && response.value) {
+                setValue('internalBarCode', response.value.barcode);
+                setFloatMessageState(() => ({
+                    description: 'Código generado',
+                    summary: '¡Correcto!',
+                    isActive: true,
+                    type: 'green'
+                }));
+                setTimeout(() => {
+                    setFloatMessageState(() => ({}));
+                }, 2000);
+            } else {
+                setFloatMessageState(() => ({
+                    description: 'No se pudo generrar el código de barra.',
+                    summary: '¡Error!',
+                    isActive: true,
+                    type: 'red'
+                }));
+                setTimeout(() => {
+                    setFloatMessageState(() => ({}));
+                }, 4000);
+            }
+        }
+
     const onSubmit = async (data: RegisterFormData) => {
         setFloatMessageState({});
         setIsLoading(true);
@@ -120,8 +151,8 @@ const useRegisterInventoryModal = () => {
                 isSellable: true,
                 internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,
-                salePriceMany: data.salePriceMany,
-                saleQuantityMany: data.saleQuantityMany,
+                salePriceMany: data.salePriceMany? Number(data.salePriceMany): null,
+                saleQuantityMany: data.saleQuantityMany? Number(data.saleQuantityMany): null,
                 maxStockBranch: data.maxStockBranch,
                 minStockBranch: data.minStockBranch
             }
@@ -187,7 +218,8 @@ const useRegisterInventoryModal = () => {
         onSubmit,
         // UI states
         floatMessageState,
-        isLoading
+        isLoading,
+        handleGenerateBarcode
     }
 }
 

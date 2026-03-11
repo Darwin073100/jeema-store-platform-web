@@ -9,6 +9,7 @@ import { FcIdea } from 'react-icons/fc';
 import { useInventoryListModal } from '../hooks/useInventoryListModal';
 import { IoMdAdd } from 'react-icons/io';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 
 const SaleInventoryListModal = () => {
   const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,
@@ -70,10 +71,10 @@ const SaleInventoryListModal = () => {
                       ${item.inventory?.salePriceOne}
                     </td>
                     <td className="px-5 py-1">
-                      ${item.inventory?.salePriceMany}
+                      {item.inventory?.salePriceMany? numberMoneyFormat(item.inventory?.salePriceMany): 'N/A'}
                     </td>
                     <td className="px-5 py-1">
-                      {item.inventory?.saleQuantityMany}
+                      {item.inventory?.saleQuantityMany ?? 'N/A'}
                     </td>
                     <td className="px-5 py-1">
                       {item.quantityOnHan}

@@ -25,6 +25,7 @@ import { useDeleteInventoryItemModal } from '@/features/inventory/hooks/useDelet
 import { useLocalTransferInventoryItemModal } from '@/features/inventory/hooks/useLocalTransferInventoryItemModal'
 import { ProductBarCode51x25Modal } from './ProductBarCodes51x25Modal'
 import { ProductPrice27x13Modal } from './ProductPrice27x13Modal'
+import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 
 interface Props {
     product: ProductEntity
@@ -145,13 +146,13 @@ const InventoryDetail = ({ product }: Props) => {
                             />
                             <InfoCard
                                 label="Unidades para mayoreo"
-                                value={(product.inventory.saleQuantityMany ?? 0).toString()}
+                                value={(product.inventory.saleQuantityMany ?? 'N/A').toString()}
                                 icon={<TbBoxMultiple className="w-4 h-4" />}
                                 className="bg-white"
                             />
                             <InfoCard
                                 label="Precio de mayoreo"
-                                value={`$${product.inventory.salePriceMany}`}
+                                value={`${product.inventory.salePriceMany? numberMoneyFormat(product.inventory.salePriceMany): 'N/A'}`}
                                 icon={<TbCurrencyDollar className="w-4 h-4" />}
                                 className="bg-white"
                             />

@@ -565,7 +565,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                     <h4 className="font-medium text-green-800 mb-3">📦 Precio de Mayoreo</h4>
                                     <LabelInput 
                                         value="Precio de venta por mayoreo" 
-                                        required='yes'
+                                        required='no'
                                         description='Precio especial por unidad cuando se compra en grandes cantidades. Este precio se aplicará cuando la compra supere la cantidad para mayoreo.' />
                                     <TextInput
                                         {...register('salePriceMany')}
@@ -578,7 +578,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                     <div className="mt-3">
                                         <LabelInput 
                                             value="Cantidad para mayoreo" 
-                                            required='yes'
+                                            required='no'
                                             description='Cantidad mínima de unidades que el cliente debe comprar para acceder al precio de mayoreo.' />
                                         <TextInput
                                             {...register('saleQuantityMany')}

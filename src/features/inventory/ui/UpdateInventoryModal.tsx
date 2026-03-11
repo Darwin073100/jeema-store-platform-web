@@ -95,10 +95,11 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                     <LabelInput 
                                         value="Precio de venta por mayoreo"
                                         description={inventoryDescription.salePriceMany}
-                                        required='yes' />
+                                        required='no' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
+                                        min={0}
                                         placeholder="Precio de venta por mayoreo"
                                         error={!!errors.salePriceMany}
                                         errorMessage={errors.salePriceMany?.message}
@@ -109,10 +110,11 @@ const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
                                     <LabelInput 
                                         value="Unidades para la venta de mayoreo"
                                         description={inventoryDescription.saleQuantityMany}
-                                        required='yes' />
+                                        required='no' />
                                     <TextInput
                                         type='number'
                                         step="0.0001"
+                                        min={0}
                                         placeholder="Unidades para la venta de mayoreo"
                                         error={!!errors.saleQuantityMany}
                                         errorMessage={errors.saleQuantityMany?.message}

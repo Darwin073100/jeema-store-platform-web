@@ -15,11 +15,11 @@ export class InventoryMapper {
             isSellable: dto.isSellable,
             maxStockBranch: dto.maxStockBranch,
             minStockBranch: dto.minStockBranch,
-            salePriceMany: dto.salePriceMany,
+            salePriceMany: (dto.salePriceMany && dto.salePriceMany > 0)?dto.salePriceMany:  undefined,
             salePriceOne: dto.salePriceOne,
             internalBarCode: dto.internalBarCode,
             salePriceSpecial: dto.salePriceSpecial ?? undefined,
-            saleQuantityMany: dto.saleQuantityMany
+            saleQuantityMany: (dto.saleQuantityMany && dto.saleQuantityMany > 0)? dto.saleQuantityMany: undefined
         }
         return httpDto;
     }
@@ -32,10 +32,10 @@ export class InventoryMapper {
             internalBarCode: dto.internalBarCode,
             maxStockBranch: dto.maxStockBranch,
             minStockBranch: dto.minStockBranch,
-            salePriceMany: dto.salePriceMany,
+            salePriceMany: (dto.salePriceMany && dto.salePriceMany > 0)?dto.salePriceMany:  undefined,
             salePriceOne: dto.salePriceOne,
             salePriceSpecial: Number(dto.salePriceSpecial) ?? undefined,
-            saleQuantityMany: dto.saleQuantityMany
+            saleQuantityMany: (dto.saleQuantityMany && dto.saleQuantityMany > 0)? dto.saleQuantityMany: undefined
         }
         return httpDto;
     }
