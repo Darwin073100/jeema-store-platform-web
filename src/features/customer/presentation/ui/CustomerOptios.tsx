@@ -51,7 +51,7 @@ const CustomerOptios = ({ customersList }: Props) => {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className='my-2'>
                 <TextInput
                     onChange={(e)=> setSearchValue(e.target.value ?? '')}
                     value={searchValue}
