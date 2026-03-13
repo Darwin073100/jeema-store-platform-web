@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common'; // Decorador de NestJS para hacer la clase inyectable
 import { BrandOrmEntity } from '../entities/brand-orm-entity';
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { BrandRepository } from 'src/contexts/product-management/brand/domain/repositories/brand.repository';
@@ -6,15 +5,8 @@ import { BrandEntity } from 'src/contexts/product-management/brand/domain/entiti
 import { BrandAlreadyExistsException } from 'src/contexts/product-management/brand/domain/exceptions/brand-already-exists.exception';
 import { BrandMapper } from '../mappers/brand.mapper';
 import { BrandNotFoundException } from 'src/contexts/product-management/brand/domain/exceptions/brand-not-found.exception';
+import { getDataSource } from '@/configuration/databases/typeorm/config';
 
-/**
- * TypeOrmEducationalCenterRepository es la implementación concreta de la interfaz
- * EducationalCenterRepository. Es parte de la capa de infraestructura y se encarga
- * de la persistencia de los objetos EducationalCenter utilizando TypeORM.
- *
- * Actúa como un adaptador entre el dominio puro y el ORM.
- */
-@Injectable() // Hace que esta clase sea inyectable por el sistema de inyección de dependencias de NestJS
 export class TypeOrmBrandRepository implements BrandRepository {
   private readonly typeOrmRepository: Repository<BrandOrmEntity>;
 
@@ -22,6 +14,15 @@ export class TypeOrmBrandRepository implements BrandRepository {
     readonly datasource: DataSource
   ) {
     this.typeOrmRepository = this.datasource.getRepository(BrandOrmEntity);
+  }
+
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeOrmBrandRepository> {
+    const dataSource = await getDataSource();
+    return new TypeOrmBrandRepository(dataSource);
   }
 
   /**

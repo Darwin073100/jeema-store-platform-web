@@ -4,10 +4,9 @@ import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { CategoryOrmEntity } from "../entities/category.orm-entity";
 import { CategoryMapper } from "../mappers/category.mapper";
 import { CategoryAlreadyExistsException } from "src/contexts/product-management/category/domain/exceptions/category-already-exists.exception";
-import { Injectable } from "@nestjs/common";
 import { CategoryNotFoundException } from "src/contexts/product-management/category/domain/exceptions/category-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormCategoryRepository implements CategoryRepository{
     private readonly typeormRepository: Repository<CategoryOrmEntity>;
     constructor(
@@ -15,6 +14,16 @@ export class TypeormCategoryRepository implements CategoryRepository{
     ){
         this.typeormRepository = this.datasource.getRepository(CategoryOrmEntity);
     }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormCategoryRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormCategoryRepository(dataSource);
+    }
+    
     async findById(categoryId: bigint): Promise<CategoryEntity | null> {
         const ormEntity = await this.typeormRepository.findOne({
             where: {

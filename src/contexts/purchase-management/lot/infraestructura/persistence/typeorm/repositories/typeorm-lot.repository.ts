@@ -1,4 +1,3 @@
-import { Inject, Injectable } from '@nestjs/common';
 import { Between, DataSource, QueryFailedError, Repository } from 'typeorm';
 import { LotRepository } from 'src/contexts/purchase-management/lot/domain/repositories/lot.repository';
 import { LotEntity } from 'src/contexts/purchase-management/lot/domain/entities/lot.entity';
@@ -7,18 +6,28 @@ import { LotMapper } from '../mappers/lot.mapper';
 import { LotAlreadyExistsException } from 'src/contexts/purchase-management/lot/domain/exceptions/lot-already-exists.exception';
 import { LotUnitPurchaseOrmEntity } from '../entities/lot-unit-purchase.orm-entity';
 import { LotNotFoundException } from 'src/contexts/purchase-management/lot/domain/exceptions/lot-not-found.exception';
-import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from 'src/config/database/typeorm/connection/domain/repositories/connection-repository';
+import { getDataSource } from '@/configuration/databases/typeorm/config';
+import { TransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository';
+import { TypeormTransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository';
 
-@Injectable()
 export class TypeOrmLotRepository implements LotRepository {
   private ormLotRepository: Repository<LotOrmEntity>;
 
   constructor(
     private readonly dataSource: DataSource,
-    @Inject(CONNECTION_DB_REPOSITORIO)
-    private readonly connection: ConnectionDBRepository
+    private readonly transactionDB: TransactionDBRepository
   ) {
     this.ormLotRepository = this.dataSource.getRepository(LotOrmEntity);
+  }
+
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeOrmLotRepository> {
+      const dataSource = await getDataSource();
+      const transactionDbRepo = await TypeormTransactionDBRepository.create();
+      return new TypeOrmLotRepository(dataSource, transactionDbRepo);
   }
 
   async saveWithItems(lotEntity: LotEntity): Promise<LotEntity> {
@@ -37,7 +46,7 @@ export class TypeOrmLotRepository implements LotRepository {
 
       // Guardar la entidad
 
-      let resp = await this.connection.getManager().getRepository(LotOrmEntity).save(lotOrmEntityClean);
+      let resp = await this.transactionDB.getManager().getRepository(LotOrmEntity).save(lotOrmEntityClean);
       // Guardar las relaciones de lotUnitPurchases
       if (lotUnitPurchases && lotUnitPurchases.length > 0) {
 

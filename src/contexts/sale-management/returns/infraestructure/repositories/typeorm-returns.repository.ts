@@ -2,20 +2,29 @@ import { DataSource, Repository } from "typeorm";
 import { ReturnsOrmEntity } from "../entities/returns.orm-entity";
 import { ReturnsRepository } from "../../domain/repositories/returns.repository";
 import { ReturnsEntity } from "../../domain/entities/returns.entity";
-import { Inject, Injectable } from "@nestjs/common";
 import { ReturnsMapper } from "../mappers/returns.mapper";
-import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
+import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
-@Injectable()
 export class TypeormReturnsRepository implements ReturnsRepository {
     private readonly repository: Repository<ReturnsOrmEntity>;
     
     constructor( 
         private readonly datasource: DataSource,
-        @Inject(CONNECTION_DB_REPOSITORIO)
-        private readonly connection: ConnectionDBRepository
+        private readonly transactionDB: TransactionDBRepository
     ){
         this.repository = this.datasource.getRepository(ReturnsOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormReturnsRepository> {
+        const dataSource = await getDataSource();
+        const transactionDBRepo = await TypeormTransactionDBRepository.create();
+        return new TypeormReturnsRepository(dataSource, transactionDBRepo);
     }
 
     async save(entity: ReturnsEntity): Promise<ReturnsEntity> {
@@ -41,8 +50,8 @@ export class TypeormReturnsRepository implements ReturnsRepository {
     async saveAll(entities: ReturnsEntity[]): Promise<ReturnsEntity[]> {
         try {
             const ormEntities = entities.map(item => ReturnsMapper.toOrm(item));
-            const result = await this.connection.getManager().getRepository(ReturnsOrmEntity).save(ormEntities);
-            return result.map(item=> ReturnsMapper.toDomain(item));
+            const result = await this.transactionDB.getManager().getRepository(ReturnsOrmEntity).save(ormEntities);
+            return result.map((item:any)=> ReturnsMapper.toDomain(item));
         } catch (error) {
           throw error;  
         }

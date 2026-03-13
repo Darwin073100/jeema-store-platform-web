@@ -1,19 +1,25 @@
 import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { PaymentMethodOrmEntity } from "../entities/payment-method.orm-entity";
 import { PaymentMethodMapper } from "../mappers/payment-method.mapper";
-import { Injectable } from "@nestjs/common";
 import { PaymentMethodRepository } from "src/contexts/sale-management/payment-method/domain/repositories/payment-method.repository";
 import { PaymentMethodEntity } from "src/contexts/sale-management/payment-method/domain/entities/payment-method-entity";
 import { PaymentMethodAlreadyExistsException } from "src/contexts/sale-management/payment-method/domain/exceptions/payment-method-already-exists.exception";
 import { PaymentMethodNotFoundException } from "src/contexts/sale-management/payment-method/domain/exceptions/payment-method-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormPaymentMethodRepository implements PaymentMethodRepository{
     private readonly typeormRepository: Repository<PaymentMethodOrmEntity>;
-    constructor(
-        private readonly datasource: DataSource,
-    ){
+    constructor( private readonly datasource: DataSource ){
         this.typeormRepository = this.datasource.getRepository(PaymentMethodOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormPaymentMethodRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormPaymentMethodRepository(dataSource);
     }
     async findById(categoryId: bigint): Promise<PaymentMethodEntity | null> {
         const ormEntity = await this.typeormRepository.findOne({

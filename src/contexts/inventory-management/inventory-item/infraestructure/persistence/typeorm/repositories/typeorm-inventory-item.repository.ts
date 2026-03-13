@@ -1,24 +1,33 @@
 import { DataSource, Not, Or, Repository } from "typeorm";
 import { InventoryItemOrmEntity } from "../entities/inventory-item.orm-entity";
-import { Inject, Injectable } from "@nestjs/common";
 import { InventoryItemMapper } from "../mapper/inventory-item.mapper";
 import { InventoryItemEntity } from "src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity";
 import { InventoryItemRepository } from "src/contexts/inventory-management/inventory-item/domain/repositories/inventory-item.repository";
 import { LocationEnum } from "src/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 import { InventoryItemAlreadyExistException } from "src/contexts/inventory-management/inventory-item/domain/exceptions/inventory-item-already-exist.exception";
 import { InventoryItemNotFoundException } from "src/contexts/inventory-management/inventory-item/domain/exceptions/inventory-item-not-found.exception";
-import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
+import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
-@Injectable()
 export class TypeormInventoryItemRepository implements InventoryItemRepository {
     private readonly inventoryItemRepository: Repository<InventoryItemOrmEntity>;
 
     constructor(
         private readonly datasource: DataSource,
-        @Inject(CONNECTION_DB_REPOSITORIO)
-        private readonly connection: ConnectionDBRepository
+        private readonly transactionDB: TransactionDBRepository
     ) {
         this.inventoryItemRepository = this.datasource.getRepository(InventoryItemOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormInventoryItemRepository> {
+        const dataSource = await getDataSource();
+        const transactionDbRepo = await TypeormTransactionDBRepository.create();
+        return new TypeormInventoryItemRepository(dataSource, transactionDbRepo);
     }
 
     /** 
@@ -52,7 +61,7 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
             if (stockDuplicated) {
                 throw new InventoryItemAlreadyExistException(`Ya hay stock en la ubicacion (${inventoryItemExist.location}).`);
             }
-            const updateResult = await this.connection.getManager().save(InventoryItemOrmEntity, inventoryItemExist);
+            const updateResult = await this.transactionDB.getManager().save(InventoryItemOrmEntity, inventoryItemExist);
             return InventoryItemMapper.toDomain(updateResult);
         }
         const isExist = await this.findByLocation(entity.inventoryId, entity.location)
@@ -60,7 +69,7 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
             throw new InventoryItemAlreadyExistException(`Ya hay stock en la ubicacion (${entity.location}).`);
         }
         const ormEntity = InventoryItemMapper.toOrmEntity(entity);
-        const result = await this.connection.getManager().save(InventoryItemOrmEntity, ormEntity);
+        const result = await this.transactionDB.getManager().save(InventoryItemOrmEntity, ormEntity);
         return InventoryItemMapper.toDomain(result);
     }
 
@@ -81,7 +90,7 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
             existingEntity.quantityOnHand = entity.quantityOnHand.value;
 
             // Mantenemos el inventoryId original
-            const updateResult = await this.connection.getManager().save(InventoryItemOrmEntity, existingEntity);
+            const updateResult = await this.transactionDB.getManager().save(InventoryItemOrmEntity, existingEntity);
             
             return InventoryItemMapper.toDomain(updateResult);
         } catch (error) {

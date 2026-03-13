@@ -4,16 +4,24 @@ import { SeasonMapper } from "../mappers/season.mapper";
 import { SeasonEntity } from "src/contexts/product-management/season/domain/entities/season.entity";
 import { SeasonRepository } from "src/contexts/product-management/season/domain/repositories/season.repository";
 import { SeasonAlreadyExistsException } from "src/contexts/product-management/season/domain/exceptions/season-already-exists.exception";
-import { Injectable } from "@nestjs/common";
 import { SeasonNotFoundException } from "src/contexts/product-management/season/domain/exceptions/season-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormSeasonRepository implements SeasonRepository {
   private readonly typeormRepository: Repository<SeasonOrmEntity>;
   constructor(
     readonly datasource: DataSource,
   ) {
     this.typeormRepository = this.datasource.getRepository(SeasonOrmEntity);
+  }
+
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeormSeasonRepository> {
+    const dataSource = await getDataSource();
+    return new TypeormSeasonRepository(dataSource);
   }
 
   async findById(seasonId: bigint): Promise<SeasonEntity | null> {

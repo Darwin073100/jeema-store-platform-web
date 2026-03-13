@@ -1,19 +1,26 @@
-import { Injectable } from "@nestjs/common";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { DataSource, Not, Repository } from "typeorm";
 import { UserOrmEntity } from "../entities/user.orm-entity";
 import { UserMapper } from "../mappers/user.mapper";
 import { UserAlreadyExistsException } from "../../domain/exceptions/user-already-exists.exception";
-import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TyperomUserRepository implements UserRepository {
     private repository: Repository<UserOrmEntity>;
     constructor(
         private dataSource: DataSource,
     ) {
         this.repository = this.dataSource.getRepository(UserOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TyperomUserRepository> {
+        const dataSource = await getDataSource();
+        return new TyperomUserRepository(dataSource);
     }
 
     async save(entity: UserEntity): Promise<UserEntity> {

@@ -1,19 +1,28 @@
 import { PermissionOrmEntity } from '../entities/permission.orm-entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { PermissionMapper } from '../mappers/permission.mapper';
-import { QueryFailedError, Repository } from 'typeorm';
+import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { RoleAlreadyExistException } from 'src/contexts/authentication-management/role/domain/exceptions/role-already.exception';
 import { PermissionRepository } from 'src/contexts/authentication-management/permission/domain/repositories/permission.repository';
 import { PermissionEntity } from 'src/contexts/authentication-management/permission/domain/entities/permission-entity';
+import { getDataSource } from '@/configuration/databases/typeorm/config';
 
 export class TypeormPermissionRepository implements PermissionRepository {
   private readonly typeormRepository: Repository<PermissionOrmEntity>;
   constructor(
-    @InjectRepository(PermissionOrmEntity)
-    typeormRepository: Repository<PermissionOrmEntity>,
+    private readonly datasource: DataSource
   ) {
-    this.typeormRepository = typeormRepository;
+    this.typeormRepository = this.datasource.getRepository(PermissionOrmEntity);
   }
+
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeormPermissionRepository> {
+    const dataSource = await getDataSource();
+    return new TypeormPermissionRepository(dataSource);
+  }
+
   async findByName(name: string): Promise<PermissionEntity | null> {
     const ormEntity = await this.typeormRepository.findOne({
       where: { name: name },

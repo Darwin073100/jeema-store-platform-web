@@ -1,32 +1,27 @@
-// src/contexts/educational-center-management/educational-center/infrastructure/persistence/typeorm/repositories/typeorm-educational-center.repository.ts
-
-import { InjectRepository } from '@nestjs/typeorm'; // Decoradores de NestJS para inyección
-import { Injectable } from '@nestjs/common'; // Decorador de NestJS para hacer la clase inyectable
 import { EmployeeRoleOrmEntity } from '../entities/employee-role-orm-entity';
-import { QueryFailedError, Repository } from 'typeorm';
+import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { EmployeeRoleRepository } from 'src/contexts/employee-management/employee-role/domain/repositories/employee-role.repository';
 import { EmployeeRoleEntity } from 'src/contexts/employee-management/employee-role/domain/entities/employee-role.entity';
 import { EmployeeRoleNameVO } from 'src/contexts/employee-management/employee-role/domain/values-objects/employee-role-name.vo';
 import { EmployeeRoleAlreadyExistsException } from 'src/contexts/employee-management/employee-role/domain/exceptions/employee-role-already-exists.exception';
 import { EmployeeRoleMapper } from '../mappers/employee-role.mapper';
-/**
- * TypeOrmEducationalCenterRepository es la implementación concreta de la interfaz
- * EducationalCenterRepository. Es parte de la capa de infraestructura y se encarga
- * de la persistencia de los objetos EducationalCenter utilizando TypeORM.
- *
- * Actúa como un adaptador entre el dominio puro y el ORM.
- */
-@Injectable() // Hace que esta clase sea inyectable por el sistema de inyección de dependencias de NestJS
+import { getDataSource } from '@/configuration/databases/typeorm/config';
+
 export class TypeOrmEmployeeRoleRepository implements EmployeeRoleRepository {
   private readonly typeOrmRepository: Repository<EmployeeRoleOrmEntity>;
 
-  constructor(
-    @InjectRepository(EmployeeRoleOrmEntity) // Inyecta el repositorio de TypeORM para EducationalCenterOrmEntity
-    typeOrmRepository: Repository<EmployeeRoleOrmEntity>,
-  ) {
-    this.typeOrmRepository = typeOrmRepository;
+  constructor(private readonly datasource: DataSource) {
+    this.typeOrmRepository = this.datasource.getRepository(EmployeeRoleOrmEntity);
   }
 
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeOrmEmployeeRoleRepository> {
+    const dataSource = await getDataSource();
+    return new TypeOrmEmployeeRoleRepository(dataSource);
+  }
   /**
    * Guarda o actualiza un centro educativo en la base de datos.
    * Realiza la conversión entre la entidad de dominio y la entidad ORM.

@@ -1,18 +1,24 @@
 import { RoleOrmEntity } from '../entities/role.orm-entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { RoleMapper } from '../mappers/role.mapper';
 import { RoleRepository } from 'src/contexts/authentication-management/role/domain/repositories/role.repository';
-import { QueryFailedError, Repository } from 'typeorm';
+import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { RoleEntity } from 'src/contexts/authentication-management/role/domain/entities/role-entity';
 import { RoleAlreadyExistException } from 'src/contexts/authentication-management/role/domain/exceptions/role-already.exception';
+import { getDataSource } from '@/configuration/databases/typeorm/config';
 
 export class TypeormRoleRepository implements RoleRepository {
   private readonly typeormRepository: Repository<RoleOrmEntity>;
-  constructor(
-    @InjectRepository(RoleOrmEntity)
-    typeormRepository: Repository<RoleOrmEntity>,
-  ) {
-    this.typeormRepository = typeormRepository;
+  constructor( private readonly datasource: DataSource) {
+    this.typeormRepository = this.datasource.getRepository(RoleOrmEntity);
+  }
+
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeormRoleRepository> {
+    const dataSource = await getDataSource();
+    return new TypeormRoleRepository(dataSource);
   }
 
   async findByName(name: string): Promise<RoleEntity | null> {

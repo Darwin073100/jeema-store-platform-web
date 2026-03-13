@@ -1,17 +1,25 @@
-import { Injectable } from "@nestjs/common";
 import { TransactionTypeRepository } from "../../domain/repositories/transaction-type.repository";
 import { TransactionTypeEntity } from "../../domain/entities/transaction-type.entity";
 import { DataSource, Repository } from "typeorm";
 import { TransactionTypeOrmEntity } from "../entities/transaction-type.orm-entity";
 import { TransactionTypeMapper } from "../mappers/transaction-type.mapper";
 import { AccountTypeEnum } from "../../domain/enums/account-type.enum";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormTransactionTypeRepository implements TransactionTypeRepository {
     private readonly repository: Repository<TransactionTypeOrmEntity>;
 
     constructor(private readonly datasource: DataSource) {
         this.repository = this.datasource.getRepository(TransactionTypeOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormTransactionTypeRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormTransactionTypeRepository(dataSource);
     }
 
     async save(entity: TransactionTypeEntity): Promise<TransactionTypeEntity> {

@@ -1,17 +1,25 @@
-import { Injectable } from "@nestjs/common";
 import { SaleDetailEntity } from "src/contexts/sale-management/sale-detail/domain/entities/sale-detail.entity";
 import { SaleDetailRepository } from "src/contexts/sale-management/sale-detail/domain/repositories/sale-detail.repository";
 import { DataSource, Repository } from "typeorm";
 import { SaleDetailOrmEntity } from "../entities/sale-detail.orm-entity";
 import { SaleDetailMapper } from "../mappers/sale-detail.mapper";
 import { SaleNotFoundException } from "src/contexts/sale-management/sale/domain/exceptions/sale-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormSaleDetailRepository implements SaleDetailRepository {
     private readonly repository: Repository<SaleDetailOrmEntity>;
 
     constructor(private readonly datasource: DataSource) {
         this.repository = this.datasource.getRepository(SaleDetailOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormSaleDetailRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormSaleDetailRepository(dataSource);
     }
 
     async save(entity: SaleDetailEntity): Promise<SaleDetailEntity> {
@@ -92,7 +100,7 @@ export class TypeormSaleDetailRepository implements SaleDetailRepository {
             const result = await this.repository.save(detailExist);
             return SaleDetailMapper.toDomainEntity(result);
         } catch (error) {
-            return error;
+            throw error;
         }
     }
 

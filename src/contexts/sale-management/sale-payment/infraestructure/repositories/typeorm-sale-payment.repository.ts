@@ -2,10 +2,9 @@ import { DataSource, Repository } from "typeorm";
 import { SalePaymentEntity } from "../../domain/entities/sale-payment.entity";
 import { SalePaymentRepository } from "../../domain/repositories/sale-payment.repository";
 import { SalePaymentOrmEntity } from "../entities/sale-payment.orm-entity";
-import { Injectable } from "@nestjs/common";
 import { SalePaymentMapper } from "../mappers/sale-payment.mapper";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormSalePaymentRepository implements SalePaymentRepository {
     private readonly repository: Repository<SalePaymentOrmEntity>;
 
@@ -13,6 +12,15 @@ export class TypeormSalePaymentRepository implements SalePaymentRepository {
         private readonly datasource: DataSource
     ){
         this.repository = this.datasource.getRepository(SalePaymentOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormSalePaymentRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormSalePaymentRepository(dataSource);
     }
 
     async save(entity: SalePaymentEntity): Promise<SalePaymentEntity> {

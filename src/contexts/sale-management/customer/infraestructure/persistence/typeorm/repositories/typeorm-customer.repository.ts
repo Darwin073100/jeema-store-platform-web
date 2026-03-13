@@ -1,12 +1,11 @@
-import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
 import { DataSource, Repository } from "typeorm";
 import { CustomerOrmEntity } from "../entities/customer.orm-entity";
-import { Injectable } from "@nestjs/common";
 import { CustomerMapper } from "../mappers/customer.mapper";
 import { CustomerRepository } from "src/contexts/sale-management/customer/domain/repositories/customer.repository";
 import { CustomerEntity } from "src/contexts/sale-management/customer/domain/entities/customer.entity";
+import { AddressOrmEntity } from "@/contexts/establishment-management/address/infraestructure/entities/address.orm-entity";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeOrmCustomerRepository implements CustomerRepository {
   private ormCustomerRepository: Repository<CustomerOrmEntity>;
   // Ya no necesitamos ormAddressRepository aquí, TypeORM lo maneja con cascade
@@ -15,6 +14,14 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
     this.ormCustomerRepository = this.dataSource.getRepository(CustomerOrmEntity);
   }
 
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeOrmCustomerRepository> {
+    const dataSource = await getDataSource();
+    return new TypeOrmCustomerRepository(dataSource);
+  }
   async save(customerEntity: CustomerEntity): Promise<CustomerEntity> {
 
     let addressOrmEntity: AddressOrmEntity | null| undefined;

@@ -1,4 +1,3 @@
-import { Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 import { LotUnitPurchaseOrmEntity } from "../entities/lot-unit-purchase.orm-entity";
 import { LotUnitPurchaseRepository } from "src/contexts/purchase-management/lot/domain/repositories/lot-unit-purchase.repository";
@@ -6,8 +5,8 @@ import { LotUnitPurchaseEntity } from "src/contexts/purchase-management/lot/doma
 import { LotUnitPurchaseMapper } from "../mappers/lot-unit-purchase.mapper";
 import { LotAlreadyExistsException } from "src/contexts/purchase-management/lot/domain/exceptions/lot-already-exists.exception";
 import { LotNotFoundException } from "src/contexts/purchase-management/lot/domain/exceptions/lot-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormLotUnitPurchaseRepository implements LotUnitPurchaseRepository{
     private readonly repository: Repository<LotUnitPurchaseOrmEntity>;
 
@@ -16,7 +15,14 @@ export class TypeormLotUnitPurchaseRepository implements LotUnitPurchaseReposito
     ){
         this.repository = this.datasource.getRepository(LotUnitPurchaseOrmEntity)
     }
-
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormLotUnitPurchaseRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormLotUnitPurchaseRepository(dataSource);
+    }
     /**
      * - Este metodo Crea un registro de compra de unidad de lote 
      * - En caso de encontrar una unidad de lote existente, se actualiza

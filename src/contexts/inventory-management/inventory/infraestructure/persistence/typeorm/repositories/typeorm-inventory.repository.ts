@@ -2,16 +2,24 @@ import { InventoryEntity } from "src/contexts/inventory-management/inventory/dom
 import { InventoryRepository } from "src/contexts/inventory-management/inventory/domain/repositories/inventory.repository";
 import { DataSource, Repository } from "typeorm";
 import { InventoryOrmEntity } from "../entities/inventory.orm-entity";
-import { Injectable } from "@nestjs/common";
 import { InventoryMapper } from "../mapper/inventory.mapper";
 import { InventoryNotFoundException } from "src/contexts/inventory-management/inventory/domain/exceptions/inventory-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormInventoryRepository implements InventoryRepository{
     private readonly inventoryRepository: Repository<InventoryOrmEntity>;
 
     constructor(private readonly datasource: DataSource){
         this.inventoryRepository = this.datasource.getRepository(InventoryOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormInventoryRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormInventoryRepository(dataSource);
     }
 
     /**

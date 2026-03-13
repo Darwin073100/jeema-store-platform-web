@@ -3,15 +3,23 @@ import { CashRegisterEntity } from "../../domain/entities/cash-register.entity";
 import { CashRegisterRepository } from "../../domain/repositories/cash-register.repository";
 import { CashRegisterOrmEntity } from "../entities/cash-register.orm-entity";
 import { CashRegisterMapper } from "../mappers/cash-register.mapper";
-import { Injectable } from "@nestjs/common";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormCashRegisterRepository implements CashRegisterRepository{
     private readonly repository: Repository<CashRegisterOrmEntity>;
     constructor(
         private readonly datasource: DataSource
     ){
         this.repository = this.datasource.getRepository(CashRegisterOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormCashRegisterRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormCashRegisterRepository(dataSource);
     }
     
     async save(entity: CashRegisterEntity): Promise<CashRegisterEntity> {

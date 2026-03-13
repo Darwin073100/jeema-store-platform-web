@@ -2,21 +2,30 @@ import { DataSource, Not, Repository } from "typeorm";
 import { TransactionEntity } from "../../domain/entities/transaction.entity";
 import { TransactionRepository } from "../../domain/repositories/transaction.repository";
 import { TransactionOrmEntity } from "../entities/transaction.orm-entity";
-import { Inject, Injectable } from "@nestjs/common";
 import { TransactionMapper } from "../mappers/transaction.mapper";
 import { ManyFilterTransactionsDTO } from "../../application/dtos/many-filter-transactions.dto";
-import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
+import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
-@Injectable()
 export class TypeormTransactionRepository implements TransactionRepository{
     private readonly repository: Repository<TransactionOrmEntity>;
     
     constructor(
         private readonly datasource: DataSource,
-        @Inject(CONNECTION_DB_REPOSITORIO)
-        private readonly connection: ConnectionDBRepository,
+        private readonly transactionDB: TransactionDBRepository,
     ){
         this.repository = this.datasource.getRepository(TransactionOrmEntity);
+    }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormTransactionRepository> {
+        const dataSource = await getDataSource();
+        const transactionDBRepo = await TypeormTransactionDBRepository.create();
+        return new TypeormTransactionRepository(dataSource, transactionDBRepo);
     }
 
     async save(entity: TransactionEntity): Promise<TransactionEntity> {
@@ -31,11 +40,11 @@ export class TypeormTransactionRepository implements TransactionRepository{
                     description: entity.description,
                     transactionTypeId: entity.transactionTypeId,
                 }
-                const updateResult = await this.connection.getManager().getRepository(TransactionOrmEntity).save(transactionExist);
+                const updateResult = await this.transactionDB.getManager().getRepository(TransactionOrmEntity).save(transactionExist);
                 return TransactionMapper.toDomain(updateResult);
             }
             const ormEntity = TransactionMapper.toOrm(entity);
-            const result = await this.connection.getManager().getRepository(TransactionOrmEntity).save(ormEntity);
+            const result = await this.transactionDB.getManager().getRepository(TransactionOrmEntity).save(ormEntity);
             return TransactionMapper.toDomain(result);
         } catch (error) {
             throw error;

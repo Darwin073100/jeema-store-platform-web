@@ -1,29 +1,26 @@
-import { InjectRepository } from '@nestjs/typeorm'; // Decoradores de NestJS para inyección
-import { Injectable } from '@nestjs/common'; // Decorador de NestJS para hacer la clase inyectable
 import { EstablishmentOrmEntity } from '../entities/establishment-orm-entity';
 import { EstablishmentRepository } from 'src/contexts/establishment-management/establishment/domain/repositories/establishment.repository';
 import { EstablishmentEntity } from 'src/contexts/establishment-management/establishment/domain/entities/establishment.entity';
-import { QueryFailedError, Repository } from 'typeorm';
+import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { EstablishmentNotFoundException } from 'src/contexts/establishment-management/establishment/domain/exceptions/establishment-not-found.exception';
 import { EstablishmentAlreadyExistsException } from 'src/contexts/establishment-management/establishment/domain/exceptions/establishment-already-exists.exception';
 import { EstablishmentMapper } from '../mappers/establishment.mapper';
+import { getDataSource } from '@/configuration/databases/typeorm/config';
 
-/**
- * TypeOrmEducationalCenterRepository es la implementación concreta de la interfaz
- * EducationalCenterRepository. Es parte de la capa de infraestructura y se encarga
- * de la persistencia de los objetos EducationalCenter utilizando TypeORM.
- *
- * Actúa como un adaptador entre el dominio puro y el ORM.
- */
-@Injectable() // Hace que esta clase sea inyectable por el sistema de inyección de dependencias de NestJS
 export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
   private readonly typeOrmRepository: Repository<EstablishmentOrmEntity>;
 
-  constructor(
-    @InjectRepository(EstablishmentOrmEntity) // Inyecta el repositorio de TypeORM para EducationalCenterOrmEntity
-    typeOrmRepository: Repository<EstablishmentOrmEntity>,
-  ) {
-    this.typeOrmRepository = typeOrmRepository;
+  constructor(private readonly datasource: DataSource) {
+    this.typeOrmRepository = this.datasource.getRepository(EstablishmentOrmEntity);
+  }
+
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeOrmEstablishmentRepository> {
+    const dataSource = await getDataSource();
+    return new TypeOrmEstablishmentRepository(dataSource);
   }
 
   /**

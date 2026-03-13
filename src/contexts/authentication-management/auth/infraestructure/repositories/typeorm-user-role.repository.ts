@@ -3,13 +3,12 @@ import { UserRoleEntity } from "../../domain/entities/user-role.entity";
 import { UserRoleRepository } from "../../domain/repositories/user-role.repository";
 import { UserRoleOrmEntity } from "../entities/user-role.orm-entity";
 import { UserRoleMapper } from "../mappers/user-role.mapper";
-import { Injectable } from "@nestjs/common";
 import { UserOrmEntity } from "../entities/user.orm-entity";
 import { UserAlreadyExistsException } from "../../domain/exceptions/user-already-exists.exception";
 import { EmployeeOrmEntity } from "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity";
 import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormUserRoleRepository implements UserRoleRepository{
     private userRoleRepository: Repository<UserRoleOrmEntity>;
     private userRepository: Repository<UserOrmEntity>;
@@ -19,6 +18,14 @@ export class TypeormUserRoleRepository implements UserRoleRepository{
     ){
         this.userRoleRepository = this.datasource.getRepository(UserRoleOrmEntity);
         this.userRepository = this.datasource.getRepository(UserOrmEntity);
+    }
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormUserRoleRepository> {
+      const dataSource = await getDataSource();
+      return new TypeormUserRoleRepository(dataSource);
     }
     
     async save(entity: UserRoleEntity):Promise<UserRoleEntity>{
@@ -118,7 +125,7 @@ export class TypeormUserRoleRepository implements UserRoleRepository{
         });
         return result? UserRoleMapper.toDomain(result): null;
     }
-    async existByRole(userId: bigint, roleId):Promise<UserRoleEntity|null>{
+    async existByRole(userId: bigint, roleId: any):Promise<UserRoleEntity|null>{
         const result = await this.userRoleRepository.findOneBy({
             userId,
             roleId

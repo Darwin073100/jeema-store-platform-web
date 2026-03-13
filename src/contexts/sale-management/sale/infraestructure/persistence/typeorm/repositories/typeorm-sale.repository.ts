@@ -1,22 +1,32 @@
 import { DataSource, Repository } from "typeorm";
 import { SaleOrmEntity } from "../entities/sale.orm-entity";
 import { SaleMapper } from "../mappers/sale.mapper";
-import { Inject, Injectable } from "@nestjs/common";
 import { PaymentMethodNotFoundException } from "src/contexts/sale-management/payment-method/domain/exceptions/payment-method-not-found.exception";
 import { SaleRepository } from "src/contexts/sale-management/sale/domain/repositories/sale.repository";
 import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
-import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
+import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
-@Injectable()
 export class TypeormSaleRepository implements SaleRepository{
     private readonly typeormRepository: Repository<SaleOrmEntity>;
     constructor(
-        readonly datasource: DataSource,
-        @Inject(CONNECTION_DB_REPOSITORIO)
-        private readonly connection: ConnectionDBRepository
+        private readonly datasource: DataSource,
+        private readonly transactionDB: TransactionDBRepository
     ){
-        this.typeormRepository = this.connection.getManager().getRepository(SaleOrmEntity);
+        this.typeormRepository = this.transactionDB.getManager().getRepository(SaleOrmEntity);
     }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormSaleRepository> {
+        const dataSource = await getDataSource();
+        const transactionDBRepo = await TypeormTransactionDBRepository.create();
+        return new TypeormSaleRepository(dataSource, transactionDBRepo);
+    }
+
     async findById(saleId: bigint): Promise<SaleEntity | null> {
         const ormEntity = await this.typeormRepository.findOne({
             where: {

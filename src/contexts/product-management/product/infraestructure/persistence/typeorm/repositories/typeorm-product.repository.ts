@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { ProductOrmEntity } from '../entities/product.orm-entity';
 import { ProductTypeOrmMapper } from '../mappers/product.mapper';
@@ -12,8 +11,8 @@ import { LotUnitPurchaseOrmEntity } from 'src/contexts/purchase-management/lot/i
 import { ProductNotFoundException } from 'src/contexts/product-management/product/domain/exceptions/product-not-found.exception';
 import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
 import { SaleStatusEnum } from 'src/contexts/sale-management/sale/domain/enums/sale-status.enum';
+import { getDataSource } from '@/configuration/databases/typeorm/config';
 
-@Injectable()
 export class TypeOrmProductRepository implements ProductRepository {
   private readonly productRepository: Repository<ProductOrmEntity>;
 
@@ -22,6 +21,14 @@ export class TypeOrmProductRepository implements ProductRepository {
   ) {
     this.productRepository = this.datasource.getRepository(ProductOrmEntity);
   }
+   /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmProductRepository.create();
+     */
+    static async create(): Promise<TypeOrmProductRepository> {
+      const dataSource = await getDataSource();
+      return new TypeOrmProductRepository(dataSource);
+    }
 
   async findByEstablishmentAndSku(establishmentId: bigint, sku: string): Promise<ProductEntity | null> {
     const orm = await this.productRepository.findOne({ where: { establishmentId: establishmentId, sku } });

@@ -1,22 +1,29 @@
 import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
-import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
 import { DataSource, Repository } from "typeorm";
 import { BranchOfficeOrmEntity } from "../entities/branch-office.orm-entity";
 import { BranchOfficeRepository } from "src/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository";
-import { Injectable, NotFoundException } from "@nestjs/common";
 import { BranchOfficeMapper } from "../mappers/branch-office.mapper";
 import { EstablishmentOrmEntity } from "src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity";
 import { BranchOfficeNotFoundException } from "src/contexts/establishment-management/branch-office/domain/exceptions/branch-office-not-found.exception";
+import { AddressOrmEntity } from "@/contexts/establishment-management/address/infraestructure/entities/address.orm-entity";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
   private ormBranchOfficeRepository: Repository<BranchOfficeOrmEntity>;
   private ormEstablishmentRepository: Repository<EstablishmentOrmEntity>;
-  // Ya no necesitamos ormAddressRepository aquí, TypeORM lo maneja con cascade
 
   constructor(private readonly dataSource: DataSource) {
     this.ormBranchOfficeRepository = this.dataSource.getRepository(BranchOfficeOrmEntity);
     this.ormEstablishmentRepository = this.dataSource.getRepository(EstablishmentOrmEntity);
+  }
+
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeOrmBranchOfficeRepository> {
+    const dataSource = await getDataSource();
+    return new TypeOrmBranchOfficeRepository(dataSource);
   }
 
   async save(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity> {
@@ -28,7 +35,7 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
     // ...removed console.log...
     
     if(!isEstablishment){
-      throw new NotFoundException('Debe ser un id de un establecimeinto existente.');
+      throw new Error('Debe ser un id de un establecimeinto existente.');
     }
 
     let addressOrmEntity: AddressOrmEntity | null = null;

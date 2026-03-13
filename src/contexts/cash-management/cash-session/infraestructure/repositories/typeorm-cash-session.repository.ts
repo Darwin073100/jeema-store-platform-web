@@ -1,22 +1,32 @@
-import { Inject, Injectable } from "@nestjs/common";
 import { CashSessionEntity } from "../../domain/entities/cash-session.entity";
 import { CashSessionRepository } from "../../domain/repositories/cash-session.repository";
 import { Between, DataSource, Repository } from "typeorm";
 import { CashSessionOrmEntity } from "../entities/cash-session.orm-entity";
 import { CashSessionMapper } from "../mappers/cash-session.mapper";
-import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
+import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 
-@Injectable()
 export class TypeormCashSessionRepository implements CashSessionRepository {
     private readonly repository: Repository<CashSessionOrmEntity>;
     
     constructor(
         private readonly datasource: DataSource,
-        @Inject(CONNECTION_DB_REPOSITORIO)
-        private readonly connection: ConnectionDBRepository
+        private readonly connection: TransactionDBRepository
     ){
         this.repository = this.datasource.getRepository(CashSessionOrmEntity);
     }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormCashSessionRepository> {
+        const dataSource = await getDataSource();
+        const tyDB = await TypeormTransactionDBRepository.create();
+        return new TypeormCashSessionRepository(dataSource, tyDB);
+    }
+    
     async save(entity: CashSessionEntity): Promise<CashSessionEntity> {
         let cashSessionExist = await this.repository.findOneBy({
             cashSessionId: entity.cashSessionId

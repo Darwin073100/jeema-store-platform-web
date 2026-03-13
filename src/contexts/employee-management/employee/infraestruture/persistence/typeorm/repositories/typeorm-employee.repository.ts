@@ -1,30 +1,33 @@
-import { Inject, Injectable } from '@nestjs/common'; // Decorador de NestJS para hacer la clase inyectable
 import { EmployeeOrmEntity } from '../entities/employee-orm-entity';
-import { DataSource, Entity, QueryFailedError, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { EmployeeEntity } from 'src/contexts/employee-management/employee/domain/entities/employee.entity';
 import { EmployeeRepository } from 'src/contexts/employee-management/employee/domain/repositories/employee.repository';
 import { EmployeeMapper } from '../mappers/employee.mapper';
-import { AddressOrmEntity } from 'src/shared/infraestructure/typeorm/address.orm-entity';
-import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from 'src/config/database/typeorm/connection/domain/repositories/connection-repository';
 import { EmployeeNotFoundException } from 'src/contexts/employee-management/employee/domain/exceptions/employee-not-found.exception';
-/**
- * TypeOrmEducationalCenterRepository es la implementación concreta de la interfaz
- * EducationalCenterRepository. Es parte de la capa de infraestructura y se encarga
- * de la persistencia de los objetos EducationalCenter utilizando TypeORM.
- *
- * Actúa como un adaptador entre el dominio puro y el ORM.
- */
-@Injectable() // Hace que esta clase sea inyectable por el sistema de inyección de dependencias de NestJS
+import { TransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository';
+import { AddressOrmEntity } from '@/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
+import { getDataSource } from '@/configuration/databases/typeorm/config';
+import { TypeormTransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository';
+
 export class TypeOrmEmployeeRepository implements EmployeeRepository {
   private readonly typeOrmRepository: Repository<EmployeeOrmEntity>;
 
   constructor(
     private readonly datasource: DataSource,
-    @Inject(CONNECTION_DB_REPOSITORIO)
-    private readonly connection: ConnectionDBRepository
+    private readonly transactionDB: TransactionDBRepository
   ) {
     this.typeOrmRepository = this.datasource.getRepository(EmployeeOrmEntity);
   }
+
+  /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeOrmEmployeeRepository> {
+        const dataSource = await getDataSource();
+        const tRepository = await TypeormTransactionDBRepository.create();
+        return new TypeOrmEmployeeRepository(dataSource, tRepository);
+    }
 
   /**
    * Guarda o actualiza un centro educativo en la base de datos.
@@ -34,14 +37,14 @@ export class TypeOrmEmployeeRepository implements EmployeeRepository {
    */
   async save(employee: EmployeeEntity): Promise<EmployeeEntity> {
     try {
-      const addressRepository = this.connection.getManager().getRepository(AddressOrmEntity);
+      const addressRepository = this.transactionDB.getManager().getRepository(AddressOrmEntity);
       let employeeOrmEntity = EmployeeMapper.toOrmEntity(employee);
       let addressResponse: AddressOrmEntity| null = null;
       if(!!employeeOrmEntity.address){
         addressResponse = await addressRepository.save(employeeOrmEntity.address);
         employeeOrmEntity.address = null;
       }
-      const result = await this.connection.getManager().save(employeeOrmEntity);
+      const result = await this.transactionDB.getManager().save(employeeOrmEntity);
       result.address = addressResponse;
       result.addressId = addressResponse?.addressId ?? null;
       return EmployeeMapper.toDomainEntity(result);

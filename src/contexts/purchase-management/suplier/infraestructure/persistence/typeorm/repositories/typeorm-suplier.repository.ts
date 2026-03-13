@@ -1,12 +1,11 @@
-import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
 import { DataSource, Repository } from "typeorm";
 import { SuplierOrmEntity } from "../entities/suplier.orm-entity";
-import { Injectable } from "@nestjs/common";
 import { SuplierMapper } from "../mappers/suplier.mapper";
 import { SuplierRepository } from "src/contexts/purchase-management/suplier/domain/repositories/suplier.repository";
 import { SuplierEntity } from "src/contexts/purchase-management/suplier/domain/entities/suplier.entity";
+import { AddressOrmEntity } from "@/contexts/establishment-management/address/infraestructure/entities/address.orm-entity";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeOrmSuplierRepository implements SuplierRepository {
   private repository: Repository<SuplierOrmEntity>;
   // Ya no necesitamos ormAddressRepository aquí, TypeORM lo maneja con cascade
@@ -15,6 +14,14 @@ export class TypeOrmSuplierRepository implements SuplierRepository {
     this.repository = this.dataSource.getRepository(SuplierOrmEntity);
   }
 
+  /**
+   * Crea una instancia del repositorio (factory)
+   * Uso: const repo = await TypeOrmAgregadoRepository.create();
+   */
+  static async create(): Promise<TypeOrmSuplierRepository> {
+    const dataSource = await getDataSource();
+    return new TypeOrmSuplierRepository(dataSource);
+  }
   async save(suplierEntity: SuplierEntity): Promise<SuplierEntity> {
 
     let addressOrmEntity: AddressOrmEntity | null = null;

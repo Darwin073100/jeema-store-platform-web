@@ -3,9 +3,8 @@ import { TransferOrmEntity } from "../entities/transfer.orm-entity";
 import { TransferRepository } from "../../domain/repositories/transfer.repository";
 import { TransferEntity } from "../../domain/entities/transafer.entity";
 import { TransferMapper } from "../mappers/transfer.mapper";
-import { Injectable } from "@nestjs/common";
+import { getDataSource } from "@/configuration/databases/typeorm/config";
 
-@Injectable()
 export class TypeormTransferRepository implements TransferRepository {
     private readonly repository: Repository<TransferOrmEntity>;
     constructor(
@@ -13,6 +12,16 @@ export class TypeormTransferRepository implements TransferRepository {
     ){
         this.repository = this.datasource.getRepository(TransferOrmEntity);
     }
+
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<TypeormTransferRepository> {
+        const dataSource = await getDataSource();
+        return new TypeormTransferRepository(dataSource);
+    }
+    
     async save(entity: TransferEntity): Promise<TransferEntity> {
         const transferExist = await this.repository.findOneBy({ transferId: entity.transferId});
         const ormEntity = TransferMapper.toOrmEntity(entity);
