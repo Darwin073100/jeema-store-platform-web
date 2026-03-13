@@ -1,0 +1,184 @@
+import { DataSource, Repository } from "typeorm";
+import { SaleOrmEntity } from "../entities/sale.orm-entity";
+import { SaleMapper } from "../mappers/sale.mapper";
+import { Inject, Injectable } from "@nestjs/common";
+import { PaymentMethodNotFoundException } from "src/contexts/sale-management/payment-method/domain/exceptions/payment-method-not-found.exception";
+import { SaleRepository } from "src/contexts/sale-management/sale/domain/repositories/sale.repository";
+import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
+import { CONNECTION_DB_REPOSITORIO, ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+
+@Injectable()
+export class TypeormSaleRepository implements SaleRepository{
+    private readonly typeormRepository: Repository<SaleOrmEntity>;
+    constructor(
+        readonly datasource: DataSource,
+        @Inject(CONNECTION_DB_REPOSITORIO)
+        private readonly connection: ConnectionDBRepository
+    ){
+        this.typeormRepository = this.connection.getManager().getRepository(SaleOrmEntity);
+    }
+    async findById(saleId: bigint): Promise<SaleEntity | null> {
+        const ormEntity = await this.typeormRepository.findOne({
+            where: {
+                saleId: saleId
+            },
+            relations:{
+                saleDetails: true,
+            },
+        });
+        if (!ormEntity) {
+            return Promise.resolve(null);
+        }
+        return SaleMapper.toDomainEntity(ormEntity);
+    }
+    async findFinishSaleById(saleId: bigint): Promise<SaleEntity | null> {
+        const ormEntity = await this.typeormRepository.findOne({
+            where: {
+                saleId: saleId
+            },
+            relations:{
+                saleDetails: {
+                    returns: {
+                        employee: true
+                    }
+                },
+                customer: true,
+                employee: true,
+                salePayments: {
+                    paymentMethod: true
+                },
+            },
+        });
+        if (!ormEntity) {
+            return Promise.resolve(null);
+        }
+        return SaleMapper.toDomainEntity(ormEntity);
+    }
+    async findSaleTicketById(saleId: bigint): Promise<SaleEntity | null> {
+        const ormEntity = await this.typeormRepository.findOne({
+            where: {
+                saleId: saleId
+            },
+            relations:{
+                saleDetails: true,
+                customer: true,
+                employee: true,
+                salePayments: {
+                    paymentMethod: true
+                },
+                branchOffice:{
+                    address: true,
+                    establishment: true
+                }
+            },
+        });
+        if (!ormEntity) {
+            return Promise.resolve(null);
+        }
+        return SaleMapper.toDomainEntity(ormEntity);
+    }
+
+
+    async existById(saleId: bigint): Promise<boolean> {
+        return await this.typeormRepository.existsBy({
+            saleId
+        });    
+    }
+
+    async findAll(): Promise<SaleEntity[]> {
+        const result = await this.typeormRepository.find({
+            where:{
+                deletedAt: undefined
+            },
+            order: {
+                createdAt: 'ASC'
+            }
+        });
+        const categoryList = result.map(item => SaleMapper.toDomainEntity(item));
+        return categoryList;
+    }
+    async findAllByBranchOffice(branchOfficeId: bigint): Promise<SaleEntity[]> {
+        const result = await this.typeormRepository.find({
+            where:{
+                branchOfficeId
+            },
+            relations:{
+                customer: true,
+                employee: true,
+            },
+            order: {
+                createdAt: 'DESC'
+            }
+        });
+        const categoryList = result.map(item => SaleMapper.toDomainEntity(item));
+        return categoryList;
+    }
+
+    // Metodo para guardar un metodo de pago y para actualizarla
+    async save(entity: SaleEntity): Promise<SaleEntity> {
+        try {
+            let ormEntity = await this.typeormRepository.findOne({
+                where: {saleId: entity.saleId},
+            });
+
+            if(ormEntity){
+                ormEntity.customerId = entity.customerId;
+                ormEntity.subTotalAmount = entity.subTotalAmount;
+                ormEntity.discountAmount = entity.discountAmount;
+                ormEntity.taxAmount = entity.taxAmount;
+                ormEntity.totalAmount = entity.totalAmount;
+                ormEntity.cashSessionId = entity.cashSessionId;
+                ormEntity.inAmount = entity.inAmount;
+                ormEntity.outAmount = entity.outAmount;
+                ormEntity.status = entity.status;
+                ormEntity.notes = entity.notes;
+                ormEntity.createdAt = entity.createdAt;
+            } else {
+                ormEntity = SaleMapper.toTypeOrmEntity(entity);
+            }
+
+            const savedOrmEntity = await this.typeormRepository.save(ormEntity);
+            const currentSale = await this.typeormRepository.findOne({
+                where: {
+                    saleId: savedOrmEntity.saleId
+                },
+                relations: {
+                    saleDetails: true
+                }
+            });
+            return currentSale? SaleMapper.toDomainEntity(currentSale) :SaleMapper.toDomainEntity(savedOrmEntity);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async delete(entityId: bigint): Promise<SaleEntity | null> {
+        const queryRunner = this.datasource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        try {
+            const ormEntity = await queryRunner.manager.findOne(SaleOrmEntity, {
+                where: { saleId: entityId },
+            });
+
+            if (!ormEntity) {
+                throw new PaymentMethodNotFoundException('Venta no encontrada');
+            }
+
+            // Creacion y ejecución del script
+            await queryRunner.manager.query(
+                `update sale set deleted_at = now() 
+                where sale_id=${entityId};`
+            );
+            await queryRunner.commitTransaction();
+
+            return SaleMapper.toDomainEntity(ormEntity);
+        } catch (error) {
+            await queryRunner.rollbackTransaction();
+            throw error;
+        } finally {
+            await queryRunner.release();
+        }
+    }
+}

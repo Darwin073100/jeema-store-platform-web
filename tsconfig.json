@@ -13,6 +13,8 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false,
+    "strictPropertyInitialization": false,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [
