@@ -1,9 +1,7 @@
 import { ProductCheckerPort } from "src/contexts/product-management/product/domain/ports/out/product-checker.port";
 import { DataSource, Repository } from "typeorm";
 import { ProductOrmEntity } from "../entities/product.orm-entity";
-import { Injectable } from "@nestjs/common";
 
-@Injectable()
 export class ProductCheckerAdapter implements ProductCheckerPort{
     private readonly repository: Repository<ProductOrmEntity>;
 

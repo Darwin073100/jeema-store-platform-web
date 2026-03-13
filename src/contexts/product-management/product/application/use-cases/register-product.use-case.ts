@@ -10,9 +10,9 @@ import { ProductAlreadyExistsException } from '../../domain/exceptions/product-a
 import { CategoryCheckerPort } from 'src/contexts/product-management/category/domain/ports/out/category-checker.port';
 import { BrandChekerPort } from 'src/contexts/product-management/brand/domain/ports/out/brand-checker.port';
 import { SeasonCheckerPort } from 'src/contexts/product-management/season/domain/ports/out/season-checker.port';
-import { EstablishmentCheckerPort } from 'src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port';
 import { ProductNotFoundException } from '../../domain/exceptions/product-not-found.exception';
 import {v4 as uuid} from 'uuid';
+import { EstablishmentRepository } from '@/contexts/establishment-management/establishment/domain/repositories/establishment.repository';
 
 export class RegisterProductUseCase {
     constructor(
@@ -20,7 +20,7 @@ export class RegisterProductUseCase {
         private readonly categoryChecker: CategoryCheckerPort,
         private readonly brandChecker: BrandChekerPort,
         private readonly seasonChecker: SeasonCheckerPort,
-        private readonly establishmentChecker: EstablishmentCheckerPort, 
+        private readonly establishmentChecker: EstablishmentRepository, 
     ) { }
 
     async execute(dto: RegisterProductDto): Promise<ProductEntity> {
@@ -56,7 +56,7 @@ export class RegisterProductUseCase {
         }
 
         if(dto.establishmentId){
-            const establishmentExists = await this.establishmentChecker.exists(dto.establishmentId);
+            const establishmentExists = await this.establishmentChecker.existById(dto.establishmentId);
             if(!establishmentExists){
                 throw new ProductNotFoundException(`El establecimiento al que deseas asignar el producto no existe.`);
             }
@@ -70,7 +70,7 @@ export class RegisterProductUseCase {
         }
         // Crear entidad
         const product = ProductEntity.create(
-            0n, // El ID real lo asigna la persistencia
+            BigInt(0), // El ID real lo asigna la persistencia
             dto.establishmentId,
             dto.categoryId,
             dto.brandId ?? null,

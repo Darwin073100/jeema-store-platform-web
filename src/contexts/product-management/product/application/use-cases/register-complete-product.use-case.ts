@@ -19,7 +19,6 @@ import { ProductAlreadyExistsException } from "../../domain/exceptions/product-a
 import { CategoryCheckerPort } from "src/contexts/product-management/category/domain/ports/out/category-checker.port";
 import { BrandChekerPort } from "src/contexts/product-management/brand/domain/ports/out/brand-checker.port";
 import { SeasonCheckerPort } from "src/contexts/product-management/season/domain/ports/out/season-checker.port";
-import { EstablishmentCheckerPort } from "src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port";
 import { LotUnitPurchaseEntity } from "src/contexts/purchase-management/lot/domain/entities/lot-unit-purchase.entity";
 import { LotPurchaseQuantityVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-purchase-quantity.vo";
 import { LotUnitsInPurchaseUnitVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-units-in-purchase-unit.vo";
@@ -27,6 +26,7 @@ import { InventoryItemEntity } from "src/contexts/inventory-management/inventory
 import { InventoryItemQuantityOnHandVO } from "src/contexts/inventory-management/inventory-item/domain/value-objects/inventory-item-quantity-on-hand.vo";
 import { InventoryInternalBarCodeVO } from "src/contexts/inventory-management/inventory/domain/value-objects/inventory-internal-bar-code.vo";
 import { RegisterCompleteProductDto } from "../dtos/register-complete-product.dto";
+import { EstablishmentRepository } from '@/contexts/establishment-management/establishment/domain/repositories/establishment.repository';
 
 export class RegisterCompleteProductUseCase {
     constructor(
@@ -34,7 +34,7 @@ export class RegisterCompleteProductUseCase {
         private readonly categoryChecker: CategoryCheckerPort,
         private readonly brandChecker: BrandChekerPort,
         private readonly seasonChecker: SeasonCheckerPort,
-        private readonly establishmentChecker: EstablishmentCheckerPort, 
+        private readonly establishmentChecker: EstablishmentRepository, 
     ) { }
 
     async execute(dto: RegisterCompleteProductDto) {
@@ -42,7 +42,7 @@ export class RegisterCompleteProductUseCase {
         let lotEntity: LotEntity | null = null;
         //* Verificar que exista el establecimiento
         if (dto.establishmentId) {
-            const establishmentExists = await this.establishmentChecker.exists(dto.establishmentId);
+            const establishmentExists = await this.establishmentChecker.existById(dto.establishmentId);
             if (!establishmentExists) {
                 throw new ProductNotFoundException(`El establecimiento al que deseas asignar el producto no existe.`);
             }
