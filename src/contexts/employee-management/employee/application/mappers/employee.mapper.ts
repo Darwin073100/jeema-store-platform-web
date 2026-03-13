@@ -3,8 +3,8 @@
 import { EmployeeRoleMapper } from 'src/contexts/employee-management/employee-role/application/mappers/employee-role.mapper';
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
 import { EmployeeResponseDto } from '../dtos/employee-response.dto';
-import { AddressMapper } from 'src/shared/application/mappers/address.mapper';
 import { UserMapper } from 'src/contexts/authentication-management/auth/application/mapper/user.mapper';
+import { AddressMapper } from '@/contexts/establishment-management/address/application/mappers/address.mapper';
 
 /**
  * EstablishmentMapper es una clase que se encarga de transformar

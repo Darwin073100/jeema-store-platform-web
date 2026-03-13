@@ -12,10 +12,10 @@ import { BranchOfficeEntity } from "src/contexts/establishment-management/branch
 import { EmployeeCurrentSalaryVO } from "../values-objects/employee-current-salary.vo";
 import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
 import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
-import { AddressEntity } from "src/shared/domain/entities/address.entity";
 import { UserEntity } from "src/contexts/authentication-management/auth/domain/entities/user.entity";
 import { CashSessionEntity } from "src/contexts/cash-management/cash-session/domain/entities/cash-session.entity";
 import { ReturnsEntity } from "src/contexts/sale-management/returns/domain/entities/returns.entity";
+import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
 
 export class EmployeeEntity {
     private readonly _employeeId: bigint;

@@ -1,20 +1,20 @@
 import { BranchOfficeRepository } from "../../domain/repositories/branch-office.repository";
 import { RegisterBranchOfficeDto } from "../dtos/register-branch-office.dto";
 import { BranchOfficeEntity } from "../../domain/entities/branch-office.entity";
-import { EstablishmentCheckerPort } from "src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port";
 import { EstablishmentNotFoundException } from "src/contexts/establishment-management/establishment/domain/exceptions/establishment-not-found.exception";
-import { AddressEntity } from "src/shared/domain/entities/address.entity";
+import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
+import { EstablishmentRepository } from "@/contexts/establishment-management/establishment/domain/repositories/establishment.repository";
 
 
 export class RegisterBranchOfficeUseCase {
   constructor(
     private readonly branchOfficeRepository: BranchOfficeRepository,
-    private readonly establishmentCheckerPort: EstablishmentCheckerPort
+    private readonly establishmentCheckerPort: EstablishmentRepository
   ) {}
 
   async execute(request: RegisterBranchOfficeDto): Promise<BranchOfficeEntity> {
     // 1. Verificar la existencia del Establishment
-    const establishmentExists = await this.establishmentCheckerPort.exists(request.establishmentId);
+    const establishmentExists = await this.establishmentCheckerPort.existById(request.establishmentId);
     if (!establishmentExists) {
       throw new EstablishmentNotFoundException('Ingresa un id de algun establecimiento existente.');
     }

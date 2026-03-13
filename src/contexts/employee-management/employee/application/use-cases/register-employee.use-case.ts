@@ -7,9 +7,8 @@ import { GenderEnum } from '../../domain/enums/gender.enum';
 import { EmployeeRoleChekerPort } from 'src/contexts/employee-management/employee-role/domain/ports/out/employee-role-checker.port';
 import { BranchOfficeCheckerPort } from 'src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port';
 import { EmployeeNotFoundException } from '../../domain/exceptions/employee-not-found.exception';
-import { AddressEntity } from 'src/shared/domain/entities/address.entity';
-import { ConnectionDBRepository } from 'src/config/database/typeorm/connection/domain/repositories/connection-repository';
-
+import { TransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository';
+import { AddressEntity } from '@/contexts/establishment-management/address/domain/entities/address.entity';
 
 /**
  * RegisterEstablishmentUseCase es un Caso de Uso (o Servicio de Aplicación).
@@ -23,7 +22,7 @@ export class RegisterEmployeeRoleUseCase {
     private readonly employeeRoleRepository: EmployeeRepository,
     private readonly employeeRoleCheckerPort: EmployeeRoleChekerPort,
     private readonly branchOfficeCheckerPort: BranchOfficeCheckerPort,
-    private readonly connectionDBRepository: ConnectionDBRepository,
+    private readonly transactionDBRepository: TransactionDBRepository,
   ) { }
 
   /**
@@ -35,7 +34,7 @@ export class RegisterEmployeeRoleUseCase {
    */
   public async execute(command: RegisterEmployeeDto): Promise<EmployeeEntity> {
     try {
-      this.connectionDBRepository.beginTransaction();
+      this.transactionDBRepository.beginTransaction();
       // 0. Validar que el branch office y el employee role existen
       const branchOfficeExists = await this.branchOfficeCheckerPort.existById(command.branchOfficeId);
       const employeeRoleExists = await this.employeeRoleCheckerPort.exists(command.employeeRoleId);
@@ -84,10 +83,10 @@ export class RegisterEmployeeRoleUseCase {
 
       const savedEntity = await this.employeeRoleRepository.save(employee);
 
-      this.connectionDBRepository.commit();
+      this.transactionDBRepository.commit();
       return savedEntity;
     } catch (error) {
-      this.connectionDBRepository.rollback();
+      this.transactionDBRepository.rollback();
       throw error;
     }
   }
