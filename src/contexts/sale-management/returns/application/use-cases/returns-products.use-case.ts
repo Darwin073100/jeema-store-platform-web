@@ -1,4 +1,3 @@
-import { ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
 import { ReturnsRepository } from "../../domain/repositories/returns.repository";
 import { ReturnsProductsDTO } from "../dtos/returns-products.dto";
 import { EmployeeRepository } from "src/contexts/employee-management/employee/domain/repositories/employee.repository";
@@ -11,6 +10,7 @@ import { InventoryItemEntity } from "src/contexts/inventory-management/inventory
 import { InventoryItemQuantityOnHandVO } from "src/contexts/inventory-management/inventory-item/domain/value-objects/inventory-item-quantity-on-hand.vo";
 import { TransactionRepository } from "src/contexts/transaction-management/transaction/domain/repositories/transaction.repository";
 import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 
 export class ReturnsProductsUseCase {
     constructor(
@@ -20,7 +20,7 @@ export class ReturnsProductsUseCase {
         private readonly inventoryItemRepo: InventoryItemRepository,
         private readonly saleDetailRepo: SaleDetailRepository,
         private readonly transactionRepo: TransactionRepository,
-        private readonly connection: ConnectionDBRepository,
+        private readonly connection: TransactionDBRepository,
     ) { }
 
     async execute(command: ReturnsProductsDTO) {

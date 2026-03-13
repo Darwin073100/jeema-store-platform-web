@@ -2,7 +2,7 @@ import { EstablishmentMapper } from "src/contexts/establishment-management/estab
 import { CustomerEntity } from "../../domain/entities/customer.entity";
 import { CustomerResponseDto } from "../dtos/customer-response.dto";
 import { SaleMapper } from "src/contexts/sale-management/sale/application/mappers/sale-mapper";
-import { AddressMapper } from "src/shared/application/mappers/address.mapper";
+import { AddressMapper } from "@/contexts/establishment-management/address/application/mappers/address.mapper";
 
 export class CustomerMapper {
     public static toResponseDto(entity: CustomerEntity): CustomerResponseDto {

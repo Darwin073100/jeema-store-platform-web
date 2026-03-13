@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import PdfPrinter from 'pdfmake';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
@@ -12,7 +11,6 @@ const fonts = {
   }
 };
 
-@Injectable()
 export class PrinterService {
     private printer = new PdfPrinter(fonts);
 

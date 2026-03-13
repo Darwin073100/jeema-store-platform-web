@@ -9,9 +9,9 @@ import { LocationEnum } from "src/contexts/inventory-management/inventory-item/d
 import { DiscountInventoryItemUseCase } from "src/contexts/inventory-management/inventory-item/application/use-case/discount-inventory-item.use-case";
 import { CashSessionRepository } from "src/contexts/cash-management/cash-session/domain/repositories/cash-session.repository";
 import { SaleConflictException } from "../../domain/exceptions/sale-conflict.exception";
-import { ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
 import { RegisterSalePaymentUseCase } from "src/contexts/sale-management/sale-payment/application/use-cases/register-sale-payment.use-case";
-import { formatDateForInput } from "src/shared/utils/date-formatter";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { formatDateTimeForInput } from "@/shared/lib/utils/date-formatter";
 
 export class CalculateSaleUseCase {
     constructor(
@@ -22,12 +22,12 @@ export class CalculateSaleUseCase {
         private readonly discountInventoryItem: DiscountInventoryItemUseCase,
         private readonly cashSessionRepo: CashSessionRepository,
         private readonly registerSalePaymentUseCase: RegisterSalePaymentUseCase,
-        private readonly connection: ConnectionDBRepository
+        private readonly transactionDB: TransactionDBRepository
     ) { }
 
     async execute(dto: CalculateSaleDTO) {
         try {
-            this.connection.beginTransaction()
+            this.transactionDB.beginTransaction()
             //* Bloque 1: Verificar que existan los registros involucrados
             // const isSale = await this.saleCheckerPort.existById(dto.saleId);
             const sale = await this.saleRepository.findById(dto.saleId);
@@ -86,7 +86,7 @@ export class CalculateSaleUseCase {
             sale.updateStatus(dto.status);
             sale.updateNotes(dto.notes);
             sale.updateInAmount(dto.inAmount);
-            sale.updateCreatedAt(new Date(formatDateForInput(new Date())));
+            sale.updateCreatedAt(new Date(formatDateTimeForInput(new Date())));
             if(dto.status === SaleStatusEnum.CANCELLED){
                 outAmount=0;
             }
@@ -115,10 +115,10 @@ export class CalculateSaleUseCase {
                     await this.registerSalePaymentUseCase.execute(dto.salePayments);
                 }
             }
-            this.connection.commit();
+            this.transactionDB.commit();
             return saleResult;
         } catch (error) {
-            this.connection.rollback();
+            this.transactionDB.rollback();
             throw error;
         }
     }

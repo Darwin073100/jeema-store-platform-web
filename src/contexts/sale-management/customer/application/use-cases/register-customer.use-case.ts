@@ -9,7 +9,7 @@ import { CustomerTypeVO } from "../../domain/value-objects/customer-customer-typ
 import { CustomerAlreadyExistsException } from "../../domain/exceptions/customer-already-exists.exception";
 import { CustomerLastNameVO } from "../../domain/value-objects/customer-last-name.vo";
 import { CustomerCompanyNameVO } from "../../domain/value-objects/customer-company-name.vo";
-import { AddressEntity } from "src/shared/domain/entities/address.entity";
+import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
 
 export class RegisterCustomerUseCase {
   constructor(

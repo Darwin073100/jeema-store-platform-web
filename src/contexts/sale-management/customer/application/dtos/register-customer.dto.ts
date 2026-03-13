@@ -1,4 +1,4 @@
-import { RegisterAddress } from "src/shared/application/dtos/register-address.dto";
+import { RegisterAddress } from "@/contexts/establishment-management/address/application/dtos/register-address.dto";
 
 /**
  * RegisterBranchOfficeRequest define la estructura de los datos de entrada

@@ -8,7 +8,7 @@ import { CustomerCheckerPort } from "src/contexts/sale-management/customer/domai
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 import { CashSessionRepository } from "src/contexts/cash-management/cash-session/domain/repositories/cash-session.repository";
 import { SaleConflictException } from "../../domain/exceptions/sale-conflict.exception";
-import { ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 
 export class RegisterSaleUseCase {
   constructor(
@@ -17,12 +17,12 @@ export class RegisterSaleUseCase {
     private readonly customerCheckerPort: CustomerCheckerPort,
     private readonly employeeCheckerPort: EmployeeChekerPort,
     private readonly cashSessionRepo: CashSessionRepository,
-    private readonly connection: ConnectionDBRepository
+    private readonly transactionDB: TransactionDBRepository
   ) { }
 
   public async execute(command: RegisterSaleDto): Promise<SaleEntity> {
     try {
-      this.connection.beginTransaction();
+      this.transactionDB.beginTransaction();
       // Validar que la sucursal exista
       const branchOfficeExists = await this.branchOfficeCheckerPort.existById(command.branchOfficeId);
       if (!branchOfficeExists) {
@@ -64,10 +64,10 @@ export class RegisterSaleUseCase {
 
       // Persistir el agregado de dominio a través del repositorio (Puerto de Salida).
       const savedEntity = await this.repository.save(createdSale);
-      this.connection.commit();
+      this.transactionDB.commit();
       return savedEntity;
     } catch (error) {
-      this.connection.rollback();
+      this.transactionDB.rollback();
       throw error;
     }
   }

@@ -1,6 +1,6 @@
+import { AddressResponseDTO } from "src/contexts/establishment-management/address/application/dtos/address-response.dto";
 import { EstablishmentResponseDto } from "src/contexts/establishment-management/establishment/application/dtos/establishment-response.dto";
 import { SaleResponseDto } from "src/contexts/sale-management/sale/application/dtos/sale-response.dto";
-import { AddressResponseDTO } from "src/shared/application/dtos/address-response.dto";
 
 /**
  * RegisterBranchOfficeResponse define la estructura de los datos de salida

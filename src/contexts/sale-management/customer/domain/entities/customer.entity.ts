@@ -10,8 +10,8 @@ import { CustomerLastNameVO } from "../value-objects/customer-last-name.vo";
 import { CustomerCompanyNameVO } from "../value-objects/customer-company-name.vo";
 import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
 import { EstablishmentEntity } from "src/contexts/establishment-management/establishment/domain/entities/establishment.entity";
-import { AddressEntity } from "src/shared/domain/entities/address.entity";
-  
+import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
+
   export class CustomerEntity {
     private readonly _customerId: bigint;
     private _addressId?: bigint|null;

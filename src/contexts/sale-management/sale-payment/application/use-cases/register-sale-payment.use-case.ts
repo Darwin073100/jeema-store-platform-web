@@ -12,7 +12,7 @@ import { SalePaymentConflictException } from "../../domain/exceptions/sale-payme
 import { SalePaymentInvalidException } from "../../domain/exceptions/sale-payment-invalid.exception";
 import { TransactionRepository } from "src/contexts/transaction-management/transaction/domain/repositories/transaction.repository";
 import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
-import { ConnectionDBRepository } from "src/config/database/typeorm/connection/domain/repositories/connection-repository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 
 export class RegisterSalePaymentUseCase {
     constructor(
@@ -20,7 +20,7 @@ export class RegisterSalePaymentUseCase {
         private readonly saleRepository: SaleRepository,
         private readonly paymentMethodCheckerPort: PaymentMethodCheckerPort,
         private readonly transactionRepository: TransactionRepository,
-        private readonly connection: ConnectionDBRepository
+        private readonly connection: TransactionDBRepository
     ){}
 
     async execute(dtos: RegisterSalePaymentDTO[]){

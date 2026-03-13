@@ -1,6 +1,5 @@
 import { CustomerEntity } from "src/contexts/sale-management/customer/domain/entities/customer.entity";
 import { CustomerOrmEntity } from "../entities/customer.orm-entity";
-import { AddressMapper } from "src/shared/infraestructure/mappers/address.mapper";
 import { CustomerFirstNameVO } from "src/contexts/sale-management/customer/domain/value-objects/customer-first-name.vo";
 import { CustomerRFCVO } from "src/contexts/sale-management/customer/domain/value-objects/customer-rfc.vo";
 import { CustomerPhoneNumberVO } from "src/contexts/sale-management/customer/domain/value-objects/customer-phone-number.vo";
@@ -10,6 +9,7 @@ import { CustomerLastNameVO } from "src/contexts/sale-management/customer/domain
 import { CustomerCompanyNameVO } from "src/contexts/sale-management/customer/domain/value-objects/customer-company-name.vo";
 import { SaleMapper } from "src/contexts/sale-management/sale/infraestructure/persistence/typeorm/mappers/sale.mapper";
 import { EstablishmentMapper } from "src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/mappers/establishment.mapper";
+import { AddressMapper } from "@/contexts/establishment-management/address/infraestructure/mappers/address.mapper";
 
 export class CustomerMapper {
   /**
