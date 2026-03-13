@@ -2,6 +2,13 @@ import { EncryptionRepository } from "../../domain/repositories/encryption.repos
 import * as bcrypt from 'bcrypt';
 
 export class BcryptEncryptionRepository implements EncryptionRepository{
+    /**
+     * Crea una instancia del repositorio (factory)
+     * Uso: const repo = await TypeOrmAgregadoRepository.create();
+     */
+    static async create(): Promise<BcryptEncryptionRepository> {
+        return new BcryptEncryptionRepository();
+    }
     async encrypt (value: string): Promise<string> {
         const hashedPassword = await bcrypt.hash(value, 10);
         return hashedPassword;

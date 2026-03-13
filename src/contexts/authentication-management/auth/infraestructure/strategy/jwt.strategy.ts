@@ -1,7 +1,5 @@
-import { PassportStrategy } from "@nestjs/passport";
-import { Injectable, UnauthorizedException, Inject } from "@nestjs/common";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { UserRepository, USER_REPOSITORY } from "src/contexts/authentication-management/auth/domain/repositories/user.repository";
+import { UserRepository } from "../../domain/repositories/user.repository";
 // Define la interfaz del payload que esperas en el JWT
 // IMPORTANTE: Asegúrate de que esto refleje lo que pones en AuthService.login
 export interface JwtPayload {
@@ -12,10 +10,8 @@ export interface JwtPayload {
   roles: string[];     // Nombres de los roles (ej. 'admin')
 }
 
-@Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
-        @Inject(USER_REPOSITORY)
         private readonly userRepository: UserRepository,
     ) {
         super({
@@ -32,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         const user = await this.userRepository.findById(BigInt(userId));
 
         if(!user){
-            throw new UnauthorizedException('El token recibido no es valido.');
+            throw new Error('El token recibido no es valido.');
         }
 
         // Extraer roles y permisos del usuario cargado desde la BD
