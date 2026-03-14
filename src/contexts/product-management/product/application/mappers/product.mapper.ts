@@ -31,6 +31,30 @@ export class ProductMapper {
       lots: product.lots? product.lots.map(item=> LotMapper.toResponseDto(item)): undefined,
     };
   }
+  static toIResponse(product: ProductEntity) {
+    return {
+      productId: product.productId,
+      establishmentId: product.establishmentId,
+      categoryId: product.categoryId,
+      brandId: product.brandId,
+      seasonId: product.seasonId,
+      name: product.name.value,
+      sku: product.sku.value ?? null,
+      universalBarCode: product.universalBarCode.value ?? null,
+      description: product.description.value ?? null,
+      unitOfMeasure: product.unitOfMeasure,
+      minStockGlobal: product.minStockGlobal,
+      imageUrl: product.imageUrl ?? null,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt ?? null,
+      deletedAt: product.deletedAt ?? null,
+      season: null,
+      brand: null,
+      category: null,
+      inventory: null,
+      lots: [],
+    };
+  }
 
   static toResponseList(productList: ProductEntity[]){
     const result = productList.map(item => this.toResponseDto(item));

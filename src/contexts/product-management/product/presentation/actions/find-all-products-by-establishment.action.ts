@@ -20,7 +20,7 @@ export async function findAllProductsByEstablishmentAction(){
             establishmentId = (JSON.parse(establishment) as EstablishmentEntity).establishmentId;
         }
         const result = await useCase.execute(establishmentId);
-        return result.map(item => ProductMapper.toResponseDto(item));
+        return result.map(item => ProductMapper.toIResponse(item));
     } catch(error){
         return [];
     }
