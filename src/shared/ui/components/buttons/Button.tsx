@@ -43,7 +43,7 @@ export function Button({
           txt,
           `gap-${space} px-${space} py-${space}`,
           `bg-${color}-500 hover:bg-${color}-600`,
-          `${!!disabled? `bg-${color}-300`: ''}`,
+          `${!!disabled? `bg-${color}-300 hover:bg-${color}-300`: ''}`,
           className // lo último para que pueda sobrescribir
         )
       )}

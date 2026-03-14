@@ -4,9 +4,9 @@ import { SuplierContactPersonVO } from "../value-objects/suplier-contact-person.
 import { SuplierPhoneNumberVO } from "../value-objects/suplier-phone-number.vo";
 import { SuplierEmailVO } from "../value-objects/suplier-email.vo";
 import { SuplierNotesVO } from "../value-objects/suplier-notes.vo";
-import { AddressEntity } from "src/shared/domain/entities/address.entity";
 import { LotEntity } from "src/contexts/purchase-management/lot/domain/entities/lot.entity";
 import { EstablishmentEntity } from "src/contexts/establishment-management/establishment/domain/entities/establishment.entity";
+import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
   
   export class SuplierEntity {
     private readonly _suplierId: bigint;

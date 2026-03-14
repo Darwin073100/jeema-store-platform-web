@@ -1,4 +1,3 @@
-'use server';
 import { DataSource } from 'typeorm';
 import { getDataSourceConfig } from './config';
 import { entityRegistry } from './entities';

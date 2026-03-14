@@ -1,13 +1,13 @@
 import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
-import { AddressEntity } from 'src/shared/domain/entities/address.entity';
 import { BranchOfficeOrmEntity } from "../entities/branch-office.orm-entity";
 import { SaleMapper } from "src/contexts/sale-management/sale/infraestructure/persistence/typeorm/mappers/sale.mapper";
 import { EstablishmentMapper } from "src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/mappers/establishment.mapper";
 import { EmployeeMapper } from "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/mappers/employee.mapper";
 import { TransactionMapper } from "src/contexts/transaction-management/transaction/infraestructure/mappers/transaction.mapper";
-import { AddressMapper } from "src/shared/infraestructure/mappers/address.mapper";
-import { AddressOrmEntity } from 'src/shared/infraestructure/typeorm/address.orm-entity';
 import { CashRegisterMapper } from "src/contexts/cash-management/cash-register/infraestructure/mappers/cash-register.mapper";
+import { AddressMapper } from "@/contexts/establishment-management/address/infraestructure/mappers/address.mapper";
+import { AddressOrmEntity } from "@/contexts/establishment-management/address/infraestructure/entities/address.orm-entity";
+import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
 
 /**
  * BranchOfficeMapper es una clase que se encarga de transformar

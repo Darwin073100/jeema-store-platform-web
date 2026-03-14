@@ -1,5 +1,3 @@
-import { Repository } from 'typeorm';
-
 /**
  * Opciones de paginación
  */

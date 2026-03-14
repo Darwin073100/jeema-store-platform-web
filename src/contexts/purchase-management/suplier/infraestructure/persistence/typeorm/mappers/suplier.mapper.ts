@@ -1,8 +1,8 @@
 import { SuplierOrmEntity } from "../entities/suplier.orm-entity";
 import { SuplierEntity } from "src/contexts/purchase-management/suplier/domain/entities/suplier.entity";
-import { AddressMapper } from "src/shared/infraestructure/mappers/address.mapper";
 import { LotMapper } from "src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/mappers/lot.mapper";
 import { EstablishmentMapper } from "src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/mappers/establishment.mapper";
+import { AddressMapper } from "@/contexts/establishment-management/address/infraestructure/mappers/address.mapper";
 
 export class SuplierMapper {
   /**

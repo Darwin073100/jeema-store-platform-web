@@ -12,6 +12,8 @@ import { FindAllCategoriesByEstablishmentAction } from "@/features/category/acti
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 import { viewAllProductsByEstablishmentAction } from "@/features/product/actions/view-all-products-by-establishment.action";
 import { ProductAudit } from "@/features/product/ui/product-catalog/ProductAudit";
+import { findAllProductsByEstablishmentAction } from "@/contexts/product-management/product/presentation/actions/find-all-products-by-establishment.action";
+import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -25,8 +27,8 @@ export default async function ProductsPage() {
 
     // Llama al server action en el servidor con manejo de errores
     try {
-        const inventoryItemsData = await viewAllProductsByEstablishmentAction();
-        const items = inventoryItemsData?.ok && inventoryItemsData.value?.products ? inventoryItemsData.value.products : [];
+        const inventoryItemsData = await findAllProductsByEstablishmentAction();
+        const items = inventoryItemsData as ProductEntity[];
 
         const viewAllCategories = await FindAllCategoriesByEstablishmentAction();
         const categories = viewAllCategories?.ok && viewAllCategories.value?.categories ? viewAllCategories.value.categories : [];

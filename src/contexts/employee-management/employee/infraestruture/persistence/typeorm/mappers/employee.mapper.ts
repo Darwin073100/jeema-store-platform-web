@@ -5,10 +5,10 @@ import { BranchOfficeMapper } from "src/contexts/establishment-management/branch
 import { EmployeeRoleMapper } from "src/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/mappers/employee-role.mapper";
 import { SaleMapper } from "src/contexts/sale-management/sale/infraestructure/persistence/typeorm/mappers/sale.mapper";
 import { TransactionMapper } from "src/contexts/transaction-management/transaction/infraestructure/mappers/transaction.mapper";
-import { AddressMapper } from "src/shared/infraestructure/mappers/address.mapper";
 import { UserMapper } from "src/contexts/authentication-management/auth/infraestructure/mappers/user.mapper";
 import { CashSessionMapper } from "src/contexts/cash-management/cash-session/infraestructure/mappers/cash-session.mapper";
 import { ReturnsMapper } from "src/contexts/sale-management/returns/infraestructure/mappers/returns.mapper";
+import { AddressMapper } from "src/contexts/establishment-management/address/infraestructure/mappers/address.mapper";
 
 export class EmployeeMapper {
   static toOrmEntity(domainEntity: EmployeeEntity): EmployeeOrmEntity {

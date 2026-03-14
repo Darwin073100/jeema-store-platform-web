@@ -1,5 +1,6 @@
-import { InvalidAddressException } from "../../exceptions/invalid-address.exception";
-import { ValueObject } from "../value-object";
+import { ValueObject } from "@/shared/domain/value-objects/value-object";
+import { InvalidAddressException } from "../exceptions/invalid-address.exception";
+
 interface Props {
     value: string | null;
 }
