@@ -1,6 +1,5 @@
 import { UserResponseDTO } from "src/contexts/authentication-management/auth/application/dtos/user-response.dto";
 import { EmployeeRoleResponseDto } from "src/contexts/employee-management/employee-role/application/dtos/employee-role-response.dto";
-import { AddressResponseDTO } from "src/shared/application/dtos/address-response.dto";
 
 /**
  * EmployeeRole ResponseDto es un Data Transfer Object (DTO)
@@ -32,7 +31,7 @@ export class EmployeeResponseDto {
   readonly updatedAt: Date | null; // La fecha de la última actualización
   readonly deletedAt: Date | null; // La fecha de borrado lógico
   readonly employeeRole: EmployeeRoleResponseDto | null;
-  readonly address: AddressResponseDTO| null; // Objeto que contiene los atributos de dirección
+  readonly address: any| null; // Objeto que contiene los atributos de dirección
   readonly user: UserResponseDTO| null; 
 
   constructor(
@@ -57,7 +56,7 @@ export class EmployeeResponseDto {
     updatedAt: Date | null,
     deletedAt: Date | null,
     employeeRole: EmployeeRoleResponseDto | null,
-    address: AddressResponseDTO | null,
+    address: any | null,
     user: UserResponseDTO | null,
   ) {
     this.employeeId = employeeId;

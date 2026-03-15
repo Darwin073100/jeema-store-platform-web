@@ -4,5 +4,5 @@ export interface ICategory {
     createdAt: Date;
     updatedAt: Date | null;
     deletedAt: Date | null;
-    description?: string|null;
+    description: string|null;
 }

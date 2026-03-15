@@ -1,0 +1,27 @@
+import { IEmployeeRole } from "@/contexts/employee-management/employee-role/presentation/interfaces/IEmployeeRole";
+
+export interface IEmployee {
+    employeeId: string,
+    branchOfficeId: string,
+    employeeRoleId: string,
+    addressId: string | null,
+    firstName: string,
+    lastName: string,
+    email: string | null,
+    createdAt: Date,
+    phoneNumber: string | null,
+    birthDate: Date | null,
+    gender: string | null,
+    hireDate: Date|null,
+    terminationDate: Date | null,
+    entryTime: string | null,
+    exitTime: string | null,
+    currentSalary: number | null,
+    isActive: boolean,
+    photoUrl: string | null,
+    updatedAt: Date | null,
+    deletedAt: Date | null,
+    employeeRole: IEmployeeRole | null,
+    address: any | null,
+    user: any | null,
+}

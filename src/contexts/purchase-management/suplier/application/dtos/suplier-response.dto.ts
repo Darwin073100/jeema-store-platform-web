@@ -1,4 +1,4 @@
-import { AddressResponseDTO } from "src/shared/application/dtos/address-response.dto";
+import { AddressResponseDTO } from "@/contexts/establishment-management/address/application/dtos/address-response.dto";
 
 /**
  * RegisterBranchOfficeResponse define la estructura de los datos de salida

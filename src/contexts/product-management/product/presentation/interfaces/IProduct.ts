@@ -1,3 +1,4 @@
+import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
 import { IInventory } from "src/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 import { IBrand } from "src/contexts/product-management/brand/presentation/interfaces/Ibrand";
 import { ICategory } from "src/contexts/product-management/category/presentation/interfaces/ICategory";
@@ -22,6 +23,7 @@ export interface IProduct {
   category: ICategory | null;
   lots: ILot[] | null;
   inventory: IInventory | null;
+  establishment: IEstablishment | null;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
