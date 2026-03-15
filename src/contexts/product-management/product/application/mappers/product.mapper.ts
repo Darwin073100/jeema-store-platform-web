@@ -5,6 +5,7 @@ import { InventoryMapper } from 'src/contexts/inventory-management/inventory/app
 import { LotMapper } from 'src/contexts/purchase-management/lot/application/mappers/lot.mapper';
 import { SeasonMapper } from 'src/contexts/product-management/season/application/mappers/season-mapper';
 import { BrandMapper } from 'src/contexts/product-management/brand/application/mappers/brand.mapper';
+import { IProduct } from '../../presentation/interfaces/IProduct';
 
 export class ProductMapper {
   static toResponseDto(product: ProductEntity): ProductResponseDto {
@@ -31,7 +32,7 @@ export class ProductMapper {
       lots: product.lots? product.lots.map(item=> LotMapper.toResponseDto(item)): undefined,
     };
   }
-  static toIResponse(product: ProductEntity) {
+  static toIResponse(product: ProductEntity): IProduct {
     return {
       productId: product.productId,
       establishmentId: product.establishmentId,
@@ -51,12 +52,13 @@ export class ProductMapper {
       season: null,
       brand: null,
       category: null,
-      inventory: null,
+      inventory: product.inventory? InventoryMapper.toIResponse(product.inventory): null,
       lots: [],
     };
   }
 
-  static toResponseList(productList: ProductEntity[]){
-    const result = productList.map(item => this.toResponseDto(item));
+  static toIResponseList(list: ProductEntity[]):IProduct[]{
+    const result = list.map(item => this.toIResponse(item));
+    return result;
   }
 }

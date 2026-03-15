@@ -15,7 +15,6 @@ import { SeasonOrmEntity } from '@/contexts/product-management/season/infraestru
 import { TransactionOrmEntity } from '@/contexts/transaction-management/transaction/infraestructure/entities/transaction.orm-entity';
 import { SaleDetailOrmEntity } from '@/contexts/sale-management/sale-detail/infraestructure/persistence/typeorm/entities/sale-detail.orm-entity';
 import { TransferOrmEntity } from '@/contexts/inventory-management/transfer/infraestructure/entities/transfer.orm-entity';
-import { ProductOrmEntity as ProductOrmEntity1 } from '@/contexts/product-management/product1/infraestructure/persistence/typeorm/entities/product.orm-entity';
 import { SaleOrmEntity } from '@/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity';
 import { EstablishmentOrmEntity } from '@/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
 import { ProductOrmEntity } from '@/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
@@ -53,7 +52,6 @@ export function registerAllEntities(): void {
     TransactionOrmEntity,
     SaleDetailOrmEntity,
     TransferOrmEntity,
-    ProductOrmEntity1,
     SaleOrmEntity,
     EstablishmentOrmEntity,
     ProductOrmEntity,

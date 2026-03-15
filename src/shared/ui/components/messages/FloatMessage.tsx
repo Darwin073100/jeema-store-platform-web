@@ -49,7 +49,7 @@ export const FloatMessage = ({ summary = 'Massage', description = 'Message Descr
             {isVisible && (
                 <div 
                     className={clsx(
-                        "fixed right-4 top-4 p-4 rounded-lg shadow-lg transition-all z-[9999] flex items-center gap-4 border-4 border-white",
+                        "fixed right-4 top-4 p-4 rounded-2xl shadow-2xl transition-all z-[9999] flex items-center gap-4 border-4 border-white",
                         {
                             'bg-blue-500 text-white': type === 'blue',
                             'bg-green-500 text-white': type === 'green',
