@@ -1,6 +1,7 @@
 // src/contexts/educational-center-management/educational-center/application/mappers/educational-center.mapper.ts
 
 import { EmployeeRoleEntity } from '../../domain/entities/employee-role.entity';
+import { IEmployeeRole } from '../../presentation/interfaces/IEmployeeRole';
 import { EmployeeRoleResponseDto } from '../dtos/employee-role-response.dto';
 
 /**
@@ -26,5 +27,15 @@ export class EmployeeRoleMapper {
       entity.updatedAt,
       entity.deletedAt,
     );
+  }
+  public static toIResponse(entity: EmployeeRoleEntity): IEmployeeRole {
+    const employeeRole: IEmployeeRole = {
+      employeeRoleId: entity.employeeRoleId, // Convertimos BigInt a string para la serialización JSON
+      name: entity.name.value,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+    };
+    return employeeRole;
   }
 }

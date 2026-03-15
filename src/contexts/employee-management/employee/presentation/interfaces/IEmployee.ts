@@ -1,10 +1,10 @@
 import { IEmployeeRole } from "@/contexts/employee-management/employee-role/presentation/interfaces/IEmployeeRole";
 
 export interface IEmployee {
-    employeeId: string,
-    branchOfficeId: string,
-    employeeRoleId: string,
-    addressId: string | null,
+    employeeId: bigint,
+    branchOfficeId: bigint,
+    employeeRoleId: bigint,
+    addressId: bigint | null,
     firstName: string,
     lastName: string,
     email: string | null,

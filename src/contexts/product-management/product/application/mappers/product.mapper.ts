@@ -6,6 +6,7 @@ import { LotMapper } from 'src/contexts/purchase-management/lot/application/mapp
 import { SeasonMapper } from 'src/contexts/product-management/season/application/mappers/season-mapper';
 import { BrandMapper } from 'src/contexts/product-management/brand/application/mappers/brand.mapper';
 import { IProduct } from '../../presentation/interfaces/IProduct';
+import { EstablishmentMapper } from '@/contexts/establishment-management/establishment/application/mappers/establishment.mapper';
 
 export class ProductMapper {
   static toResponseDto(product: ProductEntity): ProductResponseDto {
@@ -49,9 +50,10 @@ export class ProductMapper {
       createdAt: product.createdAt,
       updatedAt: product.updatedAt ?? null,
       deletedAt: product.deletedAt ?? null,
-      season: null,
-      brand: null,
-      category: null,
+      season: product.season? SeasonMapper.toIResponse(product.season): null,
+      brand: product.brand? BrandMapper.toIResponse(product.brand): null,
+      category: product.category? CategoryMapper.toIResponse(product.category): null,
+      establishment: product.establishment? EstablishmentMapper.toIResponse(product.establishment): null,
       inventory: product.inventory? InventoryMapper.toIResponse(product.inventory): null,
       lots: [],
     };

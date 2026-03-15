@@ -1,5 +1,5 @@
 export interface IEmployeeRole {
-    employeeRoleId: string,
+    employeeRoleId: bigint,
     name: string,
     createdAt: Date,
     updatedAt: Date | null,

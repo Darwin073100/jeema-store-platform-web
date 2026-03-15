@@ -5,6 +5,7 @@ import { EmployeeEntity } from '../../domain/entities/employee.entity';
 import { EmployeeResponseDto } from '../dtos/employee-response.dto';
 import { UserMapper } from 'src/contexts/authentication-management/auth/application/mapper/user.mapper';
 import { AddressMapper } from '@/contexts/establishment-management/address/application/mappers/address.mapper';
+import { IEmployee } from '../../presentation/interfaces/IEmployee';
 
 /**
  * EstablishmentMapper es una clase que se encarga de transformar
@@ -47,5 +48,33 @@ export class EmployeeMapper {
       entity.address? AddressMapper.toResponseDTO(entity.address) : null,
       entity.user? {...UserMapper.toResponseUserDTO(entity.user), passwordHash: ''}: null
     );
+  }
+  public static toIResponse(entity: EmployeeEntity): IEmployee {
+    const result: IEmployee = {
+      employeeId: entity.employeeId,
+      branchOfficeId: entity.branchOfficeId,
+      employeeRoleId: entity.employeeRoleId,
+      addressId: entity.addressId ? entity.addressId: null,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      email: entity.email,
+      createdAt: entity.createdAt,
+      phoneNumber: entity.phoneNumber,
+      birthDate: entity.birthDate,
+      gender: entity.gender,
+      hireDate: entity.hireDate,
+      terminationDate: entity.terminationDate,
+      entryTime: entity.entryTime,
+      exitTime: entity.exitTime,
+      currentSalary: entity.currentSalary,
+      isActive: entity.isActive,
+      photoUrl: entity.photoUrl,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+      employeeRole: entity.employeeRole? EmployeeRoleMapper.toIResponse(entity.employeeRole): null,
+      address: entity.address? AddressMapper.toIResponse(entity.address) : null,
+      user: entity.user? {...UserMapper.toIResponse(entity.user), passwordHash: ''}: null
+    };
+    return result;
   }
 }

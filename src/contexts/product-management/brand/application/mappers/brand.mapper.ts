@@ -1,4 +1,5 @@
 import { BrandEntity } from '../../domain/entities/brand.entity';
+import { IBrand } from '../../presentation/interfaces/Ibrand';
 import { BrandResponseDto } from '../dtos/brand-response.dto';
 
 export class BrandMapper {
@@ -16,5 +17,15 @@ export class BrandMapper {
       entity.updatedAt,
       entity.deletedAt,
     );
+  }
+  public static toIResponse(entity: BrandEntity): IBrand {
+    const brand: IBrand = {
+      brandId: entity.brandId, // Convertimos BigInt a string para la serialización JSON
+      name: entity.name,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+    };
+    return brand;
   }
 }

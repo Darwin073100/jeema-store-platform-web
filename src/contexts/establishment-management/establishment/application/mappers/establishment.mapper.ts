@@ -3,6 +3,7 @@
 import { BranchOfficeMapper } from 'src/contexts/establishment-management/branch-office/application/mappers/branch-office.mapper';
 import { EstablishmentEntity } from '../../domain/entities/establishment.entity';
 import { EstablishmentResponseDto } from '../dtos/establishment-response.dto';
+import { IEstablishment } from '../../presentation/interfaces/IEstablishment';
 
 /**
  * EstablishmentMapper es una clase que se encarga de transformar
@@ -28,5 +29,16 @@ export class EstablishmentMapper {
       entity.deletedAt,
       entity.branchOffices? entity.branchOffices.map(item => BranchOfficeMapper.toResponseDto(item)): []
     );
+  }
+  public static toIResponse(entity: EstablishmentEntity): IEstablishment {
+    const establishment: IEstablishment = {
+      establishmentId: entity.establishmentId, // Convertimos BigInt a string para la serialización JSON
+      name: entity.name,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+      branchOffices: entity.branchOffices? entity.branchOffices.map(item => BranchOfficeMapper.toIResponse(item)): []
+    };
+    return establishment;
   }
 }

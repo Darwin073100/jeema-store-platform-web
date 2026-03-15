@@ -7,6 +7,7 @@ import { UserWorkspaceResponseDTO } from "../dtos/user-workspace-response.dto";
 import { UserResponseDTO } from "../dtos/user-response.dto";
 import { EmployeeMapper } from "src/contexts/employee-management/employee/application/mappers/employee.mapper";
 import { UserRoleMapper } from "./user-role.mapper";
+import { IUser } from "../../presentation/interfaces/IUser";
 
 export class UserMapper{
     /**
@@ -74,6 +75,22 @@ export class UserMapper{
             createdAt: entity.createdAt,
             updatedAt: entity.updatedAt,
             deletedAt: entity.deletedAt,
+        }
+        return profile;
+    }
+    static toIResponse(entity: UserEntity){
+        const profile: IUser = {
+            userId: entity.userId.toString(),
+            employeeId: entity.employeeId.toString(),
+            email: entity.email?.value || '',
+            username: entity.username?.value || '',
+            isActive: entity.isActive,
+            passwordHash: entity.passwordHash.value,
+            employee: entity.employee? EmployeeMapper.toIResponse(entity.employee): null,
+            userRoles: entity.userRoles? entity.userRoles?.map(item => UserRoleMapper.toResponse(item)): [],
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt ?? null,
+            deletedAt: entity.deletedAt ?? null,
         }
         return profile;
     }

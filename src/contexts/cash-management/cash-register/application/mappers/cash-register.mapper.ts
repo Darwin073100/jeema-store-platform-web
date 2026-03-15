@@ -2,6 +2,7 @@ import { BranchOfficeMapper } from "src/contexts/establishment-management/branch
 import { CashRegisterEntity } from "../../domain/entities/cash-register.entity";
 import { CashRegisterResponseDTO } from "../dtos/cash-register-response.dto";
 import { CashSessionMapper } from "src/contexts/cash-management/cash-session/application/mappers/cash-session.mapper";
+import { ICashRegister } from "../../presentation/interfaces/ICashRegister";
 
 export class CashRegisterMapper {
     public static toResponse(entity: CashRegisterEntity): CashRegisterResponseDTO{
@@ -15,6 +16,20 @@ export class CashRegisterMapper {
             deletedAt: entity.deletedAt,
             branchOffice: entity.branchOffice? BranchOfficeMapper.toResponseDto(entity.branchOffice): null,
             cashSessions: entity.cashSessions? entity.cashSessions.map(item => CashSessionMapper.toResponseDto(item)): [],
+        }
+        return dto;
+    }
+    public static toIResponse(entity: CashRegisterEntity): ICashRegister{
+        const dto: ICashRegister = {
+            cashRegisterId: entity.cashRegisterId,
+            branchOfficeId: entity.branchOfficeId,
+            name: entity.name,
+            isActive: entity.isActive,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+            deletedAt: entity.deletedAt,
+            branchOffice: entity.branchOffice? BranchOfficeMapper.toIResponse(entity.branchOffice): null,
+            cashSessions: entity.cashSessions? entity.cashSessions.map(item => CashSessionMapper.toIResponse(item)): [],
         }
         return dto;
     }

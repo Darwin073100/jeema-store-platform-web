@@ -3,6 +3,7 @@ import { InventoryEntity } from "../../domain/entities/inventory.entity";
 import { InventoryResponseDto } from "../dtos/inventory-response.dto";
 import { InventoryItemMapper } from "src/contexts/inventory-management/inventory-item/application/mapper/inventory-item.mapper";
 import { IInventory } from "../../presentation/interfaces/IInventory";
+import { BranchOfficeMapper } from "@/contexts/establishment-management/branch-office/application/mappers/branch-office.mapper";
 
 export class InventoryMapper {
     static toResponseDto(entity: InventoryEntity): InventoryResponseDto {
@@ -32,15 +33,16 @@ export class InventoryMapper {
             branchOfficeId: entity.branchOfficeId,
             isSellable: entity.isSellable,
             createdAt: entity.createdAt,
-            internalBarCode: entity.internalBarCode?.value,
-            salePriceOne: entity.salePriceOne?.value,
-            salePriceMany: entity.salePriceMany?.value,
-            saleQuantityMany: entity.saleQuantityMany?.value,
-            salePriceSpecial: entity.salePriceSpecial?.value,
-            minStockBranch: entity.minStockBranch?.value,
-            maxStockBranch: entity.maxStockBranch?.value,
-            updatedAt: entity.updatedAt,
-            deletedAt: entity.deletedAt,
+            internalBarCode: entity.internalBarCode?.value ?? null,
+            salePriceOne: entity.salePriceOne?.value ?? null,
+            salePriceMany: entity.salePriceMany?.value ?? null,
+            saleQuantityMany: entity.saleQuantityMany?.value ?? null,
+            salePriceSpecial: entity.salePriceSpecial?.value ?? null,
+            minStockBranch: entity.minStockBranch?.value ?? null,
+            maxStockBranch: entity.maxStockBranch?.value ?? null,
+            updatedAt: entity.updatedAt ?? null,
+            deletedAt: entity.deletedAt ?? null,
+            branchOffice: entity.branchOffice? BranchOfficeMapper.toIResponse(entity.branchOffice): null,
             product: entity.product? ProductMapper.toIResponse(entity.product) : null,
             inventoryItems: entity.inventoryItems ? entity.inventoryItems?.map(item => InventoryItemMapper.toIResponse(item)): [],
         };

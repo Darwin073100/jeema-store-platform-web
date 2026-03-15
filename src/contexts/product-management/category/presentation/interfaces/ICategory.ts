@@ -1,5 +1,5 @@
 export interface ICategory {
-    categoryId: string;
+    categoryId: bigint;
     name: string;
     createdAt: Date;
     updatedAt: Date | null;
