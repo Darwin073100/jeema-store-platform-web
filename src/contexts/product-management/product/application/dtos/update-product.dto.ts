@@ -1,4 +1,4 @@
-export class UpdateProductDto {
+export interface UpdateProductDto {
   productId: bigint;
   establishmentId: bigint;
   categoryId: bigint;

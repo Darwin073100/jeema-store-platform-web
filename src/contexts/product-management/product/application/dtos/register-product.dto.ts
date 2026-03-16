@@ -1,4 +1,4 @@
-export class RegisterProductDto {
+export interface RegisterProductDto {
   establishmentId: bigint;
   categoryId: bigint;
   brandId?: bigint | null;

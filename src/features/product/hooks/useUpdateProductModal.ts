@@ -14,6 +14,10 @@ import { BrandEntity } from '@/features/brand/domain/entities/brand.entity';
 import { SeasonEntity } from '@/features/season/domain/entities/season.entity';
 import { UpdateProductDTO } from '../application/dtos/update-product.dto';
 import { ForSaleEnum } from '../domain/enums/for-sale.enum';
+import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct';
+import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
+import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
+import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
 
 const schema = yup.object({
     name: yup.string().required('El nombre del producto es obligatorio.').min(3, 'El nombre del producto debe tener al menos 3 caracteres.'),
@@ -40,9 +44,9 @@ type FormData = yup.InferType<typeof schema>;
 const useUpdateProductModal = () => {
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [isLoading, setIsLoading] = useState(false);
-    const [categories, setCategories] = useState<CategoryEntity[]>([]);
-    const [brands, setBrands] = useState<BrandEntity[]>([]);
-    const [seasons, setSeasons] = useState<SeasonEntity[]>([]);
+    const [categories, setCategories] = useState<ICategory[]>([]);
+    const [brands, setBrands] = useState<IBrand[]>([]);
+    const [seasons, setSeasons] = useState<ISeason[]>([]);
     const { product, setProduct } = useProductStore();
     const { isOpenProductModal, setOpenProductModal,  } = useProductStore();
 
@@ -89,13 +93,13 @@ const useUpdateProductModal = () => {
             ]);
 
             if (categoriesResult?.ok && categoriesResult.value) {
-                setCategories(categoriesResult.value.categories);
+                setCategories([]); // categoriesResult.value.categories
             }
             if (brandsResult?.ok && brandsResult.value) {
-                setBrands(brandsResult.value.brands);
+                setBrands([]);
             }
             if (seasonsResult?.ok && seasonsResult.value) {
-                setSeasons(seasonsResult.value.seasons);
+                setSeasons([]);
             }
         } catch (error) {
             setFloatMessageState({
@@ -110,7 +114,7 @@ const useUpdateProductModal = () => {
         }
     };
 
-    const handleOpenUpdateProductModal = (product: ProductEntity) => {
+    const handleOpenUpdateProductModal = (product: IProduct) => {
         setProduct(product);
         setOpenProductModal(true);
     }

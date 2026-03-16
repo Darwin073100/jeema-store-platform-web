@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import { ProductEntity } from "../../domain/entities/product.entity";
+import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 type State = {
     deleteOpenModal: boolean,
     handleTrueDeleteOpenModal: ()=> void,
     handleFalseDeleteOpenModal: ()=> void,
-    product: ProductEntity |null,
-    setProduct: (product: ProductEntity|null)=> void,
+    product: IProduct |null,
+    setProduct: (product: IProduct|null)=> void,
 }
 
 export const useDeleteProductStore = create<State>()((set, get)=>({

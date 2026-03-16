@@ -1,12 +1,12 @@
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { Metadata } from "next";
-import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
 import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import ProductDetail from "@/features/product/ui/product-detail/ProductDetail";
 import InventoryDetail from "@/features/product/ui/product-detail/InventoryDetail";
 import LotDetail from "@/features/product/ui/product-detail/LotDetail";
 import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
+import { findAllProductByIdAction } from "@/contexts/product-management/product/presentation/actions/find-product-by-id.action";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -27,11 +27,11 @@ export default async function ProductDetailsPage({ params }: Props) {
         const { productId } = await params;
 
         // Obtener los detalles del producto
-        const productResult = await viewProductByIdAction(BigInt(productId));
+        const productResult = await findAllProductByIdAction(BigInt(productId));
         const suplierResponse = await findAllSuplierByEstablishmentId();
         const supliers = suplierResponse.value?.supliers?? [];
 
-        if (!productResult.ok || !productResult.value) {
+        if (!productResult) {
             return (
                 <ProtectedRoute>
                     <TemplateNotFoundDinamic
@@ -43,7 +43,7 @@ export default async function ProductDetailsPage({ params }: Props) {
             );
         }
 
-        const product = productResult.value;
+        const product = productResult;
 
         const breadcrumbItems: BreadcrumbItem[] = [
             { label: 'Productos', href: '/products' },
@@ -56,11 +56,11 @@ export default async function ProductDetailsPage({ params }: Props) {
                 <TemplateHeader title={product.name} detail='Detalles del producto' breadcrumbItems={breadcrumbItems}>
                     <ProductDetail product={product} />
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                        <InventoryDetail product={product} />
+                        {/* <InventoryDetail product={product} /> */}
                     </div>
-                    <LotDetail 
+                    {/* <LotDetail 
                         product={product} 
-                        supliers={supliers}/>
+                        supliers={supliers}/> */}
                 </TemplateHeader>
             </ProtectedRoute>
         );

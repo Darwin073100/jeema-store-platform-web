@@ -1,18 +1,18 @@
 
 import { create } from "zustand";
-import { ProductEntity } from "../../domain/entities/product.entity";
+import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 type State = {
     lowStock: boolean;
     setLowStock: (lowStock: boolean)=> void,
     searchCharacter: string,
     setSearchCharacter: (value: string) => void,
-    products: ProductEntity[]|[],
-    productsFiltered: ProductEntity[]|[],
-    setProducts: (value: ProductEntity[])=> void,
-    setProductsFiltered: (value: ProductEntity[])=> void,
-    product: ProductEntity|null,
-    setProduct: (product: ProductEntity|null)=> void,
+    products: IProduct[]|[],
+    productsFiltered: IProduct[]|[],
+    setProducts: (value: IProduct[])=> void,
+    setProductsFiltered: (value: IProduct[])=> void,
+    product: IProduct|null,
+    setProduct: (product: IProduct|null)=> void,
     isOpenProductModal: boolean,
     setOpenProductModal: (value:boolean)=> void
 };

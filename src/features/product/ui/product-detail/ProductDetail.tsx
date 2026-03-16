@@ -8,15 +8,15 @@ import { DeleteProductModal } from './DeleteProductModal'
 import { TbBoxMultiple, TbPackage } from 'react-icons/tb'
 import { InfoCard } from '@/shared/ui/components/cards'
 import Barcode from 'react-barcode'
-import { ProductEntity } from '../../domain/entities/product.entity'
 import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { useDeleteProductModal } from '../../hooks/useDeleteProductModal'
 import { useUpdateProductModal } from '../../hooks'
 import { FloatMessage } from '@/shared/ui/components/messages'
 import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store'
 import { useInventoryItemUIStore } from '@/features/inventory/infraestructura/stores/inventory-item-ui.store'
+import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 interface Props {
-    product: ProductEntity;
+    product: IProduct;
 }
 const ProductDetail = ({ product }: Props) => {
     const { handleOpenModalDeleteProduct } = useDeleteProductModal();

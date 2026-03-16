@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { useDeleteProductStore } from "../infraestructure/stores/delete-product.store";
-import { ProductEntity } from "../domain/entities/product.entity";
-import { deleteProductAction } from "../actions/delete-product.action";
+import { deleteProductAction } from "@/contexts/product-management/product/presentation/actions/delete-product.action";
+import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 const useDeleteProductModal = () => {
     const { handleTrueDeleteOpenModal, handleFalseDeleteOpenModal, deleteOpenModal,
@@ -12,7 +12,7 @@ const useDeleteProductModal = () => {
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ floatMessageState, setFloatMessageState ] = useState<FloatMessageType>({});
 
-    const handleOpenModalDeleteProduct = (product: ProductEntity)=> {
+    const handleOpenModalDeleteProduct = (product: IProduct)=> {
         setProduct(product);
         handleTrueDeleteOpenModal();
     }

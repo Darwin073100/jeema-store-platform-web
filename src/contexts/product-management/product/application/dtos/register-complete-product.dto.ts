@@ -1,7 +1,7 @@
 import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { RegisterLotUnitPurchaseDTO } from "src/contexts/purchase-management/lot/application/dtos/register-lot-unit-purchase.dto";
 import { InventoryItemRegisterDto } from "src/contexts/inventory-management/inventory-item/application/dtos/inventory-item-register.dto";
-class Inventory {
+interface Inventory {
     // InventoryItem
     branchOfficeId    : bigint;
     internalBarCode?  : string | null;
@@ -14,7 +14,7 @@ class Inventory {
     maxStockBranch?   : number | null;
     inventoryItems?   : InventoryItemRegisterDto[]|null;
 }
-class Lot {
+interface Lot {
     // Lot
     suplierId          : bigint | null;
     lotNumber          : string;
@@ -27,7 +27,7 @@ class Lot {
     lotUnitPurchases   : RegisterLotUnitPurchaseDTO[] | null;
 }
 
-export class RegisterCompleteProductDto {
+export interface RegisterCompleteProductDto {
     // Product
     establishmentId   : bigint;
     categoryId        : bigint;
