@@ -1,4 +1,5 @@
 import { LotUnitPurchaseEntity } from "../../domain/entities/lot-unit-purchase.entity";
+import { ILotUnitPurchase } from "../../presentation/interfaces/ILotUnitPurchase";
 import { LotUnitPurchaseResponseDTO } from "../dtos/lot-unit-purchase-response.dto";
 
 export class LotUnitPurchaseMapper{
@@ -14,5 +15,18 @@ export class LotUnitPurchaseMapper{
         dto.updatedAt = domainEntity.updatedAt;
         dto.deletedAt = domainEntity.deletedAt;
         return dto;
+    }
+    static toIResponse(domainEntity: LotUnitPurchaseEntity): ILotUnitPurchase {
+        return {
+            lotUnitPurchaseId: domainEntity.lotUnitPurchaseId,
+            lotId: domainEntity.lotId,
+            purchasePrice: domainEntity.purchasePrice.value,
+            purchaseQuantity: domainEntity.purchaseQuantity.value,
+            unit: domainEntity.unit,
+            unitsInPurchaseUnit: domainEntity.unitsInPurchaseUnit.value,
+            createdAt: domainEntity.createdAt,
+            updatedAt: domainEntity.updatedAt ?? null,
+            deletedAt: domainEntity.deletedAt ?? null,
+        }
     }
 }

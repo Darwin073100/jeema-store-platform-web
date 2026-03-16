@@ -1,4 +1,5 @@
 import { PaymentMethodEntity } from "../../domain/entities/payment-method-entity";
+import { IPaymentMethod } from "../../presentation/interfaces/IPaymentMethod";
 import { PaymentMethodResponseDto } from "../dtos/payment-method-response.dto";
 
 export class PaymentMethodMapper {
@@ -17,5 +18,15 @@ export class PaymentMethodMapper {
       entity.deletedAt,
       entity.requiresReference
     );
+  }
+  public static toIResponse(entity: PaymentMethodEntity): IPaymentMethod {
+    return {
+      paymentMethod: entity.paymentMethodId, // Convertimos BigInt a string para la serialización JSON
+      name: entity.name.name,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+      requiresReference: entity.requiresReference
+    };
   }
 }

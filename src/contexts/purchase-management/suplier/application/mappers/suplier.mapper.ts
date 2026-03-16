@@ -1,6 +1,7 @@
-import { AddressMapper } from "src/shared/application/mappers/address.mapper";
+import { AddressMapper } from "@/contexts/establishment-management/address/application/mappers/address.mapper";
 import { SuplierEntity } from "../../domain/entities/suplier.entity";
 import { SuplierResponseDto } from "../dtos/suplier-response.dto";
+import { ISuplier } from "../../presentation/interfaces/ISuplier";
 
 /**
  * BranchOfficeMapper es una clase que se encarga de transformar
@@ -31,5 +32,20 @@ export class SuplierMapper {
         entity.updatedAt,
         entity.deletedAt,
       );
+    }
+    public static toIResponse(entity: SuplierEntity): ISuplier {
+      return {
+        suplierId: entity.suplierId,
+        name: entity.name,
+        phoneNumber: entity.phoneNumber,
+        address: entity.address? AddressMapper.toIResponse(entity.address): null,
+        createdAt: entity.createdAt,
+        rfc: entity.rfc,
+        contactPerson: entity.contactPerson,
+        email: entity.email,
+        notes: entity.notes,
+        updatedAt: entity.updatedAt,
+        deletedAt: entity.deletedAt,
+      };
     }
 }

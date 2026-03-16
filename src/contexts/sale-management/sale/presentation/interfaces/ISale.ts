@@ -4,7 +4,7 @@ import { IEmployee } from "@/contexts/employee-management/employee/presentation/
 import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
 import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
 import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
-import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
+import { ISalePayment } from "@/contexts/sale-management/sale-payment/presentation/interfaces/ISalePayment";
 
 export interface ISale {
     saleId: bigint,
@@ -28,5 +28,5 @@ export interface ISale {
     employee: IEmployee | null,
     cashSession: ICashSession | null,
     saleDetails: ISaleDetail[],
-    salePayments: IPaymentMethod[],
+    salePayments: ISalePayment[],
 }

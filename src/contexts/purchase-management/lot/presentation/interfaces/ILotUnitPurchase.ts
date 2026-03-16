@@ -1,8 +1,8 @@
 import { ForSaleEnum } from "@/shared/domain/enums/for-sale.enum";
 
 export interface ILotUnitPurchase{
-    lotUnitPurchaseId: string
-    lotId: string;
+    lotUnitPurchaseId: bigint
+    lotId: bigint;
     purchasePrice: number;
     purchaseQuantity: number;
     unit: ForSaleEnum;

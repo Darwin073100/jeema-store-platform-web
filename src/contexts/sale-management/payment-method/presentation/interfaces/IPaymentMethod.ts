@@ -1,5 +1,5 @@
 export interface IPaymentMethod {
-    paymentMethod: string,
+    paymentMethod: bigint,
     name: string,
     requiresReference: boolean,
     createdAt: Date,
