@@ -15,11 +15,11 @@ import { InfoCard } from '@/shared/ui/components/cards'
 import React from 'react'
 import { HiOutlineCalendar, HiPencil, HiPlus, HiTrash } from 'react-icons/hi'
 import { TbBoxMultiple, TbBuildingWarehouse, TbCurrencyDollar, TbMail, TbPackage, TbPhone, TbUser } from 'react-icons/tb'
-import { ProductEntity } from '../../domain/entities/product.entity'
 import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity'
+import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 
 interface Props {
-    product: ProductEntity,
+    product: IProduct,
     supliers: SuplierEntity[]
 }
 

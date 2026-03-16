@@ -55,7 +55,7 @@ export class ProductMapper {
       category: product.category? CategoryMapper.toIResponse(product.category): null,
       establishment: product.establishment? EstablishmentMapper.toIResponse(product.establishment): null,
       inventory: product.inventory? InventoryMapper.toIResponse(product.inventory): null,
-      lots: [],
+      lots: product.lots? product.lots.map(item => LotMapper.toIResponse(item)): [],
     };
   }
 

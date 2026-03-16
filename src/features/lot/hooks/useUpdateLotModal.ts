@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { UpdateLotDTO } from "../application/dtos/update-lot.dto";
 import { updateLotAction } from "../actions/update-lot.action";
+import { ILot } from "@/contexts/purchase-management/lot/presentation/interfaces/ILot";
 
 // Schema de validación Yup para actualizar un lote
 export const updateLotSchema = yup.object().shape({
@@ -87,7 +88,7 @@ const useUpdateLotModal = () => {
             });
         }
     }, [lot, openModal, reset]);
-    const handleOpenUpdateLotModal = (lot: LotEntity) => {
+    const handleOpenUpdateLotModal = (lot: ILot) => {
         setLot(lot);
         setOpenModal(true);
     }

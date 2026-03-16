@@ -58,9 +58,9 @@ export default async function ProductDetailsPage({ params }: Props) {
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                         <InventoryDetail product={product} />
                     </div>
-                    {/* <LotDetail 
+                    <LotDetail 
                         product={product} 
-                        supliers={supliers}/> */}
+                        supliers={supliers}/>
                 </TemplateHeader>
             </ProtectedRoute>
         );

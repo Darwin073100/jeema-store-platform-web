@@ -1,15 +1,16 @@
 import { create } from "zustand";
 import { LotEntity } from "../../domain/entities/lot.entity";
+import { ILot } from "@/contexts/purchase-management/lot/presentation/interfaces/ILot";
 
 type State = {
     searchCharacter: string,
     setSearchCharacter: (payload: string)=> void,
-    lots: LotEntity[]|[],
-    lotsFiltered: LotEntity[]|[],
-    setLots: (value: LotEntity[])=> void,
-    setLotsFiltered: (value: LotEntity[])=> void,
-    lot: LotEntity|null,
-    setLot: (lot: LotEntity|null)=> void,
+    lots: ILot[]|[],
+    lotsFiltered: ILot[]|[],
+    setLots: (value: ILot[])=> void,
+    setLotsFiltered: (value: ILot[])=> void,
+    lot: ILot|null,
+    setLot: (lot: ILot|null)=> void,
     openModal: boolean,
     setOpenModal: (value:boolean)=> void
 };
