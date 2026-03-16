@@ -3,14 +3,13 @@ import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { useWorkspace } from "@/shared/hooks/useAuth";
 import { useUpdateInventoryStore } from "../infraestructura/stores/update-inventory.store";
-import { InventoryEntity } from "../domain/entities/inventory.entity";
 import { UpdateInventoryDTO } from "../application/dtos/update-inventory.dto";
 import { updateInventoryAction } from "../actions/update-inventory.action";
-import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { generateBarcodeAction } from "../actions/generate-barcode.action";
 import { useProductUIStore } from "@/features/product/infraestructure/stores/product-ui.store";
+import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
+import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 const registerFormData = yup.object().shape({
     internalBarCode: yup
@@ -123,7 +122,7 @@ const useUpdateInventoryModal = () => {
         setFloatMessageState({});
     }
 
-    const handleOpenModalInventory = (selectedInv: InventoryEntity | null, selectedProd: ProductEntity)=> {
+    const handleOpenModalInventory = (selectedInv: IInventory | null, selectedProd: IProduct)=> {
         setInventory(selectedInv);
         setSelectedProduct(selectedProd);
         handleTrueUpdateOpenModal();

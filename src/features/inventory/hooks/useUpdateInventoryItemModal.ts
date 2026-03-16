@@ -9,6 +9,7 @@ import { useUpdateInventoryItemStore } from "../infraestructura/stores/update-in
 import { InventoryItemEntity } from "../domain/entities/inventory-item-response.dto";
 import { UpdateInventoryItemDTO } from "../application/dtos/update-inventory-item.dto";
 import { updateInventoryItemAction } from "../actions/update-inventory-item.action";
+import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 
 const registerFormData = yup.object().shape({
     location: yup
@@ -62,7 +63,7 @@ const useUpdateInventoryItemModal = () => {
         setFloatMessageState({});
     }
 
-    const handleOpenModalUpdateInventoryItem = (inventoryItem: InventoryItemEntity)=> {
+    const handleOpenModalUpdateInventoryItem = (inventoryItem: IInventoryItem)=> {
         setInventoryItem(inventoryItem);
         handleTrueUpdateOpenModal();
     }

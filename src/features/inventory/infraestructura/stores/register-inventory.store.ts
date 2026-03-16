@@ -1,21 +1,21 @@
 import { create } from "zustand";
-import { InventoryEntity } from "../../domain/entities/inventory.entity";
-import { ProductEntity } from "@/features/product/domain/entities/product.entity";
+import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
+import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 
 type State = {
     saveOpenModal: boolean,
     selectedBranchOfficeId: bigint | null, 
     selectedProductId: bigint | null, 
-    selectedProduct: ProductEntity | null,
-    setSelectedProduct: (product: ProductEntity | null) => void, 
+    selectedProduct: IProduct | null,
+    setSelectedProduct: (product: IProduct | null) => void, 
     selectedLotId: bigint | null,
     setSelectedBranchOfficeId: (id: bigint | null) => void, 
     setSelectedProductId: (id: bigint | null) => void, 
     setSelectedLotId: (id: bigint | null) => void, 
     handleTrueSaveOpenModal: ()=> void,
     handleFalseSaveOpenModal: ()=> void,
-    inventory: InventoryEntity|null,
-    setInventory: (inventory: InventoryEntity|null)=> void,
+    inventory: IInventory|null,
+    setInventory: (inventory: IInventory|null)=> void,
 }
 
 export const useRegisterInventoryStore = create<State>()((set, get)=>({

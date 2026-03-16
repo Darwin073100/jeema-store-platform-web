@@ -9,14 +9,12 @@ import React from 'react'
 import { HiPencil, HiSave, HiTranslate } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { useUpdateInventoryModal } from '../hooks/useUpdateInventoryModal';
-import { ProductEntity } from '@/features/product/domain/entities/product.entity';
 import { HiMiniSwatch } from 'react-icons/hi2';
 import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
 import { useProductUIStore } from '@/features/product/infraestructure/stores/product-ui.store';
-import { useRegisterCompleteProduct } from '@/features/product/hooks/useRegisterCompleteProduct';
 import { BiBarcode } from 'react-icons/bi';
 
-const UpdateInventoryModal = ({product}: {product: ProductEntity}) => {
+const UpdateInventoryModal = () => {
     const {
         handleFalseUpdateOpenModal, 
         updateOpenModal,

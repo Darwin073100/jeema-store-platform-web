@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { InventoryItemEntity } from "../../domain/entities/inventory-item-response.dto";
+import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 
 type State = {
     updateOpenModal: boolean,
@@ -10,8 +10,8 @@ type State = {
     handleFalseUpdateOpenModal: ()=> void,
     handleOpenModal: ()=> void,
     handleCloseModal: ()=> void,
-    inventoryItem: InventoryItemEntity|null,
-    setInventoryItem: (item: InventoryItemEntity|null)=> void,
+    inventoryItem: IInventoryItem|null,
+    setInventoryItem: (item: IInventoryItem|null)=> void,
 }
 
 export const useUpdateInventoryItemStore = create<State>()((set, get)=>({

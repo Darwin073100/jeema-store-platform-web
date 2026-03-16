@@ -10,6 +10,7 @@ import { useWorkspace } from "@/shared/hooks/useAuth";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductUIStore } from "@/features/product/infraestructure/stores/product-ui.store";
 import { generateBarcodeAction } from "../actions/generate-barcode.action";
+import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 const registerFormData = yup.object().shape({
     internalBarCode: yup
@@ -98,7 +99,7 @@ const useRegisterInventoryModal = () => {
         setFloatMessageState({});
     }
 
-    const handleRegisterOpenModalInventory = (selectedProd: ProductEntity)=> {
+    const handleRegisterOpenModalInventory = (selectedProd: IProduct)=> {
         setSelectedProductId(selectedProd.productId);
         setSelectedProduct(selectedProd);
         handleTrueSaveOpenModal();

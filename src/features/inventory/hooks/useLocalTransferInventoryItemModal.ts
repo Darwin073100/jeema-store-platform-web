@@ -13,6 +13,7 @@ import { useInventoryItemUIStore } from "../infraestructura/stores/inventory-ite
 import { useInventoryItemDescripctionInput } from "./useInventoryItemSecripctionInput";
 import { LocalTransferDTO } from "@/features/transfer/application/dtos/local-transfer.dto";
 import { localTransferAction } from "@/features/transfer/actions/local-transfer.action";
+import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 
 const registerFormData = yup.object().shape({
     location: yup
@@ -75,7 +76,7 @@ const useLocalTransferInventoryItemModal = () => {
         ]);
     }
 
-    const openLocalTransferInventoryItemModal = (inventoryItem: InventoryItemEntity)=> {
+    const openLocalTransferInventoryItemModal = (inventoryItem: IInventoryItem)=> {
         setInventoryItem(inventoryItem);
         openInventoryItemModal('transfer');
     }

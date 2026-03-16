@@ -14,7 +14,6 @@ import { RegisterInventoryItemModal } from '@/features/inventory/ui/RegisterInve
 import { UpdateInventoryItemModal } from '@/features/inventory/ui/UpdateInventoryItemModal'
 import { DeleteInventoryItemModal } from '@/features/inventory/ui/DeleteInventoryItemModal'
 import { LocalTransferInventoryItemModal } from '@/features/inventory/ui/LocalTransferInventoryModal'
-import { ProductEntity } from '../../domain/entities/product.entity'
 import { useProductUIStore } from '../../infraestructure/stores/product-ui.store'
 import { useRegisterLotModal } from '@/features/lot'
 import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal'
@@ -26,9 +25,10 @@ import { useLocalTransferInventoryItemModal } from '@/features/inventory/hooks/u
 import { ProductBarCode51x25Modal } from './ProductBarCodes51x25Modal'
 import { ProductPrice27x13Modal } from './ProductPrice27x13Modal'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
+import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 
 interface Props {
-    product: ProductEntity
+    product: IProduct
 }
 const InventoryDetail = ({ product }: Props) => {
     const { openProductModal } = useProductUIStore();
@@ -81,7 +81,7 @@ const InventoryDetail = ({ product }: Props) => {
             <RegisterInventoryModal />
             {product.inventory && (
                 <div className="space-y-4">
-                    <UpdateInventoryModal product={product} />
+                    <UpdateInventoryModal/>
                     <div key={product.inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
                             <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
