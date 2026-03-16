@@ -42,10 +42,10 @@ export class TransactionMapper {
             createdAt: entity.createdAt,
             updatedAt: entity.updatedAt,
             deletedAt: entity.deletedAt,
-            transactionType: entity.transactionType? TransactionTypeMapper.toResponseDto(entity.transactionType): null,
+            transactionType: entity.transactionType? TransactionTypeMapper.toIResponse(entity.transactionType): null,
             branchOffice: entity.branchOffice? BranchOfficeMapper.toIResponse(entity.branchOffice): null,
             employee: entity.employee? EmployeeMapper.toIResponse(entity.employee): null,
-            sale: entity.sale? SaleMapper.toResponseDto(entity.sale): null
+            sale: entity.sale? SaleMapper.toIResponse(entity.sale): null
         }
         return response;
     }
