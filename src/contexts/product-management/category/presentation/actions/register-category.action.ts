@@ -1,40 +1,37 @@
 'use server'
-import { revalidatePath } from 'next/cache';
-import { RegisterCategoryDTO } from "../application/dtos/register-category.dto";
-import { RegisterCategoryUseCase } from "../application/use-case/register-category.use-case";
-import { CategoryRepositoryFactory } from '../infraestructure/factories/category-repository.factory';
 import { cookies } from 'next/headers';
-import { EstablishmentEntity } from '@/features/establishment/domain/entities/establishment.entity';
+import { RegisterCategoryDto } from '../../application/dtos/register-category.dto';
+import { TypeormCategoryRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-category.repository';
+import { RegisterCategoryUseCase } from '../../application/use-cases/register-category.use-case';
+import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
+import { Result } from '@/shared/features/result';
+import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 
-export async function registerCategoryAction(dto: Omit<RegisterCategoryDTO, 'establishmentId'>){
+export async function registerCategoryAction(dto: Omit<RegisterCategoryDto, 'establishmentId'>) {
     try {
         // Inyeccion de las dependencias usando Factory
-        const categoryRepository = CategoryRepositoryFactory.create();
-        const registerCategoryUseCase = new RegisterCategoryUseCase(categoryRepository);
+        const categoryRepo = await TypeormCategoryRepository.create();
+        const useCase = new RegisterCategoryUseCase(categoryRepo);
+
         const cookieStore = await cookies();
-                        
+
         let establishment = cookieStore.get('establishmentCookie')?.value ?? null;
         let establishmentId = BigInt(0);
         if (establishment) {
-            establishmentId = (JSON.parse(establishment) as EstablishmentEntity).establishmentId;
+            establishmentId = (JSON.parse(establishment) as IEstablishment).establishmentId;
         }
-
-        const currentDTO = {
+        const result = await useCase.execute({
             ...dto,
-            establishmentId: establishmentId.toString()
-        }
-        const result = await registerCategoryUseCase.execute(currentDTO);
-
-        // Invalidar el caché de la página de productos para que se actualicen los datos
-        if (result?.ok) {
-            revalidatePath('/dashboard');
-        }
+            establishmentId
+        });
 
         return {
-            ...result
-        }
+            ...Result.success(result)
+        };
     } catch (error) {
-        console.error('Error in registerCategoryAction:', error);
-        throw error;
+        console.error('registerCategoryAction: ', error);
+        return {
+            ...handleError(error, 'registerCategoryAction')
+        }
     }
 }

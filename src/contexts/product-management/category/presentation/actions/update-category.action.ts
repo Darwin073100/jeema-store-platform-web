@@ -1,24 +1,25 @@
 'use server'
+import { Result } from "@/shared/features/result";
+import { UpdateCategoryDTO } from "../../application/dtos/update-category.dto";
+import { UpdatedCategoryUseCase } from "../../application/use-cases/updated-category.use-case";
+import { TypeormCategoryRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-category.repository";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 
-import { revalidatePath } from "next/cache";
-import { UpdateCategoryDTO } from "../application/dtos/update-category.dto";
-import { UpdateCategoryUseCase } from "../application/use-case/update-category.use-case";
-import { CategoryRepositoryFactory } from "../infraestructure/factories/category-repository.factory";
-
-export async function updateCategoryAction(dto: UpdateCategoryDTO){
+export async function updateCategoryAction(dto: UpdateCategoryDTO) {
     try {
-        const categoryRepository = CategoryRepositoryFactory.create();
-        const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository);
+        // Inyeccion de las dependencias usando Factory
+        const categoryRepo = await TypeormCategoryRepository.create();
+        const useCase = new UpdatedCategoryUseCase(categoryRepo);
 
-        const result = await updateCategoryUseCase.execute(dto);
-        
-        revalidatePath('/dashboard');
-        
+        const result = await useCase.execute(dto);
+
         return {
-            ...result
-        }
+            ...Result.success(result)
+        };
     } catch (error) {
-        console.error('Error in updateCategoryAction:', error);
-        throw error;
+        console.error('registerCategoryAction: ', error);
+        return {
+            ...handleError(error, 'registerCategoryAction')
+        }
     }
 }

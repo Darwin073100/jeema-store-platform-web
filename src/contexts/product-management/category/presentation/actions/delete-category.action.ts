@@ -1,26 +1,22 @@
 'use server'
+import { TypeormCategoryRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-category.repository';
+import { DeleteCategoryUseCase } from '../../application/use-cases/delete-category.use-case';
+import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
+import { Result } from '@/shared/features/result';
 
-import { revalidatePath } from 'next/cache';
-import { DeleteCategoryUseCase } from "../application/use-case/delete-category.use-case";
-import { CategoryRepositoryFactory } from '../infraestructure/factories/category-repository.factory';
-
-export async function deleteCategoryAction(categoryId: string){
+export async function deleteCategoryAction(categoryId: bigint) {
     try {
-        const categoryRepository = CategoryRepositoryFactory.create();
-        const deleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
+        // Inyeccion de las dependencias usando Factory
+        const categoryRepo = await TypeormCategoryRepository.create();
+        const useCase = new DeleteCategoryUseCase(categoryRepo);
 
-        const result = await deleteCategoryUseCase.execute(categoryId);
-
-        // Invalidar el caché de la página para que se actualicen los datos
-        if (result?.ok) {
-            revalidatePath('/dashboard');
-        }
+        const result = await useCase.execute(categoryId);
 
         return {
-            ...result
+            ...Result.success(result)
         }
     } catch (error) {
-        console.error('Error in deleteCategoryAction:', error);
-        throw error;
+        console.error('deleteCategoryAction: ', error);
+        return handleError(error, 'deleteCategoryAction');
     }
 }
