@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { ProductEntity } from "../domain/entities/product.entity";
-import { useProductStore } from "../infraestructure/stores/product.store"
+import { ProductEntity } from "../../../../../features/product/domain/entities/product.entity";
+import { useProductStore } from "../stores/product.store"
 import { useState, useEffect } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { ViewAllCategoriesAction } from '@/features/category/actions/view-all-categories.action';
 import { viewAllBrandsAction } from '@/features/brand/actions/view-all-brands.action';
 import { viewAllSeasonsAction } from '@/features/season/actions/view-all-seasons.action';
-import { ForSaleEnum } from '../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../../../../features/product/domain/enums/for-sale.enum';
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct';
 import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
 import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';

@@ -1,15 +1,15 @@
 'use client'
 import * as yup from 'yup';
-import { useProductStore } from '../infraestructure/stores/product.store';
+import { useProductStore } from '../stores/product.store';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useForm } from 'react-hook-form';
 import {v4 as UUID} from 'uuid'
-import { registerInitialProductAction } from '../actions/register-initial-product.action';
-import { RegisterInitialProductDTO } from '../application/dtos/register-initial-product.dto';
+import { registerInitialProductAction } from '../../../../../features/product/actions/register-initial-product.action';
+import { RegisterInitialProductDTO } from '../../../../../features/product/application/dtos/register-initial-product.dto';
 import { useWorkspace } from '@/shared/hooks/useAuth';
-import { ForSaleEnum } from '../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../../../../features/product/domain/enums/for-sale.enum';
 import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
 
 export const schema = yup.object().shape({

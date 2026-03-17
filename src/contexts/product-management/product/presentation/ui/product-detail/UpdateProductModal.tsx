@@ -8,11 +8,11 @@ import { IoClose } from 'react-icons/io5';
 import { HiPencil, HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { LabelInput } from '@/shared/ui/components/labels';
-import { useUpdateProductModal } from '../../../../../../features/product/hooks';
+import { useUpdateProductModal } from '../../hooks';
 import { FloatMessage } from '@/shared/ui/components/messages/FloatMessage';
 import { ForSaleEnum } from '../../../../../../features/product/domain/enums/for-sale.enum';
 import { forSaleObject } from '../../../../../../features/product/domain/enums/for-sale.object';
-import { useProductDescriptionInput } from '../../../../../../features/product/hooks/useProductDescriptionInput';
+import { useProductDescriptionInput } from '../../hooks/useProductDescriptionInput';
 
 interface Props {
     product: any

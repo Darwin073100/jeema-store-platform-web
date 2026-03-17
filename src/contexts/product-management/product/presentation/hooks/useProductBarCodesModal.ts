@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { findBarCodeByInventoryIdAction } from '@/features/inventory/actions/find-bar-code-by-inventory-id.action';
-import { BarcodeTypeEnum } from '../domain/enums/barcode-type.enum';
+import { BarcodeTypeEnum } from '../../../../../features/product/domain/enums/barcode-type.enum';
 interface Props {
     inventoryId: bigint,
 }
-const useProductBarCodes51x25Modal = ({ inventoryId}: Props) => {
+const useProductBarCodesModal = ({ inventoryId}: Props) => {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
       const [loading, setLoading] = useState(false);
       const [error, setError] = useState<string | null>(null);
@@ -15,7 +15,7 @@ const useProductBarCodes51x25Modal = ({ inventoryId}: Props) => {
               if(inventoryId===BigInt(0)){
                   return;
               }
-              const response = await findBarCodeByInventoryIdAction(inventoryId, BarcodeTypeEnum.BARCODE51X25);
+              const response = await findBarCodeByInventoryIdAction(inventoryId, BarcodeTypeEnum.BARCODE27X13);
               if(!response.ok){
                 return;
               }
@@ -41,4 +41,4 @@ const useProductBarCodes51x25Modal = ({ inventoryId}: Props) => {
       }
 }
 
-export { useProductBarCodes51x25Modal };
+export { useProductBarCodesModal };

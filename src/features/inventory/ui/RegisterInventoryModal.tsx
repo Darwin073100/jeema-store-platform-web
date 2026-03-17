@@ -12,9 +12,9 @@ import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterInventoryModal } from '../hooks/useRegisterInventoryModal';
 import { HiMiniSwatch } from 'react-icons/hi2';
 import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
-import { useRegisterCompleteProduct } from '@/features/product/hooks/useRegisterCompleteProduct';
+import { useRegisterCompleteProduct } from '@/contexts/product-management/product/presentation/hooks/useRegisterCompleteProduct';
 import { BiBarcode } from 'react-icons/bi';
-import { useProductUIStore } from '@/features/product/infraestructure/stores/product-ui.store';
+import { useProductUIStore } from '@/contexts/product-management/product/presentation/stores/product-ui.store';
 
 const RegisterInventoryModal = () => {
     const {

@@ -1,12 +1,12 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
-import { useProductStore } from '../infraestructure/stores/product.store';
+import { useProductStore } from '../stores/product.store';
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { InventoryItemEntity } from '@/features/inventory/domain/entities/inventory-item.entity';
-import { ProductEntity } from '../domain/entities/product.entity';
+import { ProductEntity } from '../../../../../features/product/domain/entities/product.entity';
 import { IInventoryItem } from '@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem';
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct';
 

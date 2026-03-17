@@ -7,7 +7,7 @@ import { useUpdateInventoryStore } from "../infraestructura/stores/update-invent
 import { UpdateInventoryDTO } from "../application/dtos/update-inventory.dto";
 import { updateInventoryAction } from "../actions/update-inventory.action";
 import { generateBarcodeAction } from "../actions/generate-barcode.action";
-import { useProductUIStore } from "@/features/product/infraestructure/stores/product-ui.store";
+import { useProductUIStore } from "@/contexts/product-management/product/presentation/stores/product-ui.store";
 import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 

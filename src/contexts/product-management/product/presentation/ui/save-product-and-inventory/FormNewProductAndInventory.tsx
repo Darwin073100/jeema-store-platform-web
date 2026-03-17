@@ -10,7 +10,7 @@ import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
 import React, { useEffect, useState } from 'react'
 import { TbExchange } from 'react-icons/tb';
-import { useSaveProduct } from '../../../../../../features/product/hooks/useSaveProduct';
+import { useSaveProduct } from '../../hooks/useSaveProduct';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';

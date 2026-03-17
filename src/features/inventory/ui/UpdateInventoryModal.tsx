@@ -11,7 +11,7 @@ import { IoClose } from 'react-icons/io5';
 import { useUpdateInventoryModal } from '../hooks/useUpdateInventoryModal';
 import { HiMiniSwatch } from 'react-icons/hi2';
 import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
-import { useProductUIStore } from '@/features/product/infraestructure/stores/product-ui.store';
+import { useProductUIStore } from '@/contexts/product-management/product/presentation/stores/product-ui.store';
 import { BiBarcode } from 'react-icons/bi';
 
 const UpdateInventoryModal = () => {

@@ -1,7 +1,7 @@
 'use client'
 import { TextInput } from '@/shared/ui/components/inputs';
 import React from 'react'
-import { useProductStore } from '../../../../../../features/product/infraestructure/stores/product.store';
+import { useProductStore } from '../../stores/product.store';
 
 function ProductSearch() {
   const { setSearchCharacter } = useProductStore();

@@ -17,12 +17,12 @@ import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
 import { forSaleObject } from '../../../../../../features/product/domain/enums/for-sale.object';
 import { ProductEnableOptios } from './ProductEnableOptios';
-import { useRegisterCompleteProduct } from '../../../../../../features/product/hooks/useRegisterCompleteProduct';
+import { useRegisterCompleteProduct } from '../../hooks/useRegisterCompleteProduct';
 import { AiFillProduct } from 'react-icons/ai';
 import { BiBarcode, BiSolidPurchaseTag } from "react-icons/bi";
 import { MdInventory2 } from 'react-icons/md';
 import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
-import { useProductUIStore } from '../../../../../../features/product/infraestructure/stores/product-ui.store';
+import { useProductUIStore } from '../../stores/product-ui.store';
 
 interface Props {
     categoryList: CategoryEntity[],

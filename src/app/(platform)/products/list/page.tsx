@@ -10,7 +10,6 @@ import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates
 import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
 import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
-import { viewAllProductsByEstablishmentAction } from "@/features/product/actions/view-all-products-by-establishment.action";
 import { ProductAudit } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductAudit";
 import { findAllProductsByEstablishmentAction } from "@/contexts/product-management/product/presentation/actions/find-all-products-by-establishment.action";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";

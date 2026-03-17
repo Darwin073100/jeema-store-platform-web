@@ -11,8 +11,8 @@ import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { ProductEntity } from '../../../../../../features/product/domain/entities/product.entity';
 import { HideElement } from '@/features/auth/ui/HideElement';
-import { useProductStore } from '../../../../../../features/product/infraestructure/stores/product.store';
-import { useProductActionsBar } from '../../../../../../features/product/hooks/useProductActionsBar';
+import { useProductStore } from '../../stores/product.store';
+import { useProductActionsBar } from '../../hooks/useProductActionsBar';
 interface Props{
     data: ProductEntity[]
 }

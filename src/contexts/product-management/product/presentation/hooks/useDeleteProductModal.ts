@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { useDeleteProductStore } from "../infraestructure/stores/delete-product.store";
+import { useDeleteProductStore } from "../stores/delete-product.store";
 import { deleteProductAction } from "@/contexts/product-management/product/presentation/actions/delete-product.action";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 

@@ -1,10 +1,10 @@
 'use client'
-import { useProductStore } from "@/features/product/infraestructure/stores/product.store";
+import { useProductStore } from "@/contexts/product-management/product/presentation/stores/product.store";
 import { Button } from "@/shared/ui/components/buttons";
 import { FiExternalLink } from "react-icons/fi";
 import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 import { PCol, PrimaryTable, PRow, PTableEmpty } from "@/shared/ui/components/tables/PrimaryTable";
-import { useProductActionsBar } from "@/features/product/hooks/useProductActionsBar";
+import { useProductActionsBar } from "@/contexts/product-management/product/presentation/hooks/useProductActionsBar";
 import clsx from "clsx";
 
 interface TableProductProps {

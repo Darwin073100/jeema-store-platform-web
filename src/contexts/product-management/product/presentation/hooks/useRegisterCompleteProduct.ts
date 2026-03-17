@@ -1,17 +1,17 @@
 'use client'
 import * as yup from 'yup';
-import { useProductStore } from '../infraestructure/stores/product.store';
+import { useProductStore } from '../stores/product.store';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useForm } from 'react-hook-form';
 import {v4 as UUID} from 'uuid'
-import { ForSaleEnum } from '../domain/enums/for-sale.enum';
-import { RCPInventory, RCPLot, RegisterCompleteProductDTO } from '../application/dtos/register-complete-product.dto';
-import { registerCompleteProductAction } from '../actions/register-complete-product.action';
+import { ForSaleEnum } from '../../../../../features/product/domain/enums/for-sale.enum';
+import { RCPInventory, RCPLot, RegisterCompleteProductDTO } from '../../../../../features/product/application/dtos/register-complete-product.dto';
+import { registerCompleteProductAction } from '../../../../../features/product/actions/register-complete-product.action';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { generateBarcodeAction } from '@/features/inventory/actions/generate-barcode.action';
-import { useProductUIStore } from '../infraestructure/stores/product-ui.store';
+import { useProductUIStore } from '../stores/product-ui.store';
 
 export const schema = yup.object().shape({
     //Product

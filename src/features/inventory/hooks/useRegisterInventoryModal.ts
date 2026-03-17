@@ -8,7 +8,7 @@ import { RegisterInventoryDTO } from "../application/dtos/register-inventory.dto
 import { registerInventoryAction } from "../actions/register-inventory.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
-import { useProductUIStore } from "@/features/product/infraestructure/stores/product-ui.store";
+import { useProductUIStore } from "@/contexts/product-management/product/presentation/stores/product-ui.store";
 import { generateBarcodeAction } from "../actions/generate-barcode.action";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 

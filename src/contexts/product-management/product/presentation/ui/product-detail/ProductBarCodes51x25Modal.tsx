@@ -4,9 +4,9 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { useProductBarCodesModal } from '../../../../../../features/product/hooks/useProductBarCodesModal';
-import { useProductUIStore } from '../../../../../../features/product/infraestructure/stores/product-ui.store';
-import { useProductBarCodes51x25Modal } from '../../../../../../features/product/hooks/useProductBarCodes51x25Modal';
+import { useProductBarCodesModal } from '../../hooks/useProductBarCodesModal';
+import { useProductUIStore } from '../../stores/product-ui.store';
+import { useProductBarCodes51x25Modal } from '../../hooks/useProductBarCodes51x25Modal';
 
 interface Props {
     inventoryId: bigint,
