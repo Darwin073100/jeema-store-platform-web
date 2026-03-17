@@ -35,6 +35,17 @@ export class TypeormCategoryRepository implements CategoryRepository{
         }
         return CategoryMapper.toDomainEntity(ormEntity);
     }
+    async existById(categoryId: bigint): Promise<CategoryEntity | null> {
+        const ormEntity = await this.typeormRepository.findOne({
+            where: {
+                categoryId: categoryId
+            },
+        });
+        if (!ormEntity) {
+            return Promise.resolve(null);
+        }
+        return CategoryMapper.toDomainEntity(ormEntity);
+    }
 
     async findAll(): Promise<CategoryEntity[]> {
         const result = await this.typeormRepository.find({

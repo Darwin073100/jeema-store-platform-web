@@ -5,19 +5,17 @@ import { useState, useEffect } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { updateProductAction } from '../actions/update-product.action';
 import { ViewAllCategoriesAction } from '@/features/category/actions/view-all-categories.action';
 import { viewAllBrandsAction } from '@/features/brand/actions/view-all-brands.action';
 import { viewAllSeasonsAction } from '@/features/season/actions/view-all-seasons.action';
-import { CategoryEntity } from '@/features/category/domain/entities/category.entity';
-import { BrandEntity } from '@/features/brand/domain/entities/brand.entity';
-import { SeasonEntity } from '@/features/season/domain/entities/season.entity';
-import { UpdateProductDTO } from '../application/dtos/update-product.dto';
 import { ForSaleEnum } from '../domain/enums/for-sale.enum';
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct';
 import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
 import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
 import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
+import { updateProductAction } from '@/contexts/product-management/product/presentation/actions/update-product.action';
+import { UpdateProductDto } from '@/contexts/product-management/product/application/dtos/update-product.dto';
+import { findAllCategoriesByEstablishmentAction } from '@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action';
 
 const schema = yup.object({
     name: yup.string().required('El nombre del producto es obligatorio.').min(3, 'El nombre del producto debe tener al menos 3 caracteres.'),
@@ -87,13 +85,13 @@ const useUpdateProductModal = () => {
     const loadCatalogData = async () => {
         try {
             const [categoriesResult, brandsResult, seasonsResult] = await Promise.all([
-                ViewAllCategoriesAction(),
+                findAllCategoriesByEstablishmentAction(),
                 viewAllBrandsAction(),
                 viewAllSeasonsAction()
             ]);
 
-            if (categoriesResult?.ok && categoriesResult.value) {
-                setCategories([]); // categoriesResult.value.categories
+            if (categoriesResult) {
+                setCategories(categoriesResult); // categoriesResult.value.categories
             }
             if (brandsResult?.ok && brandsResult.value) {
                 setBrands([]);
@@ -149,7 +147,8 @@ const useUpdateProductModal = () => {
         setIsLoading(true);
 
         try {
-            const updateData: UpdateProductDTO = {
+            const updateData: UpdateProductDto = {
+                establishmentId: BigInt(0),
                 productId: product.productId,
                 name: data.name,
                 description: data.description,

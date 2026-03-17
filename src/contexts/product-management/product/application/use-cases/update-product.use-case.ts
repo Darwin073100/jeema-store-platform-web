@@ -1,5 +1,4 @@
 import { ProductRepository } from '../../domain/repositories/product.repository';
-import { RegisterProductDto } from '../dtos/register-product.dto';
 import { ProductEntity } from '../../domain/entities/product.entity';
 import { ProductNameVO } from '../../domain/value-objects/product-name.vo';
 import { ProductDescriptionVO } from '../../domain/value-objects/product-description.vo';
@@ -7,20 +6,21 @@ import { ProductSkuVO } from '../../domain/value-objects/product-sku.vo';
 import { ProductUniversalBarCodeVO } from '../../domain/value-objects/product-universal-bar-code.vo';
 import { ForSaleEnum } from '../../../../../shared/domain/enums/for-sale.enum';
 import { ProductAlreadyExistsException } from '../../domain/exceptions/product-already-exists.exception';
-import { CategoryCheckerPort } from 'src/contexts/product-management/category/domain/ports/out/category-checker.port';
-import { BrandChekerPort } from 'src/contexts/product-management/brand/domain/ports/out/brand-checker.port';
-import { SeasonCheckerPort } from 'src/contexts/product-management/season/domain/ports/out/season-checker.port';
 import { ProductNotFoundException } from '../../domain/exceptions/product-not-found.exception';
 import {v4 as uuid} from 'uuid';
 import { UpdateProductDto } from '../dtos/update-product.dto';
 import { EstablishmentRepository } from '@/contexts/establishment-management/establishment/domain/repositories/establishment.repository';
+import { CategoryRepository } from '@/contexts/product-management/category/domain/repositories/category.repository';
+import { BrandRepository } from '@/contexts/product-management/brand/domain/repositories/brand.repository';
+import { SeasonRepository } from '@/contexts/product-management/season/domain/repositories/season.repository';
+
 
 export class UpdateProductUseCase {
     constructor(
         private readonly productRepository: ProductRepository,
-        private readonly categoryChecker: CategoryCheckerPort,
-        private readonly brandChecker: BrandChekerPort,
-        private readonly seasonChecker: SeasonCheckerPort,
+        private readonly categoryChecker: CategoryRepository,
+        private readonly brandChecker: BrandRepository,
+        private readonly seasonChecker: SeasonRepository,
         private readonly establishmentChecker: EstablishmentRepository, 
     ) { }
 
@@ -42,7 +42,7 @@ export class UpdateProductUseCase {
 
         if(dto.brandId) {
             // Validar existencia de la marca
-            const brandExists = await this.brandChecker.exists(dto.brandId);
+            const brandExists = await this.brandChecker.existById(dto.brandId);
             if (!brandExists) {
                 throw new ProductNotFoundException(`La marca a la que deseas asignar el producto no existe.`);
             }
@@ -50,7 +50,7 @@ export class UpdateProductUseCase {
 
         if(dto.seasonId) {
             // Validar existencia de la temporada
-            const seasonExists = await this.seasonChecker.exists(dto.seasonId);
+            const seasonExists = await this.seasonChecker.existById(dto.seasonId);
             if (!seasonExists) {
                 throw new ProductNotFoundException(`La temporada a la que deseas asignar el producto no existe.`);
             }
@@ -64,7 +64,7 @@ export class UpdateProductUseCase {
         }
 
         if(dto.categoryId){
-            const categoryExists = await this.categoryChecker.exists(dto.categoryId);
+            const categoryExists = await this.categoryChecker.existById(dto.categoryId);
             if(!categoryExists){
                 throw new ProductNotFoundException(`La categoría a la que deseas asignar el producto no existe.`);
             }

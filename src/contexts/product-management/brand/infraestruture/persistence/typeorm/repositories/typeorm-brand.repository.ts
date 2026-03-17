@@ -85,6 +85,16 @@ export class TypeOrmBrandRepository implements BrandRepository {
     // a partir de datos ya existentes, sin emitir eventos de dominio.
     return BrandMapper.toDomainEntity(ormEntity);
   }
+  async existById(id: bigint): Promise<BrandEntity | null> {
+    const ormEntity = await this.typeOrmRepository.findOne({
+      where: { brandId: id as any }, // TypeORM y BigInt
+    });
+
+    if (!ormEntity) {
+      return null;
+    }
+    return BrandMapper.toDomainEntity(ormEntity);
+  }
 
   //Eliminar una marca con softdelete y queryRunner
   async delete(entityId: bigint): Promise<BrandEntity | null> {

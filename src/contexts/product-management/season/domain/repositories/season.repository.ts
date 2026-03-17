@@ -5,4 +5,5 @@ export const SEASON_REPOSITORY = Symbol('SEASON_REPOSITORY');
 
 export interface SeasonRepository extends TemplateRepository<SeasonEntity> {
   findAllByEstablishment(establishmentId: bigint): Promise<SeasonEntity[]>;
+  existById(seasonId: bigint): Promise<SeasonEntity | null>;
 }

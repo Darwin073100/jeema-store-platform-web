@@ -5,4 +5,5 @@ export const BRAND_REPOSITORY = Symbol('BRAND_REPOSITORY');
 
 export interface BrandRepository extends TemplateRepository<BrandEntity>{
     findAllByEstablishment(establishmentId: bigint): Promise<BrandEntity[]>;
+    existById(id: bigint): Promise<BrandEntity | null>;
 }

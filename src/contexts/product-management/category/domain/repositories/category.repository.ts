@@ -5,4 +5,5 @@ export const CATEGORY_REPOSITORY = Symbol('CATEGORY_REPOSITORY');
 
 export interface CategoryRepository extends TemplateRepository<CategoryEntity>{
     findAllByEstablishment(establishmentId: bigint): Promise<CategoryEntity[]>;
+    existById(categoryId: bigint): Promise<CategoryEntity | null>;
 }
