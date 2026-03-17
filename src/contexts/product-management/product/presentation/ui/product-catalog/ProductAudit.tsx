@@ -2,7 +2,7 @@
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import React from 'react'
 import { MdLowPriority } from 'react-icons/md';
-import { useProductStore } from '../../infraestructure/stores/product.store';
+import { useProductStore } from '../../../../../../features/product/infraestructure/stores/product.store';
 import clsx from 'clsx';
 
 const ProductAudit = () => {

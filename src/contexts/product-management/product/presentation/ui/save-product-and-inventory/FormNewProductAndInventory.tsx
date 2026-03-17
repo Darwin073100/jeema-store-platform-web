@@ -6,42 +6,35 @@ import { useCategoryStore } from '@/features/category/infraestructure/category.s
 import { SeasonEntity } from '@/features/season/domain/entities/season.entity';
 import { useSeasonStore } from '@/features/season/infraestructure/season.store';
 import { Button } from '@/shared/ui/components/buttons';
-import { SelectMenu, SelectMenuOption, TextInput } from '@/shared/ui/components/inputs';
+import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TbExchange } from 'react-icons/tb';
+import { useSaveProduct } from '../../../../../../features/product/hooks/useSaveProduct';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
+import { ForSaleEnum } from '../../../../../../features/product/domain/enums/for-sale.enum';
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
-import { forSaleObject } from '../../domain/enums/for-sale.object';
-import { ProductEnableOptios } from './ProductEnableOptios';
-import { useRegisterCompleteProduct } from '../../hooks/useRegisterCompleteProduct';
-import { AiFillProduct } from 'react-icons/ai';
-import { BiBarcode, BiSolidPurchaseTag } from "react-icons/bi";
-import { MdInventory2 } from 'react-icons/md';
-import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
-import { useProductUIStore } from '../../infraestructure/stores/product-ui.store';
+import { forSaleObject } from '../../../../../../features/product/domain/enums/for-sale.object';
 
 interface Props {
     categoryList: CategoryEntity[],
     brandList: BrandEntity[],
     seasonList: SeasonEntity[],
-    suplierList: SuplierEntity[],
 }
 
-const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, suplierList }: Props) => {
+const FormNewProductAndInventory = ({ categoryList, brandList, seasonList }: Props) => {
     const {
         errors, floatMessageState, handleSubmit, isLoading, addLotUnitPurchase, removeLotUnitPurchase,
         onSubmit, register, handleBarCodeMatch, handleStockGlobalToBranch, updateLotUnitPurchase, lotUnitPurchases,
-        addInventoryItem, removeInventoryItem, updateInventoryItem, inventoryItems, handleInitialQuantityToquantityOnHand,
-        inventoryCheck, lotCheck, handleGenerateBarcode,
-    } = useRegisterCompleteProduct();
+        addInventoryItem, removeInventoryItem, updateInventoryItem, inventoryItems, handleInitialQuantityToquantityOnHand
+    } = useSaveProduct();
+
     const { categories, setCategories } = useCategoryStore();
     const { seasons, setSeasons } = useSeasonStore();
     const { brands, setBrands } = useBrandStore();
-    const { loading } = useProductUIStore();
 
     useEffect(() => {
         setCategories(categoryList);
@@ -53,38 +46,39 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
         value: item.categoryId.toString(),
         text: item.name
     }));
+
     const brandOptions = brands.map(item => ({
         value: item.brandId.toString(),
         text: item.name
     }));
+
     const seasonOptions = seasons.map(item => ({
         value: item.seasonId.toString(),
         text: item.name
     }));
+
     const locationOptions = Object.values(LocationEnum).map(item => ({
         value: item.toString(),
         text: item.toString()
     }));
-    const suplierOptions: SelectMenuOption[] = suplierList.map(item => ({
-        text: item.name, 
-        value: item.suplierId.toString()
-    }));
 
     return (
+        <div className="min-h-screen bg-gray-50">
             <div className="max-w-full mx-auto p-4 lg:p-6">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-0">
-                    <ProductEnableOptios 
-                        register={register} />
+                    {/* Campos ocultos para IDs del workspace */}
+                    <input type="hidden" {...register('establishmentId')} />
+                    <input type="hidden" {...register('branchOfficeId')} />
                     
                     {/* Sección Principal del Producto */}
-                    <div className="">
-                        <div className="rounded-2xl mb-4 bg-gradient-to-r from-blue-600 to-blue-700 px-4 lg:px-6 py-4">
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 lg:px-6 py-4">
                             <h2 className="text-xl font-semibold text-white flex items-center">
-                                <AiFillProduct />
-                                <span className='ml-4'>Información del Producto</span>
+                                <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
+                                Información del Producto
                             </h2>
                         </div>
-                        <div className="p-4 lg:p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+                        <div className="p-4 lg:p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                                 <div className="md:col-span-2 lg:col-span-3 xl:col-span-4">
                                     <LabelInput 
@@ -100,13 +94,10 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                 </div>
                                 
                                 <div>
-                                    <div className='flex gap-2'>
-                                        <LabelInput
-                                            required='yes' 
-                                            value="C. de barras universal"
-                                            description='Ingresa el código de barras EAN/UPC que viene impreso en el producto. Este código es único para cada producto. Ej: 7501234567890.' />
-                                        <Button color='purple' size='sm' type='button' onClick={()=> handleGenerateBarcode()}>{loading==='generateBarcode'? <Spinner size={12}/> : <BiBarcode/>}Generar</Button>
-                                    </div>
+                                    <LabelInput
+                                        required='yes' 
+                                        value="Código de barras universal"
+                                        description='Ingresa el código de barras EAN/UPC que viene impreso en el producto. Este código es único para cada producto. Ej: 7501234567890.' />
                                     <TextInput
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {
@@ -207,27 +198,16 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                         </div>
                     </div>
 
-                    {lotCheck &&  <div className="">
-                        <div className="rounded-2xl bg-gradient-to-r from-gray-600 to-gray-700 px-4 lg:px-6 py-4 my-4">
+                    {/* Sección de Lote del Producto */}
+                    <div className="bg-gradient-to-r from-gray-50 to-gray-50 border-l border-r border-b border-gray-200">
+                        <div className="bg-gradient-to-r from-gray-600 to-gray-700 px-4 lg:px-6 py-4">
                             <h2 className="text-xl font-semibold text-white flex items-center">
-                                <BiSolidPurchaseTag />
-                                <span className='ml-4'>Información del Lote</span>
+                                <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
+                                Información del Lote
                             </h2>
                         </div>
-                        <div className=" rounded-2xl bg-gradient-to-r from-gray-50 to-gray-50 border-l border-r border-b border-gray-200 p-4 lg:p-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-                                <div className="md:col-span-1">
-                                    <LabelInput 
-                                        value="Proveedor"
-                                        description="Selecciona el proveedor al que compraste la mercancia."
-                                        required='no' />
-                                    <SelectMenu
-                                        items={suplierOptions}
-                                        error={!!errors.suplierId}
-                                        errorMessage={errors.suplierId?.message}
-                                        {...register('suplierId')}
-                                    />
-                                </div>
+                        <div className="p-4 lg:p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 lg:gap-6">
                                 <div>
                                     <LabelInput 
                                         required='yes' 
@@ -433,17 +413,16 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                 </div>
                             </div>
                         </div>
-                    </div> }
-                   
+                    </div>
                     {/* Sección de Inventario del Producto */}
-                    {inventoryCheck && <div className="">
-                        <div className="rounded-2xl my-4 bg-gradient-to-r from-blue-600 to-blue-700 px-4 lg:px-6 py-4">
+                    <div className="bg-gradient-to-r from-blue-50 to-violet-50 border-l border-r border-b border-blue-200">
+                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 lg:px-6 py-4">
                             <h2 className="text-xl font-semibold text-white flex items-center">
-                                <MdInventory2 />
-                                <span className='ml-4'>Inventario del Producto</span>
+                                <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
+                                Inventario del Producto
                             </h2>
                         </div>
-                        <div className="rounded-2xl p-4 lg:p-6 bg-gradient-to-r from-blue-50 to-violet-50 border border-blue-200">
+                        <div className="p-4 lg:p-6">
                             {/* Sección de Ubicaciones del Inventario */}
                             <div className="mb-6">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
@@ -494,9 +473,9 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                                                 <div>
                                                     <LabelInput 
-                                                        value="Ubicación" 
-                                                        required='yes'
-                                                        description='Selecciona dónde se almacenará el producto (almacén, mostrador, bodega, etc.). Esto ayuda a localizar el producto rápidamente.' />
+                                        value="Ubicación" 
+                                        required='yes'
+                                        description='Selecciona dónde se almacenará el producto (almacén, mostrador, bodega, etc.). Esto ayuda a localizar el producto rápidamente.' />
                                                     <SelectMenu
                                                         items={locationOptions}
                                                         value={item.location}
@@ -511,9 +490,9 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                                 <div>
                                                     <div className='flex gap-4'>
                                                         <LabelInput 
-                                                            value="Cantidad de stock en esta ubicación" 
-                                                            required='yes'
-                                                            description='Ingresa cuántas unidades base se almacenarán en esta ubicación. Puedes usar el botón para asignar automáticamente el stock disponible.' />
+                                        value="Cantidad de stock en esta ubicación" 
+                                        required='yes'
+                                        description='Ingresa cuántas unidades base se almacenarán en esta ubicación. Puedes usar el botón para asignar automáticamente el stock disponible.' />
                                                         <Button 
                                                             type='button' 
                                                             size="sm" 
@@ -537,6 +516,20 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                                         step='0.001'
                                                     />
                                                 </div>
+
+                                                {/* <div>
+                                                    <LabelInput value="Precio de compra en stock *" />
+                                                    <TextInput
+                                                        type="number"
+                                                        value={item.purchasePriceAtStock}
+                                                        onChange={(e) =>
+                                                            updateInventoryItem(index, "purchasePriceAtStock", Number(e.target.value))
+                                                        }
+                                                        error={!!(errors.inventoryItems?.[index]?.purchasePriceAtStock)}
+                                                        errorMessage={errors.inventoryItems?.[index]?.purchasePriceAtStock?.message}
+                                                        placeholder="0.00"
+                                                    />
+                                                </div> */}
                                             </div>
                                         </div>
                                     ))}
@@ -565,7 +558,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                     <h4 className="font-medium text-green-800 mb-3">📦 Precio de Mayoreo</h4>
                                     <LabelInput 
                                         value="Precio de venta por mayoreo" 
-                                        required='no'
+                                        required='yes'
                                         description='Precio especial por unidad cuando se compra en grandes cantidades. Este precio se aplicará cuando la compra supere la cantidad para mayoreo.' />
                                     <TextInput
                                         {...register('salePriceMany')}
@@ -578,7 +571,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                     <div className="mt-3">
                                         <LabelInput 
                                             value="Cantidad para mayoreo" 
-                                            required='no'
+                                            required='yes'
                                             description='Cantidad mínima de unidades que el cliente debe comprar para acceder al precio de mayoreo.' />
                                         <TextInput
                                             {...register('saleQuantityMany')}
@@ -590,6 +583,18 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                         />
                                     </div>
                                 </div>
+                                
+                                {/* <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+                                    <h4 className="font-medium text-purple-800 mb-3">⭐ Precio Especial</h4>
+                                    <LabelInput value="Precio especial *" />
+                                    <TextInput
+                                        {...register('salePriceSpecial')}
+                                        error={!!errors.salePriceSpecial}
+                                        errorMessage={errors.salePriceSpecial?.message}
+                                        type="number"
+                                        placeholder="0.00"
+                                    />
+                                </div> */}
                             </div>
 
                             {/* Sección de Stocks */}
@@ -642,7 +647,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                             <h4 className="font-medium text-indigo-800 mb-3">𝄃𝄃𝄂𝄂𝄀 Código de barra interno</h4>
                                         <div className='flex gap-4'>
                                             <LabelInput 
-                                                value="C. de barras int." 
+                                                value="Código de barras int." 
                                                 required='yes'
                                                 description='Código de barras interno el usuario tendra que aisgnar uno o utilizar el universal. Se usa cuando el producto no tiene código de barras universal o se necesita un identificador adicional.' />
                                             <Button 
@@ -661,7 +666,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                             {...register('internalBarCode')}
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
-                                                e.preventDefault(); //* evita el submit del formulario
+                                                e.preventDefault(); // ⛔ evita el submit del formulario
                                                 }
                                             }}
                                             error={!!errors.internalBarCode}
@@ -674,11 +679,10 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                 </div>
                             </div>
                         </div>
-                    </div>}
-                    
+                    </div>
 
                     {/* Botones de Acción */}
-                    <div className="px-4 lg:px-6 py-4">
+                    <div className="bg-gray-100 border-l border-r border-b border-gray-200 px-4 lg:px-6 py-4">
                         <div className="flex justify-end gap-4">
                             <Button 
                                 type='submit' 
@@ -687,7 +691,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                             >
                                 {isLoading ? (
                                     <>
-                                        <Spinner className="w-5 h-5" />
+                                        <Spinner />
                                         Guardando...
                                     </>
                                 ) : (
@@ -702,11 +706,15 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                 </form>
                 
                 <FloatMessage
-                    key='register-complete-product'
-                    {...floatMessageState}
+                    key={floatMessageState.summary}
+                    description={floatMessageState.description}
+                    summary={floatMessageState.summary}
+                    type={floatMessageState.type}
+                    isActive={floatMessageState.isActive} 
                 />
             </div>
+        </div>
     )
 }
 
-export { FormRegisterCompleteProduct };
+export { FormNewProductAndInventory };

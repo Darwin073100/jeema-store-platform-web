@@ -3,7 +3,7 @@ import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates
 import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
 import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
-import { FormRegisterCompleteProduct } from "@/features/product/ui/register-complete-product/FormRegisterCompleteProduct";
+import { FormRegisterCompleteProduct } from "@/contexts/product-management/product/presentation/ui/register-complete-product/FormRegisterCompleteProduct";
 import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
 
 export default async function () {

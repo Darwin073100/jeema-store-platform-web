@@ -4,23 +4,22 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { useProductBarCodesModal } from '../../hooks/useProductBarCodesModal';
-import { useProductUIStore } from '../../infraestructure/stores/product-ui.store';
-import { useProductBarCodes51x25Modal } from '../../hooks/useProductBarCodes51x25Modal';
+import { useProductBarCodesModal } from '../../../../../../features/product/hooks/useProductBarCodesModal';
+import { useProductUIStore } from '../../../../../../features/product/infraestructure/stores/product-ui.store';
 
 interface Props {
     inventoryId: bigint,
 }
 
-const ProductBarCode51x25Modal = ({ inventoryId }: Props) => {
+const ProductBarCodeModal = ({ inventoryId }: Props) => {
     const { productModals, closeProductModal } = useProductUIStore();
-    const { error, pdfUrl } = useProductBarCodes51x25Modal({ inventoryId });
+    const { error, pdfUrl } = useProductBarCodesModal({ inventoryId });
 
     if (!pdfUrl) {
         return;
     }
     return (
-        <TemplateModal isOpen={productModals === 'printLabels-51x25'} onClose={closeProductModal} title='Vista previa de la etiqueta'>
+        <TemplateModal isOpen={productModals === 'printLabels'} onClose={closeProductModal} title='Vista previa de la etiqueta'>
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
@@ -53,4 +52,4 @@ const ProductBarCode51x25Modal = ({ inventoryId }: Props) => {
     )
 }
 
-export { ProductBarCode51x25Modal };
+export { ProductBarCodeModal };

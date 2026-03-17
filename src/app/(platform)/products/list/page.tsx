@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import { TableProduct } from "@/features/inventory/ui/TableProducts";
+import { TableProduct } from "@/contexts/product-management/product/presentation/ui/product-catalog/TableProducts";
 import { CategoryModal } from "@/features/category/ui/CategoryModal";
-import { ProductActionsBar } from "@/features/product/ui/product-catalog/ProductActionsBar";
-import { ProductSearch } from "@/features/product/ui/product-catalog/ProductSearch";
+import { ProductActionsBar } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductActionsBar";
+import { ProductSearch } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductSearch";
 import { BrandModal } from "@/features/brand/ui/BrandModal";
 import { SeasonModal } from "@/features/season/ui/SeasonModal";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
@@ -11,7 +11,7 @@ import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/fin
 import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 import { viewAllProductsByEstablishmentAction } from "@/features/product/actions/view-all-products-by-establishment.action";
-import { ProductAudit } from "@/features/product/ui/product-catalog/ProductAudit";
+import { ProductAudit } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductAudit";
 import { findAllProductsByEstablishmentAction } from "@/contexts/product-management/product/presentation/actions/find-all-products-by-establishment.action";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 

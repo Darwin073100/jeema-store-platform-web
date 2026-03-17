@@ -9,10 +9,10 @@ import React, { useEffect } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
-import { ProductEntity } from '../../domain/entities/product.entity';
+import { ProductEntity } from '../../../../../../features/product/domain/entities/product.entity';
 import { HideElement } from '@/features/auth/ui/HideElement';
-import { useProductStore } from '../../infraestructure/stores/product.store';
-import { useProductActionsBar } from '../../hooks/useProductActionsBar';
+import { useProductStore } from '../../../../../../features/product/infraestructure/stores/product.store';
+import { useProductActionsBar } from '../../../../../../features/product/hooks/useProductActionsBar';
 interface Props{
     data: ProductEntity[]
 }

@@ -4,8 +4,8 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { useProductUIStore } from '../../infraestructure/stores/product-ui.store';
-import { useProductPrice27x13Modal } from '../../hooks/useProductPrice27x13Modal';
+import { useProductUIStore } from '../../../../../../features/product/infraestructure/stores/product-ui.store';
+import { useProductPrice27x13Modal } from '../../../../../../features/product/hooks/useProductPrice27x13Modal';
 
 interface Props {
     inventoryId: bigint,

@@ -14,7 +14,7 @@ import { RegisterInventoryItemModal } from '@/features/inventory/ui/RegisterInve
 import { UpdateInventoryItemModal } from '@/features/inventory/ui/UpdateInventoryItemModal'
 import { DeleteInventoryItemModal } from '@/features/inventory/ui/DeleteInventoryItemModal'
 import { LocalTransferInventoryItemModal } from '@/features/inventory/ui/LocalTransferInventoryModal'
-import { useProductUIStore } from '../../infraestructure/stores/product-ui.store'
+import { useProductUIStore } from '../../../../../../features/product/infraestructure/stores/product-ui.store'
 import { useRegisterLotModal } from '@/features/lot'
 import { useRegisterInventoryModal } from '@/features/inventory/hooks/useRegisterInventoryModal'
 import { useUpdateInventoryModal } from '@/features/inventory/hooks/useUpdateInventoryModal'

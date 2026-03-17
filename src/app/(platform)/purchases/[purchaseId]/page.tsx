@@ -3,9 +3,9 @@ import { Metadata } from "next";
 import { viewProductByIdAction } from "@/features/product/actions/view-product-by-id.action";
 import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import ProductDetail from "@/features/product/ui/product-detail/ProductDetail";
-import InventoryDetail from "@/features/product/ui/product-detail/InventoryDetail";
-import LotDetail from "@/features/product/ui/product-detail/LotDetail";
+import ProductDetail from "@/contexts/product-management/product/presentation/ui/product-detail/ProductDetail";
+import InventoryDetail from "@/contexts/product-management/product/presentation/ui/product-detail/InventoryDetail";
+import LotDetail from "@/contexts/product-management/product/presentation/ui/product-detail/LotDetail";
 import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
