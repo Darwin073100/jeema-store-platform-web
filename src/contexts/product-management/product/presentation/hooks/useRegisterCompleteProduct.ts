@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useForm } from 'react-hook-form';
 import {v4 as UUID} from 'uuid'
-import { ForSaleEnum } from '../../../../../features/product/domain/enums/for-sale.enum';
-import { RCPInventory, RCPLot, RegisterCompleteProductDTO } from '../../../../../features/product/application/dtos/register-complete-product.dto';
-import { registerCompleteProductAction } from '../../../../../features/product/actions/register-complete-product.action';
-import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { generateBarcodeAction } from '@/features/inventory/actions/generate-barcode.action';
 import { useProductUIStore } from '../stores/product-ui.store';
+import { RCPInventory, RCPLot, RegisterCompleteProductDto } from '../../application/dtos/register-complete-product.dto';
+import { registerCompleteProductAction } from '../actions/register-complete-product.action';
+import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
+import { ForSaleEnum } from '@/shared/domain/enums/for-sale.enum';
 
 export const schema = yup.object().shape({
     //Product
@@ -447,33 +447,35 @@ const useRegisterCompleteProduct = () => {
         setIsLoading(true);
 
         let rcpInventory: RCPInventory| null = inventoryCheck? {
-            branchOfficeId: '0',
+            branchOfficeId: BigInt(0),
             isSellable: true,
-            maxStockBranch: data.maxStockBranch ?? undefined,
-            minStockBranch: data.minStockBranch ?? undefined,
-            salePriceMany: data.salePriceMany? Number(data.salePriceMany): undefined,
-            salePriceOne: data.salePriceOne ?? undefined,
-            salePriceSpecial: undefined,
-            saleQuantityMany: data.saleQuantityMany? Number(data.saleQuantityMany): undefined,
-            internalBarCode: data.internalBarCode ?? undefined,
-            inventoryItems:data.inventoryItems? data.inventoryItems?.map(item => ({
+            maxStockBranch: data.maxStockBranch ?? null,
+            minStockBranch: data.minStockBranch ?? null,
+            salePriceMany: data.salePriceMany? Number(data.salePriceMany): null,
+            salePriceOne: data.salePriceOne ?? null,
+            salePriceSpecial: null,
+            saleQuantityMany: data.saleQuantityMany? Number(data.saleQuantityMany): null,
+            internalBarCode: data.internalBarCode ?? null,
+            inventoryItems: data.inventoryItems? data.inventoryItems?.map(item => ({
+                inventoryId: BigInt(0),
                 location: item.location as LocationEnum ?? LocationEnum.STOCK,
-                quantityOnHand: Number(item.quantityOnHand ?? 0),
-                lastStockedAt: new Date() ,
+                quantityOnHan: Number(item.quantityOnHand ?? 0),
+                lastStockedAt: new Date(),
                 purchasePriceAtStock: 0
-            })): undefined
+            })): null
         }: null;
 
         let rcpLot: RCPLot | null = lotCheck? {
             initialQuantity: Number(data.initialQuantity ?? 0),
-            suplierId: data.suplierId && data.suplierId.trim().toUpperCase()!== '0'? data.suplierId : null,
+            suplierId: data.suplierId && data.suplierId.trim().toUpperCase()!== '0'? BigInt(data.suplierId) : null,
             purchaseUnit: data.purchaseUnit as ForSaleEnum,
             lotUnitPurchases:data.lotUnitPurchases? data.lotUnitPurchases?.map(purchase => ({
                 purchasePrice: Number(purchase.purchasePrice ?? 0),
                 purchaseQuantity: Number(purchase.purchaseQuantity ?? 0),
                 unit: purchase.unit as ForSaleEnum,
+                lotId: BigInt(0),
                 unitsInPurchaseUnit: Number(purchase.unitsInPurchaseUnit ?? 0)
-            })): undefined,
+            })): null,
             lotNumber: UUID(),
             purchasePrice: Number(data.purchasePrice ?? 0),
             receivedDate: data.receivedDate ?? new Date(),
@@ -482,15 +484,15 @@ const useRegisterCompleteProduct = () => {
         }: null;
 
         let productResult;
-        const newProduct: RegisterCompleteProductDTO = {
-            establishmentId: '0',
-            categoryId: data.categoryId,
-            brandId: data.brandId,
-            seasonId: data.seasonId,
+        const newProduct: RegisterCompleteProductDto = {
+            establishmentId: BigInt(0),
+            categoryId: BigInt(data.categoryId),
+            brandId: BigInt(data.brandId),
+            seasonId: BigInt(data.seasonId),
             name: data.name,
             description: data.description,
             minStockGlobal: data.minStockGlobal,
-            unitOfMeasure: data.unitOfMeasure,
+            unitOfMeasure: data.unitOfMeasure as ForSaleEnum,
             imageUrl: data.imageUrl,
             universalBarCode: data.universalBarCode,
             inventory: rcpInventory,

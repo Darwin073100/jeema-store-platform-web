@@ -1,9 +1,6 @@
 'use client'
-import { BrandEntity } from '@/features/brand/domain/entities/brand.entity';
 import { useBrandStore } from '@/contexts/product-management/brand/presentation/stores/brand.store';
-import { CategoryEntity } from '@/features/category/domain/entities/category.entity';
 import { useCategoryStore } from '@/contexts/product-management/category/presentation/stores/category.store';
-import { SeasonEntity } from '@/features/season/domain/entities/season.entity';
 import { useSeasonStore } from '@/contexts/product-management/season/presentation/stores/season.store';
 import { Button } from '@/shared/ui/components/buttons';
 import { SelectMenu, SelectMenuOption, TextInput } from '@/shared/ui/components/inputs';
@@ -23,11 +20,14 @@ import { BiBarcode, BiSolidPurchaseTag } from "react-icons/bi";
 import { MdInventory2 } from 'react-icons/md';
 import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
 import { useProductUIStore } from '../../stores/product-ui.store';
+import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
+import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
+import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
 
 interface Props {
-    categoryList: CategoryEntity[],
-    brandList: BrandEntity[],
-    seasonList: SeasonEntity[],
+    categoryList: ICategory[],
+    brandList: IBrand[],
+    seasonList: ISeason[],
     suplierList: SuplierEntity[],
 }
 

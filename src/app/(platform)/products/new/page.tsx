@@ -1,18 +1,15 @@
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
-import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
-import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 import { FormRegisterCompleteProduct } from "@/contexts/product-management/product/presentation/ui/register-complete-product/FormRegisterCompleteProduct";
 import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
+import { findAllCategoriesByEstablishmentAction } from "@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action";
+import { findAllBrandsByEstablishmentAction } from "@/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action";
+import { findAllSeasonsByEstablishmentAction } from "@/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action";
 
 export default async function () {
-    const viewAllCategories = await FindAllCategoriesByEstablishmentAction();
-    const categoryItems = viewAllCategories.ok ? viewAllCategories.value?.categories ?? [] : [];
-    const viewAllBrands = await findAllBrandsByEstablishmentAction();
-    const brandItems = viewAllBrands.ok ? viewAllBrands.value?.brands ?? [] : [];
-    const viewAllSeasons = await findAllSeasonsBYEstablishmentAction();
-    const seasonItems = viewAllSeasons.ok ? viewAllSeasons.value?.seasons ?? [] : [];
+    const categories = await findAllCategoriesByEstablishmentAction();
+    const brands = await findAllBrandsByEstablishmentAction();
+    const seasons = await findAllSeasonsByEstablishmentAction();
     const suplierResponse = await findAllSuplierByEstablishmentId();
     const supliers = suplierResponse.value?.supliers?? [];
 
@@ -24,9 +21,9 @@ export default async function () {
         <ProtectedRoute>
             <TemplateHeader title="Alta de productos e inventario" detail="Da de alta un producto con lote inicial e inventario." breadcrumbItems={breadcrumbItems}>
                 <FormRegisterCompleteProduct
-                    brandList={brandItems}
-                    seasonList={seasonItems}
-                    categoryList={categoryItems}
+                    brandList={brands}
+                    seasonList={seasons}
+                    categoryList={categories}
                     suplierList={supliers} />
             </TemplateHeader>
         </ProtectedRoute>

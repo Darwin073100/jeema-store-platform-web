@@ -16,9 +16,6 @@ import { PurchasePriceVO } from "src/contexts/purchase-management/lot/domain/val
 import { ProductRepository } from "../../domain/repositories/product.repository";
 import { ProductNotFoundException } from "../../domain/exceptions/product-not-found.exception";
 import { ProductAlreadyExistsException } from "../../domain/exceptions/product-already-exists.exception";
-import { CategoryCheckerPort } from "src/contexts/product-management/category/domain/ports/out/category-checker.port";
-import { BrandChekerPort } from "src/contexts/product-management/brand/domain/ports/out/brand-checker.port";
-import { SeasonCheckerPort } from "src/contexts/product-management/season/domain/ports/out/season-checker.port";
 import { LotUnitPurchaseEntity } from "src/contexts/purchase-management/lot/domain/entities/lot-unit-purchase.entity";
 import { LotPurchaseQuantityVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-purchase-quantity.vo";
 import { LotUnitsInPurchaseUnitVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-units-in-purchase-unit.vo";
@@ -27,13 +24,16 @@ import { InventoryItemQuantityOnHandVO } from "src/contexts/inventory-management
 import { InventoryInternalBarCodeVO } from "src/contexts/inventory-management/inventory/domain/value-objects/inventory-internal-bar-code.vo";
 import { RegisterCompleteProductDto } from "../dtos/register-complete-product.dto";
 import { EstablishmentRepository } from '@/contexts/establishment-management/establishment/domain/repositories/establishment.repository';
+import { CategoryRepository } from '@/contexts/product-management/category/domain/repositories/category.repository';
+import { BrandRepository } from '@/contexts/product-management/brand/domain/repositories/brand.repository';
+import { SeasonRepository } from '@/contexts/product-management/season/domain/repositories/season.repository';
 
 export class RegisterCompleteProductUseCase {
     constructor(
         private readonly productRepository: ProductRepository,
-        private readonly categoryChecker: CategoryCheckerPort,
-        private readonly brandChecker: BrandChekerPort,
-        private readonly seasonChecker: SeasonCheckerPort,
+        private readonly categoryChecker: CategoryRepository,
+        private readonly brandChecker: BrandRepository,
+        private readonly seasonChecker: SeasonRepository,
         private readonly establishmentChecker: EstablishmentRepository, 
     ) { }
 
@@ -64,7 +64,7 @@ export class RegisterCompleteProductUseCase {
 
         //* Validar existencia de la marca
         if (dto.brandId) {
-            const brandExists = await this.brandChecker.exists(dto.brandId);
+            const brandExists = await this.brandChecker.existById(dto.brandId);
             if (!brandExists) {
                 throw new ProductNotFoundException(`La marca a la que deseas asignar el producto no existe.`);
             }
@@ -72,7 +72,7 @@ export class RegisterCompleteProductUseCase {
 
         //* Validar existencia de la temporada
         if (dto.seasonId) {
-            const seasonExists = await this.seasonChecker.exists(dto.seasonId);
+            const seasonExists = await this.seasonChecker.existById(dto.seasonId);
             if (!seasonExists) {
                 throw new ProductNotFoundException(`La temporada a la que deseas asignar el producto no existe.`);
             }
@@ -80,7 +80,7 @@ export class RegisterCompleteProductUseCase {
 
         //* Validar existencia de la categoría
         if (dto.categoryId) {
-            const categoryExists = await this.categoryChecker.exists(dto.categoryId);
+            const categoryExists = await this.categoryChecker.existById(dto.categoryId);
             if (!categoryExists) {
                 throw new ProductNotFoundException(`La categoría a la que deseas asignar el producto no existe.`);
             }

@@ -1,7 +1,7 @@
 import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { RegisterLotUnitPurchaseDTO } from "src/contexts/purchase-management/lot/application/dtos/register-lot-unit-purchase.dto";
 import { InventoryItemRegisterDto } from "src/contexts/inventory-management/inventory-item/application/dtos/inventory-item-register.dto";
-interface Inventory {
+export interface RCPInventory {
     // InventoryItem
     branchOfficeId    : bigint;
     internalBarCode?  : string | null;
@@ -14,7 +14,7 @@ interface Inventory {
     maxStockBranch?   : number | null;
     inventoryItems?   : InventoryItemRegisterDto[]|null;
 }
-interface Lot {
+export interface RCPLot {
     // Lot
     suplierId          : bigint | null;
     lotNumber          : string;
@@ -41,6 +41,6 @@ export interface RegisterCompleteProductDto {
     minStockGlobal    : number;
     imageUrl?         : string | null;
 
-    inventory: Inventory | null;
-    lot: Lot | null
+    inventory: RCPInventory | null;
+    lot: RCPLot | null
 }
