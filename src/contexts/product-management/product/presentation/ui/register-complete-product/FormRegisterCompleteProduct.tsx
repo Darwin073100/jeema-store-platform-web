@@ -1,6 +1,6 @@
 'use client'
 import { BrandEntity } from '@/features/brand/domain/entities/brand.entity';
-import { useBrandStore } from '@/features/brand/infraestructure/brand.store';
+import { useBrandStore } from '@/contexts/product-management/brand/presentation/stores/brand.store';
 import { CategoryEntity } from '@/features/category/domain/entities/category.entity';
 import { useCategoryStore } from '@/contexts/product-management/category/presentation/stores/category.store';
 import { SeasonEntity } from '@/features/season/domain/entities/season.entity';

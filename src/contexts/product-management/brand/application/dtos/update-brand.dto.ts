@@ -5,13 +5,7 @@
  *
  * Contiene solo los datos necesarios para la operación, sin lógica de negocio.
  */
-export class UpdateBrandDto{
+export interface UpdateBrandDto{
     readonly brandId: bigint; 
     readonly name: string;
-
-    constructor(brandId: bigint, name: string){
-        this.brandId = brandId;
-        this.name = name;
-        Object.freeze(this); // Congela el objeto para hacerlo inmutable
-    }
 }

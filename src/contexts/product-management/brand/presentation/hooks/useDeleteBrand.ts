@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { deleteBrandAction } from "../actions/delete-brand.action";
-import { useBrandStore } from "../infraestructure/brand.store";
+import { useBrandStore } from "../stores/brand.store";
+import { deleteBrandAction } from "@/contexts/product-management/brand/presentation/actions/delete-brand.action";
 
 const useDeleteBrand = () => {
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isConfirming, setIsConfirming] = useState<boolean>(false);
-    const [deletingBrandId, setDeletingBrandId] = useState<string | null>(null);
+    const [deletingBrandId, setDeletingBrandId] = useState<bigint | null>(null);
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const { removeBrand } = useBrandStore();
     const router = useRouter();
     
-    const showConfirmation = (brandId: string) => {
+    const showConfirmation = (brandId: bigint) => {
         if (isDeleting && deletingBrandId === brandId) {
             // Si ya está en modo de eliminación para esta marca, cancelar
             setIsDeleting(false);
@@ -24,14 +24,14 @@ const useDeleteBrand = () => {
         }
     };
 
-    const confirmDelete = async (brandId: string) => {
+    const confirmDelete = async (brandId: bigint) => {
         setIsConfirming(true);
         setFloatMessageState(() => ({}));
 
         try {
             const result = await deleteBrandAction(brandId);
 
-            if (result?.success) {
+            if (result?.ok) {
                 // Remover del store local para feedback inmediato
                 removeBrand(brandId);
                 
@@ -51,7 +51,7 @@ const useDeleteBrand = () => {
 
             } else {
                 setFloatMessageState(() => ({
-                    description: result?.error || 'Error al eliminar la marca',
+                    description: result?.error?.message || 'Error al eliminar la marca',
                     summary: '¡Error!',
                     isActive: true,
                     type: 'red'
@@ -85,13 +85,13 @@ const useDeleteBrand = () => {
     };
 
     // Método legacy mantenido para compatibilidad
-    const deleteBrand = async (brandId: string) => {
+    const deleteBrand = async (brandId: bigint) => {
         try {
             setIsConfirming(true);
 
             const result = await deleteBrandAction(brandId);
 
-            if (!result.success) {
+            if (!result.ok) {
                 return false;
             }
 

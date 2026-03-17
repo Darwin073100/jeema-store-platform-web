@@ -1,31 +1,26 @@
 'use server';
-
+import { TypeOrmBrandRepository } from '../../infraestruture/persistence/typeorm/repositories/typeorm-brand.repository';
+import { DeleteBrandUseCase } from '../../application/use-cases/delete-brand.use-case';
+import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
+import { Result } from '@/shared/features/result';
 import { revalidatePath } from 'next/cache';
-import { DeleteBrandUseCase } from '../application/delete-brand.use-case';
-import { BrandRepositoryFactory } from '../infraestructure/factories/brand-repository.factory';
 
-export async function deleteBrandAction(brandId: string) {
+export async function deleteBrandAction(brandId: bigint) {
+
   try {
-    const brandRepository = BrandRepositoryFactory.create();
-    const deleteBrandUseCase = new DeleteBrandUseCase(brandRepository);
-    
-    const result = await deleteBrandUseCase.execute(brandId);
-    
-    if (!result.ok) {
-      return {
-        success: false,
-        error: result.error?.message || 'Error deleting brand'
-      };
-    }
+    // Inyeccion de las dependencias usando Factory
+    const categoryRepo = await TypeOrmBrandRepository.create();
+    const useCase = new DeleteBrandUseCase(categoryRepo);
 
-    revalidatePath('/(platform)/brands');
-    
-    return { success: true };
-  } catch (error) {
-    console.error('Error in deleteBrandAction:', error);
+    const result = await useCase.execute(brandId);
+    revalidatePath('/products/list');
     return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error deleting brand'
+      ...Result.success(result)
+    }
+  } catch (error) {
+    console.error('deleteBrandAction: ', error);
+    return {
+      ...handleError(error, 'deleteBrandAction')
     };
   }
 }

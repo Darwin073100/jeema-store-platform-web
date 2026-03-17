@@ -1,35 +1,41 @@
 'use server'
 import { revalidatePath } from 'next/cache';
-import { RegisterBrandDTO } from "../application/dtos/register-brand.dto";
-import { RegisterBrandUseCase } from "../application/use-case/register-brand.use-case";
-import { BrandRepositoryFactory } from '../infraestructure/factories/brand-repository.factory';
 import { cookies } from 'next/headers';
-import { EstablishmentEntity } from '@/features/establishment/domain/entities/establishment.entity';
+import { RegisterBrandDto } from '../../application/dtos/register-brand.dto';
+import { TypeOrmBrandRepository } from '../../infraestruture/persistence/typeorm/repositories/typeorm-brand.repository';
+import { RegisterBrandUseCase } from '../../application/use-cases/register-brand.use-case';
+import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
+import { Result } from '@/shared/features/result';
+import { BrandMapper } from '../../application/mappers/brand.mapper';
+import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 
-export async function registerBrandAction(dto: Omit<RegisterBrandDTO, 'establishmentId'>){
-    const brandFetchRepositoryImpl = BrandRepositoryFactory.create();
-    const registerBrandUseCase = new RegisterBrandUseCase(brandFetchRepositoryImpl);
+export async function registerBrandAction(dto: Omit<RegisterBrandDto, 'establishmentId'>) {
+    try {
+        // Inyeccion de las dependencias usando Factory
+        const categoryRepo = await TypeOrmBrandRepository.create();
+        const useCase = new RegisterBrandUseCase(categoryRepo);
 
-    const cookieStore = await cookies();
-    let establishment = cookieStore.get('establishmentCookie')?.value ?? null;
-    let establishmentId = BigInt(0);
-    if (establishment) {
-        establishmentId = (JSON.parse(establishment) as EstablishmentEntity).establishmentId;
-    }
+        const cookieStore = await cookies();
 
-    const currentDTO = {
-        ...dto,
-        establishmentId,
-    }
+        let establishment = cookieStore.get('establishmentCookie')?.value ?? null;
+        let establishmentId = BigInt(0);
+        if (establishment) {
+            establishmentId = (JSON.parse(establishment) as IEstablishment).establishmentId;
+        }
+        const result = await useCase.execute({
+            ...dto,
+            establishmentId
+        });
 
-    const result = await registerBrandUseCase.execute(currentDTO);
+        revalidatePath('/products/list');
 
-    // Invalidar el caché de la página de productos para que se actualicen los datos
-    if (result?.ok) {
-        revalidatePath('/products');
-    }
-    
-    return {
-        ...result
+        return {
+            ...Result.success(BrandMapper.toIResponse(result))
+        };
+    } catch (error) {
+        console.error('registerBrandAction: ', error);
+        return {
+            ...handleError(error, 'registerBrandAction')
+        };
     }
 } 

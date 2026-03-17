@@ -1,17 +1,17 @@
+import { IBrand } from "@/contexts/product-management/brand/presentation/interfaces/Ibrand";
 import { create } from "zustand";
-import { BrandEntity } from "../domain/entities/brand.entity";
 
 
 type State = {
     modalOpen: boolean;
-    brands: BrandEntity[];
-    brand: BrandEntity| null;
-    setBrand: (brand: BrandEntity|null) => void;
+    brands: IBrand[];
+    brand: IBrand| null;
+    setBrand: (brand: IBrand|null) => void;
     setModalOpen: (open: boolean) => void;
-    setBrands: (brands: BrandEntity[]) => void;
-    addBrand: (brand: BrandEntity) => void;
-    updateBrand: (brand: BrandEntity) => void;
-    removeBrand: (brandId: string) => void;
+    setBrands: (brands: IBrand[]) => void;
+    addBrand: (brand: IBrand) => void;
+    updateBrand: (brand: IBrand) => void;
+    removeBrand: (brandId: bigint) => void;
 }
 
 export const useBrandStore = create<State>()((set, get) => ({

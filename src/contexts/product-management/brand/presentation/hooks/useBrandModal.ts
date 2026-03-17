@@ -7,21 +7,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Result } from '@/shared/features/result';
 import { ErrorEntity } from '@/shared/features/error.entity';
-import { BrandEntity } from '../domain/entities/brand.entity';
-import { useBrandStore } from '../infraestructure/brand.store';
-import { RegisterBrandDTO } from '../application/dtos/register-brand.dto';
-import { registerBrandAction } from '../actions/register-brand.action';
+import { useBrandStore } from '../stores/brand.store';
+import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
+import { UpdateBrandDto } from '@/contexts/product-management/brand/application/dtos/update-brand.dto';
+import { registerBrandAction } from '@/contexts/product-management/brand/presentation/actions/register-brand.action';
 import { useUpdateBrand } from './useUpdateBrand';
-import { UpdateBrandDTO } from '../application/dtos/update-brand.dto';
 
 const schema = yup.object({
-    name: yup.string().required('El campo es obligatorio').min(3, 'La marca debe tener al menos 3 caracteres.'),
+    name: yup.string().trim().required('El campo es obligatorio').min(3, 'La marca debe tener al menos 3 caracteres.'),
 }).required();
 
 type FormData = yup.InferType<typeof schema>;
 
 interface Props{
-    brandList: BrandEntity[]
+    brandList: IBrand[]
 }
 
 const useBrandModal = ({ brandList }: Props) => {
@@ -73,7 +72,7 @@ const useBrandModal = ({ brandList }: Props) => {
         if (!errors.name) {
             if (isEditMode && brand) {
                 // Update existing brand
-                const updateBrandDTO: UpdateBrandDTO = {
+                const updateBrandDTO: UpdateBrandDto = {
                     brandId: brand.brandId,
                     name: data.name
                 };
@@ -82,7 +81,7 @@ const useBrandModal = ({ brandList }: Props) => {
                 
                 if (success) {
                     // Update the brand in the store
-                    const updatedBrand: BrandEntity = {
+                    const updatedBrand: IBrand = {
                         ...brand,
                         name: data.name,
                         updatedAt: new Date()

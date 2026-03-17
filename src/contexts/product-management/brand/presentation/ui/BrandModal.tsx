@@ -8,15 +8,15 @@ import { IoClose } from 'react-icons/io5';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { BrandTable } from './BrandTable';
 import { MdCleaningServices } from 'react-icons/md';
-import { BrandEntity } from '../domain/entities/brand.entity';
 import { useBrandModal } from '../hooks/useBrandModal';
 import { useDeleteBrand } from '../hooks/useDeleteBrand';
 import { useUpdateBrand } from '../hooks/useUpdateBrand';
+import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
+import { BrandTable } from './BrandTable';
 
 interface Props{
-    brandList: BrandEntity[]
+    brandList: IBrand[]
 }
 
 const BrandModal = ({ brandList }: Props) => {

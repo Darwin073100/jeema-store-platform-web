@@ -1,20 +1,20 @@
+import { UpdateBrandDto } from '@/contexts/product-management/brand/application/dtos/update-brand.dto';
+import { updateBrandAction } from '@/contexts/product-management/brand/presentation/actions/update-brand.action';
 import { useState } from 'react';
-import { updateBrandAction } from '../actions/update-brand.action';
-import { UpdateBrandDTO } from '../application/dtos/update-brand.dto';
 
 export function useUpdateBrand() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateBrand = async (updateBrandDTO: UpdateBrandDTO) => {
+  const updateBrand = async (updateBrandDTO: UpdateBrandDto) => {
     try {
       setIsLoading(true);
       setError(null);
 
       const result = await updateBrandAction(updateBrandDTO);
 
-      if (!result.success) {
-        setError(result.error || 'Error updating brand');
+      if (!result.ok) {
+        setError(result.error?.message[0] || 'Error updating brand');
         return false;
       }
 
