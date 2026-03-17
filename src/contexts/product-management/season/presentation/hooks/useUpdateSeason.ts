@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { updateSeasonAction } from "../actions/update-season.action";
-import { useSeasonStore } from "../infraestructure/season.store";
-import { UpdateSeasonDTO } from "../application/dtos/update-season.dto";
+import { useSeasonStore } from "../stores/season.store";
+import { UpdateSeasonDto } from "@/contexts/product-management/season/application/dtos/update-season.dto";
+import { updateSeasonAction } from "@/contexts/product-management/season/presentation/actions/update-season.action";
 
 const useUpdateSeason = () => {
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
@@ -11,7 +11,7 @@ const useUpdateSeason = () => {
     const { updateSeason, setSeason } = useSeasonStore();
     const router = useRouter();
     
-    const handleUpdate = async (updateData: UpdateSeasonDTO) => {
+    const handleUpdate = async (updateData: UpdateSeasonDto) => {
         setIsUpdating(true);
         setFloatMessageState(() => ({}));
 

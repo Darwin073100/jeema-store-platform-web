@@ -1,24 +1,29 @@
 'use server'
-
 import { revalidatePath } from "next/cache";
-import { UpdateSeasonDTO } from "../application/dtos/update-season.dto";
-import { UpdateSeasonUseCase } from "../application/use-case/update-season.use-case";
-import { SeasonRepositoryFactory } from "../infraestructure/factories/season-repository.factory";
+import { UpdateSeasonDto } from "../../application/dtos/update-season.dto";
+import { TypeormSeasonRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-season.repository";
+import { UpdateSeasonUseCase } from "../../application/use-cases/update-season.use-case";
+import { Result } from "@/shared/features/result";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { SeasonMapper } from "../../application/mappers/season-mapper";
 
-export async function updateSeasonAction(dto: UpdateSeasonDTO){
+export async function updateSeasonAction(dto: UpdateSeasonDto){
     try {
-        const seasonRepository = SeasonRepositoryFactory.create();
-        const updateSeasonUseCase = new UpdateSeasonUseCase(seasonRepository);
-
-        const result = await updateSeasonUseCase.execute(dto);
-        
-        revalidatePath('/dashboard');
-        
-        return {
-            ...result
+            // Inyeccion de las dependencias usando Factory
+            const categoryRepo = await TypeormSeasonRepository.create();
+            const useCase = new UpdateSeasonUseCase(categoryRepo);
+    
+            const result = await useCase.execute(dto);
+    
+            revalidatePath('/products/list');
+    
+            return {
+                ...Result.success(SeasonMapper.toIResponse(result))
+            };
+        } catch (error) {
+            console.error('updateSeasonAction: ', error);
+            return {
+                ...handleError(error, 'updateSeasonAction')
+            };
         }
-    } catch (error) {
-        console.error('Error in updateSeasonAction:', error);
-        throw error;
-    }
 }

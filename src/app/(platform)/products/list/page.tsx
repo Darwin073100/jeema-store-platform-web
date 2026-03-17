@@ -4,7 +4,7 @@ import { CategoryModal } from "@/contexts/product-management/category/presentati
 import { ProductActionsBar } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductActionsBar";
 import { ProductSearch } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductSearch";
 import { BrandModal } from "@/contexts/product-management/brand/presentation/ui/BrandModal";
-import { SeasonModal } from "@/features/season/ui/SeasonModal";
+import { SeasonModal } from "@/contexts/product-management/season/presentation/ui/SeasonModal";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { ProductAudit } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductAudit";

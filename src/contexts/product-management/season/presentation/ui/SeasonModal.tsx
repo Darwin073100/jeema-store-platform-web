@@ -9,14 +9,14 @@ import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { MdCleaningServices } from 'react-icons/md';
-import { SeasonEntity } from '../domain/entities/season.entity';
 import { useSeasonModal } from '../hooks/useSeasonModal';
 import { SeasonTable } from './SeasonTable';
 import { useDeleteSeason } from '../hooks/useDeleteSeason';
 import { useUpdateSeason } from '../hooks/useUpdateSeason';
+import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
 
 interface Props{
-    seasonList: SeasonEntity[]
+    seasonList: ISeason[]
 }
 
 const SeasonModal = ({ seasonList }: Props) => {

@@ -3,7 +3,7 @@ import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
 import React from 'react'
 import { AiFillDelete } from 'react-icons/ai';
 import { MdEditSquare } from 'react-icons/md';
-import { useSeasonStore } from '../infraestructure/season.store';
+import { useSeasonStore } from '../stores/season.store';
 import { useDeleteSeason } from '../hooks/useDeleteSeason';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 

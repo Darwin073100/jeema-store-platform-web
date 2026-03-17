@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { deleteSeasonAction } from "../actions/delete-season.action";
-import { useSeasonStore } from "../infraestructure/season.store";
+import { useSeasonStore } from "../stores/season.store";
+import { deleteSeasonAction } from "@/contexts/product-management/season/presentation/actions/delete-season.action";
 
 const useDeleteSeason = () => {
     const [isDeleting, setIsDeleting] = useState<boolean>(false);

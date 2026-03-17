@@ -7,11 +7,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Result } from '@/shared/features/result';
 import { ErrorEntity } from '@/shared/features/error.entity';
-import { SeasonEntity } from '../domain/entities/season.entity';
-import { useSeasonStore } from '../infraestructure/season.store';
-import { RegisterSeasonDTO } from '../application/dtos/register-season.dto';
-import { UpdateSeasonDTO } from '../application/dtos/update-season.dto';
-import { registerSeasonAction } from '../actions/register-season.action';
+import { useSeasonStore } from '../stores/season.store';
+import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
+import { UpdateSeasonDto } from '@/contexts/product-management/season/application/dtos/update-season.dto';
+import { registerSeasonAction } from '@/contexts/product-management/season/presentation/actions/register-season.action';
 import { useUpdateSeason } from './useUpdateSeason';
 
 const schema = yup.object({
@@ -28,7 +27,7 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 interface Props{
-    seasonList: SeasonEntity[]
+    seasonList: ISeason[]
 }
 
 const useSeasonModal = ({ seasonList }: Props) => {
@@ -146,7 +145,7 @@ const useSeasonModal = ({ seasonList }: Props) => {
         if (!errors.name) {
             if (isEditMode && season) {
                 // Modo actualización
-                const updateData: UpdateSeasonDTO = {
+                const updateData: UpdateSeasonDto = {
                     seasonId: season.seasonId,
                     name: data.name,
                     description: data.description,

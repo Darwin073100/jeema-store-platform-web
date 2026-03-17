@@ -1,20 +1,25 @@
 'use server'
 import { revalidatePath } from 'next/cache';
-import { DeleteSeasonUseCase } from "../application/use-case/delete-season.use-case";
-import { SeasonRepositoryFactory } from '../infraestructure/factories/season-repository.factory';
+import { TypeormSeasonRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-season.repository';
+import { DeleteSeasonUseCase } from '../../application/use-cases/delete-season.use-case';
+import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
+import { Result } from '@/shared/features/result';
 
-export async function deleteSeasonAction(seasonId: bigint){
-    const seasonFetchRepositoryImpl = SeasonRepositoryFactory.create();
-    const deleteSeasonUseCase = new DeleteSeasonUseCase(seasonFetchRepositoryImpl);
+export async function deleteSeasonAction(seasonId: bigint) {
+    try {
+        // Inyeccion de las dependencias usando Factory
+        const categoryRepo = await TypeormSeasonRepository.create();
+        const useCase = new DeleteSeasonUseCase(categoryRepo);
 
-    const result = await deleteSeasonUseCase.execute(seasonId);
-
-    // Invalidar el caché de la página de productos para que se actualicen los datos
-    if (result?.ok) {
-        revalidatePath('/products');
-    }
-
-    return {
-        ...result
+        await useCase.execute(seasonId);
+        revalidatePath('/products/list');
+        return {
+            ...Result.success<{}>({})
+        };
+    } catch (error) {
+        console.error('deleteSeasonAction: ', error);
+        return {
+            ...handleError(error, 'deleteSeasonAction')
+        };
     }
 }

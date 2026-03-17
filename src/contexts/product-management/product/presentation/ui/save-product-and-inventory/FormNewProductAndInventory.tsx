@@ -4,7 +4,7 @@ import { useBrandStore } from '@/contexts/product-management/brand/presentation/
 import { CategoryEntity } from '@/features/category/domain/entities/category.entity';
 import { useCategoryStore } from '@/contexts/product-management/category/presentation/stores/category.store';
 import { SeasonEntity } from '@/features/season/domain/entities/season.entity';
-import { useSeasonStore } from '@/features/season/infraestructure/season.store';
+import { useSeasonStore } from '@/contexts/product-management/season/presentation/stores/season.store';
 import { Button } from '@/shared/ui/components/buttons';
 import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';

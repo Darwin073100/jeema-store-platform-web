@@ -1,7 +1,7 @@
-export class RegisterSeasonDto {
-    public readonly establishmentId: bigint;
-    public readonly name: string;
-    public readonly description: string | null;
-    public readonly dateInit: Date | null;
-    public readonly dateFinish: Date | null;
+export interface RegisterSeasonDto {
+    readonly establishmentId: bigint;
+    readonly name: string;
+    readonly description: string | null;
+    readonly dateInit: Date | null;
+    readonly dateFinish: Date | null;
 }

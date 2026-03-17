@@ -1,16 +1,16 @@
+import { ISeason } from "@/contexts/product-management/season/presentation/interfaces/ISeason";
 import { create } from "zustand";
-import { SeasonEntity } from "../domain/entities/season.entity";
 
 
 type State = {
     modalOpen: boolean;
-    seasons: SeasonEntity[];
-    season: SeasonEntity | null;
-    setSeason: (season: SeasonEntity|null)=>void;
+    seasons: ISeason[];
+    season: ISeason | null;
+    setSeason: (season: ISeason|null)=>void;
     setModalOpen: (open: boolean) => void;
-    setSeasons: (seasons: SeasonEntity[]) => void;
-    addSeason: (season: SeasonEntity) => void;
-    updateSeason: (updatedSeason: SeasonEntity) => void;
+    setSeasons: (seasons: ISeason[]) => void;
+    addSeason: (season: ISeason) => void;
+    updateSeason: (updatedSeason: ISeason) => void;
     removeSeason: (seasonId: bigint) => void;
 }
 

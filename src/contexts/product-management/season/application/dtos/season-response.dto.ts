@@ -1,4 +1,4 @@
-export class SeasonResponseDto {
+export interface SeasonResponseDto {
   seasonId: bigint;
   name: string;
   description?: string | null;
