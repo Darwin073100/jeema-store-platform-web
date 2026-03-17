@@ -17,6 +17,7 @@ import { updateProductAction } from '@/contexts/product-management/product/prese
 import { UpdateProductDto } from '@/contexts/product-management/product/application/dtos/update-product.dto';
 import { findAllCategoriesByEstablishmentAction } from '@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action';
 import { findAllBrandsByEstablishmentAction } from '@/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action';
+import { findAllSeasonsByEstablishmentAction } from '@/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action';
 
 const schema = yup.object({
     name: yup.string().required('El nombre del producto es obligatorio.').min(3, 'El nombre del producto debe tener al menos 3 caracteres.'),
@@ -88,7 +89,7 @@ const useUpdateProductModal = () => {
             const [categoriesResult, brandsResult, seasonsResult] = await Promise.all([
                 findAllCategoriesByEstablishmentAction(),
                 findAllBrandsByEstablishmentAction(),
-                viewAllSeasonsAction()
+                findAllSeasonsByEstablishmentAction()
             ]);
 
             if (categoriesResult) {
@@ -97,8 +98,8 @@ const useUpdateProductModal = () => {
             if (brandsResult) {
                 setBrands(brandsResult);
             }
-            if (seasonsResult?.ok && seasonsResult.value) {
-                setSeasons([]);
+            if (seasonsResult) {
+                setSeasons(seasonsResult);
             }
         } catch (error) {
             setFloatMessageState({
