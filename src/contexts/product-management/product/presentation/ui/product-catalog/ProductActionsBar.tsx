@@ -1,6 +1,6 @@
 'use client';
 import { useBrandStore } from '@/features/brand/infraestructure/brand.store';
-import { useCategoryStore } from '@/features/category/infraestructure/category.store';
+import { useCategoryStore } from '@/contexts/product-management/category/presentation/stores/category.store';
 import { useSeasonStore } from '@/features/season/infraestructure/season.store';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';

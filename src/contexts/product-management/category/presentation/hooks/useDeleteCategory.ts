@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
+import { useCategoryStore } from "../stores/category.store";
 import { deleteCategoryAction } from "../actions/delete-category.action";
-import { useCategoryStore } from "../infraestructure/category.store";
 
 const useDeleteCategory = () => {
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isConfirming, setIsConfirming] = useState<boolean>(false);
-    const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(null);
+    const [deletingCategoryId, setDeletingCategoryId] = useState<bigint | null>(null);
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const { removeCategory } = useCategoryStore();
     const router = useRouter();
     
-    const showConfirmation = (categoryId: string) => {
+    const showConfirmation = (categoryId: bigint) => {
         if (isDeleting && deletingCategoryId === categoryId) {
             // Si ya está en modo de eliminación para esta categoría, cancelar
             setIsDeleting(false);
@@ -24,7 +24,7 @@ const useDeleteCategory = () => {
         }
     };
 
-    const confirmDelete = async (categoryId: string) => {
+    const confirmDelete = async (categoryId: bigint) => {
         setIsConfirming(true);
         setFloatMessageState(() => ({}));
 
@@ -36,7 +36,6 @@ const useDeleteCategory = () => {
                 removeCategory(categoryId);
                 
                 // Refrescar datos del servidor
-                router.refresh();
                 
                 setFloatMessageState(() => ({
                     description: 'Categoría eliminada correctamente',
@@ -44,6 +43,7 @@ const useDeleteCategory = () => {
                     isActive: true,
                     type: 'blue'
                 }));
+                router.refresh();
 
                 setTimeout(() => {
                     setFloatMessageState(() => ({}));

@@ -2,7 +2,7 @@
 import * as yup from 'yup';
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { useCategoryStore } from "../infraestructure/category.store";
+import { useCategoryStore } from "../stores/category.store";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';

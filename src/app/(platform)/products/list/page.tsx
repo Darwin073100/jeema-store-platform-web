@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { TableProduct } from "@/contexts/product-management/product/presentation/ui/product-catalog/TableProducts";
-import { CategoryModal } from "@/features/category/ui/CategoryModal";
+import { CategoryModal } from "@/contexts/product-management/category/presentation/ui/CategoryModal";
 import { ProductActionsBar } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductActionsBar";
 import { ProductSearch } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductSearch";
 import { BrandModal } from "@/features/brand/ui/BrandModal";
