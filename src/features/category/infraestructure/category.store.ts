@@ -1,17 +1,17 @@
 import { create } from "zustand";
-import { CategoryEntity } from "../domain/entities/category.entity";
+import { ICategory } from "@/contexts/product-management/category/presentation/interfaces/ICategory";
 
 
 type State = {
     modalOpen: boolean;
-    category: CategoryEntity | null;
-    categories: CategoryEntity[];
-    setCategory: (entity: CategoryEntity|null)=> void
+    category: ICategory | null;
+    categories: ICategory[];
+    setCategory: (entity: ICategory|null)=> void
     setModalOpen: (open: boolean) => void;
-    setCategories: (categories: CategoryEntity[]) => void;
-    addCategory: (category: CategoryEntity) => void;
-    updateCategory: (updatedCategory: CategoryEntity) => void;
-    removeCategory: (categoryId: string) => void;
+    setCategories: (categories: ICategory[]) => void;
+    addCategory: (category: ICategory) => void;
+    updateCategory: (updatedCategory: ICategory) => void;
+    removeCategory: (categoryId: bigint) => void;
 }
 
 export const useCategoryStore = create<State>()((set, get) => ({

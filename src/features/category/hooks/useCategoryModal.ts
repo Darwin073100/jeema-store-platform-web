@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useCategoryStore } from "../infraestructure/category.store";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { CategoryEntity } from "../domain/entities/category.entity";
-import { RegisterCategoryDTO } from "../application/dtos/register-category.dto";
-import { UpdateCategoryDTO } from "../application/dtos/update-category.dto";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { registerCategoryAction } from '../actions/register-category.action';
 import { useUpdateCategory } from './useUpdateCategory';
 import { Result } from '@/shared/features/result';
 import { ErrorEntity } from '@/shared/features/error.entity';
+import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
+import { UpdateCategoryDTO } from '@/contexts/product-management/category/application/dtos/update-category.dto';
+import { RegisterCategoryDto } from '@/contexts/product-management/category/application/dtos/register-category.dto';
+import { registerCategoryAction } from '@/contexts/product-management/category/presentation/actions/register-category.action';
 
 const schema = yup.object({
     name: yup.string().required('El campo es obligatorio').min(3, 'La categoría debe tener al menos 3 caracteres.'),
@@ -22,7 +22,7 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 interface Props{
-    categoryList: CategoryEntity[]
+    categoryList: ICategory[]
 }
 
 const useCategoryModal = ({ categoryList }: Props) => {
@@ -114,7 +114,8 @@ const useCategoryModal = ({ categoryList }: Props) => {
                 }
             } else {
                 // Modo creación
-                const newCategory: RegisterCategoryDTO = {
+                const newCategory: RegisterCategoryDto = {
+                    establishmentId: BigInt(0),
                     name: data.name,
                     description: data.description,
                 }

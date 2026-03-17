@@ -6,6 +6,7 @@ import { RegisterCategoryUseCase } from '../../application/use-cases/register-ca
 import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
 import { Result } from '@/shared/features/result';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
+import { CategoryMapper } from '../../application/mappers/category-mapper';
 
 export async function registerCategoryAction(dto: Omit<RegisterCategoryDto, 'establishmentId'>) {
     try {
@@ -26,7 +27,7 @@ export async function registerCategoryAction(dto: Omit<RegisterCategoryDto, 'est
         });
 
         return {
-            ...Result.success(result)
+            ...Result.success(CategoryMapper.toIResponse(result))
         };
     } catch (error) {
         console.error('registerCategoryAction: ', error);

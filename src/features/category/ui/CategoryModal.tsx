@@ -8,15 +8,15 @@ import { IoClose } from 'react-icons/io5';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { CategoryEntity } from '../domain/entities/category.entity';
 import { MdCleaningServices } from 'react-icons/md';
 import { useCategoryModal } from '../hooks/useCategoryModal';
 import { useDeleteCategory } from '../hooks/useDeleteCategory';
 import { useUpdateCategory } from '../hooks/useUpdateCategory';
 import { CategoryTable } from './CategoryTable';
+import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
 
 interface Props{
-    categoryList: CategoryEntity[]
+    categoryList: ICategory[]
 }
 
 const CategoryModal = ({ categoryList }: Props) => {

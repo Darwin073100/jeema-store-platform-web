@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { updateCategoryAction } from "../actions/update-category.action";
 import { useCategoryStore } from "../infraestructure/category.store";
-import { UpdateCategoryDTO } from "../application/dtos/update-category.dto";
+import { UpdateCategoryDTO } from "@/contexts/product-management/category/application/dtos/update-category.dto";
+import { updateCategoryAction } from "@/contexts/product-management/category/presentation/actions/update-category.action";
 
 const useUpdateCategory = () => {
     const [isUpdating, setIsUpdating] = useState<boolean>(false);

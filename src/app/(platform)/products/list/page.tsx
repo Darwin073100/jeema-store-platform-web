@@ -7,12 +7,12 @@ import { BrandModal } from "@/features/brand/ui/BrandModal";
 import { SeasonModal } from "@/features/season/ui/SeasonModal";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
-import { FindAllCategoriesByEstablishmentAction } from "@/features/category/actions/find-all-categories-by-stablishment.action";
-import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 import { ProductAudit } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductAudit";
 import { findAllProductsByEstablishmentAction } from "@/contexts/product-management/product/presentation/actions/find-all-products-by-establishment.action";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
+import { findAllCategoriesByEstablishmentAction } from "@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action";
+import { findAllBrandsByEstablishmentAction } from "@/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action";
+import { findAllSeasonsByEstablishmentAction } from "@/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -29,14 +29,9 @@ export default async function ProductsPage() {
         const inventoryItemsData = await findAllProductsByEstablishmentAction();
         const items = inventoryItemsData as ProductEntity[];
 
-        const viewAllCategories = await FindAllCategoriesByEstablishmentAction();
-        const categories = viewAllCategories?.ok && viewAllCategories.value?.categories ? viewAllCategories.value.categories : [];
-
-        const viewAllBrands = await findAllBrandsByEstablishmentAction();
-        const brandItems = viewAllBrands?.ok && viewAllBrands.value?.brands ? viewAllBrands.value.brands : [];
-
-        const viewAllSeasons = await findAllSeasonsBYEstablishmentAction();
-        const seasonItems = viewAllSeasons?.ok && viewAllSeasons.value?.seasons ? viewAllSeasons.value.seasons : [];
+        const categories = await findAllCategoriesByEstablishmentAction();
+        const brands = await findAllBrandsByEstablishmentAction();
+        const seasons = await findAllSeasonsByEstablishmentAction();
 
         const breadcrumbItems: BreadcrumbItem[] = [
             {label: 'Productos', href: '/products'},
@@ -55,10 +50,10 @@ export default async function ProductsPage() {
                             categoryList={categories}
                         />
                         <BrandModal
-                            brandList={brandItems}
+                            brandList={brands}
                         />
                         <SeasonModal
-                            seasonList={seasonItems} />
+                            seasonList={seasons} />
                     </main>
                 </TemplateHeader>
             </ProtectedRoute>
