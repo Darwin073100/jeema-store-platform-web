@@ -1,8 +1,6 @@
 'use client'
-import { LotEntity } from "../domain/entities/lot.entity";
 import { useLotStore } from "../infraestructure/store/lot.store";
 import * as yup from 'yup';
-import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -10,6 +8,7 @@ import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { UpdateLotDTO } from "../application/dtos/update-lot.dto";
 import { updateLotAction } from "../actions/update-lot.action";
 import { ILot } from "@/contexts/purchase-management/lot/presentation/interfaces/ILot";
+import { ForSaleEnum } from "@/shared/domain/enums/for-sale.enum";
 
 // Schema de validación Yup para actualizar un lote
 export const updateLotSchema = yup.object().shape({

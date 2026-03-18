@@ -1,14 +1,9 @@
 import * as yup from 'yup';
-import { ProductEntity } from "../../../../../features/product/domain/entities/product.entity";
 import { useProductStore } from "../stores/product.store"
 import { useState, useEffect } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { ViewAllCategoriesAction } from '@/features/category/actions/view-all-categories.action';
-import { viewAllBrandsAction } from '@/features/brand/actions/view-all-brands.action';
-import { viewAllSeasonsAction } from '@/features/season/actions/view-all-seasons.action';
-import { ForSaleEnum } from '../../../../../features/product/domain/enums/for-sale.enum';
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct';
 import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
 import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
@@ -18,6 +13,7 @@ import { UpdateProductDto } from '@/contexts/product-management/product/applicat
 import { findAllCategoriesByEstablishmentAction } from '@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action';
 import { findAllBrandsByEstablishmentAction } from '@/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action';
 import { findAllSeasonsByEstablishmentAction } from '@/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action';
+import { ForSaleEnum } from '@/shared/domain/enums/for-sale.enum';
 
 const schema = yup.object({
     name: yup.string().required('El nombre del producto es obligatorio.').min(3, 'El nombre del producto debe tener al menos 3 caracteres.'),

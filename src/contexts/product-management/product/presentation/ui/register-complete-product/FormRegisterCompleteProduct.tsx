@@ -12,7 +12,6 @@ import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
-import { forSaleObject } from '../../../../../../features/product/domain/enums/for-sale.object';
 import { ProductEnableOptios } from './ProductEnableOptios';
 import { useRegisterCompleteProduct } from '../../hooks/useRegisterCompleteProduct';
 import { AiFillProduct } from 'react-icons/ai';
@@ -23,6 +22,7 @@ import { useProductUIStore } from '../../stores/product-ui.store';
 import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
 import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
 import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
+import { forSaleObject } from '../../../domain/enums/for-sale.object';
 
 interface Props {
     categoryList: ICategory[],

@@ -11,7 +11,7 @@ import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterLotUnitPurchaseModal } from '../hooks/useRegisterLotUnitPurchaseModal';
 import { useLotUnitPurchaseDescriptionInputs } from '../hooks/useLotUnitPurchaseDescriptionInputs';
-import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
+import { forSaleObject } from '@/contexts/product-management/product/domain/enums/for-sale.object';
 
 const RegisterLotUnitPurchaseModal = () => {
     const {

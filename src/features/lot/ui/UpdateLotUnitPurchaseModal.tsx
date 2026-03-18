@@ -9,8 +9,8 @@ import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiPencil } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { useUpdateLotUnitPurchaseModal } from '../hooks/useUpdateLotUnitPurchaseModal';
-import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
 import { useLotUnitPurchaseDescriptionInputs } from '../hooks/useLotUnitPurchaseDescriptionInputs';
+import { forSaleObject } from '@/contexts/product-management/product/domain/enums/for-sale.object';
 
 const UpdateLotUnitPurchaseModal = () => {
     const {

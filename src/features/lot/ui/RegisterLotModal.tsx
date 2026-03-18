@@ -11,10 +11,10 @@ import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterLotModal } from '../hooks/useRegisterLotModal';
-import { forSaleObject } from '@/features/product/domain/enums/for-sale.object';
 import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
 import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';
 import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
+import { forSaleObject } from '@/contexts/product-management/product/domain/enums/for-sale.object';
 interface Props {
     supliers: SuplierEntity[]
 }

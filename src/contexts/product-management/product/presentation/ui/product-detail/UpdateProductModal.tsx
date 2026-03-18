@@ -10,9 +10,8 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { useUpdateProductModal } from '../../hooks';
 import { FloatMessage } from '@/shared/ui/components/messages/FloatMessage';
-import { ForSaleEnum } from '../../../../../../features/product/domain/enums/for-sale.enum';
-import { forSaleObject } from '../../../../../../features/product/domain/enums/for-sale.object';
 import { useProductDescriptionInput } from '../../hooks/useProductDescriptionInput';
+import { forSaleObject } from '../../../domain/enums/for-sale.object';
 
 interface Props {
     product: any

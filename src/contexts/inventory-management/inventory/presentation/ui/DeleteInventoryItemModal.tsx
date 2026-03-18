@@ -5,7 +5,7 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { Modal } from '@/shared/ui/components/modals';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { IoClose } from 'react-icons/io5';
-import { useDeleteInventoryItemModal } from '../hooks/useDeleteInventoryItemModal';
+import { useDeleteInventoryItemModal } from '../../../../../features/inventory/hooks/useDeleteInventoryItemModal';
 import { HiTrash } from 'react-icons/hi';
 
 const DeleteInventoryItemModal = () => {

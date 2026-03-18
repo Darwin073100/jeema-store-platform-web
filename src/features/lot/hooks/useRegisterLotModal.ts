@@ -1,6 +1,5 @@
 'use client'
 import * as yup from 'yup';
-import { ForSaleEnum } from "@/features/product/domain/enums/for-sale.enum";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { v4 as UUID } from 'uuid'
@@ -11,6 +10,7 @@ import { useRegisterLotModalStore } from "../infraestructure/store/register-lot-
 import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
 import { registerLotWithInventoryItemAction } from '../actions/register-lot-with-inventory-item.action';
+import { ForSaleEnum } from '@/shared/domain/enums/for-sale.enum';
 
 // Schema de validación Yup para registrar un lote
 export const registerLotSchema = yup.object().shape({
