@@ -12,7 +12,7 @@ import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterLotModal } from '../hooks/useRegisterLotModal';
 import { useLotDescriptionInputs } from '../hooks/useLotDescriptionInputs';
-import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store';
+import { useRegisterInventoryItemStore } from '@/contexts/inventory-management/inventory/presentation/stores/register-inventory-item.store';
 import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
 import { forSaleObject } from '@/contexts/product-management/product/domain/enums/for-sale.object';
 interface Props {

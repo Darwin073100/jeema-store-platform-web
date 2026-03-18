@@ -8,9 +8,9 @@ import { FloatMessage } from '@/shared/ui/components/messages';
 import React from 'react'
 import { HiPencil, HiSave, HiTranslate } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { useUpdateInventoryModal } from '../../../../../features/inventory/hooks/useUpdateInventoryModal';
+import { useUpdateInventoryModal } from '../hooks/useUpdateInventoryModal';
 import { HiMiniSwatch } from 'react-icons/hi2';
-import { useInventoryDescriptionInput } from '../../../../../features/inventory/hooks/useInventoryDescriptionInput';
+import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
 import { useProductUIStore } from '@/contexts/product-management/product/presentation/stores/product-ui.store';
 import { BiBarcode } from 'react-icons/bi';
 

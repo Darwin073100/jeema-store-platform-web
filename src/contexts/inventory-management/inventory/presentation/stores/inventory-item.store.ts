@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { InventoryResponseDTO } from "../../domain/entities/inventory-response.dto";
+import { InventoryResponseDTO } from "../../../../../features/inventory/domain/entities/inventory-response.dto";
 
 type State = {
     searchCharacter: string,

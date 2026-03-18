@@ -9,10 +9,10 @@ import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
-import { useRegisterInventoryItemModal } from '../../../../../features/inventory/hooks/useRegisterInventoryItemModal';
+import { useRegisterInventoryItemModal } from '../hooks/useRegisterInventoryItemModal';
 import { LocationEnum } from '../../../../../features/inventory/domain/enums/location.enum';
-import { useInventoryItemDescripctionInput } from '../../../../../features/inventory/hooks/useInventoryItemSecripctionInput';
-import { useRegisterInventoryItemStore } from '../../../../../features/inventory/infraestructura/stores/register-inventory-item.store';
+import { useInventoryItemDescripctionInput } from '../hooks/useInventoryItemSecripctionInput';
+import { useRegisterInventoryItemStore } from '../stores/register-inventory-item.store';
 
 const RegisterInventoryItemModal = () => {
     const {

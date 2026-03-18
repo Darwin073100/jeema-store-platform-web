@@ -1,15 +1,14 @@
 import { useForm } from "react-hook-form";
-import { useRegisterInventoryStore } from "../infraestructura/stores/register-inventory.store";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { RegisterInventoryDTO } from "../application/dtos/register-inventory.dto";
-import { registerInventoryAction } from "../actions/register-inventory.action";
-import { useWorkspace } from "@/shared/hooks/useAuth";
-import { ProductEntity } from "@/features/product/domain/entities/product.entity";
+import { useUpdateInventoryStore } from "../stores/update-inventory.store";
+import { UpdateInventoryDTO } from "../../../../../features/inventory/application/dtos/update-inventory.dto";
+import { updateInventoryAction } from "../../../../../features/inventory/actions/update-inventory.action";
+import { generateBarcodeAction } from "../../../../../features/inventory/actions/generate-barcode.action";
 import { useProductUIStore } from "@/contexts/product-management/product/presentation/stores/product-ui.store";
-import { generateBarcodeAction } from "../actions/generate-barcode.action";
+import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 const registerFormData = yup.object().shape({
@@ -25,15 +24,11 @@ const registerFormData = yup.object().shape({
             .default(0),
     salePriceMany    : yup
             .string()
-            .notRequired()
             .optional()
-            .nullable()
             .typeError('Asegurate de ingresar la información correcta.'),
     saleQuantityMany : yup
             .string()
-            .notRequired()
             .optional()
-            .nullable()
             .typeError('Asegurate de ingresar la información correcta.'),
     minStockBranch   : yup
             .number()
@@ -51,11 +46,11 @@ const registerFormData = yup.object().shape({
 
 type RegisterFormData = yup.InferType<typeof registerFormData>;
 
-const useRegisterInventoryModal = () => {
-    const { handleTrueSaveOpenModal, handleFalseSaveOpenModal, saveOpenModal, setSelectedProduct, selectedProduct,
-         selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId
-    } = useRegisterInventoryStore();
-    const { branchOffice } = useWorkspace();
+const useUpdateInventoryModal = () => {
+    const { handleTrueUpdateOpenModal, handleFalseUpdateOpenModal, inventory, updateOpenModal, setInventory,
+        selectedBranchOfficeId, selectedLotId, selectedProductId, setSelectedBranchOfficeId, setSelectedLotId, setSelectedProductId,
+        selectedProduct, setSelectedProduct
+    } = useUpdateInventoryStore();
     const {initLoading, finishLoading} = useProductUIStore();
     
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
@@ -67,50 +62,17 @@ const useRegisterInventoryModal = () => {
     });
 
     useEffect(()=>{
-        if( saveOpenModal ){
+        if( updateOpenModal ){
             reset({
-                internalBarCode: '',
-                salePriceOne: 0,
-                salePriceMany: '0',
-                saleQuantityMany: '0',
-                minStockBranch: 0,
-                maxStockBranch: 0
+                internalBarCode: inventory?.internalBarCode ?? '',
+                salePriceOne: inventory?.salePriceOne ?? 0,
+                salePriceMany: inventory?.salePriceMany? inventory?.salePriceMany.toString(): undefined,
+                saleQuantityMany: inventory?.saleQuantityMany? inventory?.saleQuantityMany.toString():  undefined,
+                minStockBranch: inventory?.minStockBranch ?? 0,
+                maxStockBranch: inventory?.maxStockBranch ?? 0
             });
         }
-    }, [reset, saveOpenModal, selectedLotId, selectedProductId]);
-
-    const resetFormRegisterInventory = ()=> {
-        setSelectedBranchOfficeId(null);
-        setSelectedLotId(null);
-        setSelectedProductId(null);
-
-        reset({
-            internalBarCode: '',
-            salePriceOne: 0,
-            salePriceMany: '0',
-            saleQuantityMany: '0',
-            minStockBranch: 0,
-            maxStockBranch: 0
-        });
-        clearErrors([
-            'maxStockBranch', 'minStockBranch', 'salePriceOne', 'internalBarCode',
-            'salePriceMany', 'saleQuantityMany'
-        ]);
-        setFloatMessageState({});
-    }
-
-    const handleRegisterOpenModalInventory = (selectedProd: IProduct)=> {
-        setSelectedProductId(selectedProd.productId);
-        setSelectedProduct(selectedProd);
-        handleTrueSaveOpenModal();
-    }
-
-    const handleUseUniversalBarCodeToLocal = ()=> {
-        if( !selectedProduct ) return;
-        reset({
-            internalBarCode: selectedProduct?.universalBarCode ?? undefined
-        });
-    }
+    }, [reset, updateOpenModal, selectedBranchOfficeId, selectedLotId, selectedProductId]);
 
     const handleGenerateBarcode = async ()=>{
             initLoading('generateBarcode');
@@ -140,41 +102,76 @@ const useRegisterInventoryModal = () => {
             }
         }
 
+    const resetFormUpdateInventory = ()=> {
+        setSelectedBranchOfficeId(null);
+        setSelectedLotId(null);
+        setSelectedProductId(null);
+
+        reset({
+            internalBarCode: '',
+            salePriceOne: 0,
+            salePriceMany: '0',
+            saleQuantityMany: '0',
+            minStockBranch: 0,
+            maxStockBranch: 0
+        });
+        clearErrors([
+            'maxStockBranch', 'minStockBranch', 'salePriceOne', 'internalBarCode',
+            'salePriceMany', 'saleQuantityMany'
+        ]);
+        setFloatMessageState({});
+    }
+
+    const handleOpenModalInventory = (selectedInv: IInventory | null, selectedProd: IProduct)=> {
+        setInventory(selectedInv);
+        setSelectedProduct(selectedProd);
+        handleTrueUpdateOpenModal();
+    }
+
+    const handleUseUniversalBarCodeToLocal = ()=> {
+        if( !selectedProduct ) return;
+        reset({
+            internalBarCode: selectedProduct?.universalBarCode ?? inventory?.internalBarCode ?? undefined
+        });
+    }
+
     const onSubmit = async (data: RegisterFormData) => {
         setFloatMessageState({});
         setIsLoading(true);
 
         try {
 
-            const registerInventoryDto: RegisterInventoryDTO = {
-                branchOfficeId: branchOffice?.branchOfficeId? BigInt(branchOffice?.branchOfficeId): BigInt(0),
-                productId: selectedProductId ?? BigInt(0),
-                isSellable: true,
+            const updateInventoryDto: UpdateInventoryDTO = {
+                inventoryId: inventory?.inventoryId ?? BigInt(0),
+                branchOfficeId: inventory?.branchOfficeId ?? BigInt(0),
+                productId: inventory?.productId ?? BigInt(0),
+                isSellable: inventory?.isSellable ?? true,
                 internalBarCode: data.internalBarCode,
                 salePriceOne: data.salePriceOne,
                 salePriceMany: data.salePriceMany? Number(data.salePriceMany): null,
+                salePriceSpecial: inventory?.salePriceSpecial,
                 saleQuantityMany: data.saleQuantityMany? Number(data.saleQuantityMany): null,
                 maxStockBranch: data.maxStockBranch,
                 minStockBranch: data.minStockBranch
             }
 
-            const result = await registerInventoryAction(registerInventoryDto);
+            const result = await updateInventoryAction(updateInventoryDto);
             if (result.ok) {
                 setFloatMessageState({
                     summary: '¡Correcto!',
                     isActive: true,
                     type: 'green',
-                    description: '¡Inventario registrado exitosamente!'
+                    description: '¡Inventario actualizado exitosamente!'
                 });
 
                 setTimeout(() => {
                     setFloatMessageState({});
-                    handleFalseSaveOpenModal();
+                    handleFalseUpdateOpenModal();
                 }, 3000);
             } else {
                 const errorMessage = Array.isArray(result?.error) 
                     ? result.error.join(', ') 
-                    : result?.error?.message || 'Error al registrar un inventario';
+                    : result?.error?.message || 'Error al actualizar un inventario';
                 
                 setFloatMessageState({
                     description: errorMessage,
@@ -189,7 +186,7 @@ const useRegisterInventoryModal = () => {
             }
         } catch(error){
             setFloatMessageState({
-                description: 'Error inesperado al registrar un inventario',
+                description: 'Error inesperado al actualizar un inventario',
                 summary: '¡Error!',
                 isActive: true,
                 type: 'red'
@@ -204,10 +201,9 @@ const useRegisterInventoryModal = () => {
     }
 
     return {
-        handleFalseSaveOpenModal,
-        handleRegisterOpenModalInventory,
-        handleUseUniversalBarCodeToLocal,
-        saveOpenModal,
+        handleFalseUpdateOpenModal,
+        handleOpenModalInventory,
+        updateOpenModal,
         register,
         handleSubmit,
         reset,
@@ -215,13 +211,14 @@ const useRegisterInventoryModal = () => {
         watch,
         clearErrors,
         errors,
-        resetFormRegisterInventory,
+        resetFormUpdateInventory,
         onSubmit,
         // UI states
         floatMessageState,
         isLoading,
+        handleUseUniversalBarCodeToLocal,
         handleGenerateBarcode
     }
 }
 
-export { useRegisterInventoryModal };
+export { useUpdateInventoryModal };

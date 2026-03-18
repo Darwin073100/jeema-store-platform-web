@@ -9,9 +9,9 @@ import React from 'react'
 import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
-import { useRegisterInventoryModal } from '../../../../../features/inventory/hooks/useRegisterInventoryModal';
+import { useRegisterInventoryModal } from '../hooks/useRegisterInventoryModal';
 import { HiMiniSwatch } from 'react-icons/hi2';
-import { useInventoryDescriptionInput } from '../../../../../features/inventory/hooks/useInventoryDescriptionInput';
+import { useInventoryDescriptionInput } from '../hooks/useInventoryDescriptionInput';
 import { useRegisterCompleteProduct } from '@/contexts/product-management/product/presentation/hooks/useRegisterCompleteProduct';
 import { BiBarcode } from 'react-icons/bi';
 import { useProductUIStore } from '@/contexts/product-management/product/presentation/stores/product-ui.store';

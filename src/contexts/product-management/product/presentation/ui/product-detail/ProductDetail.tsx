@@ -12,8 +12,8 @@ import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { useDeleteProductModal } from '../../hooks/useDeleteProductModal'
 import { useUpdateProductModal } from '../../hooks'
 import { FloatMessage } from '@/shared/ui/components/messages'
-import { useRegisterInventoryItemStore } from '@/features/inventory/infraestructura/stores/register-inventory-item.store'
-import { useInventoryItemUIStore } from '@/features/inventory/infraestructura/stores/inventory-item-ui.store'
+import { useRegisterInventoryItemStore } from '@/contexts/inventory-management/inventory/presentation/stores/register-inventory-item.store'
+import { useInventoryItemUIStore } from '@/contexts/inventory-management/inventory/presentation/stores/inventory-item-ui.store'
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 interface Props {
     product: IProduct;
