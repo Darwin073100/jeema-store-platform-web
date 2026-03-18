@@ -3,7 +3,7 @@ import { Content, TDocumentDefinitions } from "pdfmake/interfaces";
 import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
 
 const logo: Content = {
-	image: 'src/assets/images/la_bonita_1.png',
+	image: 'src/shared/ui/assets/images/la_bonita_1.png',
 	width: 40,
 	alignment: 'center',
 	marginBottom: 4

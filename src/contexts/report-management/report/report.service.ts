@@ -13,6 +13,10 @@ import { CashSessionRepository } from 'src/contexts/cash-management/cash-session
 import { getTicketCloseCashSession58Document } from './documents/ticket-close-cash-session-58-document';
 import { getTicketCloseCashSessionList58Document } from './documents/ticket-close-cash-session-list-58-document';
 import { BranchOfficeRepository } from 'src/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository';
+import { TypeormSaleRepository } from '@/contexts/sale-management/sale/infraestructure/persistence/typeorm/repositories/typeorm-sale.repository';
+import { TypeormInventoryRepository } from '@/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository';
+import { TypeormCashSessionRepository } from '@/contexts/cash-management/cash-session/infraestructure/repositories/typeorm-cash-session.repository';
+import { TypeOrmBranchOfficeRepository } from '@/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository';
 
 export class ReportService {
     constructor(
@@ -23,8 +27,13 @@ export class ReportService {
         private branchOfficeRepository: BranchOfficeRepository,
     ) { }
 
-    static create(){
-        
+    static async create(){
+        const pService = new PrinterService();
+        const sRepository= await TypeormSaleRepository.create();
+        const iRepository = await TypeormInventoryRepository.create();
+        const cRepository = await TypeormCashSessionRepository.create();
+        const bRepository = await TypeOrmBranchOfficeRepository.create();
+        return new ReportService(pService, sRepository, iRepository, cRepository, bRepository);
     }
     
     async getBillReport() {
