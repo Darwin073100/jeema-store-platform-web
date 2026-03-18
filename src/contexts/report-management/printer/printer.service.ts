@@ -1,13 +1,13 @@
-import PdfPrinter from 'pdfmake';
+const PdfPrinter = require('pdfmake/build/pdfmake');
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
 // Define font files
 const fonts = {
   Roboto: {
-    normal: 'src/assets/fonts/roboto/Roboto-Regular.ttf',
-    bold: 'src/assets/fonts/roboto/Roboto-Medium.ttf',
-    italics: 'src/assets/fonts/roboto/Roboto-Italic.ttf',
-    bolditalics: 'src/assets/fonts/roboto/Roboto-MediumItalic.ttf'
+    normal: 'src/shared/ui/assets/fonts/roboto/Roboto-Regular.ttf',
+    bold: 'src/shared/ui/assets/fonts/roboto/Roboto-Medium.ttf',
+    italics: 'src/shared/ui/assets/fonts/roboto/Roboto-Italic.ttf',
+    bolditalics: 'src/shared/ui/assets/fonts/roboto/Roboto-MediumItalic.ttf'
   }
 };
 

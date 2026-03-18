@@ -1,34 +1,31 @@
-import { Inject, Injectable } from '@nestjs/common';
 import { billReport } from './documents/bill.reports';
 import { PrinterService } from '../printer/printer.service';
-import { SALE_REPOSITORY, SaleRepository } from 'src/contexts/sale-management/sale/domain/repositories/sale.repository';
+import { SaleRepository } from 'src/contexts/sale-management/sale/domain/repositories/sale.repository';
 import { SaleNotFoundException } from 'src/contexts/sale-management/sale/domain/exceptions/sale-not-found.exception';
 import { getBarcode51X25DocumentDefinition } from './documents/barcode-51-25-document';
-import { INVENTORY_REPOSITORY, InventoryRepository } from 'src/contexts/inventory-management/inventory/domain/repositories/inventory.repository';
+import { InventoryRepository } from 'src/contexts/inventory-management/inventory/domain/repositories/inventory.repository';
 import { InventoryNotFoundException } from 'src/contexts/inventory-management/inventory/domain/exceptions/inventory-not-found.exception';
 import { getTicket54DocumentDefinition } from './documents/ticket-58-document';
 import { getBarcode27X13DocumentDefinition } from './documents/barcode-27-13-document';
 import { BarcodeTypeEnum } from '../enums/barcode-type.enum';
 import { getPrices27X13DocumentDefinition } from './documents/prices-27-13-document';
-import { CASH_SESSION_REPOSITORY, CashSessionRepository } from 'src/contexts/cash-management/cash-session/domain/repositories/cash-session.repository';
+import { CashSessionRepository } from 'src/contexts/cash-management/cash-session/domain/repositories/cash-session.repository';
 import { getTicketCloseCashSession58Document } from './documents/ticket-close-cash-session-58-document';
 import { getTicketCloseCashSessionList58Document } from './documents/ticket-close-cash-session-list-58-document';
-import { CASH_REGISTER_REPOSITORY, CashRegisterRepository } from 'src/contexts/cash-management/cash-register/domain/repositories/cash-register.repository';
-import { BRANCH_OFFICE_REPOSITORY, BranchOfficeRepository } from 'src/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository';
+import { BranchOfficeRepository } from 'src/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository';
 
-@Injectable()
 export class ReportService {
     constructor(
         private readonly printerService: PrinterService,
-        @Inject(SALE_REPOSITORY)
         private saleRepository: SaleRepository,
-        @Inject(INVENTORY_REPOSITORY)
         private inventoryRepository: InventoryRepository,
-        @Inject(CASH_SESSION_REPOSITORY)
         private cashSessionRepository: CashSessionRepository,
-        @Inject(BRANCH_OFFICE_REPOSITORY)
         private branchOfficeRepository: BranchOfficeRepository,
     ) { }
+
+    static create(){
+        
+    }
     
     async getBillReport() {
         return this.printerService.createPdf(billReport());

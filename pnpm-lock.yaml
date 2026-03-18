@@ -20,6 +20,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.12
         version: 4.2.1
+      '@types/pdfmake':
+        specifier: ^0.3.2
+        version: 0.3.2
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -138,9 +141,6 @@ importers:
       '@types/passport-local':
         specifier: ^1.0.38
         version: 1.0.38
-      '@types/pdfmake':
-        specifier: ^0.3.2
-        version: 0.3.2
       '@types/react':
         specifier: ^19.1.11
         version: 19.2.14
