@@ -11,7 +11,5 @@ export class Result<T, E = Error>{
 
     static failure<E>(error:E):Result<never, E>{
         return new Result<never, E>(false, undefined, error);
-    }
-    
-    
+    }   
 }

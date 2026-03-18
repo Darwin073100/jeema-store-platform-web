@@ -12,24 +12,26 @@ import { InventorySalePriceSpecialVO } from "../../domain/value-objects/inventor
 import { UpdateInventoryDto } from "../dtos/update-inventory.dto";
 import { InventoryInternalBarCodeVO } from "../../domain/value-objects/inventory-internal-bar-code.vo";
 import { InventoryConflictException } from "../../domain/exceptions/inventory-conflict.exception";
+import { ProductRepository } from "@/contexts/product-management/product/domain/repositories/product.repository";
+import { BranchOfficeRepository } from "@/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository";
 
 export class UpdateInventoryUseCase{
     constructor(
         private readonly inventoryRepository: InventoryRepository,
-        private readonly productCheckerPort: ProductCheckerPort,
-        private readonly branchOfficeCheckerPort: BranchOfficeCheckerPort
+        private readonly productRepository: ProductRepository,
+        private readonly branchOfficeRepository: BranchOfficeRepository
     ){
 
     }
 
     async execute(dto: UpdateInventoryDto){
         // 1. Verificar si el producto existe
-        const productExists = await this.productCheckerPort.check(dto.productId);
+        const productExists = await this.productRepository.existById(dto.productId);
         if(!productExists){
             throw new InventoryNotFoundException('El producto establecido no existe.');
         }
         // 4. Verificar si la sucursal existe
-        const branchOfficeExists = await this.branchOfficeCheckerPort.existById(dto.branchOfficeId);
+        const branchOfficeExists = await this.branchOfficeRepository.existById(dto.branchOfficeId);
         if(!branchOfficeExists){
             throw new InventoryNotFoundException('La sucursal establecida no existe.');
         }

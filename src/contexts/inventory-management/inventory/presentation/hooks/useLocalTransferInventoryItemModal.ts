@@ -8,7 +8,7 @@ import { registerInventoryItemAction } from "../../../../../features/inventory/a
 import { useUpdateInventoryItemStore } from "../stores/update-inventory-item.store";
 import { InventoryItemEntity } from "../../../../../features/inventory/domain/entities/inventory-item-response.dto";
 import { UpdateInventoryItemDTO } from "../../../../../features/inventory/application/dtos/update-inventory-item.dto";
-import { updateInventoryItemAction } from "../../../../../features/inventory/actions/update-inventory-item.action";
+import { updateInventoryItemAction } from "../actions/update-inventory-item.action";
 import { useInventoryItemUIStore } from "../stores/inventory-item-ui.store";
 import { useInventoryItemDescripctionInput } from "./useInventoryItemSecripctionInput";
 import { LocalTransferDTO } from "@/features/transfer/application/dtos/local-transfer.dto";

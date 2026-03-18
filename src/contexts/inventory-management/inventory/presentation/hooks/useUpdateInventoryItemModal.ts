@@ -8,7 +8,7 @@ import { registerInventoryItemAction } from "../../../../../features/inventory/a
 import { useUpdateInventoryItemStore } from "../stores/update-inventory-item.store";
 import { InventoryItemEntity } from "../../../../../features/inventory/domain/entities/inventory-item-response.dto";
 import { UpdateInventoryItemDTO } from "../../../../../features/inventory/application/dtos/update-inventory-item.dto";
-import { updateInventoryItemAction } from "../../../../../features/inventory/actions/update-inventory-item.action";
+import { updateInventoryItemAction } from "../actions/update-inventory-item.action";
 import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 
 const registerFormData = yup.object().shape({

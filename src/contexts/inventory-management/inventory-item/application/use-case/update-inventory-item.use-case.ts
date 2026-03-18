@@ -2,20 +2,18 @@ import { InventoryItemRepository } from "../../domain/repositories/inventory-ite
 import { InventoryItemEntity } from "../../domain/entities/inventory-item.entity";
 import { InventoryItemQuantityOnHandVO } from "../../domain/value-objects/inventory-item-quantity-on-hand.vo";
 import { InventoryItemNotFoundException } from "../../domain/exceptions/inventory-item-not-found.exception";
-import { InventoryCheckerPort } from "src/contexts/inventory-management/inventory/domain/port/out/inventory-ckecker.port";
 import { UpdateInventoryItemDto } from "../dtos/update-inventory-item.dto";
+import { InventoryRepository } from "@/contexts/inventory-management/inventory/domain/repositories/inventory.repository";
 
 export class UpdateInventoryItemUseCase{
     constructor(
         private readonly inventoryItemRepository: InventoryItemRepository,
-        private readonly inventoryCheckerPort: InventoryCheckerPort,
-    ){
-
-    }
+        private readonly inventoryCheckerPort: InventoryRepository,
+    ){}
 
     async execute(dto: UpdateInventoryItemDto){
         // Verificar si el inventario existe
-        const inventoryExists = await this.inventoryCheckerPort.exist(dto.inventoryId);
+        const inventoryExists = await this.inventoryCheckerPort.existById(dto.inventoryId);
         if(!inventoryExists){
             throw new InventoryItemNotFoundException('El inventario establecido no existe.');
         }

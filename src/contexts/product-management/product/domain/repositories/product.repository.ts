@@ -12,4 +12,5 @@ export interface ProductRepository extends TemplateRepository<ProductEntity>{
   saveCompleteProduct(product: ProductEntity): Promise<ProductEntity>;
   findAllByEstablishment(establishmentId: bigint): Promise<ProductEntity[]>;
   findAllByBranchOffice(branchOfficeId: bigint): Promise<ProductEntity[]>;
+  existById(productId: bigint):Promise<ProductEntity | null>;
 }

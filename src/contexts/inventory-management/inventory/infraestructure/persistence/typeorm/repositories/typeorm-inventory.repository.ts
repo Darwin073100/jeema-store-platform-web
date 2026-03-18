@@ -17,7 +17,7 @@ export class TypeormInventoryRepository implements InventoryRepository{
      * Crea una instancia del repositorio (factory)
      * Uso: const repo = await TypeOrmAgregadoRepository.create();
      */
-    static async create(): Promise<TypeormInventoryRepository> {
+    static async create(): Promise<InventoryRepository> {
         const dataSource = await getDataSource();
         return new TypeormInventoryRepository(dataSource);
     }

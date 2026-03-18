@@ -365,6 +365,11 @@ export class TypeOrmProductRepository implements ProductRepository {
       throw error;
     }
   }
+
+  async existById(productId: bigint):Promise<ProductEntity | null>{
+    const result = await this.productRepository.findOneBy({ productId });
+    return result? ProductTypeOrmMapper.toDomain(result): null
+  }
   async findByIdCategoryBrandSeason(entityId: bigint): Promise<ProductEntity | null> {
     try {
       const result = await this.productRepository.findOne({

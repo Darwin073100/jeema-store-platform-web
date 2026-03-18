@@ -1,4 +1,4 @@
-export class UpdateInventoryDto {
+export interface UpdateInventoryDto {
     inventoryId          : bigint;
     productId            : bigint;
     branchOfficeId       : bigint;
