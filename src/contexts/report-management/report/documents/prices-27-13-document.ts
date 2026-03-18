@@ -1,5 +1,5 @@
+import { numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
 import { Content, TDocumentDefinitions } from "pdfmake/interfaces";
-import { numberMoneyFormat } from "src/shared/utils/number-formatter";
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
 const mmToPt = (mm: number) => mm * 2.83465;

@@ -1,8 +1,8 @@
+import { formatDate, formatDateShort } from "@/shared/lib/utils/date-formatter";
+import { numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
 import { Content, TDocumentDefinitions } from "pdfmake/interfaces";
 import { CashSessionEntity } from "src/contexts/cash-management/cash-session/domain/entities/cash-session.entity";
 import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
-import { formatDate, formatDateShort } from "src/shared/utils/date-formatter";
-import { numberMoneyFormat } from "src/shared/utils/number-formatter";
 
 export function getTicketCloseCashSessionList58Document(cashSessions: CashSessionEntity[], branchOffice: BranchOfficeEntity | null): TDocumentDefinitions {
 	const address = `${branchOffice?.address.city ?? ''} ${branchOffice?.address.state ?? ''}, ${branchOffice?.address.country ?? ''}, ${branchOffice?.address.neighborhood ?? ''}, ${branchOffice?.address.postalCode ?? ''}, ${branchOffice?.address.street ?? ''}`

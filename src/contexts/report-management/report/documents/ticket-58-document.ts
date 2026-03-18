@@ -1,6 +1,6 @@
+import { formatDate } from "@/shared/lib/utils/date-formatter";
 import { Content, TDocumentDefinitions } from "pdfmake/interfaces";
 import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
-import { formatDate } from "src/shared/utils/date-formatter";
 
 const logo: Content = {
 	image: 'src/assets/images/la_bonita_1.png',
