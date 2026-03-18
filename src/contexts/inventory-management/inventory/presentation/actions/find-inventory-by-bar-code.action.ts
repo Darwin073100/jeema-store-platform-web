@@ -1,14 +1,27 @@
 'use server';
-import { FindInventoryByBarCodeUseCase } from "../../../../../features/inventory/application/use-case/find-inventory-by-bar-code.use-case";
-import { InventoryRepositoryFactory } from "../../../../../features/inventory/infraestructura/factories/inventory-repository.factory";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { Result } from "@/shared/features/result";
+import { InventoryMapper } from "../../application/mapper/inventory.mapper";
+import { TypeormInventoryRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository";
+import { FindByInternalBarCodeInventoryUseCase } from "../../application/use-case/find-by-internal-barcode-inventory.use-case";
+import { InventoryNotFoundException } from "../../domain/exceptions/inventory-not-found.exception";
 
 export async function findInventoryByBarCodeAction(barCode: string) {
-    const inventoryFetchRepositoryImpl = InventoryRepositoryFactory.create();
-    const findInventoryByBarCodeUseCase = new FindInventoryByBarCodeUseCase(inventoryFetchRepositoryImpl);
-    
-    const result = await findInventoryByBarCodeUseCase.execute(barCode);
-    
-    return {
-        ...result
-    };
+    try {
+        const inventoryFetchRepositoryImpl = await TypeormInventoryRepository.create();
+        const findInventoryByBarCodeUseCase = new FindByInternalBarCodeInventoryUseCase(inventoryFetchRepositoryImpl);
+
+        const result = await findInventoryByBarCodeUseCase.execute(barCode);
+        if(!result){
+            throw new InventoryNotFoundException('No se encontro el inventario.');
+        }
+        return {
+            ...Result.success(InventoryMapper.toIResponse(result))
+        };
+    } catch (error) {
+        console.error('generateBarcodeAction: ', error);
+        return {
+            ...handleError(error, 'generateBarcodeAction')
+        }
+    }
 }
