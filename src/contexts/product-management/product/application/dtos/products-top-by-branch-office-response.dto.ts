@@ -1,8 +1,6 @@
-export class ProductsTopByBranchOfficeResponseDto{
-    constructor(
-        public readonly productId: bigint,
-        public readonly name: string,
-        public readonly quantitySales: number,
-        public readonly totalSales: number
-    ){}
+export interface ProductsTopByBranchOfficeResponseDto{
+    readonly productId: bigint,
+    readonly name: string,
+    readonly quantitySales: number,
+    readonly totalSales: number
 }

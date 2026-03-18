@@ -4,14 +4,13 @@ import Sale from '../../shared/ui/assets/images/sale.svg';
 import Inventory from '../../shared/ui/assets/images/inventary.svg';
 import Contability from '../../shared/ui/assets/images/payCash.svg';
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import { FaHistory } from "react-icons/fa";
 import { PCol, PrimaryTable, PRow } from "@/shared/ui/components/tables/PrimaryTable";
 import { FcCurrencyExchange, FcNegativeDynamic, FcSalesPerformance, FcScatterPlot, FcStatistics } from "react-icons/fc";
-import { findTopProductsByBranchOfficeAction } from "@/features/product/actions/find-top-products-by-branch-office.action";
-import { FilterTopEnum } from "@/features/product/domain/enums/filter-top-enum";
 import { numberBasicFormat, numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
 import { Badge } from "@/shared/ui/components/badges/Badge";
 import { HideElement } from "@/features/auth/ui/HideElement";
+import { findTopProductsByBranchOfficeAction } from "@/contexts/product-management/product/presentation/actions/find-top-products-by-branch-office.action";
+import { FilterTopEnum } from "@/contexts/product-management/product/domain/enums/FilterTopEnum";
 
 const homeCards = [
   {
@@ -36,9 +35,9 @@ const homeCards = [
 
 export default async function Home() {
   const resultTopQuantity = await findTopProductsByBranchOfficeAction({filterBy: FilterTopEnum.QUANTITY_SALES});
-  const productsTopQuantity = resultTopQuantity.value?.products ?? []  
+  const productsTopQuantity = resultTopQuantity ?? []  
   const resultTopTotal = await findTopProductsByBranchOfficeAction({filterBy: FilterTopEnum.TOTAL_SALES});
-  const productsTopTotal = resultTopTotal.value?.products ?? []  
+  const productsTopTotal = resultTopTotal ?? []  
 
   const breadCrumbItems: BreadcrumbItem[] = [
     {
