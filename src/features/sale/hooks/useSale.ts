@@ -1,5 +1,5 @@
 'use client';
-import { findInventoryByBarCodeAction } from "@/features/inventory/actions/find-inventory-by-bar-code.action";
+import { findInventoryByBarCodeAction } from "@/contexts/inventory-management/inventory/presentation/actions/find-inventory-by-bar-code.action";
 import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
 import { useEffect, useRef, useState } from "react";
 import { useSaleStore } from "../infraestructure/stores/sale.store";

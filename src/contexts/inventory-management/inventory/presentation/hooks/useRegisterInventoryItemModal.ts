@@ -6,7 +6,7 @@ import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { useRegisterInventoryItemStore } from "../stores/register-inventory-item.store";
 import { LocationEnum } from "../../../../../features/inventory/domain/enums/location.enum";
 import { RegisterInventoryItemDTO } from "../../../../../features/inventory/application/dtos/register-inventory-item.dto";
-import { registerInventoryItemAction } from "../../../../../features/inventory/actions/register-inventory-item.action";
+import { registerInventoryItemAction } from "../actions/register-inventory-item.action";
 import { InventoryItemEntity } from "../../../../../features/inventory/domain/entities/inventory-item.entity";
 
 const registerFormData = yup.object().shape({

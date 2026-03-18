@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { deleteInventoryItemAction } from "../../../../../features/inventory/actions/delete-inventory-item.action";
+import { deleteInventoryItemAction } from "../actions/delete-inventory-item.action";
 import { useDeleteInventoryItemStore } from "../stores/delete-inventory-item.store";
 
 const useDeleteInventoryItemModal = () => {

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { LocationEnum } from "../../../../../features/inventory/domain/enums/location.enum";
-import { registerInventoryItemAction } from "../../../../../features/inventory/actions/register-inventory-item.action";
+import { registerInventoryItemAction } from "../actions/register-inventory-item.action";
 import { useUpdateInventoryItemStore } from "../stores/update-inventory-item.store";
 import { InventoryItemEntity } from "../../../../../features/inventory/domain/entities/inventory-item-response.dto";
 import { UpdateInventoryItemDTO } from "../../../../../features/inventory/application/dtos/update-inventory-item.dto";

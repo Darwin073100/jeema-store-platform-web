@@ -1,8 +1,8 @@
 'use server';
 import { cookies } from "next/headers";
-import { FindAllInventoryItemsByLocationAndBranchOfficeUseCase } from "../application/use-case/find-all-inventory-items-by-location-and-branch-office.use-case";
-import { LocationEnum } from "../domain/enums/location.enum";
-import { InventoryRepositoryFactory } from "../infraestructura/factories/inventory-repository.factory";
+import { FindAllInventoryItemsByLocationAndBranchOfficeUseCase } from "../../../../../features/inventory/application/use-case/find-all-inventory-items-by-location-and-branch-office.use-case";
+import { LocationEnum } from "../../../../../features/inventory/domain/enums/location.enum";
+import { InventoryRepositoryFactory } from "../../../../../features/inventory/infraestructura/factories/inventory-repository.factory";
 import { BranchOfficeEntity } from "@/features/branch-office/domain/entities/branch-office.entity";
 
 export async function findAllInventoryItemsByLocationAndBranchOfficeAction(location?: LocationEnum) {

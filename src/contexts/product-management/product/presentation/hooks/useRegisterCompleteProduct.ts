@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useForm } from 'react-hook-form';
 import {v4 as UUID} from 'uuid'
-import { generateBarcodeAction } from '@/features/inventory/actions/generate-barcode.action';
+import { generateBarcodeAction } from '@/contexts/inventory-management/inventory/presentation/actions/generate-barcode.action';
 import { useProductUIStore } from '../stores/product-ui.store';
 import { RCPInventory, RCPLot, RegisterCompleteProductDto } from '../../application/dtos/register-complete-product.dto';
 import { registerCompleteProductAction } from '../actions/register-complete-product.action';

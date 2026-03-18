@@ -1,7 +1,6 @@
-import { ProductCheckerPort } from "src/contexts/product-management/product/domain/ports/out/product-checker.port";
+
 import { InventoryRepository } from "../../domain/repositories/inventory.repository";
 import { InventoryRegisterDto } from "../dtos/inventory-register.dto";
-import { BranchOfficeCheckerPort } from "src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port";
 import { InventoryEntity } from "../../domain/entities/inventory.entity";
 import { InventorySalePriceOneVO } from "../../domain/value-objects/inventory-sale-price-one.vo";
 import { InventorySalePriceManyVO } from "../../domain/value-objects/inventory-sale-price-many.vo";
@@ -11,19 +10,21 @@ import { InventoryNotFoundException } from "../../domain/exceptions/inventory-no
 import { InventorySaleQuantityManyVO } from "../../domain/value-objects/inventory-sale-quantity-many.vo";
 import { InventorySalePriceSpecialVO } from "../../domain/value-objects/inventory-sale-price-special.vo";
 import { InventoryInternalBarCodeVO } from "../../domain/value-objects/inventory-internal-bar-code.vo";
+import { ProductRepository } from "@/contexts/product-management/product/domain/repositories/product.repository";
+import { BranchOfficeRepository } from "@/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository";
 
 export class RegisterInventoryUseCase{
     constructor(
         private readonly inventoryRepository: InventoryRepository,
-        private readonly productCheckerPort: ProductCheckerPort,
-        private readonly branchOfficeCheckerPort: BranchOfficeCheckerPort
+        private readonly productCheckerPort: ProductRepository,
+        private readonly branchOfficeCheckerPort: BranchOfficeRepository
     ){
 
     }
 
     async execute(dto: InventoryRegisterDto){
         // 1. Verificar si el producto existe
-        const productExists = await this.productCheckerPort.check(dto.productId);
+        const productExists = await this.productCheckerPort.existById(dto.productId);
         if(!productExists){
             throw new InventoryNotFoundException('El producto establecido no existe.');
         }

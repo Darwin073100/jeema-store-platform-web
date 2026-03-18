@@ -5,11 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterInventoryDTO } from "../../../../../features/inventory/application/dtos/register-inventory.dto";
-import { registerInventoryAction } from "../../../../../features/inventory/actions/register-inventory.action";
+import { registerInventoryAction } from "../actions/register-inventory.action";
 import { useWorkspace } from "@/shared/hooks/useAuth";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductUIStore } from "@/contexts/product-management/product/presentation/stores/product-ui.store";
-import { generateBarcodeAction } from "../../../../../features/inventory/actions/generate-barcode.action";
+import { generateBarcodeAction } from "../actions/generate-barcode.action";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 const registerFormData = yup.object().shape({
