@@ -4,10 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { useRegisterInventoryItemStore } from "../stores/register-inventory-item.store";
-import { LocationEnum } from "../../../../../features/inventory/domain/enums/location.enum";
-import { RegisterInventoryItemDTO } from "../../../../../features/inventory/application/dtos/register-inventory-item.dto";
 import { registerInventoryItemAction } from "../actions/register-inventory-item.action";
-import { InventoryItemEntity } from "../../../../../features/inventory/domain/entities/inventory-item.entity";
+import { LocationEnum } from "@/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 
 const registerFormData = yup.object().shape({
     location: yup
@@ -72,7 +70,7 @@ const useRegisterInventoryItemModal = () => {
 
         try {
 
-            const registerInventoryItemDto: RegisterInventoryItemDTO = {
+            const registerInventoryItemDto = {
                 inventoryId: selectedInventoryId ?? BigInt(0),
                 lastStockedAt: new Date(),
                 purchasePriceAtStock:  0,

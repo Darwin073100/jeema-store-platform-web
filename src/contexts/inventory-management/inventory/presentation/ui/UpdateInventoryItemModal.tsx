@@ -8,9 +8,9 @@ import { Modal } from '@/shared/ui/components/modals';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiPencil, HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
-import { LocationEnum } from '../../../../../features/inventory/domain/enums/location.enum';
 import { useUpdateInventoryItemModal } from '../hooks/useUpdateInventoryItemModal';
 import { useInventoryItemDescripctionInput } from '../hooks/useInventoryItemSecripctionInput';
+import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 
 const UpdateInventoryItemModal = () => {
     const {

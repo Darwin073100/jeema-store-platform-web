@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
 import { useRegisterLotModalStore } from "../infraestructure/store/register-lot-modal.store";
-import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
 import { registerLotWithInventoryItemAction } from '../actions/register-lot-with-inventory-item.action';
 import { ForSaleEnum } from '@/shared/domain/enums/for-sale.enum';
+import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 
 // Schema de validación Yup para registrar un lote
 export const registerLotSchema = yup.object().shape({

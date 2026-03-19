@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { useProductStore } from '../stores/product.store';
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
-import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { IInventoryItem } from '@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem';
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct';
+import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 
 const useProductActionsBar = () => {
     const [loading, setLoading] = useState(false);

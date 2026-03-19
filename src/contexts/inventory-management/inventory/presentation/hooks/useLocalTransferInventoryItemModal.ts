@@ -2,18 +2,12 @@ import { useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
-import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { LocationEnum } from "../../../../../features/inventory/domain/enums/location.enum";
-import { registerInventoryItemAction } from "../actions/register-inventory-item.action";
 import { useUpdateInventoryItemStore } from "../stores/update-inventory-item.store";
-import { InventoryItemEntity } from "../../../../../features/inventory/domain/entities/inventory-item-response.dto";
-import { UpdateInventoryItemDTO } from "../../../../../features/inventory/application/dtos/update-inventory-item.dto";
-import { updateInventoryItemAction } from "../actions/update-inventory-item.action";
 import { useInventoryItemUIStore } from "../stores/inventory-item-ui.store";
 import { useInventoryItemDescripctionInput } from "./useInventoryItemSecripctionInput";
-import { LocalTransferDTO } from "@/features/transfer/application/dtos/local-transfer.dto";
 import { localTransferAction } from "@/features/transfer/actions/local-transfer.action";
 import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
+import { LocationEnum } from "@/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 
 const registerFormData = yup.object().shape({
     location: yup

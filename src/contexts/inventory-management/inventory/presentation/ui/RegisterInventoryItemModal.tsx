@@ -10,9 +10,8 @@ import { HiSave } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { MdCleaningServices } from 'react-icons/md';
 import { useRegisterInventoryItemModal } from '../hooks/useRegisterInventoryItemModal';
-import { LocationEnum } from '../../../../../features/inventory/domain/enums/location.enum';
 import { useInventoryItemDescripctionInput } from '../hooks/useInventoryItemSecripctionInput';
-import { useRegisterInventoryItemStore } from '../stores/register-inventory-item.store';
+import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 
 const RegisterInventoryItemModal = () => {
     const {

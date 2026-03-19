@@ -3,13 +3,11 @@ import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { LocationEnum } from "../../../../../features/inventory/domain/enums/location.enum";
-import { registerInventoryItemAction } from "../actions/register-inventory-item.action";
 import { useUpdateInventoryItemStore } from "../stores/update-inventory-item.store";
-import { InventoryItemEntity } from "../../../../../features/inventory/domain/entities/inventory-item-response.dto";
-import { UpdateInventoryItemDTO } from "../../../../../features/inventory/application/dtos/update-inventory-item.dto";
 import { updateInventoryItemAction } from "../actions/update-inventory-item.action";
 import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
+import { LocationEnum } from "@/contexts/inventory-management/inventory-item/domain/enums/location.enum";
+import { UpdateInventoryItemDto } from "@/contexts/inventory-management/inventory-item/application/dtos/update-inventory-item.dto";
 
 const registerFormData = yup.object().shape({
     location: yup
@@ -74,14 +72,11 @@ const useUpdateInventoryItemModal = () => {
 
         try {
 
-            const registerInventoryItemDto: UpdateInventoryItemDTO = {
+            const registerInventoryItemDto: UpdateInventoryItemDto = {
                 inventoryItemId: inventoryItem?.inventoryItemId ?? BigInt(0),
                 inventoryId: inventoryItem?.inventoryId ?? BigInt(0),
-                lastStockedAt: inventoryItem?.lastStockedAt? new Date(inventoryItem.lastStockedAt): new Date(),
-                purchasePriceAtStock: inventoryItem?.purchasePriceAtStock ?? 0,
                 location: data.location,
                 quantityOnHan: data.quantityOnHand,
-                internalBarCode: inventoryItem?.internalBarCode
             }
 
 
