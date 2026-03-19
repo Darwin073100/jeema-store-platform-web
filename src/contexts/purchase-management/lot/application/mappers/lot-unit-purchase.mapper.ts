@@ -4,17 +4,17 @@ import { LotUnitPurchaseResponseDTO } from "../dtos/lot-unit-purchase-response.d
 
 export class LotUnitPurchaseMapper{
     static toResponseDTO(domainEntity: LotUnitPurchaseEntity): LotUnitPurchaseResponseDTO {
-        const dto = new LotUnitPurchaseResponseDTO();
-        dto.lotUnitPurchaseId = domainEntity.lotUnitPurchaseId.toString();
-        dto.lotId = (domainEntity.lotId ?? BigInt(0)).toString();
-        dto.purchasePrice = domainEntity.purchasePrice.value;
-        dto.purchaseQuantity = domainEntity.purchaseQuantity.value;
-        dto.unit = domainEntity.unit;
-        dto.unitsInPurchaseUnit = domainEntity.unitsInPurchaseUnit.value;
-        dto.createdAt = domainEntity.createdAt;
-        dto.updatedAt = domainEntity.updatedAt;
-        dto.deletedAt = domainEntity.deletedAt;
-        return dto;
+        return {
+            lotUnitPurchaseId: domainEntity.lotUnitPurchaseId.toString(),
+            lotId: domainEntity.lotId.toString(),
+            purchasePrice: domainEntity.purchasePrice.value,
+            purchaseQuantity: domainEntity.purchaseQuantity.value,
+            unit: domainEntity.unit,
+            unitsInPurchaseUnit: domainEntity.unitsInPurchaseUnit.value,
+            createdAt: domainEntity.createdAt,
+            updatedAt: domainEntity.updatedAt ?? null,
+            deletedAt: domainEntity.deletedAt ?? null,
+        }
     }
     static toIResponse(domainEntity: LotUnitPurchaseEntity): ILotUnitPurchase {
         return {

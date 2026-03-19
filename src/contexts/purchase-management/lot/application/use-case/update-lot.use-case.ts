@@ -1,8 +1,8 @@
-import { ProductCheckerPort } from "src/contexts/product-management/product/domain/ports/out/product-checker.port";
 import { LotEntity } from "../../domain/entities/lot.entity";
 import { LotRepository } from "../../domain/repositories/lot.repository";
 import { ProductNotFoundException } from "src/contexts/product-management/product/domain/exceptions/product-not-found.exception";
 import { UpdateLotDto } from "../dtos/update-lot.dto";
+import { ProductRepository } from "@/contexts/product-management/product/domain/repositories/product.repository";
 
 /**
  * Esta clase UpdateLotUseCase puede utilizarce para actualizar la informacion de un lote que pertenece a un producto.
@@ -13,7 +13,7 @@ import { UpdateLotDto } from "../dtos/update-lot.dto";
 export class UpdateLotUseCase {
     constructor(
         private readonly lotRepository: LotRepository,
-        private readonly productCheckerPort: ProductCheckerPort,
+        private readonly productRepository: ProductRepository,
     ) { }
 
     /**
@@ -23,7 +23,7 @@ export class UpdateLotUseCase {
      */
     async execute(dto: UpdateLotDto): Promise<LotEntity> {
         // Validar que el producto existe
-        const productExists = await this.productCheckerPort.check(dto.productId);
+        const productExists = await this.productRepository.existById(dto.productId);
 
         if (!productExists) {
             throw new ProductNotFoundException(`El producto con ID ${dto.productId} no existe.`);
@@ -32,7 +32,7 @@ export class UpdateLotUseCase {
         const lot = LotEntity.reconstitute(
             dto.lotId,
             dto.productId,
-            dto.suplierId,
+            dto.suplierId && dto.suplierId > BigInt(0)? dto.suplierId: null,
             dto.lotNumber,
             dto.purchasePrice,
             dto.initialQuantity,

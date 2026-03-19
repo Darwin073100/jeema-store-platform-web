@@ -3,7 +3,7 @@ import { LotUnitPurchaseResponseDTO } from "./lot-unit-purchase-response.dto";
 import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { SuplierResponseDto } from "src/contexts/purchase-management/suplier/application/dtos/suplier-response.dto";
 
-export class LotResponseDto {
+export interface LotResponseDto {
   lotId: string;
   productId: string;
   suplierId: string | null;

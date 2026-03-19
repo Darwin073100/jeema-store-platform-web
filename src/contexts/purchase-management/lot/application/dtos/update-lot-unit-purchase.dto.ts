@@ -1,6 +1,6 @@
 import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 
-export class UpdateLotUnitPurchaseDTO{
+export interface UpdateLotUnitPurchaseDTO{
     lotUnitPurchaseId: bigint;
     lotId: bigint;
     purchasePrice: number;

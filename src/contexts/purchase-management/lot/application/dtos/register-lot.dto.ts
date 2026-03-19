@@ -1,7 +1,7 @@
 import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { RegisterLotUnitPurchaseDTO } from "./register-lot-unit-purchase.dto";
 
-export class RegisterLotDto {
+export interface RegisterLotDto {
   productId: bigint;
   lotNumber: string;
   suplierId: bigint | null;

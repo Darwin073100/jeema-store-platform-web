@@ -1,4 +1,4 @@
-export class FindReportLotsDTO {
+export interface FindReportLotsDTO {
     dateInit: Date; 
     dateFinish: Date;
 }
