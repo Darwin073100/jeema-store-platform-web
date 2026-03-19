@@ -1,8 +1,8 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { UpdateLotDTO } from "../application/dtos/update-lot.dto";
-import { UpdateLotUseCase } from "../application/use-case/update-lot.use-case";
-import { LotRepositoryFactory } from "../infraestructure/factories/lot-repository.factory";
+import { UpdateLotDTO } from "../../../../../features/lot/application/dtos/update-lot.dto";
+import { UpdateLotUseCase } from "../../../../../features/lot/application/use-case/update-lot.use-case";
+import { LotRepositoryFactory } from "../../../../../features/lot/infraestructure/factories/lot-repository.factory";
 
 export async function updateLotAction(dto: UpdateLotDTO){
     const lotFetchRepositoryImpl  = LotRepositoryFactory.create();

@@ -15,7 +15,6 @@ import { UpdateInventoryItemModal } from '@/contexts/inventory-management/invent
 import { DeleteInventoryItemModal } from '@/contexts/inventory-management/inventory/presentation/ui/DeleteInventoryItemModal'
 import { LocalTransferInventoryItemModal } from '@/contexts/inventory-management/inventory/presentation/ui/LocalTransferInventoryModal'
 import { useProductUIStore } from '../../stores/product-ui.store'
-import { useRegisterLotModal } from '@/features/lot'
 import { useRegisterInventoryModal } from '@/contexts/inventory-management/inventory/presentation/hooks/useRegisterInventoryModal'
 import { useUpdateInventoryModal } from '@/contexts/inventory-management/inventory/presentation/hooks/useUpdateInventoryModal'
 import { useRegisterInventoryItemModal } from '@/contexts/inventory-management/inventory/presentation/hooks/useRegisterInventoryItemModal'
@@ -26,6 +25,7 @@ import { ProductBarCode51x25Modal } from './ProductBarCodes51x25Modal'
 import { ProductPrice27x13Modal } from './ProductPrice27x13Modal'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
+import { useRegisterLotModal } from '@/contexts/purchase-management/lot/presentation/hooks'
 
 interface Props {
     product: IProduct

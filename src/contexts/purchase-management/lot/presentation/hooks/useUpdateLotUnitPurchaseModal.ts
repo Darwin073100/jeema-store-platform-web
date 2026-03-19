@@ -1,12 +1,13 @@
 'use client'
 import { useEffect, useState } from 'react';
-import { useSaveLotUnitPurchaseStore } from '../infraestructure/store/save-lot-unit-purchase.store';
 import * as yup from 'yup';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AddLotUnitPurchaseDTO } from '../application/dtos/add-lot-unit-purchase.dto';
-import { registerLotUniPurchaseAction } from '../actions/register-lot-unit-purchase.action';
+import { useUpdateLotUnitPurchaseStore } from '../stores/update-lot-unit-purchase.store';
+import { LotUnitPurchaseEntity } from '../../../../../features/lot/domain/entities/lot-unit-purchase.entity';
+import { UpdateLotUnitPurchaseDTO } from '../../../../../features/lot/application/dtos/update-lot-unit-purchase.dto';
+import { updateLotUniPurchaseAction } from '../actions/update-lot-unit-purchase.action';
 import { ForSaleEnum } from '@/shared/domain/enums/for-sale.enum';
 
 const registerSchema = yup.object().shape({
@@ -34,9 +35,9 @@ const registerSchema = yup.object().shape({
 
 export type RegisterFormData = yup.InferType<typeof registerSchema>;
 
-const useRegisterLotUnitPurchaseModal = () => {
-    const {saveIsOpenModal, handleOpenSaveIsOpenModal, handlecloseSaveIsOpenModal, 
-        lotUnitPurchase, setSelectedLotId, selectedLotId} = useSaveLotUnitPurchaseStore();
+const useUpdateLotUnitPurchaseModal = () => {
+    const {updateIsOpenModal, handleUpdateOpenIsOpenModal, handlecloseUpdateIsOpenModal, 
+        lotUnitPurchase, setLotUnitPurchase} = useUpdateLotUnitPurchaseStore();
 
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,34 +48,21 @@ const useRegisterLotUnitPurchaseModal = () => {
     });
 
     useEffect(()=>{
-        if(selectedLotId  && saveIsOpenModal){
+        if(lotUnitPurchase  && updateIsOpenModal){
             reset({
-                purchasePrice: 0,
-                purchaseQuantity: 0,
-                unit: ForSaleEnum.PC,
-                unitsInPurchaseUnit: 0
+                purchasePrice: lotUnitPurchase.purchasePrice,
+                purchaseQuantity: lotUnitPurchase.purchaseQuantity,
+                unit: lotUnitPurchase.unit,
+                unitsInPurchaseUnit: lotUnitPurchase.unitsInPurchaseUnit
             })
         }
-    },[saveIsOpenModal, reset, selectedLotId]);
+    },[updateIsOpenModal, reset, lotUnitPurchase]);
 
-    const resetFormRegisterLotUnitPurchase = ()=> {
-        setSelectedLotId(null);
-        reset({
-            purchasePrice: 0,
-            purchaseQuantity: 0,
-            unit: ForSaleEnum.PC,
-            unitsInPurchaseUnit: 0
-        })
-        clearErrors([
-            'purchasePrice', 'purchaseQuantity', 'unit', 'unitsInPurchaseUnit'
-        ]);
 
-        setFloatMessageState({});
-    }
 
-    const handleSelectedLotUnitPurchase = (lotId: bigint)=>{
-        setSelectedLotId(lotId);
-        handleOpenSaveIsOpenModal();
+    const handleSelectedLotUnitPurchase = (unit: LotUnitPurchaseEntity)=>{
+        setLotUnitPurchase(unit)
+        handleUpdateOpenIsOpenModal();
     }
 
     const onSubmit = async (data: RegisterFormData)=>{
@@ -82,31 +70,32 @@ const useRegisterLotUnitPurchaseModal = () => {
         setIsLoading(true);
 
         try{
-            const addLotUnitPurchase: AddLotUnitPurchaseDTO = {
-                lotId: selectedLotId ?? BigInt(0),
+            const updateLotUnitPurchase: UpdateLotUnitPurchaseDTO = {
+                lotUnitPurchaseId: lotUnitPurchase?.lotUnitPurchaseId ?? BigInt(0),
+                lotId: lotUnitPurchase?.lotId ?? BigInt(0),
                 purchasePrice: data.purchasePrice,
                 purchaseQuantity: data.purchaseQuantity,
                 unitsInPurchaseUnit: data.unitsInPurchaseUnit,
-                unit: data.unit
+                unit: data.unit as ForSaleEnum
             }
-            const result = await registerLotUniPurchaseAction(addLotUnitPurchase);
+            const result = await updateLotUniPurchaseAction(updateLotUnitPurchase);
 
             if (result.ok) {
                 setFloatMessageState({
                     summary: '¡Correcto!',
                     isActive: true,
                     type: 'green',
-                    description: '¡Unidad del Lote registrada exitosamente!'
+                    description: '¡Unidad del Lote actualizada exitosamente!'
                 });
 
                 setTimeout(() => {
                     setFloatMessageState({});
-                    handlecloseSaveIsOpenModal();
+                    handlecloseUpdateIsOpenModal();
                 }, 3000);
             } else {
                 const errorMessage = Array.isArray(result?.error) 
                     ? result.error.join(', ') 
-                    : result?.error?.message || 'Error al registrar la unidad';
+                    : result?.error?.message || 'Error al actualizar la unidad';
                 
                 setFloatMessageState({
                     description: errorMessage,
@@ -136,10 +125,10 @@ const useRegisterLotUnitPurchaseModal = () => {
     }
 
     return {
-        saveIsOpenModal, 
-        handleOpenSaveIsOpenModal, 
+        updateIsOpenModal, 
+        handleUpdateOpenIsOpenModal, 
         handleSelectedLotUnitPurchase,
-        handlecloseSaveIsOpenModal,
+        handlecloseUpdateIsOpenModal,
         register,
         handleSubmit,
         reset,
@@ -147,7 +136,6 @@ const useRegisterLotUnitPurchaseModal = () => {
         watch,
         clearErrors,
         errors,
-        resetFormRegisterLotUnitPurchase,
         onSubmit,
         // UI states
         floatMessageState,
@@ -155,4 +143,4 @@ const useRegisterLotUnitPurchaseModal = () => {
     }
 }
 
-export { useRegisterLotUnitPurchaseModal };
+export { useUpdateLotUnitPurchaseModal };

@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react'
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { InventoryItemEntity } from '@/features/inventory/domain/entities/inventory-item.entity';
-import { useLotStore } from '../infraestructure/store/lot.store';
+import { useLotStore } from '../stores/lot.store';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { findReportsLotsAction } from '../actions/find-report-lots.action';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
-import { useLotUIStore } from '../infraestructure/store/lot-ui.store';
+import { useLotUIStore } from '../stores/lot-ui.store';
 
 const schema = yup.object().shape({
     dateInit: yup.date()

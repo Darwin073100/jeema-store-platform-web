@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { useDeleteLotStore } from "../infraestructure/store/delete-lot.store";
+import { useDeleteLotStore } from "../stores/delete-lot.store";
 import { deleteLotAction } from "../actions/delete-lot.action";
 
 const useDeleteLotModal = () => {

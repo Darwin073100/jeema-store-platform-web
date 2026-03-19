@@ -5,10 +5,10 @@ import { ProductSearch } from "@/contexts/product-management/product/presentatio
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { ProductAudit } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductAudit";
-import { LotActionsBar } from "@/features/lot/ui/lot-catalog/LotActionsBar";
-import { findReportsLotsAction } from "@/features/lot/actions/find-report-lots.action";
-import { TableLotsDesktop } from "@/features/lot/ui/lot-catalog/TableLotDesktop";
-import { LotSearch } from "@/features/lot/ui/lot-catalog/LotSearch";
+import { LotActionsBar } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/LotActionsBar";
+import { findReportsLotsAction } from "@/contexts/purchase-management/lot/presentation/actions/find-report-lots.action";
+import { TableLotsDesktop } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/TableLotDesktop";
+import { LotSearch } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/LotSearch";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request

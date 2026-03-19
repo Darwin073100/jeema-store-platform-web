@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { v4 as UUID } from 'uuid'
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { RegisterLotDTO } from "../application/dtos/register-lot.dto";
-import { useRegisterLotModalStore } from "../infraestructure/store/register-lot-modal.store";
+import { RegisterLotDTO } from "../../../../../features/lot/application/dtos/register-lot.dto";
+import { useRegisterLotModalStore } from "../stores/register-lot-modal.store";
 import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
 import { registerLotWithInventoryItemAction } from '../actions/register-lot-with-inventory-item.action';
 import { ForSaleEnum } from '@/shared/domain/enums/for-sale.enum';

@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { LotUnitPurchaseEntity } from "../../domain/entities/lot-unit-purchase.entity"
+import { LotUnitPurchaseEntity } from "../../../../../features/lot/domain/entities/lot-unit-purchase.entity"
 
 type State = {
     lotUnitPurchase: LotUnitPurchaseEntity|null,

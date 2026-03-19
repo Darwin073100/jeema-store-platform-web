@@ -3,7 +3,7 @@ import { Button } from "@/shared/ui/components/buttons";
 import { FiExternalLink } from "react-icons/fi";
 import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 import { PCol, PrimaryTable, PRow, PTableEmpty } from "@/shared/ui/components/tables/PrimaryTable";
-import { useLotStore } from "../../infraestructure/store/lot.store";
+import { useLotStore } from "../../stores/lot.store";
 import { useLotActionsBar } from "../../hooks/useLotActionsBar";
 import { formatDateShort } from "@/shared/lib/utils/date-formatter";
 import { numberMoneyFormat } from "@/shared/lib/utils/number-formatter";

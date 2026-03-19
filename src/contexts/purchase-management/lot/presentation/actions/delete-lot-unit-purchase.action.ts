@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { LotRepositoryFactory } from "../infraestructure/factories/lot-repository.factory";
-import { DeleteLotUnitPurchaseUseCase } from "../application/use-case/delete-lot-purchase-unit.use-case";
+import { LotRepositoryFactory } from "../../../../../features/lot/infraestructure/factories/lot-repository.factory";
+import { DeleteLotUnitPurchaseUseCase } from "../../../../../features/lot/application/use-case/delete-lot-purchase-unit.use-case";
 
 export async function deleteLotUniPurchaseAction(lotId: bigint, lotUnitPurchaseId: bigint){
     const lotFetchRepositoryImpl  = LotRepositoryFactory.create();

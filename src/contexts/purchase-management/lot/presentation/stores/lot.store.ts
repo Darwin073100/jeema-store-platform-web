@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { LotEntity } from "../../domain/entities/lot.entity";
+import { LotEntity } from "../../../../../features/lot/domain/entities/lot.entity";
 import { ILot } from "@/contexts/purchase-management/lot/presentation/interfaces/ILot";
 
 type State = {

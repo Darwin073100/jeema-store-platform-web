@@ -1,6 +1,6 @@
 'use server'
-import { LotRepositoryFactory } from "../infraestructure/factories/lot-repository.factory";
-import { FindReportLotsUseCase } from "../application/use-case/find-report-lots.use-case";
+import { LotRepositoryFactory } from "../../../../../features/lot/infraestructure/factories/lot-repository.factory";
+import { FindReportLotsUseCase } from "../../../../../features/lot/application/use-case/find-report-lots.use-case";
 import { cookies } from "next/headers";
 import { BranchOfficeEntity } from "@/features/branch-office/domain/entities/branch-office.entity";
 

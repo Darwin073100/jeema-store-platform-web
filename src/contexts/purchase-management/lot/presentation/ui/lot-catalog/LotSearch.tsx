@@ -1,7 +1,7 @@
 'use client'
 import { TextInput } from '@/shared/ui/components/inputs';
 import React from 'react'
-import { useLotStore } from '../../infraestructure/store/lot.store';
+import { useLotStore } from '../../stores/lot.store';
 
 function LotSearch() {
   const { setSearchCharacter } = useLotStore();

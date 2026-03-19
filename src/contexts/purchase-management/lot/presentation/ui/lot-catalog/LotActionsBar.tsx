@@ -6,13 +6,13 @@ import React, { useEffect } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { HideElement } from '@/features/auth/ui/HideElement';
-import { LotEntity } from '../../domain/entities/lot.entity';
-import { useLotStore } from '../../infraestructure/store/lot.store';
+import { LotEntity } from '../../../../../../features/lot/domain/entities/lot.entity';
+import { useLotStore } from '../../stores/lot.store';
 import { useLotActionsBar } from '../../hooks/useLotActionsBar';
 import { TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { FaFilter } from 'react-icons/fa';
-import { useLotUIStore } from '../../infraestructure/store/lot-ui.store';
+import { useLotUIStore } from '../../stores/lot-ui.store';
 interface Props{
     data: LotEntity[]
 }

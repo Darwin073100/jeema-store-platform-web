@@ -1,11 +1,11 @@
 'use client'
-import { useLotStore } from "../infraestructure/store/lot.store";
+import { useLotStore } from "../stores/lot.store";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-import { UpdateLotDTO } from "../application/dtos/update-lot.dto";
+import { UpdateLotDTO } from "../../../../../features/lot/application/dtos/update-lot.dto";
 import { updateLotAction } from "../actions/update-lot.action";
 import { ILot } from "@/contexts/purchase-management/lot/presentation/interfaces/ILot";
 import { ForSaleEnum } from "@/shared/domain/enums/for-sale.enum";
