@@ -1,4 +1,3 @@
-import { ProductCheckerPort } from "src/contexts/product-management/product/domain/ports/out/product-checker.port";
 import { LotEntity } from "../../domain/entities/lot.entity";
 import { LotRepository } from "../../domain/repositories/lot.repository";
 import { PurchasePriceVO } from "../../domain/value-objects/purchase-price.vo";
@@ -7,16 +6,17 @@ import { ProductNotFoundException } from "src/contexts/product-management/produc
 import { LotUnitPurchaseEntity } from "../../domain/entities/lot-unit-purchase.entity";
 import { LotPurchaseQuantityVO } from "../../domain/value-objects/lot-purchase-quantity.vo";
 import { LotUnitsInPurchaseUnitVO } from "../../domain/value-objects/lot-units-in-purchase-unit.vo";
+import { ProductRepository } from "@/contexts/product-management/product/domain/repositories/product.repository";
 
 export class RegisterLotUseCase {
     constructor(
         private readonly lotRepository: LotRepository,
-        private readonly productCheckerPort: ProductCheckerPort,
+        private readonly productRepository: ProductRepository,
     ) { }
 
     async execute(dto: RegisterLotDto): Promise<LotEntity> {
         // Validar que el producto existe
-        const productExists = await this.productCheckerPort.check(dto.productId);
+        const productExists = await this.productRepository.existById(dto.productId);
 
         if (!productExists) {
             throw new ProductNotFoundException(`El producto con ID ${dto.productId} no existe.`);

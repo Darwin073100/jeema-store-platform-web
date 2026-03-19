@@ -128,6 +128,15 @@ export class TypeOrmLotRepository implements LotRepository {
     }
     return LotMapper.toDomain(lotOrmEntity);
   }
+  async existById(id: bigint): Promise<LotEntity | null> {
+    const lotOrmEntity = await this.ormLotRepository.findOne({
+      where: { lotId: id }
+    });
+    if (!lotOrmEntity) {
+      return null;
+    }
+    return LotMapper.toDomain(lotOrmEntity);
+  }
   async findReport(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<LotEntity[]> {
     const lotOrmEntity = await this.ormLotRepository.find({
       where: { 
