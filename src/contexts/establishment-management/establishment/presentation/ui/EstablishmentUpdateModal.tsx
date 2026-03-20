@@ -7,10 +7,10 @@ import { Button } from '@/shared/ui/components/buttons';
 import { HiUserAdd } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { EstablishmentEntity } from '../domain/entities/establishment.entity';
-import { useEstablishmentUIStore } from '../infraestructure/establishment-ui.store';
+import { EstablishmentEntity } from '../../../../../features/establishment/domain/entities/establishment.entity';
+import { useEstablishmentUIStore } from '../stores/establishment-ui.store';
 import { useEstablishmentUpdate } from '../hooks/useEstablishmentUpdate';
-import { useEstablishmentNoStorageStore } from '../infraestructure/establishment-no-storage.store';
+import { useEstablishmentNoStorageStore } from '../stores/establishment-no-storage.store';
 
 interface Props {
   establishment: EstablishmentEntity,

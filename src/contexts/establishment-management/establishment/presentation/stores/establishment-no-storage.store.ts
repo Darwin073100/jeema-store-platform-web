@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { EstablishmentEntity } from '../domain/entities/establishment.entity';
+import { EstablishmentEntity } from '../../../../../features/establishment/domain/entities/establishment.entity';
 
 interface State{
     establishment: EstablishmentEntity | null

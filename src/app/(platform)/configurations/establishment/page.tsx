@@ -1,6 +1,6 @@
-import { findEstablishmentByIdAction } from "@/features/establishment/actions/find-establishment-by-id.action";
-import { BranchesInEstablishment } from "@/features/establishment/ui/BranchesInEstablishment";
-import { WorkspaceInformation } from "@/features/establishment/ui/WorkspaceInformation";
+import { findEstablishmentByIdAction } from "@/contexts/establishment-management/establishment/presentation/actions/find-establishment-by-id.action";
+import { BranchesInEstablishment } from "@/contexts/establishment-management/establishment/presentation/ui/BranchesInEstablishment";
+import { WorkspaceInformation } from "@/contexts/establishment-management/establishment/presentation/ui/WorkspaceInformation";
 import { formatDate, formatDateShort } from "@/shared/lib/utils/date-formatter";
 import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { Badge } from "@/shared/ui/components/badges/Badge";

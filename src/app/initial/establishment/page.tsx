@@ -1,4 +1,4 @@
-import { CreateEstablishmentForm } from "@/features/establishment/ui/CreateEstablishmentForm";
+import { CreateEstablishmentForm } from "@/contexts/establishment-management/establishment/presentation/ui/CreateEstablishmentForm";
 import Image from "next/image";
 import Logo from "@/shared/ui/assets/images/logologo.png"
 

@@ -1,4 +1,4 @@
-import { BranchOfficeEntity } from '@/features/branch-office/domain/entities/branch-office.entity'
+import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice'
 import { formatDateShort } from '@/shared/lib/utils/date-formatter'
 import { Badge } from '@/shared/ui/components/badges/Badge'
 import { Button } from '@/shared/ui/components/buttons'
@@ -7,7 +7,7 @@ import React from 'react'
 import { BiInfoSquare } from 'react-icons/bi'
 
 interface Props {
-    branchOffices: BranchOfficeEntity[]
+    branchOffices: IBranchOffice[]
 }
 
 const BranchesInEstablishment = ({ branchOffices }: Props) => {

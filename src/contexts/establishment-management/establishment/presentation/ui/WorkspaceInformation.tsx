@@ -4,8 +4,8 @@ import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter'
 import { Badge } from '@/shared/ui/components/badges/Badge'
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine'
 import { BiAddToQueue, BiCalendar, BiPencil } from 'react-icons/bi'
-import { EstablishmentEntity } from '../domain/entities/establishment.entity'
-import { useEstablishmentUIStore } from '../infraestructure/establishment-ui.store'
+import { EstablishmentEntity } from '../../../../../features/establishment/domain/entities/establishment.entity'
+import { useEstablishmentUIStore } from '../stores/establishment-ui.store'
 import { EstablishmentUpdateModal } from './EstablishmentUpdateModal'
 
 interface Props {

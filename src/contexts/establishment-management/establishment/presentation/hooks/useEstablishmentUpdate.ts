@@ -3,8 +3,8 @@ import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useEffect } from 'react';
-import { useEstablishmentNoStorageStore } from '../infraestructure/establishment-no-storage.store';
-import { useEstablishmentUIStore } from '../infraestructure/establishment-ui.store';
+import { useEstablishmentNoStorageStore } from '../stores/establishment-no-storage.store';
+import { useEstablishmentUIStore } from '../stores/establishment-ui.store';
 import { updateEstablishmentAction } from '../actions/update-establishment.action';
 
 export const schema = yup.object().shape({

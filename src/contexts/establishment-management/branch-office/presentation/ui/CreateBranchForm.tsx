@@ -12,7 +12,7 @@ import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { createNewBranchOfficeAction } from '../actions/create.new.branch-office.action';
 import { useRouter } from 'next/navigation';
 import { HiMiniArrowLongRight } from 'react-icons/hi2';
-import { useEstablishmentStore } from '@/features/establishment/infraestructure/establishment.store';
+import { useEstablishmentStore } from '@/contexts/establishment-management/establishment/presentation/stores/establishment.store';
 import { useBranchOfficeStore } from '../stores/branch-office.store';
 import { TextArea } from '@/shared/ui/components/inputs/TextInput copy';
 import { RegisterBranchOfficeDto } from '../../application/dtos/register-branch-office.dto';

@@ -14,7 +14,7 @@ import { HiMiniArrowLongRight } from 'react-icons/hi2';
 import { RegisterUserWithEmployeeDTO } from '../application/dtos/register-user-with-employee.dto';
 import { registerUserWithEmployeeAction } from '../actions/register-user-with-employee.action';
 import { useBranchOfficeStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office.store';
-import { useEstablishmentStore } from '@/features/establishment/infraestructure/establishment.store';
+import { useEstablishmentStore } from '@/contexts/establishment-management/establishment/presentation/stores/establishment.store';
 
 const schema = yup.object({
     firstName: yup.string().trim()
