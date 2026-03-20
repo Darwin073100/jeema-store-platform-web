@@ -10,7 +10,6 @@ import { TbExchange } from 'react-icons/tb';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { HiSave } from 'react-icons/hi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { LocationEnum } from '@/features/inventory/domain/enums/location.enum';
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton';
 import { ProductEnableOptios } from './ProductEnableOptios';
 import { useRegisterCompleteProduct } from '../../hooks/useRegisterCompleteProduct';
@@ -23,6 +22,7 @@ import { ICategory } from '@/contexts/product-management/category/presentation/i
 import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
 import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
 import { forSaleObject } from '../../../domain/enums/for-sale.object';
+import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 
 interface Props {
     categoryList: ICategory[],
