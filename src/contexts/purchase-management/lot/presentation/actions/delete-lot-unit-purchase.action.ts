@@ -1,19 +1,28 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { LotRepositoryFactory } from "../../../../../features/lot/infraestructure/factories/lot-repository.factory";
-import { DeleteLotUnitPurchaseUseCase } from "../../../../../features/lot/application/use-case/delete-lot-purchase-unit.use-case";
+import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
+import { DeleteLotUnitPurchaseUseCase } from "../../application/use-case/delete-lot-unit-purchase.use-case";
+import { TypeormLotUnitPurchaseRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot-unit-purchase.repository";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { Result } from "@/shared/features/result";
 
-export async function deleteLotUniPurchaseAction(lotId: bigint, lotUnitPurchaseId: bigint){
-    const lotFetchRepositoryImpl  = LotRepositoryFactory.create();
-    const deleteLotUnitPurchaseUseCase = new DeleteLotUnitPurchaseUseCase(lotFetchRepositoryImpl);
+export async function deleteLotUniPurchaseAction(lotId: bigint, lotUnitPurchaseId: bigint) {
+    try {
+        const lotRepository = await TypeOrmLotRepository.create();
+        const lotUnitPurchaseRepository = await TypeormLotUnitPurchaseRepository.create();
+        const deleteLotUnitPurchaseUseCase = new DeleteLotUnitPurchaseUseCase(lotRepository, lotUnitPurchaseRepository);
 
-    const result = await deleteLotUnitPurchaseUseCase.execute(lotId, lotUnitPurchaseId);
-    
-    if(!!result?.ok){
+        await deleteLotUnitPurchaseUseCase.execute(lotId, lotUnitPurchaseId);
+
         revalidatePath('/products');
-    }
 
-    return {
-        ...result
-    };
+        return {
+            ...Result.success({})
+        };
+    } catch (error) {
+        console.error('deleteLotUniPurchaseAction', error);
+        return{
+            ...handleError(error, 'deleteLotUniPurchaseAction')
+        }
+    }
 }

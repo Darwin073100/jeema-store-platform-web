@@ -1,19 +1,26 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { LotRepositoryFactory } from "../../../../../features/lot/infraestructure/factories/lot-repository.factory";
-import { DeleteLotUseCase } from "../../../../../features/lot/application/use-case/delete-lot.use-case";
+import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
+import { DeleteLotUseCase } from "../../application/use-case/delete-lot.use-case";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { Result } from "@/shared/features/result";
 
-export async function deleteLotAction(lotId: bigint){
-    const lotFetchRepositoryImpl  = LotRepositoryFactory.create();
-    const deleteLotUseCase = new DeleteLotUseCase(lotFetchRepositoryImpl);
+export async function deleteLotAction(lotId: bigint) {
+    try {
+        const lotFetchRepositoryImpl = await TypeOrmLotRepository.create();
+        const deleteLotUseCase = new DeleteLotUseCase(lotFetchRepositoryImpl);
 
-    const result = await deleteLotUseCase.execute(lotId);
-    
-    if(!!result?.ok){
+        await deleteLotUseCase.execute(lotId);
+
         revalidatePath('/products');
-    }
 
-    return {
-        ...result
-    };
+        return {
+            ...Result.success(undefined)
+        };
+    } catch (error) {
+        console.error('deleteLotAction: ', error);
+        return {
+            ...handleError(error, 'deleteLotAction')
+        }
+    }
 }
