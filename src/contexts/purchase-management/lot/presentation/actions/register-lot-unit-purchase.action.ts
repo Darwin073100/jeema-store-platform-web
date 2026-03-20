@@ -1,20 +1,30 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { LotRepositoryFactory } from "../../../../../features/lot/infraestructure/factories/lot-repository.factory";
-import { RegisterLotUnitPurchaseUseCase } from "../../../../../features/lot/application/use-case/register-lot-purchase-unit.use-case";
-import { AddLotUnitPurchaseDTO } from "../../../../../features/lot/application/dtos/add-lot-unit-purchase.dto";
+import { RegisterLotUnitPurchaseDTO } from "../../application/dtos/register-lot-unit-purchase.dto";
+import { TypeormLotUnitPurchaseRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot-unit-purchase.repository";
+import { RegisterLotUnitPurchaseUseCase } from "../../application/use-case/register-lot-unit-purchase.use-case";
+import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
+import { Result } from "@/shared/features/result";
+import { LotUnitPurchaseMapper } from "../../application/mappers/lot-unit-purchase.mapper";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 
-export async function registerLotUniPurchaseAction(dto: AddLotUnitPurchaseDTO){
-    const lotFetchRepositoryImpl  = LotRepositoryFactory.create();
-    const registerLotUnitPurchaseUseCase = new RegisterLotUnitPurchaseUseCase(lotFetchRepositoryImpl);
+export async function registerLotUniPurchaseAction(dto: RegisterLotUnitPurchaseDTO) {
+    try {
+        const lotUnitPurchaseRepository = await TypeormLotUnitPurchaseRepository.create();
+        const lotRepository = await TypeOrmLotRepository.create();
+        const registerLotUnitPurchaseUseCase = new RegisterLotUnitPurchaseUseCase(lotUnitPurchaseRepository, lotRepository);
 
-    const result = await registerLotUnitPurchaseUseCase.execute(dto);
-    
-    if(!!result.ok){
+        const result = await registerLotUnitPurchaseUseCase.execute(dto);
+
         revalidatePath('/products');
-    }
 
-    return {
-        ...result
-    };
+        return {
+            ...Result.success(LotUnitPurchaseMapper.toIResponse(result))
+        };
+    } catch (error) {
+        console.error('registerLotUniPurchaseAction: ', error);
+        return {
+            ...handleError(error, 'registerLotUniPurchaseAction')
+        }
+    }
 }
