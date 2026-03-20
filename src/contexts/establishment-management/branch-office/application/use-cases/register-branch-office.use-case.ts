@@ -9,12 +9,12 @@ import { EstablishmentRepository } from "@/contexts/establishment-management/est
 export class RegisterBranchOfficeUseCase {
   constructor(
     private readonly branchOfficeRepository: BranchOfficeRepository,
-    private readonly establishmentCheckerPort: EstablishmentRepository
+    private readonly establishmentRepository: EstablishmentRepository
   ) {}
 
   async execute(request: RegisterBranchOfficeDto): Promise<BranchOfficeEntity> {
     // 1. Verificar la existencia del Establishment
-    const establishmentExists = await this.establishmentCheckerPort.existById(request.establishmentId);
+    const establishmentExists = await this.establishmentRepository.existById(request.establishmentId);
     if (!establishmentExists) {
       throw new EstablishmentNotFoundException('Ingresa un id de algun establecimiento existente.');
     }

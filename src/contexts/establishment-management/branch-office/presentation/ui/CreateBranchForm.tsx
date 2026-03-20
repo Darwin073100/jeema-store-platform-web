@@ -3,19 +3,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { LabelInput } from '../../../shared/ui/components/labels';
-import { TextInput } from '../../../shared/ui/components/inputs';
-import { Button } from '../../../shared/ui/components/buttons';
+import { LabelInput } from '../../../../../shared/ui/components/labels';
+import { TextInput } from '../../../../../shared/ui/components/inputs';
+import { Button } from '../../../../../shared/ui/components/buttons';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { createNewBranchOfficeAction } from '../actions/create.new.branch-office.action';
 import { useRouter } from 'next/navigation';
 import { HiMiniArrowLongRight } from 'react-icons/hi2';
-import { CreateBranchOfficeDTO } from '../application/dtos/create-branch-office.dto';
 import { useEstablishmentStore } from '@/features/establishment/infraestructure/establishment.store';
-import { useBranchOfficeStore } from '../infraestructure/branch-office.store';
+import { useBranchOfficeStore } from '../stores/branch-office.store';
 import { TextArea } from '@/shared/ui/components/inputs/TextInput copy';
+import { RegisterBranchOfficeDto } from '../../application/dtos/register-branch-office.dto';
 
 const schema = yup.object().shape({
     name: yup.string().trim()
@@ -76,19 +76,21 @@ export const CreateBranchForm = () => {
         setIsLoading(true);
 
         let resp;
-        const branch: CreateBranchOfficeDTO = {
+        const branch: RegisterBranchOfficeDto = {
             name: data.name,
             establishmentId: establishment?.establishmentId ?? BigInt(0),
-            street: data.street ?? null,
-            internalNumber: data.interiorNumber ?? null,
-            externalNumber: data.exteriorNumber ?? null,
-            postalCode: data.postalCode,
-            neighborhood: data.neighborhood ?? null,
-            municipality: data.municipality,
-            country: data.country,
-            city: data.city,
-            state: data.state,
-            reference: data.reference?.toString() ?? null
+            address: {
+                street: data.street ?? null,
+                internalNumber: data.interiorNumber ?? null,
+                externalNumber: data.exteriorNumber ?? null,
+                postalCode: data.postalCode,
+                neighborhood: data.neighborhood ?? null,
+                municipality: data.municipality,
+                country: data.country,
+                city: data.city,
+                state: data.state,
+                reference: data.reference?.toString() ?? null
+            }
         };
 
         resp = await createNewBranchOfficeAction(branch);
@@ -217,7 +219,7 @@ export const CreateBranchForm = () => {
                 <Button
                     type='submit'
                     color="blue">
-                    {isLoading ?<>Procesando <Spinner /></> : <>Siguiente<HiMiniArrowLongRight /></>}
+                    {isLoading ? <>Procesando <Spinner /></> : <>Siguiente<HiMiniArrowLongRight /></>}
                 </Button>
             </form>
             <FloatMessage

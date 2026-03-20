@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEstablishmentStore } from '../infraestructure/establishment.store'
 import { CreateEstablishmentDTO } from '../application/dtos/create-establishment.dto'
-import { useBranchOfficeStore } from '@/features/branch-office/infraestructure/branch-office.store'
+import { useBranchOfficeStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office.store'
 
 const schema = yup.object({
     name: yup.string().required('El campo nombre es requerido').min(3, 'El valor debe ser mayor a 3 caracteres')

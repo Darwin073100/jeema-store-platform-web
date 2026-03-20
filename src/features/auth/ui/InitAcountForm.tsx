@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { HiMiniArrowLongRight } from 'react-icons/hi2';
 import { RegisterUserWithEmployeeDTO } from '../application/dtos/register-user-with-employee.dto';
 import { registerUserWithEmployeeAction } from '../actions/register-user-with-employee.action';
-import { useBranchOfficeStore } from '@/features/branch-office/infraestructure/branch-office.store';
+import { useBranchOfficeStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office.store';
 import { useEstablishmentStore } from '@/features/establishment/infraestructure/establishment.store';
 
 const schema = yup.object({

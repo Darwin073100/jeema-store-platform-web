@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { BranchOfficeEntity } from '../domain/entities/branch-office.entity';
+import { IBranchOffice } from '../interfaces/IBranchOffice';
 
 interface State{
-    branchOffice?: BranchOfficeEntity
-    setBranchOffice: (data: BranchOfficeEntity) => void;
+    branchOffice?: IBranchOffice
+    setBranchOffice: (data: IBranchOffice) => void;
     clearBranchOffice:()=> void;
 }
 
