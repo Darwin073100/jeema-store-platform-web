@@ -2,6 +2,7 @@ import { RoleMapper } from "src/contexts/authentication-management/role/applicat
 import { UserRoleEntity } from "../../domain/entities/user-role.entity";
 import { UserRoleResponseDTO } from "../dtos/user-role-response.dto";
 import { UserMapper } from "./user.mapper";
+import { IUserRole } from "../../presentation/interfaces/IUserRole";
 
 export class UserRoleMapper {
     static toResponse(entity: UserRoleEntity): UserRoleResponseDTO{
@@ -16,5 +17,17 @@ export class UserRoleMapper {
             deletedAt: entity.deletedAt ?? null
         }
         return response;
+    }
+    static toIResponse(entity: UserRoleEntity): IUserRole{
+        return {
+            userRoleId: entity.userRoleId.toString(),
+            userId: entity.userId.toString(),
+            roleId: entity.roleId.toString(),
+            role:  null,
+            user: entity?.user ? UserMapper.toIResponse(entity.user): null,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt ?? null,
+            deletedAt: entity.deletedAt ?? null
+        }
     }
 }

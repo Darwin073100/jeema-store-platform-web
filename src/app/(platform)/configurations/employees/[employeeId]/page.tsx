@@ -1,9 +1,9 @@
 import { findAllRoleAction } from "@/features/auth/actions/find-all-role.action";
-import { findAllEmployeeRolesAction } from "@/features/employee/actions/find-all-employee-roles.action";
-import { findEmployeeByIdAction } from "@/features/employee/actions/find-employee-by-id.action";
-import { EmployeeLaboralInformation } from "@/features/employee/ui/details/EmployeeLaboralInformation";
-import { EmployeeProfileCard } from "@/features/employee/ui/details/EmployeeProfileCard";
-import { EmployeeUserInformation } from "@/features/employee/ui/details/EmployeeUserInformation";
+import { findAllEmployeeRolesAction } from "@/contexts/employee-management/employee-role/presentation/actions/find-all-employee-roles.action";
+import { findEmployeeByIdAction } from "@/contexts/employee-management/employee/presentation/actions/find-employee-by-id.action";
+import { EmployeeLaboralInformation } from "@/contexts/employee-management/employee/presentation/ui/details/EmployeeLaboralInformation";
+import { EmployeeProfileCard } from "@/contexts/employee-management/employee/presentation/ui/details/EmployeeProfileCard";
+import { EmployeeUserInformation } from "@/contexts/employee-management/employee/presentation/ui/details/EmployeeUserInformation";
 import { formatDateWithOutTime } from "@/shared/lib/utils/date-formatter";
 import { Button } from "@/shared/ui/components/buttons";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";

@@ -1,6 +1,6 @@
 import { findAllRoleAction } from "@/features/auth/actions/find-all-role.action";
-import { findAllEmployeeRolesAction } from "@/features/employee/actions/find-all-employee-roles.action";
-import { EmployeeForms } from "@/features/employee/ui/register/EmployeeForms";
+import { findAllEmployeeRolesAction } from "@/contexts/employee-management/employee-role/presentation/actions/find-all-employee-roles.action";
+import { EmployeeForms } from "@/contexts/employee-management/employee/presentation/ui/register/EmployeeForms";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";

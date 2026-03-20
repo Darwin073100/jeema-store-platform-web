@@ -1,6 +1,6 @@
-import { findAllEmployeesByEstablishmentIdAction } from "@/features/employee/actions/find-all-employees-by-establishment-id.action";
-import { EmployeeDesktopTable } from "@/features/employee/ui/details/EmployeeDesktopTable";
-import { EmployeeOptios } from "@/features/employee/ui/details/EmployeeOptios";
+import { findAllEmployeesByEstablishmentIdAction } from "@/contexts/employee-management/employee/presentation/actions/find-all-employees-by-establishment-id.action";
+import { EmployeeDesktopTable } from "@/contexts/employee-management/employee/presentation/ui/details/EmployeeDesktopTable";
+import { EmployeeOptios } from "@/contexts/employee-management/employee/presentation/ui/details/EmployeeOptios";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
