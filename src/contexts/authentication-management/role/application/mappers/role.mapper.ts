@@ -1,4 +1,5 @@
 import { RoleEntity } from "../../domain/entities/role-entity";
+import { IRole } from "../../presentation/interfaces/IRole";
 import { RoleResponseDto } from "../dtos/role-response.dto";
 
 export class RoleMapper {
@@ -17,5 +18,15 @@ export class RoleMapper {
       entity.deletedAt,
       entity.description?.description,
     );
+  }
+  public static toIResponse(entity: RoleEntity): IRole {
+    return {
+      roleId: entity.roleId, // Convertimos BigInt a string para la serialización JSON
+      name: entity.name.name,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+      description: entity.description?.description ?? null,
+    };
   }
 }

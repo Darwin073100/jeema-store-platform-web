@@ -1,5 +1,5 @@
 export interface IRole {
-    roleId: string,
+    roleId: bigint,
     name: string,
     createdAt: Date,
     updatedAt: Date | null,

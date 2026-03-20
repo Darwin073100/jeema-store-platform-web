@@ -6,10 +6,12 @@
  * Son agnósticas a la infraestructura y al framework.
  */
 export abstract class DomainException extends Error {
-    protected constructor(message: string) {
-      super(message);
-      this.name = this.constructor.name; // Asegura que el nombre de la excepción sea el nombre de la clase
-      // Captura el stack trace, excluyendo el constructor del error
-      Error.captureStackTrace(this, this.constructor);
-    }
+  readonly statusCode: number;
+  protected constructor(message: string, statusCode?: number) {
+    super(message);
+    this.statusCode = statusCode ?? 500;
+    this.name = this.constructor.name; // Asegura que el nombre de la excepción sea el nombre de la clase
+    // Captura el stack trace, excluyendo el constructor del error
+    Error.captureStackTrace(this, this.constructor);
   }
+}

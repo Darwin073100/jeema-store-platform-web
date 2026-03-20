@@ -23,7 +23,7 @@ export class UserRoleMapper {
             userRoleId: entity.userRoleId.toString(),
             userId: entity.userId.toString(),
             roleId: entity.roleId.toString(),
-            role:  null,
+            role:  entity?.role ? RoleMapper.toIResponse(entity.role): null,
             user: entity?.user ? UserMapper.toIResponse(entity.user): null,
             createdAt: entity.createdAt,
             updatedAt: entity.updatedAt ?? null,
