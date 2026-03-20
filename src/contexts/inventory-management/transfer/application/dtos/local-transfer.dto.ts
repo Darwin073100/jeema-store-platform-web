@@ -1,6 +1,6 @@
 import { LocationEnum } from "src/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 
-export class LocalTransferDTO{
+export interface LocalTransferDTO{
     inventoryId: bigint;
     fromLocation: LocationEnum;
     branchOfficeId: bigint;

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useUpdateInventoryItemStore } from "../stores/update-inventory-item.store";
 import { useInventoryItemUIStore } from "../stores/inventory-item-ui.store";
 import { useInventoryItemDescripctionInput } from "./useInventoryItemSecripctionInput";
-import { localTransferAction } from "@/features/transfer/actions/local-transfer.action";
+import { localTransferAction } from "@/contexts/inventory-management/transfer/presentation/actions/local-transfer.action";
 import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 import { LocationEnum } from "@/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 
