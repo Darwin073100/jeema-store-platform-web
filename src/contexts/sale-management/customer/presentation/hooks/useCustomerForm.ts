@@ -4,9 +4,9 @@ import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.dto";
 import { useCustomerUIStore } from "../stores/customer-ui.store";
-import { RegisterCustomerDTO } from "../../../../../features/customer/application/dtos/register-customer.dto";
 import { registerCustomerAction } from "../actions/register-customer.action";
-import { CustomerTypeEnum } from "../../../../../features/customer/domain/enums/customer-type-enum";
+import { CustomerTypeEnum } from "../../domain/enums/customer-type-enum";
+import { RegisterCustomerDto } from "../../application/dtos/register-customer.dto";
 
 export const schema = yup.object().shape({
     firstName: yup.string()
@@ -165,7 +165,7 @@ const useCustomerForm = () => {
             }
         }
 
-        const registerCustomerDTO: RegisterCustomerDTO = {
+        const registerCustomerDTO: RegisterCustomerDto = {
             saleDefault: data.saleDefault,
             email: data.email ?? null,
             firstName: data.firstName,
