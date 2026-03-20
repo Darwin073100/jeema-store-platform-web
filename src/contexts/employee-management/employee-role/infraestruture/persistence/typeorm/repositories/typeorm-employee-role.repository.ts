@@ -104,6 +104,16 @@ export class TypeOrmEmployeeRoleRepository implements EmployeeRoleRepository {
       ormEntity.deletedAt,
     );
   }
+  async existById(id: bigint): Promise<EmployeeRoleEntity | null> {
+    // 1. Buscar la entidad ORM en la base de datos.
+    const ormEntity = await this.typeOrmRepository.findOne({
+      where: { employeeRoleId: id as any }, // TypeORM y BigInt
+    });
+    if (!ormEntity) {
+      return null;
+    }
+    return EmployeeRoleMapper.toDomainEntity(ormEntity);
+  }
 
   async findByName(name: string): Promise<EmployeeRoleEntity | null> {
     const ormEntity = await this.typeOrmRepository.findOne({

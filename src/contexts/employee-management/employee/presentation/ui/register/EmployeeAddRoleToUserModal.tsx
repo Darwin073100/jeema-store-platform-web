@@ -3,16 +3,16 @@ import React from 'react';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { SelectMenu } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
-import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
 import { useEmployeeUIStore } from '../../stores/employee-ui.store';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { BiPencil } from 'react-icons/bi';
 import { useEmployeeAddRoleToUserModal } from '../../hooks/hooks/useEmployeeAddRoleToUserModal';
+import { IRole } from '@/contexts/authentication-management/role/presentation/interfaces/IRole';
 
 interface Props {
-  roles: RoleEntity[]
+  roles: IRole[]
 }
 
 const EmployeeAddRoleToUserModal = ({ roles }: Props) => {

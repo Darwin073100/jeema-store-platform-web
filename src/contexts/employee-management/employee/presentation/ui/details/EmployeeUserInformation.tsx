@@ -2,14 +2,12 @@
 import React from 'react'
 import { TiUserAdd } from "react-icons/ti";
 import { FcKey, FcMediumPriority } from 'react-icons/fc';
-import { EmployeeEntity } from '../../../../../../features/employee/domain/entities/employee.entity';
 import { Button } from '@/shared/ui/components/buttons';
 import { MdLockReset } from 'react-icons/md';
 import { TbTrashXFilled } from 'react-icons/tb';
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import { AlertMessage } from '@/shared/ui/components/messages/AlertMessage';
 import { EmpRegisterUserModal } from '../register/EmpRegisterUserModal';
-import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
 import { useEmployeeUIStore } from '../../stores/employee-ui.store';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { useStateUser } from '../../hooks/hooks/useDeleteUser';
@@ -25,9 +23,11 @@ import { EmployeeAddRoleToUserModal } from '../register/EmployeeAddRoleToUserMod
 import { useEmployeeDeleteUserRoleModal } from '../../hooks/hooks/useEmployeeDeleteUserRoleModal';
 import { EmployeeDeleteUserRoleModal } from '../register/EmployeeDeleteUserRoleModal';
 import { handleOptionUserRole } from '@/shared/lib/utils/role-formatter';
+import { IEmployee } from '../../interfaces/IEmployee';
+import { IRole } from '@/contexts/authentication-management/role/presentation/interfaces/IRole';
 interface Props {
-    data: EmployeeEntity,
-    userRoles: RoleEntity[]
+    data: IEmployee,
+    userRoles: IRole[]
 }
 const EmployeeUserInformation = ({ data, userRoles }:Props) => {
     const { openEmployeeModal, floatMessageState, loading } = useEmployeeUIStore();
@@ -86,7 +86,7 @@ const EmployeeUserInformation = ({ data, userRoles }:Props) => {
                         <Button color='blue' size='sm' onClick={()=> openEmployeeModal('addRoleToUser')}><BiAddToQueue/> Agregar</Button>
                     </div>
                     <div className="text-sm flex gap-2 flex-col">
-                        { data.user.userRoles?.map(item => (
+                        { data.user.userRoles?.map((item:any) => (
                             <div className='border p-4 rounded-lg'>
                                 <div className='flex gap-2'>
                                     <Button color='yellow' size='sm' onClick={()=> handleOpenModal(item)}><BiPencil/> Editar</Button>

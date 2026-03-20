@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import { SelectMenu, SelectMenuOption, TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { EmployeeFormAddress } from './EmployeeFormAddress';
-import { GenderEnum } from '../../../../../../features/employee/domain/enums/gender.enum';
 import { useEmployeeForm } from '../../hooks/hooks/useEmployeeForm';
 import { Button } from '@/shared/ui/components/buttons';
 import { EmployeeEnableOptios } from './EmployeeEnableOptios';
@@ -12,6 +11,7 @@ import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { IoSave } from 'react-icons/io5';
+import { GenderEnum } from '../../../domain/enums/gender.enum';
 
 interface Props {
     optionsRoles: SelectMenuOption[],

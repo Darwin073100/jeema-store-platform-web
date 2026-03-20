@@ -3,12 +3,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { RoleEntity } from "@/features/auth/domain/entities/role.entity";
 import { RegisterUserDTO } from "@/features/auth/application/dtos/register-user.dto";
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
 import { SelectMenuOption } from "@/shared/ui/components/inputs";
 import { registerUserAction } from "@/features/auth/actions/register-user.action";
-import { useWorkspace } from "@/shared/hooks/useAuth";
+import { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
 
 export const schema = yup.object().shape({
     //? VALIDACION PARA EL USUARIO
@@ -74,7 +73,7 @@ const useEmpRegisterUserForm = () => {
         }
     });
     const optionUserRoleSelected = watch('userRoleId');
-    const handleOptionsUserRoles = (roles: RoleEntity[]): SelectMenuOption[]=>{
+    const handleOptionsUserRoles = (roles: IRole[]): SelectMenuOption[]=>{
         const rolesOption = roles.map(item => {
             let options: SelectMenuOption = {
                 value: '0',
@@ -83,35 +82,35 @@ const useEmpRegisterUserForm = () => {
             }
             if(item.name.trim().toLowerCase() === 'global_admin'.trim().toLowerCase()){
                 options= {
-                    value: item.roleId,
+                    value: item.roleId.toString(),
                     text: 'Administrador Global',
                     additional: item.description ?? undefined 
                 }
             }
             if(item.name.trim().toLowerCase() === 'establishment_manager'.trim().toLowerCase()){
                 options= {
-                    value: item.roleId,
+                    value: item.roleId.toString(),
                     text: 'Administrador de Establecimiento',
                     additional: item.description ?? undefined 
                 }
             }
             if(item.name.trim().toLowerCase() === 'branch_office_management'.trim().toLowerCase()){
                 options= {
-                    value: item.roleId,
+                    value: item.roleId.toString(),
                     text: 'Administrador de Sucursal',
                     additional: item.description ?? undefined 
                 }
             }
             if(item.name.trim().toLowerCase() === 'cajero'.trim().toLowerCase()){
                 options= {
-                    value: item.roleId,
+                    value: item.roleId.toString(),
                     text: 'Cajero',
                     additional: item.description ?? undefined 
                 }
             }
             if(item.name.trim().toLowerCase() === 'seller'.trim().toLowerCase()){
                 options= {
-                    value: item.roleId,
+                    value: item.roleId.toString(),
                     text: 'Vendedor',
                     additional: item.description ?? undefined 
                 }

@@ -12,4 +12,5 @@ export const EMPLOYEE_ROLE_REPOSITORY = Symbol('EMPLOYEE_ROLE_REPOSITORY');
  */
 export interface EmployeeRoleRepository extends TemplateRepository<EmployeeRoleEntity> {
     findByName(name: string): Promise<EmployeeRoleEntity | null>;
+    existById(id: bigint): Promise<EmployeeRoleEntity | null>;
 }

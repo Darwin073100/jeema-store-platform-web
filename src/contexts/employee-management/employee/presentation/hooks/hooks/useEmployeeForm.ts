@@ -4,11 +4,11 @@ import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { RoleEntity } from "@/features/auth/domain/entities/role.entity";
-import { RegisterUserDTO } from "@/features/auth/application/dtos/register-user.dto";
-import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.dto";
-import { RegisterEmployeeDTO } from "../../../../../../features/employee/application/dtos/register-employee.dto";
 import { saveEmployeeAction } from "../../actions/save-employee.action";
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
+import { RegisterUserDTO } from "@/contexts/authentication-management/auth/application/dtos/register-user.dto";
+import { RegisterAddress } from "@/contexts/establishment-management/address/application/dtos/register-address.dto";
+import { RegisterEmployeeDto } from "../../../application/dtos/register-employee.dto";
 
 export const schema = yup.object().shape({
     employeeRoleId: yup.string()
@@ -259,11 +259,11 @@ const useEmployeeForm = () => {
                 email: data.userEmail ?? '',
                 employeeId: BigInt(0),
                 roleId: BigInt(data.userRoleId ?? 0),
-                passwordHash: data.userPassword ?? '',
+                passwordPlain: data.userPassword ?? '',
                 username: data.userUsername ?? ''
             }
         }
-        let addressDTO: RegisterAddressDTO | null = null;
+        let addressDTO: RegisterAddress | null = null;
         if(addressCheck){
             addressDTO = {
                 country: data.addressCountry ?? '',
@@ -279,9 +279,9 @@ const useEmployeeForm = () => {
             }
         }
 
-        const registerEmployeeDTO: RegisterEmployeeDTO = {
+        const registerEmployeeDTO: RegisterEmployeeDto = {
             isActive: true,
-            birthDate: data.birthDate ?? null,
+            birthDate: data.birthDate?.toDateString() ?? null,
             branchOfficeId: BigInt(1),
             currentSalary: Number(data.currentSalary ?? 0),
             email: data.email,
@@ -290,13 +290,12 @@ const useEmployeeForm = () => {
             exitTime: data.exitTime ?? null,
             firstName: data.firstName,
             gender: data.gender ?? null,
-            hireDate: data.hireDate ?? new Date(),
+            hireDate: data.hireDate?.toDateString() ?? new Date().toDateString(),
             lastName: data.lastName,
             phoneNumber: data.phoneNumber,
             photoUrl: data.phoneNumber,
             terminationDate: null,
             address: addressDTO,
-            user: null,
         }
         const result = await saveEmployeeAction(registerEmployeeDTO, userDTO);
         setLoading(false);

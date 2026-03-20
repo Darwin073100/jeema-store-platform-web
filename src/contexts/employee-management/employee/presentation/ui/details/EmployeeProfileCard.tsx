@@ -2,19 +2,19 @@
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import React, { useEffect } from 'react'
 import { FcBusinessman, FcBusinesswoman, FcDecision } from 'react-icons/fc';
-import { GenderEnum } from '../../../../../../features/employee/domain/enums/gender.enum';
 import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter';
-import { EmployeeEntity } from '../../../../../../features/employee/domain/entities/employee.entity';
 import { Button } from '@/shared/ui/components/buttons';
 import { HiPencil } from 'react-icons/hi';
 import { EmployeeUpdateModal } from '../register/EmployeeUpdateModal';
 import { useEmployeeUIStore } from '../../stores/employee-ui.store';
-import { EmployeeRoleEntity } from '../../../../../../features/employee/domain/entities/employee-role.entity';
 import { useEmployeeStore } from '../../stores/employee-store';
 import { EmployeeAddressCard } from './EmployeeAddressCard';
+import { IEmployee } from '../../interfaces/IEmployee';
+import { IEmployeeRole } from '@/contexts/employee-management/employee-role/presentation/interfaces/IEmployeeRole';
+import { GenderEnum } from '../../../domain/enums/gender.enum';
 interface Props {
-    data        : EmployeeEntity,
-    employeeRoles: EmployeeRoleEntity[],
+    data        : IEmployee,
+    employeeRoles: IEmployeeRole[],
 }
 const EmployeeProfileCard = ({ data, employeeRoles }: Props) => {
     const { openEmployeeModal } = useEmployeeUIStore();

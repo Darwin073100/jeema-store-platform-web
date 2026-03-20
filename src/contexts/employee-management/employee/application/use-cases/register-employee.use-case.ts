@@ -1,27 +1,25 @@
-// src/contexts/educational-center-management/educational-center/application/use-cases/register-educational-center.use-case.ts
-
 import { RegisterEmployeeDto } from '../dtos/register-employee.dto';
 import { EmployeeRepository } from '../../domain/repositories/employee.repository';
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
 import { GenderEnum } from '../../domain/enums/gender.enum';
-import { EmployeeRoleChekerPort } from 'src/contexts/employee-management/employee-role/domain/ports/out/employee-role-checker.port';
-import { BranchOfficeCheckerPort } from 'src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port';
 import { EmployeeNotFoundException } from '../../domain/exceptions/employee-not-found.exception';
 import { TransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository';
 import { AddressEntity } from '@/contexts/establishment-management/address/domain/entities/address.entity';
+import { EmployeeRoleRepository } from '@/contexts/employee-management/employee-role/domain/repositories/employee-role.repository';
+import { BranchOfficeRepository } from '@/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository';
 
 /**
  * RegisterEstablishmentUseCase es un Caso de Uso (o Servicio de Aplicación).
  * Contiene la lógica de orquestación para el proceso de registro de un establesimiento.
  * No contiene lógica de negocio pura, sino que coordina a las entidades de dominio y repositorios.
  */
-export class RegisterEmployeeRoleUseCase {
+export class RegisterEmployeeUseCase {
   constructor(
     // Inyectamos la interfaz del repositorio, no una implementación concreta.
     // Esto es Inversión de Dependencias.
     private readonly employeeRoleRepository: EmployeeRepository,
-    private readonly employeeRoleCheckerPort: EmployeeRoleChekerPort,
-    private readonly branchOfficeCheckerPort: BranchOfficeCheckerPort,
+    private readonly employeeRoleCheckerPort: EmployeeRoleRepository,
+    private readonly branchOfficeCheckerPort: BranchOfficeRepository,
     private readonly transactionDBRepository: TransactionDBRepository,
   ) { }
 
@@ -37,7 +35,7 @@ export class RegisterEmployeeRoleUseCase {
       this.transactionDBRepository.beginTransaction();
       // 0. Validar que el branch office y el employee role existen
       const branchOfficeExists = await this.branchOfficeCheckerPort.existById(command.branchOfficeId);
-      const employeeRoleExists = await this.employeeRoleCheckerPort.exists(command.employeeRoleId);
+      const employeeRoleExists = await this.employeeRoleCheckerPort.existById(command.employeeRoleId);
 
       if (!branchOfficeExists) {
         throw new EmployeeNotFoundException(`La sucursal con el id ${command.branchOfficeId} no fue encontrada`);
@@ -79,7 +77,7 @@ export class RegisterEmployeeRoleUseCase {
       );
 
       // Asignar address en memoria (cascade)
-      (employee as any)._address = address;
+      employee.updateAddress(address)
 
       const savedEntity = await this.employeeRoleRepository.save(employee);
 

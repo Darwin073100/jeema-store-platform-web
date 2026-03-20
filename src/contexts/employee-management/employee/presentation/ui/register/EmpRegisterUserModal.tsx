@@ -3,15 +3,15 @@ import React, { useEffect } from 'react';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
-import { RoleEntity } from '@/features/auth/domain/entities/role.entity';
 import { useEmpRegisterUserForm } from '../../hooks/hooks/useEmpRegisterUserForm';
 import { Button } from '@/shared/ui/components/buttons';
 import { HiUserAdd } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { IRole } from '@/contexts/authentication-management/role/presentation/interfaces/IRole';
 
 interface Props {
-    userRoles: RoleEntity[],
+    userRoles: IRole[],
     employeeId: bigint,
 }
 

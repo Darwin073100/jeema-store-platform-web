@@ -7,15 +7,15 @@ import { Button } from '@/shared/ui/components/buttons';
 import { HiUserAdd } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { EmployeeEntity } from '../../../../../../features/employee/domain/entities/employee.entity';
 import { useEmployeeUpdate } from '../../hooks/hooks/useEmployeeUpdate';
 import { useEmployeeUIStore } from '../../stores/employee-ui.store';
-import { GenderEnum } from '../../../../../../features/employee/domain/enums/gender.enum';
-import { EmployeeRoleEntity } from '../../../../../../features/employee/domain/entities/employee-role.entity';
+import { IEmployeeRole } from '@/contexts/employee-management/employee-role/presentation/interfaces/IEmployeeRole';
+import { IEmployee } from '../../interfaces/IEmployee';
+import { GenderEnum } from '../../../domain/enums/gender.enum';
 
 interface Props {
-  employee: EmployeeEntity,
-  employeeRoles: EmployeeRoleEntity[]
+  employee: IEmployee,
+  employeeRoles: IEmployeeRole[]
 }
 
 const EmployeeUpdateModal = ({ employee, employeeRoles }: Props) => {

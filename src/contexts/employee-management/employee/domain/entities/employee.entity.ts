@@ -326,6 +326,9 @@ export class EmployeeEntity {
     public updateAddressId(addressId: bigint | null): void {
         this._addressId = addressId;
     }
+    public updateAddress(address: AddressEntity |null): void {
+        this._address = address;
+    }
     public updateFirstName(name: string): void {
         this._firstName = EmployeeFirstNameVO.create(name);
     }

@@ -1,10 +1,10 @@
 import { EmployeeRepository } from '../../domain/repositories/employee.repository';
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
 import { GenderEnum } from '../../domain/enums/gender.enum';
-import { EmployeeRoleChekerPort } from 'src/contexts/employee-management/employee-role/domain/ports/out/employee-role-checker.port';
-import { BranchOfficeCheckerPort } from 'src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port';
 import { EmployeeNotFoundException } from '../../domain/exceptions/employee-not-found.exception';
 import { UpdateEmployeeDto } from '../dtos/update-employee.dto';
+import { EmployeeRoleRepository } from '@/contexts/employee-management/employee-role/domain/repositories/employee-role.repository';
+import { BranchOfficeRepository } from '@/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository';
 
 /**
  * RegisterEstablishmentUseCase es un Caso de Uso (o Servicio de Aplicación).
@@ -16,8 +16,8 @@ export class UpdateEmployeeUseCase {
     // Inyectamos la interfaz del repositorio, no una implementación concreta.
     // Esto es Inversión de Dependencias.
     private readonly employeeRepository: EmployeeRepository,
-    private readonly employeeRoleCheckerPort: EmployeeRoleChekerPort,
-    private readonly branchOfficeCheckerPort: BranchOfficeCheckerPort,
+    private readonly employeeRoleCheckerPort: EmployeeRoleRepository,
+    private readonly branchOfficeCheckerPort: BranchOfficeRepository,
   ) { }
 
   /**
@@ -48,7 +48,7 @@ export class UpdateEmployeeUseCase {
         employee.updateBranchOfficeId(command.branchOfficeId);
       }
       if(command.employeeRoleId){
-        const employeeRoleExists = await this.employeeRoleCheckerPort.exists(command.employeeRoleId);
+        const employeeRoleExists = await this.employeeRoleCheckerPort.existById(command.employeeRoleId);
         if (!employeeRoleExists) {
           throw new EmployeeNotFoundException(`El rol de empleado con ID ${command.employeeRoleId} no fue encontrado`);
         }
