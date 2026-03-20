@@ -52,7 +52,9 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
   async findById(id: bigint): Promise<CustomerEntity | null> {
     const customerOrmEntity = await this.ormCustomerRepository.findOne({
       where: { customerId: id },
-      relations: ['address'], // 'eager: true' en la entidad ya debería cargarla, pero es buena práctica indicarlo
+      relations: {
+        address: true
+      }, // 'eager: true' en la entidad ya debería cargarla, pero es buena práctica indicarlo
     });
 
     if (!customerOrmEntity) {

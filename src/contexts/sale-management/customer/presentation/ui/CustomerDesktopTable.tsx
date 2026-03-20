@@ -3,7 +3,7 @@ import { Button } from '@/shared/ui/components/buttons'
 import React from 'react'
 import { AiFillProfile } from 'react-icons/ai'
 import { useRouter } from 'next/navigation';
-import { useCustomerStore } from '../../infraestructure/stores/customer.store';
+import { useCustomerStore } from '../stores/customer.store';
 import { PCol, PrimaryTable, PRow, PTableEmpty } from '@/shared/ui/components/tables/PrimaryTable';
 
 const CustomerDesktopTable = () => {

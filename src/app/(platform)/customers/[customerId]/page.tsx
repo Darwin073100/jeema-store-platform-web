@@ -1,5 +1,5 @@
-import { findOneCustomerByEstablishmentAction } from "@/features/customer/actions/find-one-customer-by-establishment.action";
-import { CustomerSaleList } from "@/features/customer/presentation/ui/details/CustomerSaleList";
+import { findOneCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-one-customer-by-establishment.action";
+import { CustomerSaleList } from "@/contexts/sale-management/customer/presentation/ui/details/CustomerSaleList";
 import { Button } from "@/shared/ui/components/buttons";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";

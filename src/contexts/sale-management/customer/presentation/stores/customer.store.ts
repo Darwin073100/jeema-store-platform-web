@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { CustomerEntity } from "../../domain/entities/customer.entity";
+import { CustomerEntity } from "../../../../../features/customer/domain/entities/customer.entity";
 
 interface State {
     searchValue: string,

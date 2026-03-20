@@ -6,7 +6,7 @@ import { RegisterAddress } from "@/contexts/establishment-management/address/app
  *
  * Es un DTO (Data Transfer Object) para la capa de Aplicación.
  */
-export class RegisterCustomerDto {
+export interface RegisterCustomerDto {
     readonly firstName: string;
     readonly saleDefault: boolean;
     readonly lastName?: string|null;
@@ -17,27 +17,4 @@ export class RegisterCustomerDto {
     readonly customerType?: string | null;
     readonly address?: RegisterAddress|null;
     readonly establishmentId?: bigint|null;
-    constructor(
-        firstName: string,
-        saleDefault: boolean,
-        establishmentId?: bigint|null,
-        lastName?: string|null,
-        companyName?: string|null,
-        phoneNumber?: string|null,
-        address?: RegisterAddress|null,
-        rfc?: string | null,
-        email?: string | null,
-        customerType?: string | null,
-    ){
-        this.saleDefault = saleDefault;
-        this.establishmentId = establishmentId;
-        this.address = address;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.companyName = companyName;
-        this.phoneNumber = phoneNumber;
-        this.rfc = rfc;
-        this.email = email;
-        this.customerType = customerType;
-    }
-  }
+}

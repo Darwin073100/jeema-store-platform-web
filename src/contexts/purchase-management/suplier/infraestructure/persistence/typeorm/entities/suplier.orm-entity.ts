@@ -37,7 +37,7 @@ export class SuplierOrmEntity extends TemplateOrmEntity {
   @ManyToOne(()=> EstablishmentOrmEntity, (item)=> item.supliers)
   establishment: EstablishmentOrmEntity | null;
   @JoinColumn({ name: 'address_id' })
-  @OneToOne(() => AddressOrmEntity, (address) => address.suplier, { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne('AddressOrmEntity', 'suplier', { cascade: true, onDelete: 'CASCADE' })
   address: AddressOrmEntity | null;
   @OneToMany(()=> LotOrmEntity, (item)=> item.suplier)
   lots: LotOrmEntity[] | null;

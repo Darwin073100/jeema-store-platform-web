@@ -1,4 +1,4 @@
-import { CustomerForms } from "@/features/customer/presentation/ui/CustomerForms";
+import { CustomerForms } from "@/contexts/sale-management/customer/presentation/ui/CustomerForms";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";

@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { IoPersonAdd } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
-import { CustomerEntity } from '../../domain/entities/customer.entity';
-import { useCustomerStore } from '../../infraestructure/stores/customer.store';
+import { CustomerEntity } from '../../../../../features/customer/domain/entities/customer.entity';
+import { useCustomerStore } from '../stores/customer.store';
 interface Props {
     customersList: CustomerEntity[]
 }

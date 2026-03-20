@@ -2,9 +2,9 @@ import React from 'react';
 import { Metadata } from 'next';
 import { ProtectedRoute } from '@/shared/ui/components/routes/ProtectedRoute';
 import { BreadcrumbItem, TemplateHeader } from '@/shared/ui/components/templates/TemplateHeader'
-import { findAllCustomerByEstablishmentAction } from '@/features/customer/actions/find-all-customer-by-establishment.action'
-import CustomerDesktopTable from '@/features/customer/presentation/ui/CustomerDesktopTable';
-import { CustomerOptios } from '@/features/customer/presentation/ui/CustomerOptios';
+import { findAllCustomerByEstablishmentAction } from '@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action'
+import CustomerDesktopTable from '@/contexts/sale-management/customer/presentation/ui/CustomerDesktopTable';
+import { CustomerOptios } from '@/contexts/sale-management/customer/presentation/ui/CustomerOptios';
 
 export const metadata: Metadata = {
     title: 'Customers'

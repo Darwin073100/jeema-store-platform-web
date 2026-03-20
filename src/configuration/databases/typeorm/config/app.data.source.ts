@@ -29,7 +29,7 @@ import { TransferOrmEntity } from 'src/contexts/inventory-management/transfer/in
 import { CashRegisterOrmEntity } from 'src/contexts/cash-management/cash-register/infraestructure/entities/cash-register.orm-entity';
 import { CashSessionOrmEntity } from 'src/contexts/cash-management/cash-session/infraestructure/entities/cash-session.orm-entity';
 import { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestructure/entities/returns.orm-entity';
-import { AddressOrmEntity } from '@/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
+import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
 
 config();
 
