@@ -4,7 +4,7 @@ import { FindAllCategoriesByEstablishmentAction } from "@/features/category/acti
 import { findAllBrandsByEstablishmentAction } from "@/features/brand/actions/find-all-brands-by-establishment.action";
 import { findAllSeasonsBYEstablishmentAction } from "@/features/season/actions/find-all-seasons-by-establishment.action";
 import { FormRegisterCompleteProduct } from "@/contexts/product-management/product/presentation/ui/register-complete-product/FormRegisterCompleteProduct";
-import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
+import { findAllSuplierByEstablishmentId } from "@/contexts/purchase-management/suplier/presentation/actions/find-all-suplier-by-establishment.action";
 
 export default async function () {
     const viewAllCategories = await FindAllCategoriesByEstablishmentAction();

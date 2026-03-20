@@ -3,10 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.dto";
-import { useSuplierUIStore } from "../../infraestructure/stores/suplier-ui.store";
-import { registerCustomerAction } from "@/contexts/sale-management/customer/presentation/actions/register-customer.action";
-import { registerSuplierAction } from "../../actions/register-suplier.action";
-import { RegisterSuplierDto } from "../../application/dtos/register-suplier.dto";
+import { useSuplierUIStore } from "../stores/suplier-ui.store";
+import { registerSuplierAction } from "../actions/register-suplier.action";
 
 export const schema = yup.object().shape({
     notes: yup.string()

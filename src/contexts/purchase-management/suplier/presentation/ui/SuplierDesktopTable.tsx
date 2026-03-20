@@ -4,7 +4,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 import { PCol, PrimaryTable, PRow, PTableEmpty } from "@/shared/ui/components/tables/PrimaryTable";
 import { useSuplierActionsBar } from "../hooks/useSuplierActionsBar";
-import { useSuplierStore } from "../../infraestructure/stores/suplier.store";
+import { useSuplierStore } from "../stores/suplier.store";
 
 interface Props {
 }

@@ -2,9 +2,9 @@ import { SuplierRepository } from "../../domain/repositories/suplier.repository"
 import { RegisterSuplierDto } from "../dtos/register-suplier.dto";
 import { SuplierEntity } from "../../domain/entities/suplier.entity";
 import { SuplierAlreadyExistsException } from "../../domain/exceptions/suplier-already-exists.exception";
-import { AddressEntity } from "src/shared/domain/entities/address.entity";
 import { EstablishmentRepository } from "src/contexts/establishment-management/establishment/domain/repositories/establishment.repository";
 import { SuplierNotFoundException } from "../../domain/exceptions/suplier-not-found.exception";
+import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
 
 export class RegisterSuplierUseCase {
   constructor(

@@ -1,4 +1,4 @@
-import { SuplierForms } from "@/features/suplier/presentation/ui/SuplierForms";
+import { SuplierForms } from "@/contexts/purchase-management/suplier/presentation/ui/SuplierForms";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";

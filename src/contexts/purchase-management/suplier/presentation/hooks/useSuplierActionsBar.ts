@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
-import { useSuplierStore } from '../../infraestructure/stores/suplier.store';
+import { useSuplierStore } from '../stores/suplier.store';
 
 const useSuplierActionsBar = () => {
     const [loading, setLoading] = useState(false);

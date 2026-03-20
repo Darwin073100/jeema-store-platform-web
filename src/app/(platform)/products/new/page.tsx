@@ -1,7 +1,7 @@
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { FormRegisterCompleteProduct } from "@/contexts/product-management/product/presentation/ui/register-complete-product/FormRegisterCompleteProduct";
-import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
+import { findAllSuplierByEstablishmentId } from "@/contexts/purchase-management/suplier/presentation/actions/find-all-suplier-by-establishment.action";
 import { findAllCategoriesByEstablishmentAction } from "@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action";
 import { findAllBrandsByEstablishmentAction } from "@/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action";
 import { findAllSeasonsByEstablishmentAction } from "@/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action";

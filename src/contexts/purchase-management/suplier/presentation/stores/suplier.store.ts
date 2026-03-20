@@ -1,16 +1,16 @@
 
 import { create } from "zustand";
-import { SuplierEntity } from "../../domain/entities/suplier.entity";
+import { ISuplier } from "../interfaces/ISuplier";
 
 type State = {
     searchCharacter: string,
     setSearchCharacter: (value: string) => void,
-    supliers: SuplierEntity[],
-    supliersFiltered: SuplierEntity[],
-    setSupliers: (value: SuplierEntity[])=> void,
-    setSupliersFiltered: (value: SuplierEntity[])=> void,
-    suplier: SuplierEntity|null,
-    setSuplier: (product: SuplierEntity|null)=> void,
+    supliers: ISuplier[],
+    supliersFiltered: ISuplier[],
+    setSupliers: (value: ISuplier[])=> void,
+    setSupliersFiltered: (value: ISuplier[])=> void,
+    suplier: ISuplier|null,
+    setSuplier: (product: ISuplier|null)=> void,
     isOpenSuplierModal: boolean,
     setOpenSuplierModal: (value:boolean)=> void
 };

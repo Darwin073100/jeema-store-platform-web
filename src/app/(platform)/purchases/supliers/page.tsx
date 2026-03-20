@@ -1,6 +1,6 @@
-import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
-import { SuplierActionsBar } from "@/features/suplier/presentation/ui/SuplierActionsBar";
-import { SuplierDesktopTable } from "@/features/suplier/presentation/ui/SuplierDesktopTable";
+import { findAllSuplierByEstablishmentId } from "@/contexts/purchase-management/suplier/presentation/actions/find-all-suplier-by-establishment.action";
+import { SuplierActionsBar } from "@/contexts/purchase-management/suplier/presentation/ui/SuplierActionsBar";
+import { SuplierDesktopTable } from "@/contexts/purchase-management/suplier/presentation/ui/SuplierDesktopTable";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 

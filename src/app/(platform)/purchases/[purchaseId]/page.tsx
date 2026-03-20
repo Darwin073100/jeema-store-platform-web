@@ -6,7 +6,7 @@ import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates
 import ProductDetail from "@/contexts/product-management/product/presentation/ui/product-detail/ProductDetail";
 import InventoryDetail from "@/contexts/product-management/product/presentation/ui/product-detail/InventoryDetail";
 import LotDetail from "@/contexts/product-management/product/presentation/ui/product-detail/LotDetail";
-import { findAllSuplierByEstablishmentId } from "@/features/suplier/actions/find-all-suplier-by-establishment.action";
+import { findAllSuplierByEstablishmentId } from "@/contexts/purchase-management/suplier/presentation/actions/find-all-suplier-by-establishment.action";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request

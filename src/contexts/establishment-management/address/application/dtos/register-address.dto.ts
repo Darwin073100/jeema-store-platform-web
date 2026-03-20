@@ -1,4 +1,4 @@
-export class RegisterAddress {
+export interface RegisterAddress {
     street: string | null;
     externalNumber: string | null;
     internalNumber: string | null;

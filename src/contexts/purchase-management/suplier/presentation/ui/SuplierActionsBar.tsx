@@ -6,11 +6,11 @@ import React, { useEffect } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { HideElement } from '@/features/auth/ui/HideElement';
-import { SuplierEntity } from '../../domain/entities/suplier.entity';
-import { useSuplierStore } from '../../infraestructure/stores/suplier.store';
+import { useSuplierStore } from '../stores/suplier.store';
 import { useSuplierActionsBar } from '../hooks/useSuplierActionsBar';
+import { ISuplier } from '../interfaces/ISuplier';
 interface Props{
-    data: SuplierEntity[]
+    data: ISuplier[]
 }
 const SuplierActionsBar = ({ data }:Props) => {
     const { supliersFiltered, setSupliers } = useSuplierStore();
