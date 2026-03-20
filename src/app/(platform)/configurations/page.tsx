@@ -1,4 +1,4 @@
-import { ConfigurationOptions } from "@/features/configurations/presentation/ui/ConfigurationOptions";
+import { ConfigurationOptions } from "@/contexts/configuration-management/configuration/presentation/ui/ConfigurationOptions";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
