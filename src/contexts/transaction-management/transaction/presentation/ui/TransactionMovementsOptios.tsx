@@ -5,10 +5,10 @@ import { TextInput } from '@/shared/ui/components/inputs';
 import React, { useEffect } from 'react'
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { FaFilter } from 'react-icons/fa';
-import { TransactionEntity } from '../domain/entities/transaction.entity';
-import { useTransactionMovementsOptios } from '../infraestructure/hooks/useTransactionMovementsOptios';
-import { useTransactionStore } from '../infraestructure/stores/transaction.store';
-import { useTransactionUIStore } from '../infraestructure/stores/transaction-ui.store';
+import { TransactionEntity } from '../../../../../features/transaction/domain/entities/transaction.entity';
+import { useTransactionMovementsOptios } from '../hooks/useTransactionMovementsOptios';
+import { useTransactionStore } from '../stores/transaction.store';
+import { useTransactionUIStore } from '../stores/transaction-ui.store';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';

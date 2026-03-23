@@ -7,7 +7,7 @@ import { SaleProductList } from "@/features/sale/ui/SaleProductList";
 import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
 import { SaleSummary } from "@/features/sale/ui/SaleSummary";
 import { SaleSummaryMovile } from "@/features/sale/ui/SaleSummaryMovile";
-import { findAllTransactionsTypeAction } from "@/features/transaction/actions/find-all-transactions-type.action";
+import { findAllTransactionsTypeAction } from "@/contexts/transaction-management/transaction-type/presentation/actions/find-all-transactions-type.action";
 import { AccountTypeEnum } from "@/features/transaction/domain/enums/account-type.enum";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"

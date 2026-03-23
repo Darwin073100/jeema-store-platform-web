@@ -1,6 +1,5 @@
 import { TransactionTypeRepository } from "src/contexts/transaction-management/transaction-type/domain/repositories/transaction-type.repository";
 import { TransactionRepository } from "../../domain/repositories/transaction.repository";
-import { RegisterTransactionSaleDTO } from "../dtos/register-transaction-sale.dto";
 import { TransactionNotFoundException } from "../../domain/exceptions/transaction-not-found.exception";
 import { TransactionEntity } from "../../domain/entities/transaction.entity";
 import { BranchOfficeRepository } from "src/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository";
@@ -64,9 +63,6 @@ export class RegisterTransactionUseCase {
             } else {
                 totalAmount = totalAmount - Number(dto.amount);
             }
-            console.log(income);
-            console.log(expense);
-            console.log(totalAmount);
 
             if(totalAmount < 0){
                 throw new TransactionConflictException('La salida de efectivo no puede tomerse del fondo de caja.');

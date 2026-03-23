@@ -1,4 +1,4 @@
-export class ManyFilterTransactionsDTO{
+export interface ManyFilterTransactionsDTO{
     establishmentId: bigint;
     dateInit: Date | null;
     dateEnd: Date | null;

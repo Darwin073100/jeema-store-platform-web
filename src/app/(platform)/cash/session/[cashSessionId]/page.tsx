@@ -1,10 +1,7 @@
 import { findCashSessionWithTransactionsAction } from "@/features/cash/actions/find-cash-session-with-transactions.action";
-import { CashIn } from "@/features/cash/presentation/ui/close/CashIn";
 import { CashInfo } from "@/features/cash/presentation/ui/close/CashInfo";
 import { CashCloseOptios } from "@/features/cash/presentation/ui/close/CashOptios";
-import { CashOut } from "@/features/cash/presentation/ui/close/CashOut";
-import { findAllTransactionsTypeAction } from "@/features/transaction/actions/find-all-transactions-type.action";
-import { AccountTypeEnum } from "@/features/transaction/domain/enums/account-type.enum";
+import { findAllTransactionsTypeAction } from "@/contexts/transaction-management/transaction-type/presentation/actions/find-all-transactions-type.action";
 import { formatDateShort, formatTimeByDate } from "@/shared/lib/utils/date-formatter";
 import { numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
@@ -13,6 +10,7 @@ import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates
 import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 import clsx from "clsx";
 import { Metadata } from "next";
+import { AccountTypeEnum } from "@/contexts/transaction-management/transaction-type/domain/enums/account-type.enum";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request

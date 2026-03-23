@@ -7,7 +7,7 @@ import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
-import { useTransactionStore } from '../infraestructure/stores/transaction.store';
+import { useTransactionStore } from '../stores/transaction.store';
 interface Props {
 }
 const TransactionMovementsDesktopTable = ({ }: Props) => {

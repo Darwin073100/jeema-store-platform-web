@@ -1,6 +1,6 @@
-import { findAllManyFilterTransactionsAction } from "@/features/transaction/actions/find-cash-movements-by-branch-office-id.action";
-import { TransactionMovementsDesktopTable } from "@/features/transaction/ui/TransactionMovementsDesktopTable";
-import { TransactionMovementsOptios } from "@/features/transaction/ui/TransactionMovementsOptios";
+import { findAllManyFilterTransactionsAction } from "@/contexts/transaction-management/transaction/presentation/actions/find-cash-movements-by-branch-office-id.action";
+import { TransactionMovementsDesktopTable } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsDesktopTable";
+import { TransactionMovementsOptios } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsOptios";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";

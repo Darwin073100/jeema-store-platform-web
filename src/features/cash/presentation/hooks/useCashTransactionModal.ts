@@ -1,12 +1,12 @@
 'use client'
 import * as yup from 'yup';
-import { TransactionTypeEntity } from '@/features/transaction/domain/entities/transaction-type.entity';
 import { SelectMenuOption } from '@/shared/ui/components/inputs';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useCashUIStore } from '../../infraestructure/stores/cash-ui.store';
-import { registerTransactionAction } from '@/features/transaction/actions/register-transaction.action';
 import { useCashStore } from '../../infraestructure/stores/cash.store';
+import { ITransactionType } from '@/contexts/transaction-management/transaction-type/presentation/interfaces/TransactionType';
+import { registerTransactionAction } from '@/contexts/transaction-management/transaction/presentation/actions/register-transaction.action';
 
 const schema = yup.object().shape({
     amount: yup.number()
@@ -26,7 +26,7 @@ type FormData = yup.InferType<typeof schema>;
 const useCashTransactionModal = () => {
     const { loading, runLoading, stopLoading, floatMessageState, setFloatMessageState, openCashModal, closeCashModal} = useCashUIStore();
     const { cashSessionSelected } = useCashStore();
-    const handleTransactionsTypeInput = (transactionsTypes: TransactionTypeEntity[])=> {
+    const handleTransactionsTypeInput = (transactionsTypes: ITransactionType[])=> {
         const options:SelectMenuOption[] = transactionsTypes
             .filter(item => item.name !== 'Ingreso por Venta de Mercancía')
             .filter(item => item.name !== 'Apertura de Caja')

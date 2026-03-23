@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { TransactionEntity } from "../../domain/entities/transaction.entity";
+import { TransactionEntity } from "../../../../../features/transaction/domain/entities/transaction.entity";
 
 type State = {
     searchCharacter: string,

@@ -3,12 +3,11 @@ import * as yup from 'yup';
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TransactionExcel } from '../../domain/excel-interfaces/transaction.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { useTransactionStore } from '../stores/transaction.store';
 import { useTransactionUIStore } from '../stores/transaction-ui.store';
-import { findAllManyFilterTransactionsAction } from '../../actions/find-cash-movements-by-branch-office-id.action';
+import { findAllManyFilterTransactionsAction } from '../actions/find-cash-movements-by-branch-office-id.action';
 
 const schema = yup.object().shape({
     dateInit: yup.date()
@@ -33,7 +32,7 @@ const useTransactionMovementsOptios = () => {
         setTransactionsFiltered(transactions);
     }, [transactions]);
 
-    const dataExcel: TransactionExcel[] = transactions.map(item => ({
+    const dataExcel = transactions.map(item => ({
         FOLIO: item.transactionId,
         MONTO: Number(item.amount.toFixed(2)),
         TIPO: item.transactionType?.accountType ?? '',

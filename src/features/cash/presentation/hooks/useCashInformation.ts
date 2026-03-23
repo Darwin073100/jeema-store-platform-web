@@ -1,4 +1,4 @@
-import { AccountTypeEnum } from "@/features/transaction/domain/enums/account-type.enum";
+import { AccountTypeEnum } from "@/contexts/transaction-management/transaction-type/domain/enums/account-type.enum";
 import { useCashStore } from "../../infraestructure/stores/cash.store";
 
 const useCashInformation = () => {
