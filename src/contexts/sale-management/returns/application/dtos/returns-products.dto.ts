@@ -6,7 +6,7 @@ interface Products {
     notes: string | null;
 }
 
-export class ReturnsProductsDTO {
+export interface ReturnsProductsDTO {
     branchOfficeId: bigint;
     employeeId: bigint;
     cashSessionId: bigint;

@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { SaleDetailEntity } from '../../domain/entities/sale-detail-entity';
 import { useSaleUIStore } from '../../infraestructure/stores/sale.ui.store';
-import { useReturnsStore } from '@/features/returns/infraestructure/stores/returns.store';
-import { ReturnsProductsDTO } from '@/features/returns/application/dtos/returns-products.dto';
-import { useWorkspace } from '@/shared/hooks/useAuth';
-import { returnsProductsAction } from '@/features/returns/actions/returns-products.action';
+import { returnsProductsAction } from '@/contexts/sale-management/returns/presentation/actions/returns-products.action';
+import { useReturnsStore } from '@/contexts/sale-management/returns/presentation/stores/returns.store';
+import { ISaleDetail } from '@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail';
+import { ReturnsProductsDTO } from '@/contexts/sale-management/returns/application/dtos/returns-products.dto';
 
 const schema = yup.object().shape({
     inventoryId: yup.string()
@@ -61,7 +61,7 @@ const useReturnsProducts = () => {
         }
     }, [saleModals]);
 
-    const handleSelectDetailToReturn = (detail: SaleDetailEntity)=> {
+    const handleSelectDetailToReturn = (detail: ISaleDetail)=> {
         setSelectDetail(detail);
         openSaleModal('returnsModal');
     }

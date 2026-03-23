@@ -7,10 +7,10 @@ import { FiExternalLink } from 'react-icons/fi';
 import { BCol, BRow, BTableEmpty } from '@/shared/ui/components/tables/BasicTable';
 import { useRouter } from 'next/navigation';
 import { PrimaryTable } from '@/shared/ui/components/tables/PrimaryTable';
-import { ReturnsEntity } from '../../domain/entities/returns.entity';
+import { IReturns } from '../interfaces/IReturns';
 
 interface Props {
-    returns: ReturnsEntity[]
+    returns: IReturns[]
 }
 
 const ReturnsDesktopTable = ({ returns }: Props) => {

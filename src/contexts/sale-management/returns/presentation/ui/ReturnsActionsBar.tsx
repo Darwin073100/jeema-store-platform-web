@@ -1,20 +1,14 @@
 'use client';
-import { useBrandStore } from '@/contexts/product-management/brand/presentation/stores/brand.store';
-import { useCategoryStore } from '@/contexts/product-management/category/presentation/stores/category.store';
-import { useSeasonStore } from '@/contexts/product-management/season/presentation/stores/season.store';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
-import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
-import { IoMdAdd } from 'react-icons/io';
-import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
-import { ReturnsEntity } from '../../domain/entities/returns.entity';
+import { IReturns } from '../interfaces/IReturns';
 interface Props{
-    returns: ReturnsEntity[]
+    returns: IReturns[]
 }
 const ReturnsActionsBar = ({ returns }:Props) => {
     const [loading, setLoading] = useState(false);

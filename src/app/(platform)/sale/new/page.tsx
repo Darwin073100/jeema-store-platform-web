@@ -1,14 +1,11 @@
 import { findCashSessionByEmployeeIdAction } from "@/features/cash/actions/find-cash-session-by-employee-id.action";
 import { findAllCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action";
-import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/contexts/inventory-management/inventory/presentation/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { findAllPaymentMethodAction } from "@/features/payment-method/actions/find-all-payment-method.action";
 import { SaleMessages } from "@/features/sale/ui/SaleMessages";
 import { SaleProductList } from "@/features/sale/ui/SaleProductList";
 import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
 import { SaleSummary } from "@/features/sale/ui/SaleSummary";
 import { SaleSummaryMovile } from "@/features/sale/ui/SaleSummaryMovile";
-import { findAllTransactionsTypeAction } from "@/contexts/transaction-management/transaction-type/presentation/actions/find-all-transactions-type.action";
-import { AccountTypeEnum } from "@/features/transaction/domain/enums/account-type.enum";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 
@@ -29,8 +26,9 @@ export default async function() {
     const currentPaymentMethods = resultPaymentMethods.value?.paymentMethods ?? [];
     const resultCustomers = await findAllCustomerByEstablishmentAction();
     const currentCustomers = resultCustomers?.value?.customers ?? [];
-    const resultInventoryItemsList = await findAllInventoryItemsByLocationAndBranchOfficeAction();
-    const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
+    // const resultInventoryItemsList = await findAllInventoryItemsByLocationAndBranchOfficeAction();
+    // const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
+    const currentInventoryItems = [] as any[];
     const resultCashSession = await findCashSessionByEmployeeIdAction();
     const currentCashSession = resultCashSession.value ?? null;
 

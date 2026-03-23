@@ -9,8 +9,8 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { LiaCashRegisterSolid } from 'react-icons/lia';
 import { useSaleUIStore } from '../../infraestructure/stores/sale.ui.store';
 import { useReturnsProducts } from '../../hooks/details/useReturnsProducts';
-import { useReturnsStore } from '@/features/returns/infraestructure/stores/returns.store';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
+import { useReturnsStore } from '@/contexts/sale-management/returns/presentation/stores/returns.store';
 
 interface Props {
 }

@@ -11,6 +11,7 @@ import { InventoryItemQuantityOnHandVO } from "src/contexts/inventory-management
 import { TransactionRepository } from "src/contexts/transaction-management/transaction/domain/repositories/transaction.repository";
 import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { CashSessionRepository } from "@/contexts/cash-management/cash-session/domain/repositories/cash-session.repository";
 
 export class ReturnsProductsUseCase {
     constructor(
@@ -20,6 +21,7 @@ export class ReturnsProductsUseCase {
         private readonly inventoryItemRepo: InventoryItemRepository,
         private readonly saleDetailRepo: SaleDetailRepository,
         private readonly transactionRepo: TransactionRepository,
+        private readonly cashSession: CashSessionRepository,
         private readonly connection: TransactionDBRepository,
     ) { }
 
@@ -32,6 +34,12 @@ export class ReturnsProductsUseCase {
             }
             const returns: ReturnsEntity[] = [];
 
+            const cashOpen = await this.cashSession.findByEmployeeId(command.employeeId);
+            if(cashOpen && cashOpen?.isClosed){
+                throw new Error('Debes aperturar caja para poder realizar una devolución.');
+            } else if(!cashOpen){
+                throw new Error('Debes aperturar caja para poder realizar una devolución.');
+            }
             // Validar que los datalles para devolución sean de la venta.
             for (let i = 0; i < command.products.length; i++) {
                 const product = command.products[i];
@@ -39,7 +47,7 @@ export class ReturnsProductsUseCase {
                 if (!saleDetailExist) {
                     throw new Error('Detalle de venta no encontrado.');
                 }
-                if(saleDetailExist.saleId!==command.saleId){
+                if(BigInt(saleDetailExist.saleId)!==BigInt(command.saleId)){
                     throw new Error(`El detalle de venta ${saleDetailExist.productNameAtSale} con folio ${saleDetailExist.saleDetailId} no se encontró en la venta actual.`);
                 }
 
@@ -104,7 +112,7 @@ export class ReturnsProductsUseCase {
                 null,
                 command.saleId,
                 command.employeeId,
-                command.cashSessionId,
+                cashOpen?.cashSessionId,
                 totalAmountReturn,
                 'Devolución de mercancía');
             await this.transactionRepo.save(transaction);

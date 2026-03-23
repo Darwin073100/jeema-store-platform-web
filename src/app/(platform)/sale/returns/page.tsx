@@ -1,6 +1,6 @@
-import { findReturnsByBranchOfficeAction } from "@/features/returns/actions/find-returns-by-branch-office.action";
-import { ReturnsActionsBar } from "@/features/returns/presentation/ui/ReturnsActionsBar";
-import { ReturnsDesktopTable } from "@/features/returns/presentation/ui/ReturnsDesktopTable";
+import { findReturnsByBranchOfficeAction } from "@/contexts/sale-management/returns/presentation/actions/find-returns-by-branch-office.action";
+import { ReturnsActionsBar } from "@/contexts/sale-management/returns/presentation/ui/ReturnsActionsBar";
+import { ReturnsDesktopTable } from "@/contexts/sale-management/returns/presentation/ui/ReturnsDesktopTable";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 

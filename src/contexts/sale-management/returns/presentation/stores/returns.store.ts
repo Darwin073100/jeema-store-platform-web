@@ -1,9 +1,9 @@
-import { SaleDetailEntity } from "@/features/sale/domain/entities/sale-detail-entity";
+import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
 import { create } from "zustand";
 
 type State = {
-    selectDetail: SaleDetailEntity | null,
-    setSelectDetail: (payload: SaleDetailEntity | null)=> void,
+    selectDetail: ISaleDetail | null,
+    setSelectDetail: (payload: ISaleDetail | null)=> void,
 }
 
 const initialValues = {
