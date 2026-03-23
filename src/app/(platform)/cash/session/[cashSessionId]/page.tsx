@@ -1,6 +1,6 @@
-import { findCashSessionWithTransactionsAction } from "@/features/cash/actions/find-cash-session-with-transactions.action";
-import { CashInfo } from "@/features/cash/presentation/ui/close/CashInfo";
-import { CashCloseOptios } from "@/features/cash/presentation/ui/close/CashOptios";
+import { findCashSessionWithTransactionsAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-session-with-transactions.action";
+import { CashInfo } from "@/contexts/cash-management/cash-session/presentation/ui/close/CashInfo";
+import { CashCloseOptios } from "@/contexts/cash-management/cash-session/presentation/ui/close/CashOptios";
 import { findAllTransactionsTypeAction } from "@/contexts/transaction-management/transaction-type/presentation/actions/find-all-transactions-type.action";
 import { formatDateShort, formatTimeByDate } from "@/shared/lib/utils/date-formatter";
 import { numberMoneyFormat } from "@/shared/lib/utils/number-formatter";

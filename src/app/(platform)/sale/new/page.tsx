@@ -1,4 +1,4 @@
-import { findCashSessionByEmployeeIdAction } from "@/features/cash/actions/find-cash-session-by-employee-id.action";
+import { findCashSessionByEmployeeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-session-by-employee-id.action";
 import { findAllCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action";
 import { findAllPaymentMethodAction } from "@/contexts/sale-management/payment-method/presentation/actions/find-all-payment-method.action";
 import { SaleMessages } from "@/features/sale/ui/SaleMessages";

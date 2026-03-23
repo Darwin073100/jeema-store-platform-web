@@ -1,6 +1,6 @@
-import { findCashMovementsByBranchOfficeIdAction } from "@/features/cash/actions/find-cash-movements-by-branch-office-id.action";
-import { CashMovementsDesktopTable } from "@/features/cash/presentation/ui/CashMovementsDesktopTable";
-import { CashMovementsOptios } from "@/features/cash/presentation/ui/CashMovementsOptios";
+import { findCashMovementsByBranchOfficeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-movements-by-branch-office-id.action";
+import { CashMovementsDesktopTable } from "@/contexts/cash-management/cash-session/presentation/ui/CashMovementsDesktopTable";
+import { CashMovementsOptios } from "@/contexts/cash-management/cash-session/presentation/ui/CashMovementsOptios";
 import { findOneCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-one-customer-by-establishment.action";
 import { CustomerSaleList } from "@/contexts/sale-management/customer/presentation/ui/details/CustomerSaleList";
 import { Button } from "@/shared/ui/components/buttons";

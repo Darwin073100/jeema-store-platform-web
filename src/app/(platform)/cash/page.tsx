@@ -1,8 +1,8 @@
-import { findAllCashRegisterByBranchOfficeIdAction } from "@/features/cash/actions/find-all-cash-register-by-branch-office-id.action";
+import { findAllCashRegisterByBranchOfficeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-all-cash-register-by-branch-office-id.action";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import CashRegisterItem from "@/features/cash/presentation/ui/CashRegisterItem";
-import { CashOptios } from "@/features/cash/presentation/ui/CashOptios";
+import CashRegisterItem from "@/contexts/cash-management/cash-session/presentation/ui/CashRegisterItem";
+import { CashOptios } from "@/contexts/cash-management/cash-session/presentation/ui/CashOptios";
 
 export const metadata = {
     title: 'Cajas'
