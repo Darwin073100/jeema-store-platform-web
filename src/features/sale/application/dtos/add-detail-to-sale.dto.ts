@@ -1,4 +1,4 @@
-import { SaleForEnum } from "../../domain/enums/sale-for.enum";
+import { SaleForEnum } from "../../../../contexts/sale-management/sale/domain/enums/sale-for.enum";
 
 export interface AddDetailToSaleDto {
     quantity: number;

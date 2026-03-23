@@ -1,7 +1,7 @@
-import { findAllSaleByBranchOfficeAction } from "@/features/sale/actions/find-all-sale-by-branch-office.action";
-import { SaleActionsBar } from "@/features/sale/ui/SaleActionsBar";
-import { SaleCardList } from "@/features/sale/ui/SaleCardList";
-import { SaleDesktopTable } from "@/features/sale/ui/SaleDesktopTable";
+import { findAllSaleByBranchOfficeAction } from "@/contexts/sale-management/sale/presentation/actions/find-all-sale-by-branch-office.action";
+import { SaleActionsBar } from "@/contexts/sale-management/sale/presentation/ui/SaleActionsBar";
+import { SaleCardList } from "@/contexts/sale-management/sale/presentation/ui/SaleCardList";
+import { SaleDesktopTable } from "@/contexts/sale-management/sale/presentation/ui/SaleDesktopTable";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 export const revalidate = 0; // Revalidar en cada request

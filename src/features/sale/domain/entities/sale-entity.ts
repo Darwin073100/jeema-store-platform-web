@@ -1,6 +1,6 @@
 import { BranchOfficeEntity } from "@/features/branch-office/domain/entities/branch-office.entity";
 import { BaseEntity } from "@/shared/features/base.entity";
-import { SaleStatusEnum } from "../enums/sale-status.enum";
+import { SaleStatusEnum } from "../../../../contexts/sale-management/sale/domain/enums/sale-status.enum";
 import { SaleDetailEntity } from "./sale-detail-entity";
 import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
 import { EmployeeEntity } from "@/features/employee/domain/entities/employee.entity";

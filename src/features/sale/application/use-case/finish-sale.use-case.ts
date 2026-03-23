@@ -2,7 +2,7 @@ import { Result } from "@/shared/features/result";
 import { SaleRepository } from "../../domain/repositories/sale.repository";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { FinalizeSaleDto } from "../dtos/finalize-sale.dto";
-import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
+import { SaleStatusEnum } from "../../../../contexts/sale-management/sale/domain/enums/sale-status.enum";
 
 export class FinishSaleUseCase {
     constructor(

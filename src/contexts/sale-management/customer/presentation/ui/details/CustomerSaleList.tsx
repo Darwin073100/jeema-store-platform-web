@@ -1,6 +1,6 @@
 'use client'
 import { CustomerEntity } from '@/features/customer/domain/entities/customer.entity'
-import { SaleStatusEnum } from '@/features/sale/domain/enums/sale-status.enum'
+import { SaleStatusEnum } from '@/contexts/sale-management/sale/domain/enums/sale-status.enum'
 import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 import { Badge } from '@/shared/ui/components/badges/Badge'

@@ -1,11 +1,11 @@
 import { findCashSessionByEmployeeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-session-by-employee-id.action";
 import { findAllCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action";
 import { findAllPaymentMethodAction } from "@/contexts/sale-management/payment-method/presentation/actions/find-all-payment-method.action";
-import { SaleMessages } from "@/features/sale/ui/SaleMessages";
-import { SaleProductList } from "@/features/sale/ui/SaleProductList";
-import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
-import { SaleSummary } from "@/features/sale/ui/SaleSummary";
-import { SaleSummaryMovile } from "@/features/sale/ui/SaleSummaryMovile";
+import { SaleMessages } from "@/contexts/sale-management/sale/presentation/ui/SaleMessages";
+import { SaleProductList } from "@/contexts/sale-management/sale/presentation/ui/SaleProductList";
+import { SaleProductSearch } from "@/contexts/sale-management/sale/presentation/ui/SaleProductSearch";
+import { SaleSummary } from "@/contexts/sale-management/sale/presentation/ui/SaleSummary";
+import { SaleSummaryMovile } from "@/contexts/sale-management/sale/presentation/ui/SaleSummaryMovile";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 

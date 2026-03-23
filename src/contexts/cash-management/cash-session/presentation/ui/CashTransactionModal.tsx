@@ -7,7 +7,7 @@ import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { SelectMenu, TextInput } from '@/shared/ui/components/inputs';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TransactionTypeEntity } from '@/features/transaction/domain/entities/transaction-type.entity';
-import { useSaleUIStore } from '../../../../../features/sale/infraestructure/stores/sale.ui.store';
+import { useSaleUIStore } from '../../../../sale-management/sale/presentation/stores/sale.ui.store';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { TextArea } from '@/shared/ui/components/inputs/TextInput copy';
 import { BiSave } from 'react-icons/bi';
