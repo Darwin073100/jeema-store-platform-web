@@ -9,7 +9,7 @@ import { FinancialSummary } from "@/features/sale/ui/detail/FinancialSummary";
 import { SaleCustomerInfo } from "@/features/sale/ui/detail/SaleCustomerInfo";
 import { SaleEmployeeInfo } from "@/features/sale/ui/detail/SaleEmployeeInfo";
 import { SalePayments } from "@/features/sale/ui/detail/SalePayments";
-import { findAllPaymentMethodAction } from "@/features/payment-method/actions/find-all-payment-method.action";
+import { findAllPaymentMethodAction } from "@/contexts/sale-management/payment-method/presentation/actions/find-all-payment-method.action";
 import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos

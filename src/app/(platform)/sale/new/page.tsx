@@ -1,6 +1,6 @@
 import { findCashSessionByEmployeeIdAction } from "@/features/cash/actions/find-cash-session-by-employee-id.action";
 import { findAllCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action";
-import { findAllPaymentMethodAction } from "@/features/payment-method/actions/find-all-payment-method.action";
+import { findAllPaymentMethodAction } from "@/contexts/sale-management/payment-method/presentation/actions/find-all-payment-method.action";
 import { SaleMessages } from "@/features/sale/ui/SaleMessages";
 import { SaleProductList } from "@/features/sale/ui/SaleProductList";
 import { SaleProductSearch } from "@/features/sale/ui/SaleProductSearch";
