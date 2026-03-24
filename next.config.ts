@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  serverComponentsExternalPackages: ['@react-pdf/renderer'],
   /* config options here */
   reactStrictMode: true,
   typescript: {

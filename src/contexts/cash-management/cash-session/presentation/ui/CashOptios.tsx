@@ -7,11 +7,11 @@ import { LiaCashRegisterSolid } from 'react-icons/lia';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { CashRegisterEntity } from '../../../../../features/cash/domain/entities/cash-register.entity';
 import { useCashUIStore } from '../stores/cash-ui.store';
-import { RegisterCashRegisterModal } from '../../../../../features/cash/presentation/ui/RegisterCashRegisterModal';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { GrTransaction } from "react-icons/gr";
 import { useRouter } from 'next/navigation';
 import { HideElement } from '@/features/auth/ui/HideElement';
+import { RegisterCashRegisterModal } from './RegisterCashRegisterModal';
 interface Props {
     cashes: CashRegisterEntity[]
 }
