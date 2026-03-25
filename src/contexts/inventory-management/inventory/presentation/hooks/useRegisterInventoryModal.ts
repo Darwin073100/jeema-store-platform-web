@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { RegisterInventoryDTO } from "../../../../../features/inventory/application/dtos/register-inventory.dto";
 import { registerInventoryAction } from "../actions/register-inventory.action";
-import { useWorkspace } from "@/shared/hooks/useAuth";
+import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { useProductUIStore } from "@/contexts/product-management/product/presentation/stores/product-ui.store";
 import { generateBarcodeAction } from "../actions/generate-barcode.action";

@@ -14,7 +14,7 @@ import { useStateUser } from '../../hooks/hooks/useDeleteUser';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { EmpResetPasswordModal } from '../register/EmpResetPasswordModal';
-import { useWorkspace } from '@/shared/hooks/useAuth';
+import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { BiAddToQueue, BiPencil, BiTrash } from 'react-icons/bi';
 import { EmployeeUpdateUserModal } from '../register/EmployeeUpdateUserModal';
 import { EmployeeUpdateUserRoleModal } from '../register/EmployeeUpdateUserRoleModal';

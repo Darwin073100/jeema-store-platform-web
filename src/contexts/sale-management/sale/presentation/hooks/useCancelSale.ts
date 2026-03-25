@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSaleStore } from "../stores/sale.store";
-import { useWorkspace } from "@/shared/hooks/useAuth";
+import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 import { cancelSaleAction } from "../actions/cancel-sale.action";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";

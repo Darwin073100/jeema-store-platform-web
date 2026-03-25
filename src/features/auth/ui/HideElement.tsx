@@ -1,5 +1,5 @@
 'use client'
-import { useWorkspace } from '@/shared/hooks/useAuth'
+import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth'
 import React, { ReactNode } from 'react'
 
 interface Props {

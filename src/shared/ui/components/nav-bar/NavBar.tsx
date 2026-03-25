@@ -7,7 +7,7 @@ import { IoChevronDownSharp, IoNotifications, IoPeopleOutline } from 'react-icon
 import { RoundedButton } from '../buttons/RoundedButton';
 import { RoundedBadge } from '../badges/RoundedBadge';
 import { LogoutModal } from '../modals/LogoutModal';
-import { useAuth, useWorkspace } from '@/shared/hooks/useAuth';
+import { useAuth, useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { Button } from '../buttons';
 import Link from 'next/link';
 import { useSideStore } from '../side-bar/side.store';

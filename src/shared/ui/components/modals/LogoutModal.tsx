@@ -1,7 +1,7 @@
 'use client'
 import { IoClose, IoCloseOutline, IoPushSharp } from 'react-icons/io5';
 import { Button } from '../buttons';
-import { useAuth } from '@/shared/hooks/useAuth';
+import { useAuth } from '@/shared/presentation/hooks/auth/useAuth';
 import { RoundedButton } from '../buttons/RoundedButton';
 import { Spinner } from '../loadings/Spinner';
 

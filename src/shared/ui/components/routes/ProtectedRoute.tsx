@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/shared/hooks/useAuth";
+import { useAuth } from "@/shared/presentation/hooks/auth/useAuth";
 import { useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
 import { Spinner } from "@/shared/ui/components/loadings/Spinner";

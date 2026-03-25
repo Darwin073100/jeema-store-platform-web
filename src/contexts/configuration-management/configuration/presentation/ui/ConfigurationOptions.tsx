@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { useWorkspace } from '@/shared/hooks/useAuth';
+import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { FcCollaboration, FcComboChart, FcConferenceCall, FcDepartment, FcReadingEbook, FcSerialTasks, FcSettings} from 'react-icons/fc';
 import { ContainerConfig } from './ContainerConfig';
 import { ItemConfig } from './ItemConfig';

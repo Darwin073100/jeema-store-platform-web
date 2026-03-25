@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSaleStore } from "../../../../../features/sale/infraestructure/stores/sale.store";
-import { useWorkspace } from "@/shared/hooks/useAuth";
+import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 import { finishSaleAction } from "../actions/finish-sale.action";
 import { RegisterSalePaymentItem } from "../../../../../features/sale/application/dtos/register-sale-payment.dto";
 import { registerSalePaymentAction } from "../actions/register-sale-payment.action";

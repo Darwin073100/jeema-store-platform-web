@@ -10,7 +10,7 @@ import { useCashMovementsOptions } from '../hooks/useCashMovementsOptions';
 import { useCashStore } from '../stores/cash.store';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
-import { useWorkspace } from '@/shared/hooks/useAuth';
+import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { CashClosedTicketListModal } from './close/CashClosedTicketListModal';
 import { useCashUIStore } from '../stores/cash-ui.store';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';

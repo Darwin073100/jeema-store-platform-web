@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import * as yup from 'yup';
-import { useAuth } from '@/shared/hooks/useAuth';
+import { useAuth } from '@/shared/presentation/hooks/auth/useAuth';
 
 const schema = yup.object({
     email: yup.string().email('El formato del correo no es correcto').required('El correo es obligatorio.').min(3, 'El correo debe tener al menos 3 caracteres.'),
