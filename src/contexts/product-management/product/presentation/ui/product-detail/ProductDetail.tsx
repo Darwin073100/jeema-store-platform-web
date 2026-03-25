@@ -15,6 +15,7 @@ import { FloatMessage } from '@/shared/ui/components/messages'
 import { useRegisterInventoryItemStore } from '@/contexts/inventory-management/inventory/presentation/stores/register-inventory-item.store'
 import { useInventoryItemUIStore } from '@/contexts/inventory-management/inventory/presentation/stores/inventory-item-ui.store'
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
+import { useProductStore } from '../../stores/product.store'
 interface Props {
     product: IProduct;
 }
@@ -23,8 +24,10 @@ const ProductDetail = ({ product }: Props) => {
     const { handleOpenUpdateProductModal } = useUpdateProductModal();
     const { setInventoryItems } = useRegisterInventoryItemStore();
     const { floatMessageState } = useInventoryItemUIStore();
+    const { setProduct } = useProductStore();
 
     useEffect(()=>{
+        setProduct(product);
         setInventoryItems(product.inventory?.inventoryItems ?? []);
     },[product]);
     

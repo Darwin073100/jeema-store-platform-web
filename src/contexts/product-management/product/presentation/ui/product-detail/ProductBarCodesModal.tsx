@@ -13,29 +13,34 @@ interface Props {
 
 const ProductBarCodeModal = ({ inventoryId }: Props) => {
     const { productModals, closeProductModal } = useProductUIStore();
-    const { error, pdfUrl } = useProductBarCodesModal({ inventoryId });
+    const { error, pdfUrl, loading } = useProductBarCodesModal({ inventoryId });
 
-    if (!pdfUrl) {
-        return;
-    }
+    // if (!pdfUrl) {
+    //     return;
+    // }
     return (
         <TemplateModal isOpen={productModals === 'printLabels'} onClose={closeProductModal} title='Vista previa de la etiqueta'>
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
                 }
+                {/* {
+                                    !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
+                                } */}
                 {
-                    !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
+                    loading && <div className='flex gap-2 w-full h-full justify-center items-center'><Spinner color='black' size={14} /> Esperando datos...</div>
                 }
-                <iframe
-                    src={pdfUrl}
-                    title="Documento PDF incrustado"
-                    width="100%"
-                    height="500px"
-                    style={{ border: '1px solid #ccc' }}
-                >
-                    <p>Tu navegador no soporta iframes.</p>
-                </iframe>
+                {
+                    pdfUrl && <iframe
+                        src={pdfUrl}
+                        title="Documento PDF incrustado"
+                        width="100%"
+                        height="500px"
+                        style={{ border: '1px solid #ccc' }}
+                    >
+                        <p>Tu navegador no soporta iframes.</p>
+                    </iframe>
+                }
             </div>
             <div className="flex justify-end gap-3 flex-wrap p-4">
                 <Button
