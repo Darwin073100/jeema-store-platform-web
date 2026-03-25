@@ -1,4 +1,4 @@
-export class CloseCashSessionDTO {
+export interface CloseCashSessionDTO {
     employeeId: bigint;
     branchOfficeId: bigint;
     endTime: Date;

@@ -1,4 +1,4 @@
-import { findAllCashRegisterByBranchOfficeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-all-cash-register-by-branch-office-id.action";
+import { findAllCashRegisterByBranchOfficeIdAction } from "@/contexts/cash-management/cash-register/presentation/actions/find-all-cash-register-by-branch-office-id.action";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import CashRegisterItem from "@/contexts/cash-management/cash-session/presentation/ui/CashRegisterItem";

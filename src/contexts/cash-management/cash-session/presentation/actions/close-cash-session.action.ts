@@ -1,19 +1,24 @@
 'use server'
-import { CashFetchRepositoryFactory } from '../../../../../features/cash/infraestructure/factories/cash-fetch-repository.factory';
 import { revalidatePath } from 'next/cache';
-import { CloseCashSessionDTO } from '../../../../../features/cash/application/dtos/close-cash-session.dto';
-import { CloseCashSessionUseCase } from '../../../../../features/cash/application/use-cases/close-cash-session.use-case';
 import { cookies } from 'next/headers';
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
 import { IEmployee } from '@/contexts/employee-management/employee/presentation/interfaces/IEmployee';
+import { CloseCashSessionDTO } from '../../application/dtos/close-cash-session.dto';
+import { TypeormCashSessionRepository } from '../../infraestructure/repositories/typeorm-cash-session.repository';
+import { CloseCashSessionUseCase } from '../../application/use-cases/close-cash-session.use-case';
+import { TypeormTransactionRepository } from '@/contexts/transaction-management/transaction/infraestructure/repositories/typeorm-transaction.repository';
+import { Result } from '@/shared/features/result';
+import { CashSessionMapper } from '../../application/mappers/cash-session.mapper';
+import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 
 export async function closeCashSessionAction(cashSessionId: bigint, dto: Omit<CloseCashSessionDTO, 'branchOfficeId'|'employeeId'>){
 
     
     try {
         // Inyeccion de las dependencias usando Factory
-        const repository= CashFetchRepositoryFactory.create();
-        const useCase = new CloseCashSessionUseCase(repository);
+        const repository = await TypeormCashSessionRepository.create();
+        const transactionRepo = await TypeormTransactionRepository.create();
+        const useCase = new CloseCashSessionUseCase(repository, transactionRepo);
         const cookieStore = await cookies();
                         
         let branchOffice = cookieStore.get('branchOfficeCookie')?.value ?? null;
@@ -34,14 +39,14 @@ export async function closeCashSessionAction(cashSessionId: bigint, dto: Omit<Cl
             branchOfficeId
         });
 
-        if(result.ok){
-            revalidatePath('/cash');
-        }
+        revalidatePath('/cash');
 
         return {
-            ...result
+            ...Result.success(CashSessionMapper.toIResponse(result))
         }
     } catch (error) {
-        throw error;
+        return {
+            ...handleError(error, 'closeCashSessionAction')
+        }
     }
 }

@@ -1,4 +1,4 @@
-export class OpenCashSessionDTO {
+export interface OpenCashSessionDTO {
     branchOfficeId: bigint;
     cashRegisterId: bigint;
     employeeId: bigint;
