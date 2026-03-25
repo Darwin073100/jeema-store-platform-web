@@ -1,18 +1,20 @@
 'use server'
-import { CashFetchRepositoryFactory } from '../../../../../features/cash/infraestructure/factories/cash-fetch-repository.factory';
-import { RegisterCashRegisterDTO } from '../../../../../features/cash/application/dtos/register-cash-register.dto';
-import { RegisterCashRegisterUseCase } from '../../../../../features/cash/application/use-cases/register-cash-register.use-case';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
+import { TypeormCashRegisterRepository } from '../../infraestructure/repositories/typeorm-cash-register.repository';
+import { RegisterCashRegisterUseCase } from '../../application/use-cases/register-cash-register.use-case';
+import { TypeOrmBranchOfficeRepository } from '@/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository';
+import { Result } from '@/shared/features/result';
+import { CashRegisterMapper } from '../../application/mappers/cash-register.mapper';
+import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 
 export async function registerCashRegisterAction(name: string){
-
-    
     try {
         // Inyeccion de las dependencias usando Factory
-        const repository= CashFetchRepositoryFactory.create();
-        const useCase = new RegisterCashRegisterUseCase(repository);
+        const repository = await TypeormCashRegisterRepository.create();
+        const branchRepository = await TypeOrmBranchOfficeRepository.create();
+        const useCase = new RegisterCashRegisterUseCase(repository, branchRepository);
         
         const cookieStore = await cookies();
                 
@@ -21,18 +23,18 @@ export async function registerCashRegisterAction(name: string){
         if (branchOffice) {
             branchOfficeId = (JSON.parse(branchOffice) as IBranchOffice).branchOfficeId;
         }
-        const dto: RegisterCashRegisterDTO = {
+        const result = await useCase.execute({
             name,
             branchOfficeId
-        }
-        const result = await useCase.execute(dto);
-        if(result.ok){
-            revalidatePath('/cash');
-        }
+        });
+        revalidatePath('/cash');
         return {
-            ...result
+            ...Result.success(CashRegisterMapper.toIResponse(result))
         }
     } catch (error) {
-        throw error;
+        console.error('registerCashRegisterAction: ', error);
+        return {
+            ...handleError(error, 'registerCashRegisterAction')
+        }
     }
 }
