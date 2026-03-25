@@ -6,27 +6,22 @@ import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 import { useProductBarCodesModal } from '../../hooks/useProductBarCodesModal';
 import { useProductUIStore } from '../../stores/product-ui.store';
+import { IProduct } from '../../interfaces/IProduct';
 
 interface Props {
-    inventoryId: bigint,
+    product: IProduct
 }
 
-const ProductBarCodeModal = ({ inventoryId }: Props) => {
+const ProductBarCodeModal = ({ product }: Props) => {
     const { productModals, closeProductModal } = useProductUIStore();
-    const { error, pdfUrl, loading } = useProductBarCodesModal({ inventoryId });
+    const { error, pdfUrl, loading } = useProductBarCodesModal({ product });
 
-    // if (!pdfUrl) {
-    //     return;
-    // }
     return (
         <TemplateModal isOpen={productModals === 'printLabels'} onClose={closeProductModal} title='Vista previa de la etiqueta'>
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
                 }
-                {/* {
-                                    !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
-                                } */}
                 {
                     loading && <div className='flex gap-2 w-full h-full justify-center items-center'><Spinner color='black' size={14} /> Esperando datos...</div>
                 }

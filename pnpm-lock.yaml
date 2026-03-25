@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@bwip-js/browser':
+        specifier: ^4.8.0
+        version: 4.8.0
       '@faker-js/faker':
         specifier: ^9.9.0
         version: 9.9.0
@@ -364,6 +367,9 @@ packages:
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+
+  '@bwip-js/browser@4.8.0':
+    resolution: {integrity: sha512-RhN8N7wwBxe2FZBO7xZc2LEfGfnaFiy6Xf/7nmorrcCp3JA1sYF+iJeC1jF697lAi03Avlve7PNTThDq+0Rl3w==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -4634,6 +4640,8 @@ snapshots:
       '@babel/helper-validator-identifier': 7.28.5
 
   '@bcoe/v8-coverage@0.2.3': {}
+
+  '@bwip-js/browser@4.8.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:

@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     width: mmToPt(26), // 26mm por etiqueta
     height: mmToPt(13), // 13mm de alto
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     paddingLeft: 5,
     paddingRight: 2,
-    paddingTop: 1,
+    paddingTop: 3,
     paddingBottom: 0,
   },
   gap: {

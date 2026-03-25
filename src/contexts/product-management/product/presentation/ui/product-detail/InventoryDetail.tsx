@@ -111,7 +111,7 @@ const InventoryDetail = ({ product }: Props) => {
                                         <ImPrinter />
                                     </Button>
                                 </div>
-                                <ProductBarCodeModal inventoryId={product.inventory.inventoryId} />
+                                <ProductBarCodeModal product={product} />
                                 <ProductBarCode51x25Modal inventoryId={product.inventory.inventoryId} />
                                 <ProductPrice27x13Modal inventoryId={product.inventory.inventoryId} />
                                 <div className="text-gray-900 font-semibold">
