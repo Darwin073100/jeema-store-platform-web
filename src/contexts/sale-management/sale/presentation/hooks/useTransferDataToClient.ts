@@ -1,13 +1,13 @@
+import { IInventoryItem } from '@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem';
+import { ICustomer } from '@/contexts/sale-management/customer/presentation/interfaces/ICustomer';
+import { IPaymentMethod } from '@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod';
 import { useEffect } from 'react';
-import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/payment-method-entity';
-import { useSaleProcessStore } from '../infraestructure/stores/sale.process.store';
-import { CustomerEntity } from '@/features/customer/domain/entities/customer.entity';
-import { InventoryItemEntity } from '@/features/inventory/domain/entities/inventory-item.entity';
+import { useSaleProcessStore } from '../stores/sale.process.store';
 
 interface Props {
-    methods: PaymentMethodEntity[],
-    customers: CustomerEntity[],
-    inventoryItems: InventoryItemEntity[],
+    methods: IPaymentMethod[],
+    customers: ICustomer[],
+    inventoryItems: IInventoryItem[],
 }
 
 const useTransferDataToClientNewSale = ({ methods, customers, inventoryItems }: Props) => {

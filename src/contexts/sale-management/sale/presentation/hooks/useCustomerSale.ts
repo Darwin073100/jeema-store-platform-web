@@ -1,7 +1,7 @@
-import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
 import { useEffect, useState } from "react";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
+import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
 
 const useCustomerSale = () => {
     const { setFloatMessageState, saleModals, openSaleModal, closeSaleModal} = useSaleUIStore();
@@ -20,7 +20,7 @@ const useCustomerSale = () => {
         setFilterCustomers(completFilter);
     }, [customerIValue]);
 
-    const handleCustomerSelected = (customer: CustomerEntity | null)=>{
+    const handleCustomerSelected = (customer: ICustomer | null)=>{
         setCustomerSelected(customer);
         setFloatMessageState({
             isActive: true,

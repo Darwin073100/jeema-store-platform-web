@@ -1,10 +1,8 @@
 import { Metadata } from "next";
-import { TableProduct } from "@/contexts/product-management/product/presentation/ui/product-catalog/TableProducts";
 import { ProductActionsBar } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductActionsBar";
 import { ProductSearch } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductSearch";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import { ProductAudit } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductAudit";
 import { LotActionsBar } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/LotActionsBar";
 import { findReportsLotsAction } from "@/contexts/purchase-management/lot/presentation/actions/find-report-lots.action";
 import { TableLotsDesktop } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/TableLotDesktop";

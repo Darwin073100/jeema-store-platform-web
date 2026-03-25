@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useSaleStore } from "../../../../../features/sale/infraestructure/stores/sale.store";
 import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 import { finishSaleAction } from "../actions/finish-sale.action";
 import { RegisterSalePaymentItem } from "../../../../../features/sale/application/dtos/register-sale-payment.dto";
-import { registerSalePaymentAction } from "../actions/register-sale-payment.action";
-import { useSaleUIStore } from "../../../../../features/sale/infraestructure/stores/sale.ui.store";
-import { useSaleProcessStore } from "../../../../../features/sale/infraestructure/stores/sale.process.store";
 import { pendingSaleAction } from "../actions/pending-sale.action";
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
+import { useSaleUIStore } from "../stores/sale.ui.store";
+import { useSaleProcessStore } from "../stores/sale.process.store";
+import { useSaleStore } from "../stores/sale.store";
 
 
 const useSalePayment = () => {

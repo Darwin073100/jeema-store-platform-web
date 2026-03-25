@@ -1,6 +1,5 @@
 'use client';
 import { findInventoryByBarCodeAction } from "@/contexts/inventory-management/inventory/presentation/actions/find-inventory-by-bar-code.action";
-import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
 import { useEffect, useRef, useState } from "react";
 import { useSaleStore } from "../stores/sale.store";
 import { findSaleWithDetailAction } from "../actions/find-sale-by-id-with-detail.action";
@@ -9,6 +8,7 @@ import { useSaleUIStore } from "../stores/sale.ui.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
 import { useSaleProcessStore } from "../stores/sale.process.store";
+import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 
 const useSale = () => {
 
@@ -57,7 +57,7 @@ const useSale = () => {
      * - Especial
      */
     //TODO: Usar el modificador manual en update detail
-    const hancleCalculateDetailPrice = (inventory: InventoryEntity, quantity: number, priceSpecial?: number) => {
+    const hancleCalculateDetailPrice = (inventory: IInventory, quantity: number, priceSpecial?: number) => {
         let finalPrice: number | undefined;
         let saleFor: SaleForEnum;
 

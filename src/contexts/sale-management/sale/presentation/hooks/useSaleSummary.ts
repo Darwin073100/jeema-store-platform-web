@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useSaleStore } from "../../../../../features/sale/infraestructure/stores/sale.store";
-import { useSaleProcessStore } from "../../../../../features/sale/infraestructure/stores/sale.process.store";
+import { useSaleStore } from "../stores/sale.store";
+import { useSaleProcessStore } from "../stores/sale.process.store";
 
 const useSaleSummary = () => {
     const { 

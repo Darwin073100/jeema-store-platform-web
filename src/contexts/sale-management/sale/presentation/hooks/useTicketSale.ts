@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
 import { findTicketBySaleIdAction } from "../actions/find-ticket-by-sale-id.action";
+import { useSaleUIStore } from "../stores/sale.ui.store";
 interface Props {
     saleId: bigint,
 }

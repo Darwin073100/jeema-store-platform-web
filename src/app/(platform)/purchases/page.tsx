@@ -1,6 +1,5 @@
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
-import Product from '../../../shared/ui/assets/images/product.svg';
 import Inventory from '../../../shared/ui/assets/images/inventary.svg';
 import Suplier from '../../../shared/ui/assets/images/supliers.svg';
 import { CardLink } from "@/shared/ui/components/cards";

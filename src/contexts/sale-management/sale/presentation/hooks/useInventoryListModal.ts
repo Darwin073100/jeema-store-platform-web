@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
 import { useSaleStore } from "../stores/sale.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { useSale } from "./useSale";
 import { SaleEntity } from "../../../../../features/sale/domain/entities/sale-entity";
-import { InventoryEntity } from "@/features/inventory/domain/entities/inventory.entity";
+import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
+import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 
 const useInventoryListModal = () => {
     const { inventoryItems, itemSelected, setItemSelected,
@@ -46,7 +46,7 @@ const useInventoryListModal = () => {
         setFilterInventoryItems(combinedFilters);
     }, [searchProductValue]);
 
-    const handleVerifyExistDetail = (sale: SaleEntity, inventory?: InventoryEntity, )=>{
+    const handleVerifyExistDetail = (sale: SaleEntity, inventory?: IInventory, )=>{
         const existingProduct = sale?.saleDetails?.find(
                 detail => detail.productBarCodeAtSale === (inventory?.internalBarCode || '') 
                     || detail.productBarCodeAtSale === (inventory?.product?.universalBarCode || '') 
@@ -131,7 +131,7 @@ const useInventoryListModal = () => {
         }
     }
 
-    const handleSetItemSelected = (item: InventoryItemEntity | null) => {
+    const handleSetItemSelected = (item: IInventoryItem | null) => {
         setItemSelected(item);
     }
 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { SaleDetailEntity } from "../../../../../features/sale/domain/entities/sale-detail-entity";
-import { useSaleUIStore } from "../infraestructure/stores/sale.ui.store";
-import { useSaleProcessStore } from "../infraestructure/stores/sale.process.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { useSale } from "./useSale";
-import { useSaleStore } from "../infraestructure/stores/sale.store";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
 import { AddDetailToSaleDto } from "../../../../../features/sale/application/dtos/add-detail-to-sale.dto";
+import { useSaleUIStore } from "../stores/sale.ui.store";
+import { useSaleProcessStore } from "../stores/sale.process.store";
+import { useSaleStore } from "../stores/sale.store";
 
 type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
 
