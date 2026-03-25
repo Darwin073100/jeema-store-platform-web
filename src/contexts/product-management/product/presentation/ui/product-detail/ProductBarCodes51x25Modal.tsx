@@ -4,21 +4,18 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { useProductBarCodesModal } from '../../hooks/useProductBarCodesModal';
 import { useProductUIStore } from '../../stores/product-ui.store';
 import { useProductBarCodes51x25Modal } from '../../hooks/useProductBarCodes51x25Modal';
+import { IProduct } from '../../interfaces/IProduct';
 
 interface Props {
-    inventoryId: bigint,
+    product: IProduct,
 }
 
-const ProductBarCode51x25Modal = ({ inventoryId }: Props) => {
+const ProductBarCode51x25Modal = ({ product }: Props) => {
     const { productModals, closeProductModal } = useProductUIStore();
-    const { error, pdfUrl } = useProductBarCodes51x25Modal({ inventoryId });
+    const { error, pdfUrl, loading } = useProductBarCodes51x25Modal({ product });
 
-    if (!pdfUrl) {
-        return;
-    }
     return (
         <TemplateModal isOpen={productModals === 'printLabels-51x25'} onClose={closeProductModal} title='Vista previa de la etiqueta'>
             <div className='h-[500px]'>
@@ -26,17 +23,19 @@ const ProductBarCode51x25Modal = ({ inventoryId }: Props) => {
                     error && <div style={{ color: 'red' }}>{error}</div>
                 }
                 {
-                    !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
+                    loading && <div className='flex gap-2 w-full h-full justify-center items-center'><Spinner color='black' size={14} /> Esperando datos...</div>
                 }
-                <iframe
-                    src={pdfUrl}
-                    title="Documento PDF incrustado"
-                    width="100%"
-                    height="500px"
-                    style={{ border: '1px solid #ccc' }}
-                >
-                    <p>Tu navegador no soporta iframes.</p>
-                </iframe>
+                {
+                    pdfUrl && <iframe
+                        src={pdfUrl}
+                        title="Documento PDF incrustado"
+                        width="100%"
+                        height="500px"
+                        style={{ border: '1px solid #ccc' }}
+                    >
+                        <p>Tu navegador no soporta iframes.</p>
+                    </iframe>
+                }
             </div>
             <div className="flex justify-end gap-3 flex-wrap p-4">
                 <Button

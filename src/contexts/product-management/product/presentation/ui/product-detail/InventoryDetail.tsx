@@ -112,7 +112,7 @@ const InventoryDetail = ({ product }: Props) => {
                                     </Button>
                                 </div>
                                 <ProductBarCodeModal product={product} />
-                                <ProductBarCode51x25Modal inventoryId={product.inventory.inventoryId} />
+                                <ProductBarCode51x25Modal product={product} />
                                 <ProductPrice27x13Modal inventoryId={product.inventory.inventoryId} />
                                 <div className="text-gray-900 font-semibold">
                                     <div className='printable-content'>

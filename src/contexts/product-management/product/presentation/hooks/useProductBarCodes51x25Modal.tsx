@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Barcode27x13Document } from '../documents/Barcode27x13Document'
-import { pdf } from '@react-pdf/renderer';
 import { IProduct } from '../interfaces/IProduct';
+import { Barcode51x25Document } from '../documents/Barcode51x25Document';
+import { pdf } from '@react-pdf/renderer';
 
 interface Props {
     product: IProduct,
 }
-const useProductBarCodesModal = ({ product }: Props) => {
+const useProductBarCodes51x25Modal = ({ product }: Props) => {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -16,8 +16,9 @@ const useProductBarCodesModal = ({ product }: Props) => {
         try {
             // Generar el Blob usando el componente de React
             const doc = (
-                <Barcode27x13Document
-                    barcode={product?.inventory?.internalBarCode ?? '0000000000000'}
+                <Barcode51x25Document
+                    barcodeValue={product?.inventory?.internalBarCode ?? '0000000000000'}
+                    productName={product?.name ?? 'PRODUCTO'}
                 />
             );
             const blob = await pdf(doc).toBlob();
@@ -41,4 +42,4 @@ const useProductBarCodesModal = ({ product }: Props) => {
     }
 }
 
-export { useProductBarCodesModal };
+export { useProductBarCodes51x25Modal };
