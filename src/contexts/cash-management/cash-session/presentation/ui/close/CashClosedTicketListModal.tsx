@@ -5,10 +5,13 @@ import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 import { useCashUIStore } from '@/contexts/cash-management/cash-session/presentation/stores/cash-ui.store';
 import { useCashClosedTicketListModal } from '../../hooks/useCashClosedTicketListModal';
-
-const CashClosedTicketListModal = () => {
+import { ICashSession } from '../../interfaces/ICashSession';
+interface Props {
+    cashSessions: ICashSession[]
+}
+const CashClosedTicketListModal = ({cashSessions}:Props) => {
     const { cashModal, closeCashModal } = useCashUIStore();
-    const { error, pdfUrl } = useCashClosedTicketListModal();
+    const { error, pdfUrl } = useCashClosedTicketListModal({cashSessions});
 
     if (!pdfUrl) {
         return;

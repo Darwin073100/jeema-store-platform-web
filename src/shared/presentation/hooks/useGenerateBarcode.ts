@@ -1,10 +1,10 @@
 import BwipJs from 'bwip-js';
 interface Props {
     barcode: string,
-    scale?: number,
-    height?: number,
-    includetext?: boolean,
-    textxoffset?: number,
+    scale?: number | undefined,
+    height?: number| undefined,
+    includetext?: boolean |undefined,
+    textxoffset?: number |undefined,
     textxalign?: "center" | "offleft" | "left" | "right" | "offright" | "justify" | undefined,
 }
 const useGenerateBarcode = () => {

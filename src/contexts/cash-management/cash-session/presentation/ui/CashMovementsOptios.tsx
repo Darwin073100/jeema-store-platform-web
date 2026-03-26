@@ -4,7 +4,6 @@ import { Button } from '@/shared/ui/components/buttons';
 import { TextInput } from '@/shared/ui/components/inputs';
 import React from 'react'
 import { PiMicrosoftExcelLogoFill, PiPrinter } from "react-icons/pi";
-import { CashSessionEntity } from '../../../../../features/cash/domain/entities/cash-session.entity';
 import { FaFilter } from 'react-icons/fa';
 import { useCashMovementsOptions } from '../hooks/useCashMovementsOptions';
 import { useCashStore } from '../stores/cash.store';
@@ -14,8 +13,9 @@ import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { CashClosedTicketListModal } from './close/CashClosedTicketListModal';
 import { useCashUIStore } from '../stores/cash-ui.store';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { ICashSession } from '../interfaces/ICashSession';
 interface Props {
-    cashSessions: CashSessionEntity[]
+    cashSessions: ICashSession[]
 }
 const CashMovementsOptios = ({ cashSessions: data }: Props) => {
     const { errors, handleSubmit, onSubmit, register, cashSessionTotalAmount } = useCashMovementsOptions({data});
@@ -73,7 +73,8 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
                     <span className='text-blue-700 font-bold text-xl'>{numberMoneyFormat(cashSessionTotalAmount())}</span>
                 </div>
             </div>
-            <CashClosedTicketListModal />
+            <CashClosedTicketListModal
+                cashSessions={cashSessions} />
         </>
     )
 }
