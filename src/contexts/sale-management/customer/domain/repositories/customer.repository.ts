@@ -10,5 +10,6 @@ export interface CustomerRepository extends TemplateRepository<CustomerEntity> {
   findByRfc(rfc: string):Promise<CustomerEntity| null>;
   findOneByEstablishment(customerId: bigint, establishmentId: bigint): Promise<CustomerEntity| null>;
   findSaleDefault(establishmentId: bigint): Promise<CustomerEntity| null>;
+  existById(id: bigint): Promise<CustomerEntity | null>;
 }
   

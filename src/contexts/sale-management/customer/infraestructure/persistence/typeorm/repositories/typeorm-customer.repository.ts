@@ -64,6 +64,12 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
     const customerEntity = CustomerMapper.toDomainEntity(customerOrmEntity);
     return customerEntity;
   }
+  async existById(id: bigint): Promise<CustomerEntity | null> {
+    const customerOrmEntity = await this.ormCustomerRepository.findOne({
+      where: { customerId: id },
+    });
+    return customerOrmEntity? CustomerMapper.toDomainEntity(customerOrmEntity): null;
+  }
 
   delete(entityId: bigint): Promise<CustomerEntity | null> {
     throw new Error('Este metodo no esta implementado');

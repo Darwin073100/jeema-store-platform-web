@@ -32,7 +32,7 @@ import { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestr
 import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
 
 config();
-
+const isProduction = process.env.NODE_ENV === 'production';
 const AppDataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
@@ -47,6 +47,12 @@ const AppDataSource = new DataSource({
   migrations: [`${__dirname}/../migrations/*.{ts,js}`],
   synchronize: false,
   migrationsTableName: 'migrations',
+  logging: process.env.DB_LOGGING === 'true',
+    ...(isProduction && {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    }),
 });
 
 export { AppDataSource };

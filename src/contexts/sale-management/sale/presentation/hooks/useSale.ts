@@ -3,12 +3,13 @@ import { findInventoryByBarCodeAction } from "@/contexts/inventory-management/in
 import { useEffect, useRef, useState } from "react";
 import { useSaleStore } from "../stores/sale.store";
 import { findSaleWithDetailAction } from "../actions/find-sale-by-id-with-detail.action";
-import { AddDetailToSaleDto } from "../../../../../features/sale/application/dtos/add-detail-to-sale.dto";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
+import { AddDetailToSaleDto } from "@/contexts/sale-management/sale-detail/application/dtos/add-detail-to-sale.dto";
+import { ForSaleEnum } from "@/shared/domain/enums/for-sale.enum";
 
 const useSale = () => {
 
@@ -76,11 +77,12 @@ const useSale = () => {
         }
 
         const detailDto: AddDetailToSaleDto = {
+            saleId,
             quantity: quantity,
-            specialprice: finalPrice,
+            specialPrice: finalPrice ?? undefined,
             saleFor: saleFor,
             productBarCodeAtSale: inventory.internalBarCode || '',
-            productUnitAtSale: inventory.product?.unitOfMeasure || 'PIEZA',
+            productUnitAtSale: inventory.product?.unitOfMeasure as ForSaleEnum ?? ForSaleEnum.PC,
             notes: `Agregado el ${new Date().toLocaleString()}`
         };
         return detailDto;
@@ -127,7 +129,6 @@ const useSale = () => {
             const finalQuantity = Number(existingProduct?.quantity ?? 0) + 1;
             const detailDto = hancleCalculateDetailPrice(foundInventory, finalQuantity);
             const resultSale = await CreateSaleAndAddDetailAction(
-                saleId, 
                 customers.length >0? BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0): BigInt(0), 
                 cashSessionActive.cashRegisterId, 
                 detailDto

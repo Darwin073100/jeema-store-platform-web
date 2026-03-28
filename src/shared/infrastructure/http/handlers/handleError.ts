@@ -1,3 +1,4 @@
+import { DomainException } from "@/shared/domain/exceptions/domain.exceptions";
 import { ErrorEntity } from "@/shared/features/error.entity";
 import { Result } from "@/shared/features/result";
 
@@ -5,10 +6,29 @@ import { Result } from "@/shared/features/result";
  * Manejo centralizado de errores para el request
  */
 export function handleError(error: any, operation: string): Result<any, ErrorEntity> {
-    console.error({operation, error});
+    console.error({ operation, error });
     // Si es un error HTTP (del servidor)
     if (error.status && error.data) {
         return Result.failure(error.data as ErrorEntity);
+    }
+
+    if (error instanceof DomainException) {
+        return Result.failure({
+            error: error.name,
+            message: error?.message,
+            statusCode: error.statusCode || 500,
+            path: operation,
+            timestamp: new Date().toDateString()
+        } satisfies ErrorEntity);
+    }
+    if (error instanceof Error) {
+        return Result.failure({
+            error: error.name,
+            message: error?.message,
+            statusCode: 500,
+            path: operation,
+            timestamp: new Date().toDateString()
+        } satisfies ErrorEntity);
     }
 
     // Si es un error de red o conexión

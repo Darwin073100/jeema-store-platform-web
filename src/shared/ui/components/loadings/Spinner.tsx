@@ -7,7 +7,7 @@ interface Props{
   size?: number,
   className?: string,
 }
-export const Spinner = ({ color='white', size, className }: Props) => {
+export const Spinner = ({ color='white', size=14, className }: Props) => {
   const [colorState, setColorState]=React.useState('');
   useEffect(()=>{
     if(color === 'black'){

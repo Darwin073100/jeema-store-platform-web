@@ -1,28 +1,28 @@
 import { SaleDetailRepository } from "../../domain/repositories/sale-detail.repository";
-import { SaleDetailRegisterDto } from "../dtos/sale-detail-register.dto";
+import { AddDetailToSaleDto } from "../dtos/add-detail-to-sale.dto";
 import { InventoryRepository } from "src/contexts/inventory-management/inventory/domain/repositories/inventory.repository";
-import { SaleCheckerPort } from "src/contexts/sale-management/sale/domain/ports/out/sale-checker.port";
 import { SaleNotFoundException } from "src/contexts/sale-management/sale/domain/exceptions/sale-not-found.exception";
 import { LocationEnum } from "src/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 import { SaleDetailEntity } from "../../domain/entities/sale-detail.entity";
 import { InventoryInsufficientStockException } from "../../domain/exceptions/inventory-insufficient-stock.exception";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
+import { SaleRepository } from "@/contexts/sale-management/sale/domain/repositories/sale.repository";
 
 export class RegisterSaleDetailUseCase{
     constructor(
-        private readonly thisRepository: SaleDetailRepository,
-        private readonly saleCheckerPort: SaleCheckerPort,
+        private readonly saleDetailRepository: SaleDetailRepository,
+        private readonly saleRepository: SaleRepository,
         private readonly inventoryRepository: InventoryRepository
     ){}
 
     // TODO: Cuando encuentre un registro ya existente, debe hacer algo para que recalcule sin inconsistencias el inventario de ventas.
-    async execute(command: SaleDetailRegisterDto){
+    async execute(command: AddDetailToSaleDto){
         //* Verificar que la venta a la que se va signar exista
-        const isSale = await this.saleCheckerPort.existById(command.saleId);
+        const isSale = await this.saleRepository.existById(command.saleId);
         if(!isSale) throw new SaleNotFoundException('La venta a la que se va asignar el detalle no existe.');
         
         //! Verificar si hay un registro con el id de la venta y el codigo de barra
-        const saleDetailExist = await this.thisRepository.findByBarCode(command.saleId, command.productBarCodeAtSale);
+        const saleDetailExist = await this.saleDetailRepository.findByBarCode(command.saleId, command.productBarCodeAtSale);
         
         //* Available inventory, inventario disponible
         const inventory = await this.inventoryRepository.findByInternalBarCode(command.productBarCodeAtSale);
@@ -69,7 +69,7 @@ export class RegisterSaleDetailUseCase{
                 saleDetailExist.updateSaleFor(command.saleFor);
                 saleDetailExist.updateProductUnitAtSale(command.productUnitAtSale);
                 saleDetailExist.updateNotes(command.notes ?? null);
-                return await this.thisRepository.save(saleDetailExist);
+                return await this.saleDetailRepository.save(saleDetailExist);
             }
         }
 
@@ -114,7 +114,7 @@ export class RegisterSaleDetailUseCase{
                     product.category?.name ?? null,
                     command.notes ?? null
                 );
-                return await this.thisRepository.save(saleDetail);
+                return await this.saleDetailRepository.save(saleDetail);
             }
         } else {
             if(quantityStock >= command.quantity){

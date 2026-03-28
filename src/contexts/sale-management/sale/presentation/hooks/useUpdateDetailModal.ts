@@ -3,10 +3,10 @@ import { SaleDetailEntity } from "../../../../../features/sale/domain/entities/s
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { useSale } from "./useSale";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
-import { AddDetailToSaleDto } from "../../../../../features/sale/application/dtos/add-detail-to-sale.dto";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { useSaleStore } from "../stores/sale.store";
+import { AddDetailToSaleDto } from "@/contexts/sale-management/sale-detail/application/dtos/add-detail-to-sale.dto";
 
 type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
 
@@ -130,11 +130,12 @@ const useUpdateDetailModal = () => {
                 productUnitAtSale: detail.productUnitAtSale,
                 quantity: detailQuantity,
                 notes: detail.notes ?? undefined,
-                specialprice: specialprice ? Number(specialprice): detail.unitPriceAtSale,
+                specialPrice: specialprice ? Number(specialprice): detail.unitPriceAtSale,
                 saleFor:  currentSaleFor,
+                saleId,
             }
             initLoading('aplyManualSaleForLoading');
-            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, currentDetail);
+            const result = await CreateSaleAndAddDetailAction(BigInt(1), cashSessionActive.cashRegisterId, currentDetail);
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',
@@ -193,7 +194,7 @@ const useUpdateDetailModal = () => {
         if(inventorySelected){
             const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, detailQuantity);
             initLoading('updateDetailLoading');
-            const result = await CreateSaleAndAddDetailAction(saleId, BigInt(1), cashSessionActive.cashRegisterId, addDetailToSaleDTO);
+            const result = await CreateSaleAndAddDetailAction(BigInt(1), cashSessionActive.cashRegisterId, addDetailToSaleDTO);
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',

@@ -1,6 +1,5 @@
 'use server'
 import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
-import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 import { TypeOrmSuplierRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-suplier.repository";
 import { FindAllSuplierByEstablishmentUseCase } from "../../application/use-cases/find-all-supliers-by-establishment.use-case";
@@ -9,8 +8,6 @@ import { SuplierMapper } from "../../application/mappers/suplier.mapper";
 
 export async function findAllSuplierByEstablishmentId(isAddress?: boolean) {
     try {
-        unstable_noStore();
-
         const repository = await TypeOrmSuplierRepository.create();
         const useCase = new FindAllSuplierByEstablishmentUseCase(repository);
 
