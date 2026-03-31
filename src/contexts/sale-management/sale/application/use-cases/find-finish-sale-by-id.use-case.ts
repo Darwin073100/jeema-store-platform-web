@@ -7,7 +7,7 @@ export class FindFinishSaleByIdUseCase{
         private readonly repository: SaleRepository
     ){}
 
-    async execute(saleId: bigint):Promise<SaleEntity|null>{
+    async execute(saleId: bigint):Promise<SaleEntity>{
         try {
             const result = await this.repository.findFinishSaleById(saleId);
             if(!result){
