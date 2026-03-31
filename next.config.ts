@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverComponentsExternalPackages: ['@react-pdf/renderer'],
+  // serverComponentsExternalPackages: ['@react-pdf/renderer'],
+  serverExternalPackages: ['typeorm', '@react-pdf/renderer'],
   /* config options here */
   reactStrictMode: true,
   typescript: {

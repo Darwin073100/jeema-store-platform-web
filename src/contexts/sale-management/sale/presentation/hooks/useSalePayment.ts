@@ -7,6 +7,8 @@ import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { useSaleStore } from "../stores/sale.store";
+import { CalculateSaleDTO } from "../../application/dtos/calculate-sale.dto";
+import { RegisterSalePaymentDTO } from "@/contexts/sale-management/sale-payment/application/dtos/register-sale-payment.dto";
 
 
 const useSalePayment = () => {
@@ -20,7 +22,7 @@ const useSalePayment = () => {
         paidAmount, setCashAmount, setCustomerChange, setPaidAmount, paids, resetSaleProcessStore, transferAmount,
     } = useSaleProcessStore();
     // Este es el estado que vamos a usar para el array de pagos
-    const [salePaids, setSalePaids] = useState<RegisterSalePaymentItem[]>([]);
+    const [salePaids, setSalePaids] = useState<RegisterSalePaymentDTO[]>([]);
     // Controlar el mensaje para el pago total
     const [paidAmountMessage, setPaidAmountMessage] = useState({ isError: false, message: '' });
 
@@ -32,15 +34,16 @@ const useSalePayment = () => {
     // y consolidarlos en un solo array `salePaids`.
     useEffect(() => {
         // 1. Crear el nuevo array de pagos de forma inmutable
-        const newPaids: RegisterSalePaymentItem[] = [];
+        const newPaids: RegisterSalePaymentDTO[] = [];
 
         // 2. Lógica para el pago en efectivo
         const filterPaymentMethodCash = paymentMethods.find(item => item.name.toLowerCase() === 'Efectivo'.toLowerCase());
         if (!!filterPaymentMethodCash && cashAmount > 0) {
-            const cashItem: RegisterSalePaymentItem = {
+            const cashItem: RegisterSalePaymentDTO = {
                 paymentMethodId: filterPaymentMethodCash.paymentMethodId,
                 amountPaid: cashAmount,
-                referenceNumber: `REF-CASH-${new Date().getTime()}`
+                saleId,
+                referenceNumber: null,
             };
             newPaids.push(cashItem);
         }
@@ -48,9 +51,10 @@ const useSalePayment = () => {
         // 3. Lógica para el pago en transferencia
         const filterPaymentMethodTransfer = paymentMethods.find(item => item.name.toLowerCase() === 'transferencia'.toLowerCase());
         if (!!filterPaymentMethodTransfer && transferAmount > 0) {
-            const transferItem: RegisterSalePaymentItem = {
+            const transferItem: RegisterSalePaymentDTO = {
                 paymentMethodId: filterPaymentMethodTransfer.paymentMethodId,
                 amountPaid: transferAmount,
+                saleId,
                 referenceNumber: transferNumberRef !== '' ? transferNumberRef : `REF-TRANSFER-${new Date().getTime()}`
             };
             newPaids.push(transferItem);
@@ -194,21 +198,23 @@ const useSalePayment = () => {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
             const currentCustomerId = BigInt(customerSelected?.customerId ? customerSelected.customerId: customers.filter(item=> item.saleDefault===true)[0].customerId ?? BigInt(0));
-            const dto = { 
+            const dto:CalculateSaleDTO = {
+                saleId: currentSaleId,
                 customerId: currentCustomerId, 
                 employeeId: currentEmployeeId, 
                 cashRegisterId: cashSessionActive?.cashRegisterId, 
                 inAmount: paidAmount, 
+                notes: null,
                 status: SaleStatusEnum.COMPLETED,
-                salePayments: salePaids
+                salePayments: salePaids ?? []
             }
-            const result = await finishSaleAction(currentSaleId, dto);
+            const result = await finishSaleAction(dto);
                 if (!result.ok) {
                     setFloatMessageState({
                         type: 'red',
                         isActive: true,
                         summary: '¡Ha ocurrido un error!',
-                        description: result.error?.description ?? 'Error al finalizar la venta'
+                        description: result.error?.message ?? 'Error al finalizar la venta'
                     });
                 } else {
                     setFloatMessageState({

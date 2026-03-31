@@ -29,6 +29,7 @@ import { CashRegisterOrmEntity } from 'src/contexts/cash-management/cash-registe
 import { CashSessionOrmEntity } from 'src/contexts/cash-management/cash-session/infraestructure/entities/cash-session.orm-entity';
 import { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestructure/entities/returns.orm-entity';
 import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
+import { config } from 'dotenv';
 
 
 /**
@@ -40,6 +41,7 @@ import { AddressOrmEntity } from 'src/contexts/establishment-management/address/
  * O alternativamente:
  * - DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME
  */
+config();
 export const getDataSourceConfig = (): DataSourceOptions => {
   const isProduction = process.env.NODE_ENV === 'production';
   const databaseUrl = process.env.DATABASE_URL;
@@ -64,11 +66,11 @@ export const getDataSourceConfig = (): DataSourceOptions => {
     ],
     synchronize: false,
     logging: process.env.DB_LOGGING === 'true',
-    ...(isProduction && {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    }),
+    // ...(isProduction && {
+    //   ssl: {
+    //     rejectUnauthorized: false,
+    //   },
+    // }),
   };
 
   return config;

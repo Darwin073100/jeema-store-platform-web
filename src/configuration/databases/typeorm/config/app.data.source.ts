@@ -48,11 +48,11 @@ const AppDataSource = new DataSource({
   synchronize: false,
   migrationsTableName: 'migrations',
   logging: process.env.DB_LOGGING === 'true',
-    ...(isProduction && {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    }),
+    // ...(isProduction && {
+    //   ssl: {
+    //     rejectUnauthorized: false,
+    //   },
+    // }),
 });
 
 export { AppDataSource };

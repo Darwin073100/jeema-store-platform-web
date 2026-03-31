@@ -1,4 +1,3 @@
-import { PaymentMethodCheckerPort } from "src/contexts/sale-management/payment-method/domain/ports/out/payment-method-checker.port";
 import { SalePaymentRepository } from "../../domain/repositories/sale-payment.repository";
 import { RegisterSalePaymentDTO } from "../dtos/register-sale-payment.dto";
 import { SalePaymentNotFoundException } from "../../domain/exceptions/sale-payment-not-found.exception";
@@ -13,17 +12,19 @@ import { SalePaymentInvalidException } from "../../domain/exceptions/sale-paymen
 import { TransactionRepository } from "src/contexts/transaction-management/transaction/domain/repositories/transaction.repository";
 import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { PaymentMethodRepository } from "@/contexts/sale-management/payment-method/domain/repositories/payment-method.repository";
 
 export class RegisterSalePaymentUseCase {
     constructor(
         private readonly salePaymentRepository: SalePaymentRepository,
         private readonly saleRepository: SaleRepository,
-        private readonly paymentMethodCheckerPort: PaymentMethodCheckerPort,
+        private readonly paymentMethodRepository: PaymentMethodRepository,
         private readonly transactionRepository: TransactionRepository,
         private readonly connection: TransactionDBRepository
     ){}
 
     async execute(dtos: RegisterSalePaymentDTO[]){
+        console.log(dtos);
         let amountPaid = 0;
         let saleId: bigint = dtos[0].saleId;
 
@@ -76,7 +77,7 @@ export class RegisterSalePaymentUseCase {
         }
 
         for(let i =0; i < dtos.length; i++){
-            const isPaymentMethod = await this.paymentMethodCheckerPort.exists(dtos[i].paymentMethodId);
+            const isPaymentMethod = await this.paymentMethodRepository.existById(dtos[i].paymentMethodId);
             if(!isPaymentMethod){
                 throw new SalePaymentNotFoundException(`El método de pago con id ${dtos[i].paymentMethodId} no existe.`);
             }

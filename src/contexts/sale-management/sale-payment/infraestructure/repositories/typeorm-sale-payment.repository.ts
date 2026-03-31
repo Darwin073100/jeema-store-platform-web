@@ -83,6 +83,12 @@ export class TypeormSalePaymentRepository implements SalePaymentRepository {
     findById(entityId: bigint): Promise<SalePaymentEntity | null> {
         throw new Error("Method not implemented.");
     }
+    async existById(entityId: bigint): Promise<SalePaymentEntity | null> {
+        const result = await this.repository.findOneBy({
+            salePaymentId: entityId
+        })
+        return result? SalePaymentMapper.toDomain(result): null;
+    }
     findAll(): Promise<[] | SalePaymentEntity[]> {
         throw new Error("Method not implemented.");
     }

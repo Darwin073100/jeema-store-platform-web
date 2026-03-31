@@ -32,6 +32,17 @@ export class TypeormPaymentMethodRepository implements PaymentMethodRepository{
         }
         return PaymentMethodMapper.toDomainEntity(ormEntity);
     }
+    async existById(entityId: bigint): Promise<PaymentMethodEntity | null> {
+        const ormEntity = await this.typeormRepository.findOne({
+            where: {
+                paymentMethodId: entityId
+            },
+        });
+        if (!ormEntity) {
+            return Promise.resolve(null);
+        }
+        return PaymentMethodMapper.toDomainEntity(ormEntity);
+    }
 
     async findAll(): Promise<PaymentMethodEntity[]> {
         try {

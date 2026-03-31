@@ -1,6 +1,4 @@
-import { SaleRepository } from "../../domain/repositories/sale.repository";
-import { EmployeeChekerPort } from "src/contexts/employee-management/employee/domain/ports/out/employee-checker.port";
-import { CustomerCheckerPort } from "src/contexts/sale-management/customer/domain/ports/out/customer-checker-port";
+import { SaleRepository } from "../../domain/repositories/sale.repository";;
 import { SaleNotFoundException } from "../../domain/exceptions/sale-not-found.exception";
 import { CalculateSaleDTO } from "../dtos/calculate-sale.dto";
 import { InventoryItemRepository } from "src/contexts/inventory-management/inventory-item/domain/repositories/inventory-item.repository";
@@ -12,12 +10,14 @@ import { SaleConflictException } from "../../domain/exceptions/sale-conflict.exc
 import { RegisterSalePaymentUseCase } from "src/contexts/sale-management/sale-payment/application/use-cases/register-sale-payment.use-case";
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 import { formatDateTimeForInput } from "@/shared/lib/utils/date-formatter";
+import { EmployeeRepository } from "@/contexts/employee-management/employee/domain/repositories/employee.repository";
+import { CustomerRepository } from "@/contexts/sale-management/customer/domain/repositories/customer.repository";
 
 export class CalculateSaleUseCase {
     constructor(
         private readonly saleRepository: SaleRepository,
-        private readonly employeeCheckerPort: EmployeeChekerPort,
-        private readonly customerCheckerPort: CustomerCheckerPort,
+        private readonly employeeRepository: EmployeeRepository,
+        private readonly customerRepository: CustomerRepository,
         private readonly inventoryItemRepository: InventoryItemRepository,
         private readonly discountInventoryItem: DiscountInventoryItemUseCase,
         private readonly cashSessionRepo: CashSessionRepository,
@@ -35,12 +35,12 @@ export class CalculateSaleUseCase {
                 throw new SaleNotFoundException(`La venta con id ${dto.saleId} no existe.`);
             }
 
-            const isEmployee = await this.employeeCheckerPort.exists(dto.employeeId);
+            const isEmployee = await this.employeeRepository.existById(dto.employeeId);
             if (!isEmployee) {
                 throw new SaleNotFoundException(`El empleado con id ${dto.employeeId} no existe.`);
             }
 
-            const isCustomer = await this.customerCheckerPort.existById(dto.customerId);
+            const isCustomer = await this.customerRepository.existById(dto.customerId);
             if (!isCustomer) {
                 throw new SaleNotFoundException(`El cliente con id ${dto.customerId} no existe.`);
             }
