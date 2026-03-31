@@ -26,6 +26,7 @@ export class CalculateSaleUseCase {
     ) { }
 
     async execute(dto: CalculateSaleDTO) {
+        console.log(dto);
         try {
             this.transactionDB.beginTransaction()
             //* Bloque 1: Verificar que existan los registros involucrados

@@ -12,11 +12,12 @@ export async function findAllPaymentMethodAction() {
         const useCase = new ViewAllPaymentMethodUseCase(repository);
 
         const result = await useCase.execute();
-
+        console.log(result);
         return {
             ...Result.success({paymentMethods: result.map(item => PaymentMethodMapper.toIResponse(item))})
         }
     } catch (error) {
+        console.log({error});
         return {
             ...Result.success({paymentMethods: []})
         }

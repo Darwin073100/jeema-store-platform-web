@@ -83,7 +83,7 @@ const useSale = () => {
             saleFor: saleFor,
             productBarCodeAtSale: inventory.internalBarCode || '',
             productUnitAtSale: inventory.product?.unitOfMeasure as ForSaleEnum ?? ForSaleEnum.PC,
-            notes: `Agregado el ${new Date().toLocaleString()}`
+            notes: null,
         };
         return detailDto;
     }

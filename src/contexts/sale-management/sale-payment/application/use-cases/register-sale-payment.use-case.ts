@@ -24,7 +24,6 @@ export class RegisterSalePaymentUseCase {
     ){}
 
     async execute(dtos: RegisterSalePaymentDTO[]){
-        console.log(dtos);
         let amountPaid = 0;
         let saleId: bigint = dtos[0].saleId;
 

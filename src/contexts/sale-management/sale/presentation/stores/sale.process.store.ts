@@ -1,13 +1,13 @@
-import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity"
 import { create } from "zustand"
 import { SalePaidsType } from "./types/sale-paids-type"
-import { SaleDetailEntity } from "../../../../../features/sale/domain/entities/sale-detail-entity"
-import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity"
-import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity"
+import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
+import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
+import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
+import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
 
 interface State {
     //? Payments
-    paymentMethods: PaymentMethodEntity[],
+    paymentMethods: IPaymentMethod[],
     cashAmount: number,
     transferAmount: number,
     transferNumberRef: string,
@@ -18,31 +18,31 @@ interface State {
     setPaids: (paids: SalePaidsType) => void,
     handleTogglePaidCash: () => void,
     handleTogglePaidTransfer: () => void,
-    setPaymentMethods: (payload: PaymentMethodEntity[]) => void,
+    setPaymentMethods: (payload: IPaymentMethod[]) => void,
     setCustomerChange: (payload: number) => void,
     setPaidAmount: (payload: number) => void,
     setCashAmount: (payload: number) => void,
     setTransferAmount: (payload: number) => void,
     //? Update Detail
-    detailSelected: null | SaleDetailEntity,
-    itemMatchDetail: null| InventoryItemEntity,
-    setItemMatchDetail: (payload: null| InventoryItemEntity)=> void,
-    setDetailSelected: (payload: null | SaleDetailEntity)=> void,
+    detailSelected: null | ISaleDetail,
+    itemMatchDetail: null| IInventoryItem,
+    setItemMatchDetail: (payload: null| IInventoryItem)=> void,
+    setDetailSelected: (payload: null | ISaleDetail)=> void,
     resetSaleProcessStore: () => void,
     //? Customer List
-    customerSelected: CustomerEntity | null,
-    setCustomerSelected: (payload: CustomerEntity | null)=> void,
-    customers: CustomerEntity[],
-    filterCustomers: CustomerEntity[],
-    setFilterCustomers: (payload: CustomerEntity[])=> void,
-    setCustomers: (payload: CustomerEntity[])=> void,
+    customerSelected: ICustomer | null,
+    setCustomerSelected: (payload: ICustomer | null)=> void,
+    customers: ICustomer[],
+    filterCustomers: ICustomer[],
+    setFilterCustomers: (payload: ICustomer[])=> void,
+    setCustomers: (payload: ICustomer[])=> void,
     //? Inventory List
-    itemSelected: InventoryItemEntity | null,
-    setItemSelected: (payload: InventoryItemEntity | null)=> void,
-    inventoryItems: InventoryItemEntity[],
-    filterInventoryItems: InventoryItemEntity[],
-    setFilterInventoryItems: (items: InventoryItemEntity[])=> void,
-    setInventoryItems: (items: InventoryItemEntity[])=> void,
+    itemSelected: IInventoryItem | null,
+    setItemSelected: (payload: IInventoryItem | null)=> void,
+    inventoryItems: IInventoryItem[],
+    filterInventoryItems: IInventoryItem[],
+    setFilterInventoryItems: (items: IInventoryItem[])=> void,
+    setInventoryItems: (items: IInventoryItem[])=> void,
     //? Product Quantity
     productQuantity: number,
     setProductQuantity: (total: number)=> void,
@@ -105,7 +105,7 @@ export const useSaleProcessStore = create<State>()((set, get) => ({
             paids
         }))
     },
-    setPaymentMethods: (payload: PaymentMethodEntity[]) => {
+    setPaymentMethods: (payload: IPaymentMethod[]) => {
         set(() => ({
             paymentMethods: payload
         }));
@@ -131,48 +131,48 @@ export const useSaleProcessStore = create<State>()((set, get) => ({
         }));
     },
     //? Update Detail
-    setItemMatchDetail: (payload: null| InventoryItemEntity)=>{
+    setItemMatchDetail: (payload: null| IInventoryItem)=>{
         set(()=>({
             itemMatchDetail: payload
         }));
     },
-    setDetailSelected: (payload: null | SaleDetailEntity)=>{
+    setDetailSelected: (payload: null | ISaleDetail)=>{
         set(()=>({
             detailSelected: payload
         }));
     },
     //? Customer List
     customers:[],
-    setCustomerSelected: (payload: CustomerEntity | null)=> {
+    setCustomerSelected: (payload: ICustomer | null)=> {
         const prev = get().customerSelected;
         set(()=>({
             customerSelected: prev?.customerId !== payload?.customerId? payload: null 
         }));
     },
-    setFilterCustomers: (payload: CustomerEntity[])=>{
+    setFilterCustomers: (payload: ICustomer[])=>{
         set(()=>({
             filterCustomers: payload
         }));
     },
-    setCustomers: (payload: CustomerEntity[])=>{
+    setCustomers: (payload: ICustomer[])=>{
         set(()=>({
             customers: payload
         }));
     },
     //? Inventory List
     inventoryItems:[],
-    setItemSelected: (payload: InventoryItemEntity | null)=> {
+    setItemSelected: (payload: IInventoryItem | null)=> {
         const prev = get().itemSelected;
         set(()=>({
             itemSelected: prev?.inventoryItemId !== payload?.inventoryItemId? payload: null 
         }));
     },
-    setFilterInventoryItems: (items: InventoryItemEntity[])=>{
+    setFilterInventoryItems: (items: IInventoryItem[])=>{
         set(()=>({
             filterInventoryItems: items
         }));
     },
-    setInventoryItems: (items: InventoryItemEntity[])=>{
+    setInventoryItems: (items: IInventoryItem[])=>{
         set(()=>({
             inventoryItems: items
         }));

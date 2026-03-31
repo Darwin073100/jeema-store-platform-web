@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 import { finishSaleAction } from "../actions/finish-sale.action";
-import { RegisterSalePaymentItem } from "../../../../../features/sale/application/dtos/register-sale-payment.dto";
 import { pendingSaleAction } from "../actions/pending-sale.action";
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 import { useSaleUIStore } from "../stores/sale.ui.store";
@@ -40,7 +39,7 @@ const useSalePayment = () => {
         const filterPaymentMethodCash = paymentMethods.find(item => item.name.toLowerCase() === 'Efectivo'.toLowerCase());
         if (!!filterPaymentMethodCash && cashAmount > 0) {
             const cashItem: RegisterSalePaymentDTO = {
-                paymentMethodId: filterPaymentMethodCash.paymentMethodId,
+                paymentMethodId: filterPaymentMethodCash.paymentMethodId ?? BigInt(1),
                 amountPaid: cashAmount,
                 saleId,
                 referenceNumber: null,

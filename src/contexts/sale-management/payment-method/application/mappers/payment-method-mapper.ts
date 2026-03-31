@@ -21,7 +21,7 @@ export class PaymentMethodMapper {
   }
   public static toIResponse(entity: PaymentMethodEntity): IPaymentMethod {
     return {
-      paymentMethod: entity.paymentMethodId, // Convertimos BigInt a string para la serialización JSON
+      paymentMethodId: entity.paymentMethodId, // Convertimos BigInt a string para la serialización JSON
       name: entity.name.name,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
