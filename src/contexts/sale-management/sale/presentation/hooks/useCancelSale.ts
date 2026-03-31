@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { useSaleStore } from "../stores/sale.store";
 import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
-import { cancelSaleAction } from "../actions/cancel-sale.action";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
+import { finishSaleAction } from "../actions/finish-sale.action";
+import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 
 
 const useCancelSale = () => {
@@ -56,7 +56,11 @@ const useCancelSale = () => {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
             const currentCustomerId = BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0);
-            const result = await cancelSaleAction(currentSaleId, { 
+            const result = await finishSaleAction({
+                saleId: currentSaleId,
+                status: SaleStatusEnum.CANCELLED,
+                salePayments: [],
+                notes: null,
                 customerId: currentCustomerId, 
                 employeeId: currentEmployeeId,
                 cashRegisterId: cashSessionActive.cashRegisterId,

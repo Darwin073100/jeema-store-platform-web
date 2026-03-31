@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 import { finishSaleAction } from "../actions/finish-sale.action";
-import { pendingSaleAction } from "../actions/pending-sale.action";
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
@@ -132,19 +131,24 @@ const useSalePayment = () => {
             const currentSaleId = saleId ?? BigInt(0);
             const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
             const currentCustomerId = BigInt(customerSelected?.customerId ? customerSelected.customerId: customers.filter(item=> item.saleDefault===true)[0].customerId ?? BigInt(0));
-            const dto = { 
+            
+            const result = await finishSaleAction({ 
+                saleId: currentSaleId,
                 customerId: currentCustomerId, 
                 employeeId: currentEmployeeId, 
                 cashRegisterId: cashSessionActive.cashRegisterId, 
-                inAmount: paidAmount
-            }
-            const result = await pendingSaleAction(currentSaleId, dto);
+                status: SaleStatusEnum.PENDING,
+                inAmount: paidAmount,
+                notes: null,
+                salePayments: []
+            });
+
             finishLoading();
             if (!result.ok) {
                 setFloatMessageState({
                     type: 'red',
                     isActive: true,
-                    summary: `${result.error?.error ?? '500: ¡Ha ocurrido un error!'}`,
+                    summary: `${result.error?.statusCode}: ${result.error?.error ?? '¡Ha ocurrido un error!'}`,
                     description: result.error?.message ?? 'Error al finalizar la venta'
                 });
                 setTimeout(() => {
