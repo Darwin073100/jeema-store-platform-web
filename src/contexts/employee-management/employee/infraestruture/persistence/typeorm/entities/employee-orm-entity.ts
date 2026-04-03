@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany, JoinColumn, OneToOne } from 'typeorm';
-import type { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
 import { EmployeeRoleOrmEntity } from 'src/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/entities/employee-role-orm-entity';
 import { GenderEnum } from 'src/contexts/employee-management/employee/domain/enums/gender.enum';
 import { SaleOrmEntity } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity';
@@ -8,7 +8,7 @@ import { UserOrmEntity } from 'src/contexts/authentication-management/auth/infra
 import { TransferOrmEntity } from 'src/contexts/inventory-management/transfer/infraestructure/entities/transfer.orm-entity';
 import { CashSessionOrmEntity } from 'src/contexts/cash-management/cash-session/infraestructure/entities/cash-session.orm-entity';
 import { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestructure/entities/returns.orm-entity';
-import type { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
+import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
 
 @Entity('employee')
 export class EmployeeOrmEntity {
@@ -54,15 +54,15 @@ export class EmployeeOrmEntity {
   @DeleteDateColumn({ type: 'timestamptz', name: 'deleted_at', nullable: true })
   deletedAt: Date | null;
   
-  @ManyToOne('BranchOfficeOrmEntity', { nullable: false })
+  @ManyToOne(()=> BranchOfficeOrmEntity,(branch)=> branch.employees, { nullable: false })
   @JoinColumn({ name: 'branch_office_id' })
   branchOffice: BranchOfficeOrmEntity | null;
-  @ManyToOne(() => EmployeeRoleOrmEntity, { nullable: false })
+  @ManyToOne(() => EmployeeRoleOrmEntity, (employeeRole)=> employeeRole.employees ,{ nullable: false })
   @JoinColumn({ name: 'employee_role_id' })
   employeeRole: EmployeeRoleOrmEntity | null;
   @OneToMany(()=> SaleOrmEntity, item=> item.employee)
   sales: SaleOrmEntity[] | null;
-  @OneToOne('AddressOrmEntity', 'employee',{ nullable: true, cascade: true, eager: true, onDelete: 'CASCADE' })
+  @OneToOne(()=> AddressOrmEntity, (address)=> address.employee,{ nullable: true, cascade: true, eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'address_id' })
   address: AddressOrmEntity | null;
   @OneToOne(()=> UserOrmEntity, (user)=> user.employee, {onDelete: 'CASCADE'})

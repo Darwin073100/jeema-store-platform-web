@@ -1,6 +1,6 @@
 import { TemplateOrmEntity } from 'src/shared/infrastructure/typeorm/template.orm-entity';
 import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
-import type { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
 import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
 import {
     Entity,
@@ -8,6 +8,7 @@ import {
     Column,
     OneToOne,
   } from 'typeorm';
+import { CustomerOrmEntity } from '@/contexts/sale-management/customer/infraestructure/persistence/typeorm/entities/customer.orm-entity';
 
   @Entity('address')
   export class AddressOrmEntity extends TemplateOrmEntity {
@@ -34,10 +35,12 @@ import {
     @Column({ type: 'text', nullable: true })
     reference: string|null;
 
-    @OneToOne('BranchOfficeOrmEntity', 'address')
+    @OneToOne(()=> BranchOfficeOrmEntity, (branch)=> branch.address)
     branchOffice: BranchOfficeOrmEntity | null;
-    @OneToOne(() => EmployeeOrmEntity, employee => employee.address)
+    @OneToOne(()=> EmployeeOrmEntity, (employee)=>employee.address)
     employee: EmployeeOrmEntity | null;
     @OneToOne(()=> SuplierOrmEntity, (suplier)=> suplier.address)
     suplier: SuplierOrmEntity | null;
+    @OneToOne(()=> CustomerOrmEntity, (customer)=> customer.address)
+    customer: CustomerOrmEntity | null;
   }

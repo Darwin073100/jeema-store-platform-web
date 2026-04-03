@@ -40,7 +40,7 @@ export class CustomerOrmEntity {
   addressId?: bigint|null;
   
   @JoinColumn({ name: 'address_id' })
-  @OneToOne('AddressOrmEntity', 'customer', { cascade: true, eager: true, onDelete: 'CASCADE' })
+  @OneToOne(()=> AddressOrmEntity, (address)=> address.customer, { onDelete: 'CASCADE' })
   address?: AddressOrmEntity|null;
   @ManyToOne(()=> EstablishmentOrmEntity, (establishment)=> establishment.customers)
   @JoinColumn({name: 'establishment_id'})

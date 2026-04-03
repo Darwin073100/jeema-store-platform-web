@@ -1,4 +1,4 @@
-import type { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
+import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
 import { CashRegisterOrmEntity } from 'src/contexts/cash-management/cash-register/infraestructure/entities/cash-register.orm-entity';
 import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
 import { EstablishmentOrmEntity } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
@@ -31,7 +31,7 @@ export class BranchOfficeOrmEntity {
   name: string;
 
   @JoinColumn({ name: 'address_id' })
-  @OneToOne('AddressOrmEntity', 'branchOffice', { cascade: true, eager: true, onDelete: 'CASCADE' })
+  @OneToOne(()=> AddressOrmEntity, (address)=> address.branchOffice, { cascade: true, eager: true, onDelete: 'CASCADE' })
   address: AddressOrmEntity;
   @ManyToOne(() => EstablishmentOrmEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'establishment_id' })
