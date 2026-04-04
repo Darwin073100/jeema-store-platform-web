@@ -1,4 +1,5 @@
 import { findCashSessionByEmployeeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-session-by-employee-id.action";
+import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/contexts/inventory-management/inventory-item/presentation/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { findAllCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action";
 import { findAllPaymentMethodAction } from "@/contexts/sale-management/payment-method/presentation/actions/find-all-payment-method.action";
 import { SaleMessages } from "@/contexts/sale-management/sale/presentation/ui/SaleMessages";
@@ -26,9 +27,8 @@ export default async function() {
     const currentPaymentMethods = resultPaymentMethods.value?.paymentMethods ?? [];
     const resultCustomers = await findAllCustomerByEstablishmentAction();
     const currentCustomers = resultCustomers?.value?.customers ?? [];
-    // const resultInventoryItemsList = await findAllInventoryItemsByLocationAndBranchOfficeAction();
-    // const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
-    const currentInventoryItems = [] as any[];
+    const resultInventoryItemsList = await findAllInventoryItemsByLocationAndBranchOfficeAction();
+    const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
     const resultCashSession = await findCashSessionByEmployeeIdAction();
     const currentCashSession = resultCashSession.value ?? null;
 

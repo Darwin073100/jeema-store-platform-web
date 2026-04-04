@@ -9,11 +9,11 @@ export class FindByLocationAndBranchOfficeItemUseCase {
         private readonly itemRepository: InventoryItemRepository,
     ){}
 
-    async execute(branchOfficeId: bigint, location: string ){
+    async execute(branchOfficeId: bigint, location: string | null ){
         try {
-
+             const currentLocation = location? location: 'venta'
             const objLocation = Object.values(LocationEnum);
-            const locationExist = await objLocation.find(item => item.trim().toLocaleLowerCase() === location.trim().toLowerCase());
+            const locationExist = await objLocation.find(item => item.trim().toLocaleLowerCase() === currentLocation.trim().toLowerCase());
             
             if(!locationExist){
                 throw new InventoryNotFoundException(`La localizacion no existe, las opciones deben ser (${objLocation}).`);
@@ -24,7 +24,7 @@ export class FindByLocationAndBranchOfficeItemUseCase {
                 throw new InventoryNotFoundException(`La sucursal con ID(${branchOfficeId}) no existe.`);
             }
 
-            const result = await this.itemRepository.findByLocationAndBranchOffice(branchOfficeId, location as LocationEnum);
+            const result = await this.itemRepository.findByLocationAndBranchOffice(branchOfficeId, currentLocation as LocationEnum);
             if(!result){
                 throw new InventoryNotFoundException(`La sucursal con ID(${branchOfficeId}) no tiene items en la ubicacion (${location}).`);
             }

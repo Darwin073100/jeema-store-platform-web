@@ -1,10 +1,10 @@
 import { DataSource } from 'typeorm';
 import { getDataSourceConfig } from './config';
-import { entityRegistry } from './entities';
-import { registerAllEntities } from './register-entities';
+// import { entityRegistry } from './entities';
+// import { registerAllEntities } from './register-entities';
 
 // Registrar todas las entidades al importar este módulo
-registerAllEntities();
+// registerAllEntities();
 
 /**
  * Variable singleton para la conexión de TypeORM
@@ -39,9 +39,9 @@ export async function getDataSource(): Promise<DataSource> {
   try {
     if (!dataSourceInstance) {
       const config = getDataSourceConfig();
-      const entities = entityRegistry.getAll();
+      // const entities = entityRegistry.getAll();
 
-      if (entities.length === 0) {
+      if (config?.entities?.length === 0) {
         throw new Error(
           'No entities registered. Please register your entities before calling getDataSource()'
         );
@@ -49,7 +49,7 @@ export async function getDataSource(): Promise<DataSource> {
 
       dataSourceInstance = new DataSource({
         ...config,
-        entities,
+        entities: config.entities,
       });
     }
 
