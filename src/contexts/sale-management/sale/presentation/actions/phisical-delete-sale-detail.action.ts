@@ -1,14 +1,26 @@
 'use server';
-import { PhysicalDeleteSaleDetailUseCase } from "../../../../../features/sale/application/use-case/physical-delete-sale-detail.use-case";
-import { SaleRepositoryFactory } from "../../../../../features/sale/infraestructure/factory/sale-repository.factory";
 
-export async function physicalDeleteSaleDetailAction(saleId: bigint, detailId: bigint){
-    const repository = SaleRepositoryFactory.create();
-    const useCase = new PhysicalDeleteSaleDetailUseCase(repository);
+import { PhysicalDeleteSaleDetailUseCase } from "@/contexts/sale-management/sale-detail/application/use-case/physical-delete-sale-detail.use-case";
+import { TypeormSaleDetailRepository } from "@/contexts/sale-management/sale-detail/infraestructure/persistence/typeorm/repositories/typeorm-sale-detail.repository";
+import { TypeormSaleRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-sale.repository";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { Result } from "@/shared/features/result";
+import { SaleDetailAppMapper } from "@/contexts/sale-management/sale-detail/application/mappers/sale-detail.app-mapper";
 
-    const result = await useCase.execute(saleId, detailId);
-    
-    return {
-        ...result
+export async function physicalDeleteSaleDetailAction(saleId: bigint, detailId: bigint) {
+    try {
+        const saleDetailRepository = await TypeormSaleDetailRepository.create();
+        const saleRepository = await TypeormSaleRepository.create();
+        const useCase = new PhysicalDeleteSaleDetailUseCase(saleDetailRepository, saleRepository);
+
+        const result = await useCase.execute(saleId, detailId);
+
+        return {
+            ...Result.success(SaleDetailAppMapper.toIResponse(result))
+        }
+    } catch (error) {
+        return {
+            ...handleError(error, 'physicalDeleteSaleDetailAction')
+        }
     }
 }

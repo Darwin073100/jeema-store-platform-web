@@ -1,16 +1,16 @@
 import { SaleNotFoundException } from "src/contexts/sale-management/sale/domain/exceptions/sale-not-found.exception";
 import { SaleDetailRepository } from "../../domain/repositories/sale-detail.repository";
-import { SaleCheckerPort } from "src/contexts/sale-management/sale/domain/ports/out/sale-checker.port";
+import { SaleRepository } from "@/contexts/sale-management/sale/domain/repositories/sale.repository";
 
 export class PhysicalDeleteSaleDetailUseCase {
     constructor(
         private readonly repository: SaleDetailRepository,
-        private readonly saleChackerPort: SaleCheckerPort,
+        private readonly saleRepository: SaleRepository,
     ){}
 
     async execute( saleId:bigint, detailId: bigint){
 
-        const saleExist = await this.saleChackerPort.existById(saleId);
+        const saleExist = await this.saleRepository.existById(saleId);
         if(!saleExist){
             throw new SaleNotFoundException(`La venta con id ${saleId} no existe.`);
         }
