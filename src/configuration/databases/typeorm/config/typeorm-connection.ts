@@ -55,7 +55,7 @@ export async function getDataSource(): Promise<DataSource> {
 
     if (!dataSourceInstance.isInitialized) {
       await dataSourceInstance.initialize();
-      console.log('DataSource initialized successfully');
+      // console.log('DataSource initialized successfully');
     }
 
     return dataSourceInstance;
