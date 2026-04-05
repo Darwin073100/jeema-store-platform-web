@@ -35,7 +35,6 @@ const useReprintTicketSale = ({ saleId }: Props) => {
             const blob = await pdf(doc).toBlob();
             
             // Crear nueva URL
-            console.log({result, pdfUrl: URL.createObjectURL(blob) });
             setPdfUrl(URL.createObjectURL(blob));
         } catch (error) {
             console.error(error)
