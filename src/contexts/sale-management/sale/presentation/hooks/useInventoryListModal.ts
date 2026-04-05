@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSaleStore } from "../stores/sale.store";
-import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { useSale } from "./useSale";
 import { SaleEntity } from "../../../../../features/sale/domain/entities/sale-entity";
 import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
+import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 
 const useInventoryListModal = () => {
     const { inventoryItems, itemSelected, setItemSelected,
@@ -86,7 +86,7 @@ const useInventoryListModal = () => {
             const addDetailToSaleDTO = hancleCalculateDetailPrice(inventorySelected, quantityInsert);
             initLoading('addDetailToSaleLoading');
             const result = await CreateSaleAndAddDetailAction(
-                saleId,customers.length >0? BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0): BigInt(0), 
+                customers.length >0? BigInt(customers.filter(item=> item.saleDefault===true)[0].customerId ?? 0): BigInt(0), 
                 cashSessionActive.cashRegisterId, 
                 addDetailToSaleDTO);
             if (!result.ok) {
