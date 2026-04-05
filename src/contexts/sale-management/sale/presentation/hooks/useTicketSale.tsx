@@ -1,31 +1,41 @@
 import { useEffect, useState } from "react";
-import { useSaleUIStore } from "../stores/sale.ui.store";
 import { findTicketBySaleIdAction } from "../actions/find-ticket-by-sale-id.action";
+import { useSaleUIStore } from "../stores/sale.ui.store";
+import { pdf } from "@react-pdf/renderer";
+import { Ticket58Document } from "../documents/Ticket58Document";
 interface Props {
     saleId: bigint,
 }
-const useReprintTicketSale = ({saleId}:Props) => {
+const useTicketSale = ({ saleId }: Props) => {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
+
     const { saleModals } = useSaleUIStore();
 
     const handlePrint = async () => {
         setLoading(true);
         try {
-            if(saleId===BigInt(0)){
+            if (saleId === BigInt(0)) {
                 return;
             }
             const result = await findTicketBySaleIdAction(saleId);
-            if (!result.ok ) {
+            if (!result.ok) {
                 return;
             }
-            if (!result.value ) {
+            if (!result.value) {
                 return;
             }
-            const blobUrl = URL.createObjectURL(await result.value);
-            setPdfUrl(blobUrl);
+            // Generar el Blob usando el componente de React
+            const doc = (
+                <Ticket58Document
+                    sale={result.value}
+                />
+            );
+            const blob = await pdf(doc).toBlob();
+
+            // Crear nueva URL
+            setPdfUrl(URL.createObjectURL(blob));
         } catch (error) {
             setError("No se pudo cargar el documento.");
         } finally {
@@ -34,10 +44,9 @@ const useReprintTicketSale = ({saleId}:Props) => {
     };
 
     useEffect(() => {
-        if(saleModals==='saleTicketReprintModal'){
-            handlePrint();
-        }
-    }, [saleId, saleModals==='saleTicketReprintModal']);
+        handlePrint();
+    }, [saleId, saleModals === 'saleTicketModal', pdfUrl]);
+
     return {
         pdfUrl,
         loading,
@@ -45,4 +54,4 @@ const useReprintTicketSale = ({saleId}:Props) => {
     }
 }
 
-export default useReprintTicketSale
+export default useTicketSale

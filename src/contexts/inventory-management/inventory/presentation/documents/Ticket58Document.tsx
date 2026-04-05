@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 40,
-    height: 'auto',
+    height: '400mm',
     marginBottom: 4,
     alignSelf: 'center',
   },

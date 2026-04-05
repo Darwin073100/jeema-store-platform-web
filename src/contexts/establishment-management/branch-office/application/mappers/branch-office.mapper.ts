@@ -4,6 +4,7 @@ import { BranchOfficeResponseDto } from "../dtos/branch-office-response.dto";
 import { SaleMapper } from "src/contexts/sale-management/sale/application/mappers/sale-mapper";
 import { IBranchOffice } from "../../presentation/interfaces/IBranchOffice";
 import { AddressMapper } from "@/contexts/establishment-management/address/application/mappers/address.mapper";
+import { EstablishmentMapper } from "@/contexts/establishment-management/establishment/application/mappers/establishment.mapper";
 
 export class BranchOfficeMapper {
     public static toResponseDto(entity: BranchOfficeEntity): BranchOfficeResponseDto {
@@ -29,7 +30,8 @@ export class BranchOfficeMapper {
         updatedAt: entity.updatedAt,
         deletedAt: entity.deletedAt,
         employees: entity.employees? entity.employees.map(item=> EmployeeMapper.toIResponse(item)): [],
-        sales: entity.sales ? entity.sales.map(sale => SaleMapper.toIResponse(sale)) : null
+        sales: entity.sales ? entity.sales.map(sale => SaleMapper.toIResponse(sale)) : [],
+        establishment: entity.establishment? EstablishmentMapper.toIResponse(entity.establishment): null
       };
       return branch;
     }

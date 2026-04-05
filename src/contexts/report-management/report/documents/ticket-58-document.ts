@@ -1,6 +1,6 @@
+import { ISale } from "@/contexts/sale-management/sale/presentation/interfaces/ISale";
 import { formatDate } from "@/shared/lib/utils/date-formatter";
 import { Content, TDocumentDefinitions } from "pdfmake/interfaces";
-import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
 
 const logo: Content = {
 	image: 'src/shared/ui/assets/images/la_bonita_1.png',
@@ -9,7 +9,7 @@ const logo: Content = {
 	marginBottom: 4
 }
 
-export function getTicket54DocumentDefinition(sale: SaleEntity): TDocumentDefinitions {
+export function getTicket54DocumentDefinition(sale: ISale): TDocumentDefinitions {
 	const details = sale.saleDetails ? sale.saleDetails.flatMap(item => [
 		[
 			{ colSpan: 6, text: item.productNameAtSale, fontSize: 8, alignment: 'left' as ('left' | 'right' | 'center' | 'justify'), bold: true },
@@ -75,7 +75,7 @@ export function getTicket54DocumentDefinition(sale: SaleEntity): TDocumentDefini
 				fontSize: 8
 			},
 			{
-				text: `CLIENTE: ${sale.customer?.firstName.value} ${sale.customer?.lastName?.value}`,
+				text: `CLIENTE: ${sale.customer?.firstName} ${sale.customer?.lastName}`,
 				fontSize: 8,
 			},
 			{
