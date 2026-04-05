@@ -7,7 +7,7 @@ import { IoReturnDownForward } from 'react-icons/io5'
 import { ReturnsPoductsModal } from './ReturnsProductsModal'
 import { useReturnsProducts } from '../../hooks/details/useReturnsProducts'
 import { SaleStatusEnum } from '../../../domain/enums/sale-status.enum'
-import { HideElement } from '@/features/auth/ui/HideElement'
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement'
 interface Props {
     data: SaleEntity
 }

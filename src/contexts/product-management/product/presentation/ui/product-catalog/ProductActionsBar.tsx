@@ -10,7 +10,7 @@ import { IoMdAdd } from 'react-icons/io';
 import { MdCategory, MdOutlineViewTimeline } from 'react-icons/md';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { ProductEntity } from '../../../../../../features/product/domain/entities/product.entity';
-import { HideElement } from '@/features/auth/ui/HideElement';
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 import { useProductStore } from '../../stores/product.store';
 import { useProductActionsBar } from '../../hooks/useProductActionsBar';
 interface Props{

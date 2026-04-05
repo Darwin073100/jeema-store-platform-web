@@ -1,6 +1,6 @@
 import Logo from "@/shared/ui/assets/images/logologo.png"
 import Image from "next/image"
-import { InitAcountForm } from "@/features/auth/ui/InitAcountForm"
+import { InitAcountForm } from "@/contexts/authentication-management/auth/presentation/ui/InitAcountForm"
 
 export const metadata = {
   title: 'Crear usuario'

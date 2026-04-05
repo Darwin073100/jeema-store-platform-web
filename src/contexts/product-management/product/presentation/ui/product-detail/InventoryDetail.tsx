@@ -1,5 +1,5 @@
 'use client'
-import { HideElement } from '@/features/auth/ui/HideElement'
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement'
 import { RegisterInventoryModal } from '@/contexts/inventory-management/inventory/presentation/ui/RegisterInventoryModal'
 import { UpdateInventoryModal } from '@/contexts/inventory-management/inventory/presentation/ui/UpdateInventoryModal'
 import { Button } from '@/shared/ui/components/buttons'

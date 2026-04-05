@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { authLoginAction } from "@/features/auth/actions/auth-login.action";
-import { userWorkspaceAction } from "@/features/auth/actions/user-workspace.action";
+import { authLoginAction } from "@/contexts/authentication-management/auth/presentation/actions/auth-login.action";
+import { userWorkspaceAction } from "@/contexts/authentication-management/auth/presentation/actions/user-workspace.action";
 import { AuthLoginDTO } from "@/features/auth/application/dtos/auth.login.dto";
 import { UserWorkspaceResponseDTO } from "@/features/auth/application/dtos/user-workspace-response.dto";
 

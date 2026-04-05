@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { updateUserAction } from "@/features/auth/actions/update-user.action";
+import { updateUserAction } from "@/contexts/authentication-management/auth/presentation/actions/update-user.action";
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';

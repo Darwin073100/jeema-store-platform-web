@@ -1,5 +1,5 @@
-import { findAllByEstablishmentIdAction } from "@/features/auth/actions/find-all-by-establishment-id.action";
-import { UserTableDesktop } from "@/features/auth/ui/UserTableDesktop";
+import { findAllByEstablishmentIdAction } from "@/contexts/authentication-management/auth/presentation/actions/find-all-by-establishment-id.action";
+import { UserTableDesktop } from "@/contexts/authentication-management/auth/presentation/ui/UserTableDesktop";
 import { Badge } from "@/shared/ui/components/badges/Badge";
 import { Button } from "@/shared/ui/components/buttons";
 import { TextInput } from "@/shared/ui/components/inputs";

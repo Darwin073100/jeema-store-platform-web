@@ -5,7 +5,7 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import React, { useEffect } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
-import { HideElement } from '@/features/auth/ui/HideElement';
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 import { LotEntity } from '../../../../../../features/lot/domain/entities/lot.entity';
 import { useLotStore } from '../../stores/lot.store';
 import { useLotActionsBar } from '../../hooks/useLotActionsBar';

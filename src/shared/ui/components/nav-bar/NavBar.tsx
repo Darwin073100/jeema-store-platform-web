@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useSideStore } from '../side-bar/side.store';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
-import { HideElement } from '@/features/auth/ui/HideElement';
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 import { NavLink } from './NavLink';
 import { FcMindMap, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
 

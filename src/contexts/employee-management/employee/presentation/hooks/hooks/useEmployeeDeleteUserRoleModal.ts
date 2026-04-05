@@ -2,7 +2,7 @@
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
 import { useEmployeeStore } from "../../stores/employee-store";
 import { UserRoleEntity } from "@/features/auth/domain/entities/user-role.entity";
-import { deleteUserRoleAction } from "@/features/auth/actions/delete-user-role.action";
+import { deleteUserRoleAction } from "@/contexts/authentication-management/auth/presentation/actions/delete-user-role.action";
 
 const useEmployeeDeleteUserRoleModal = () => {
     const { 

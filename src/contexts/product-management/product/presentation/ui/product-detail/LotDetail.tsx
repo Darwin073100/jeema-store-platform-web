@@ -1,5 +1,5 @@
 'use client'
-import { HideElement } from '@/features/auth/ui/HideElement'
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement'
 import { useDeleteLotModal } from '@/contexts/purchase-management/lot/presentation/hooks/useDeleteLotModal'
 import { useDeleteLotUnitPurchaseModal } from '@/contexts/purchase-management/lot/presentation/hooks/useDeleteLotUnitPurchaseModal'
 import { useRegisterLotUnitPurchaseModal } from '@/contexts/purchase-management/lot/presentation/hooks/useRegisterLotUnitPurchaseModal'

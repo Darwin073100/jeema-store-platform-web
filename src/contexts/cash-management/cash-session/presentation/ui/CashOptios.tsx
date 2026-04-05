@@ -10,7 +10,7 @@ import { useCashUIStore } from '../stores/cash-ui.store';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { GrTransaction } from "react-icons/gr";
 import { useRouter } from 'next/navigation';
-import { HideElement } from '@/features/auth/ui/HideElement';
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 import { RegisterCashRegisterModal } from './RegisterCashRegisterModal';
 interface Props {
     cashes: CashRegisterEntity[]

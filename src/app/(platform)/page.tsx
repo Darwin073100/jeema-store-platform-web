@@ -8,7 +8,7 @@ import { PCol, PrimaryTable, PRow } from "@/shared/ui/components/tables/PrimaryT
 import { FcCurrencyExchange, FcNegativeDynamic, FcSalesPerformance, FcScatterPlot, FcStatistics } from "react-icons/fc";
 import { numberBasicFormat, numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
 import { Badge } from "@/shared/ui/components/badges/Badge";
-import { HideElement } from "@/features/auth/ui/HideElement";
+import { HideElement } from "@/contexts/authentication-management/auth/presentation/ui/HideElement";
 import { findTopProductsByBranchOfficeAction } from "@/contexts/product-management/product/presentation/actions/find-top-products-by-branch-office.action";
 import { FilterTopEnum } from "@/contexts/product-management/product/domain/enums/FilterTopEnum";
 

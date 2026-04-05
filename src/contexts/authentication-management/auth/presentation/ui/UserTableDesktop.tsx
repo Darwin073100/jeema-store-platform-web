@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { AiFillProfile } from 'react-icons/ai';
-import { UserEntity } from '../domain/entities/user.entity';
+import { UserEntity } from '../../../../../features/auth/domain/entities/user.entity';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
 import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';

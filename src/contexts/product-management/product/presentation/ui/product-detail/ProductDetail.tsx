@@ -1,5 +1,5 @@
 'use client'
-import { HideElement } from '@/features/auth/ui/HideElement'
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement'
 import { Button } from '@/shared/ui/components/buttons'
 import React, { useEffect } from 'react'
 import { HiOutlineCalendar, HiOutlineCube, HiOutlineQrcode, HiOutlineTag, HiOutlineTicket, HiPencil, HiTrash } from 'react-icons/hi'

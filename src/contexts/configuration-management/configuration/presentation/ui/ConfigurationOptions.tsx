@@ -4,7 +4,7 @@ import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { FcCollaboration, FcComboChart, FcConferenceCall, FcDepartment, FcReadingEbook, FcSerialTasks, FcSettings} from 'react-icons/fc';
 import { ContainerConfig } from './ContainerConfig';
 import { ItemConfig } from './ItemConfig';
-import { HideElement } from '@/features/auth/ui/HideElement';
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 
 const ConfigurationOptions = () => {
     const { employee } = useWorkspace();

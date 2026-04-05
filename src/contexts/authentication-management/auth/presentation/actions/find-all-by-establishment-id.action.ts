@@ -1,7 +1,7 @@
 'use server'
 import { cookies } from "next/headers";
-import { FindAllByEstablishmentIdUseCase } from "../application/use-cases/find-all-by-establishment-id.use-case";
-import { UserRepositoryFactory } from "../infraestructure/factories/user-repository.factory";
+import { FindAllByEstablishmentIdUseCase } from "../../../../../features/auth/application/use-cases/find-all-by-establishment-id.use-case";
+import { UserRepositoryFactory } from "../../../../../features/auth/infraestructure/factories/user-repository.factory";
 import { EstablishmentEntity } from "@/features/establishment/domain/entities/establishment.entity";
 
 export async function findAllByEstablishmentIdAction(){

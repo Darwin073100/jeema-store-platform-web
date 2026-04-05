@@ -1,4 +1,4 @@
-import { findAllRoleAction } from "@/features/auth/actions/find-all-role.action";
+import { findAllRoleAction } from "@/contexts/authentication-management/auth/presentation/actions/find-all-role.action";
 import { findAllEmployeeRolesAction } from "@/contexts/employee-management/employee-role/presentation/actions/find-all-employee-roles.action";
 import { findEmployeeByIdAction } from "@/contexts/employee-management/employee/presentation/actions/find-employee-by-id.action";
 import { EmployeeLaboralInformation } from "@/contexts/employee-management/employee/presentation/ui/details/EmployeeLaboralInformation";

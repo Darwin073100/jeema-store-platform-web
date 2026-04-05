@@ -11,7 +11,7 @@ import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { SaleEntity } from '../../../../../features/sale/domain/entities/sale-entity';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 import { IoReturnDownBack } from 'react-icons/io5';
-import { HideElement } from '@/features/auth/ui/HideElement';
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 interface Props{
     sales: SaleEntity[]
 }

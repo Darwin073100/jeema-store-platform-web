@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { FcConferenceCall, FcCurrencyExchange, FcMindMap, FcOrgUnit, FcPaid, FcServices, FcShipped, FcShop } from "react-icons/fc";
 import { SideLink } from './SideLink'
-import { HideElement } from '@/features/auth/ui/HideElement';
+import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 
 export const SideBar = () => {
     const [hover, setHover] = useState<string>('sm:hidden');

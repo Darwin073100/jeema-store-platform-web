@@ -8,7 +8,7 @@ import { SelectMenuOption } from "@/shared/ui/components/inputs";
 import { UpdateUserRoleDTO } from "@/features/auth/application/dtos/update-user-role.dto";
 import { useEmployeeStore } from "../../stores/employee-store";
 import { UserRoleEntity } from "@/features/auth/domain/entities/user-role.entity";
-import { updateUserRoleAction } from "@/features/auth/actions/update-user-role.action";
+import { updateUserRoleAction } from "@/contexts/authentication-management/auth/presentation/actions/update-user-role.action";
 import { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
 
 export const schema = yup.object().shape({

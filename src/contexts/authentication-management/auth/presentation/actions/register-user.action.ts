@@ -1,8 +1,8 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { RegisterUserDTO } from "../application/dtos/register-user.dto";
-import { RegisterUserUseCase } from "../application/use-cases/register-user.use-case";
-import { UserRepositoryFactory } from "../infraestructure/factories/user-repository.factory";
+import { RegisterUserDTO } from "../../../../../features/auth/application/dtos/register-user.dto";
+import { RegisterUserUseCase } from "../../../../../features/auth/application/use-cases/register-user.use-case";
+import { UserRepositoryFactory } from "../../../../../features/auth/infraestructure/factories/user-repository.factory";
 
 export async function registerUserAction(dto: RegisterUserDTO){
     const userFetchRepositoryImpl = UserRepositoryFactory.create();

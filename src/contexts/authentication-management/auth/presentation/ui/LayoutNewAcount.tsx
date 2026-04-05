@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import { TemplateArea } from '../../../shared/ui/components/templates/TemplateArea'
+import { TemplateArea } from '../../../../../shared/ui/components/templates/TemplateArea'
 import Logo from '@/presentation/assets/images/MagicLogo.png';
 import Image from 'next/image'
 

@@ -1,8 +1,8 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { UserRepositoryFactory } from "../infraestructure/factories/user-repository.factory";
-import { UpdateUserRoleDTO } from "../application/dtos/update-user-role.dto";
-import { UpdateUserRoleUseCase } from "../application/use-cases/update-user-role.use-case";
+import { UserRepositoryFactory } from "../../../../../features/auth/infraestructure/factories/user-repository.factory";
+import { UpdateUserRoleDTO } from "../../../../../features/auth/application/dtos/update-user-role.dto";
+import { UpdateUserRoleUseCase } from "../../../../../features/auth/application/use-cases/update-user-role.use-case";
 
 export async function updateUserRoleAction(dto: UpdateUserRoleDTO) {
     const userFetchRepositoryImpl = UserRepositoryFactory.create();

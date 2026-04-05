@@ -6,7 +6,7 @@ import { useEmployeeUIStore } from "../../stores/employee-ui.store";
 import { SelectMenuOption } from "@/shared/ui/components/inputs";
 import { useEmployeeStore } from "../../stores/employee-store";
 import { AddRoleToUserDTO } from "@/features/auth/application/dtos/add-role-to-user.dto";
-import { addRoleToUserAction } from "@/features/auth/actions/add-role-to-user.action";
+import { addRoleToUserAction } from "@/contexts/authentication-management/auth/presentation/actions/add-role-to-user.action";
 import { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
 
 export const schema = yup.object().shape({
