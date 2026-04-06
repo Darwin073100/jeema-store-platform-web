@@ -1,20 +1,26 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { UserRepositoryFactory } from "../../../../../features/auth/infraestructure/factories/user-repository.factory";
-import { DeleteUserRoleUseCase } from "../../../../../features/auth/application/use-cases/delete-user-role.use-case";
+import { DeleteUserRoleUseCase } from "../../application/use-cases/delete-user-role.use-case";
+import { TypeormUserRoleRepository } from "../../infraestructure/repositories/typeorm-user-role.repository";
+import { Result } from "@/shared/features/result";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 
 export async function deleteUserRoleAction(userRoleId: bigint) {
-    const userFetchRepositoryImpl = UserRepositoryFactory.create();
+    try{
+        const userFetchRepositoryImpl = await TypeormUserRoleRepository.create();
     const useCase = new DeleteUserRoleUseCase(userFetchRepositoryImpl);
 
-    const result = await useCase.execute(userRoleId);
+    await useCase.excecute(userRoleId);
     
-    if (result.ok) {
-        revalidatePath('/configurations/employees');
-        revalidatePath('/configurations/users');
-    }
+    revalidatePath('/configurations/employees');
+    revalidatePath('/configurations/users');
 
     return {
-        ...result
+        ...Result.success({})
+    }
+    }catch(error){
+        return {
+            ...handleError(error, 'deleteUserRoleAction')
+        }
     }
 }
