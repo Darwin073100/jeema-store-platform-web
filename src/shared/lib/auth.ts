@@ -1,43 +1,29 @@
-import { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { authLoginAction } from "@/contexts/authentication-management/auth/presentation/actions/auth-login.action";
 import { userWorkspaceAction } from "@/contexts/authentication-management/auth/presentation/actions/user-workspace.action";
-import { UserWorkspaceResponseDTO } from "@/features/auth/application/dtos/user-workspace-response.dto";
 import { validateAuthAction } from "@/contexts/authentication-management/auth/presentation/actions/validate-auth.action";
 import { LoginAuthDTO } from "@/contexts/authentication-management/auth/application/dtos/login-auth.dto";
 
 // Extender los tipos de NextAuth para incluir nuestros datos personalizados
 declare module "next-auth" {
   interface Session {
-    accessToken: string;
     user: {
       id: string;
+      name: string;
       email: string;
-      username: string;
       roles: string[];
       permissions: string[];
-    };
-    workspace: UserWorkspaceResponseDTO;
-  }
-
-  interface JWT {
-    accessToken: string;
-    workspace: UserWorkspaceResponseDTO;
-    user: {
-      id: string;
-      email: string;
-      username: string;
-      roles: string[];
-      permissions: string[];
-    };
+    }
   }
 
   interface User {
-    accessToken: string;
-    workspace: UserWorkspaceResponseDTO;
-    id: string;
-    email: string;
-    username: string;
+    roles: string[];
+    permissions: string[];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
     roles: string[];
     permissions: string[];
   }
@@ -93,8 +79,8 @@ export const authOptions: NextAuthOptions = {
             id: loginResult.value.userId,
             email: loginResult.value.email,
             username: loginResult.value.username,
-            roles: loginResult.value.userRoles.map(item => item.role?.name),
-            permissions: loginResult.value.userRoles.flatMap(item => item.role?.rolePermissions.map(item => item.permission?.name)),
+            roles: loginResult.value.userRoles.map(item => item.role?.name ?? ''),
+            permissions: loginResult.value.userRoles.flatMap(item => item.role?.rolePermissions.map(item => item.permission?.name ?? '') ?? ''),
             accessToken,
             workspace,
           };
@@ -107,31 +93,20 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // Cuando el usuario se autentica por primera vez
+      // Si el usuario acaba de loguearse, inyectamos los datos en el token
       if (user) {
-        token.accessToken = user.accessToken;
-        token.workspace = user.workspace;
-        token.user = {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          roles: user.roles,
-          permissions: user.permissions,
-        };
+        token.roles = user.roles;
+        token.permissions = user.permissions;
       }
       return token;
     },
+
     async session({ session, token }) {
-      // Enviar propiedades al cliente con validación de tipos
-      session.accessToken = token.accessToken as string;
-      session.workspace = token.workspace as UserWorkspaceResponseDTO;
-      session.user = token.user as {
-        id: string;
-        email: string;
-        username: string;
-        roles: string[];
-        permissions: string[];
-      };
+      // Hacemos que los datos del token estén disponibles en la sesión del cliente
+      if (session.user) {
+        session.user.roles = token.roles;
+        session.user.permissions = token.permissions;
+      }
       return session;
     },
   },
@@ -145,3 +120,6 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

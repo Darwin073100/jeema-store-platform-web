@@ -2,9 +2,9 @@ import { IRole } from "@/contexts/authentication-management/role/presentation/in
 import { IUser } from "./IUser";
 
 export interface IUserRole {
+    userRoleId: string;
     userId: string;
     roleId: string;
-    userRoleId: string;
     createdAt: Date;
     user: IUser | null;
     role: IRole | null;

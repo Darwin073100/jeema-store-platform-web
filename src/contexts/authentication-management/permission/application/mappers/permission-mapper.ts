@@ -1,3 +1,4 @@
+import { RolePermissionMapper } from "@/contexts/authentication-management/role/application/mappers/role-permission.mapper";
 import { PermissionEntity } from "../../domain/entities/permission-entity";
 import { IPermission } from "../../presentation/interfaces/IPermission";
 import { PermissionResponseDto } from "../dtos/permission-response.dto";
@@ -23,10 +24,11 @@ export class PermissionMapper {
     return {
       permissionId: entity.permissionId,
       name: entity.name.name,
+      description: entity.description?.description ?? null,
+      rolePermissions: entity.rolePermissions? entity.rolePermissions.map(item => RolePermissionMapper.toIResponse(item)): [],
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt,
-      description: entity.description?.description ?? null,
     }
   }
 }
