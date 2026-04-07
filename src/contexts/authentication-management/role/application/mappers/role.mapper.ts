@@ -1,6 +1,8 @@
+import { UserRoleMapper } from "@/contexts/authentication-management/auth/application/mapper/user-role.mapper";
 import { RoleEntity } from "../../domain/entities/role-entity";
 import { IRole } from "../../presentation/interfaces/IRole";
 import { RoleResponseDto } from "../dtos/role-response.dto";
+import { RolePermissionMapper } from "./role-permission.mapper";
 
 export class RoleMapper {
   /**
@@ -27,6 +29,8 @@ export class RoleMapper {
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt,
       description: entity.description?.description ?? null,
+      rolePermissions: entity.rolePermissions? entity.rolePermissions.map(item => RolePermissionMapper.toIResponse(item)): [],
+      userRoles: entity.userRoles? entity.userRoles.map(item => UserRoleMapper.toIResponse(item)): []
     };
   }
 }

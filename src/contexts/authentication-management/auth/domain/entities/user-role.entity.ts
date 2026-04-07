@@ -132,7 +132,7 @@ export class UserRoleEntity {
 
   get permissions(): string[] {
     // Los permisos ya están procesados como strings en RoleEntity._permissions
-    return this._role?.permissions || [];
+    return this._role?.rolePermissions || [];
   }
   updateRole(roleId: bigint){
     this._roleId = roleId;

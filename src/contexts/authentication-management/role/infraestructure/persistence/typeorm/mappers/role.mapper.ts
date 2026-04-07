@@ -3,6 +3,7 @@ import { RoleOrmEntity } from "../entities/role.orm-entity";
 import { RoleNameVO } from "src/contexts/authentication-management/role/domain/value-objects/role-name.vo";
 import { RoleDescriptionVO } from "src/contexts/authentication-management/role/domain/value-objects/role-description.vo";
 import { UserRoleMapper } from "src/contexts/authentication-management/auth/infraestructure/mappers/user-role.mapper";
+import { RolePermissionMapper } from "./role-permission.mapper";
 
 export class RoleMapper {
     // Domain to TypeORM
@@ -22,11 +23,6 @@ export class RoleMapper {
 
     // TypeORM to Domain
     static toDomainEntity(typeOrmEntity: RoleOrmEntity): RoleEntity {
-        const userRoles = typeOrmEntity?.userRoles?.map(item => UserRoleMapper.toOrmEntity(item));
-        // Extraer permisos desde rolePermissions
-        const permissions = (typeOrmEntity.rolePermissions || [])
-            .map(rp => rp.permission?.name)
-            .filter(Boolean);
         const role = RoleEntity.reconstitute(
             typeOrmEntity.roleId,
             RoleNameVO.create(typeOrmEntity.name),
@@ -34,10 +30,9 @@ export class RoleMapper {
             typeOrmEntity.updatedAt,
             typeOrmEntity.deletedAt,
             typeOrmEntity.description ? RoleDescriptionVO.create(typeOrmEntity.description) : null,
-            userRoles && [],
+            typeOrmEntity?.userRoles?.map(item => UserRoleMapper.toDomain(item)),
+            typeOrmEntity.rolePermissions?.map(item => RolePermissionMapper.toDomain(item)),
         );
-        // Asignar permisos al objeto de dominio
-        role.setPermissions(permissions);
         return role;
     }
 }

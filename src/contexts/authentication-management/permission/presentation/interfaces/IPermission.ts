@@ -1,5 +1,5 @@
 export interface IPermission {
-    permissionId: string,
+    permissionId: bigint,
     name: string,
     createdAt: Date,
     updatedAt: Date | null,

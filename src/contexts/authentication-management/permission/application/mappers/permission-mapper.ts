@@ -1,4 +1,5 @@
 import { PermissionEntity } from "../../domain/entities/permission-entity";
+import { IPermission } from "../../presentation/interfaces/IPermission";
 import { PermissionResponseDto } from "../dtos/permission-response.dto";
 
 export class PermissionMapper {
@@ -17,5 +18,15 @@ export class PermissionMapper {
       entity.deletedAt,
       entity.description?.description,
     );
+  }
+  public static toIResponse(entity: PermissionEntity): IPermission {
+    return {
+      permissionId: entity.permissionId,
+      name: entity.name.name,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+      description: entity.description?.description ?? null,
+    }
   }
 }

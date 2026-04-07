@@ -1,5 +1,8 @@
+import { PermissionMapper } from "@/contexts/authentication-management/permission/application/mappers/permission-mapper";
 import { RolePermissionEntity } from "../../domain/entities/role-permission.entity";
+import { IRolePermission } from "../../presentation/interfaces/IRolePermission";
 import { RolePermissionResponseDTO } from "../dtos/role-permission-response.dto";
+import { RoleMapper } from "./role.mapper";
 
 export class RolePermissionMapper {
   /**
@@ -25,5 +28,17 @@ export class RolePermissionMapper {
       entity.updatedAt,
       entity.deletedAt,
     );
+  }
+  public static toIResponse(entity: RolePermissionEntity): IRolePermission {
+    return {
+      rolePermissionId: entity.rolePermissionId,
+      permissionId: entity.permissionId,
+      roleId: entity.roleId,
+      role: entity.role? RoleMapper.toIResponse(entity.role): null,
+      permission: entity.permission? PermissionMapper.toIResponse(entity.permission): null,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt ?? null,
+      deletedAt: entity.deletedAt ?? null
+    }
   }
 }

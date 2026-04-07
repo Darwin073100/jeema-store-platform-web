@@ -2,8 +2,9 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authLoginAction } from "@/contexts/authentication-management/auth/presentation/actions/auth-login.action";
 import { userWorkspaceAction } from "@/contexts/authentication-management/auth/presentation/actions/user-workspace.action";
-import { AuthLoginDTO } from "@/features/auth/application/dtos/auth.login.dto";
 import { UserWorkspaceResponseDTO } from "@/features/auth/application/dtos/user-workspace-response.dto";
+import { validateAuthAction } from "@/contexts/authentication-management/auth/presentation/actions/validate-auth.action";
+import { LoginAuthDTO } from "@/contexts/authentication-management/auth/application/dtos/login-auth.dto";
 
 // Extender los tipos de NextAuth para incluir nuestros datos personalizados
 declare module "next-auth" {
@@ -58,12 +59,12 @@ export const authOptions: NextAuthOptions = {
 
         try {
           // Usar tu action existente para el login
-          const loginDTO: AuthLoginDTO = {
+          const loginDTO: LoginAuthDTO = {
             email: credentials.email,
             password: credentials.password,
           };
 
-          const loginResult = await authLoginAction(loginDTO);
+          const loginResult = await validateAuthAction(loginDTO);
 
           if (!loginResult.ok || !loginResult.value) {
             const errorMessage = loginResult.error?.message;
@@ -72,7 +73,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error(message);
           }
 
-          const accessToken = loginResult.value.accessToken;
+          const accessToken = '';
 
           // Obtener la información del workspace usando el accessToken
           const workspaceResult = await userWorkspaceAction({ accessToken });
@@ -89,11 +90,11 @@ export const authOptions: NextAuthOptions = {
 
           // Retornar el usuario con toda la información necesaria
           return {
-            id: workspace.user.userId,
-            email: workspace.user.email,
-            username: workspace.user.username,
-            roles: workspace.user.roles,
-            permissions: workspace.user.permissions,
+            id: loginResult.value.userId,
+            email: loginResult.value.email,
+            username: loginResult.value.username,
+            roles: loginResult.value.userRoles.map(item => item.role?.name),
+            permissions: loginResult.value.userRoles.flatMap(item => item.role?.rolePermissions.map(item => item.permission?.name)),
             accessToken,
             workspace,
           };
@@ -136,7 +137,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth/login",
-    error: "/auth/login",
+    error: "/auth/login", 
   },
   session: {
     strategy: "jwt",

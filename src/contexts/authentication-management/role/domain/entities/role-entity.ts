@@ -3,6 +3,7 @@ import { RoleNameVO } from '../value-objects/role-name.vo';
 import { RoleDescriptionVO } from '../value-objects/role-description.vo';
 import { RoleCreatedEvent } from '../events/role-created.event';
 import { UserRoleEntity } from 'src/contexts/authentication-management/auth/domain/entities/user-role.entity';
+import { RolePermissionEntity } from './role-permission.entity';
 
 export class RoleEntity {
   private readonly _roleId: bigint;
@@ -12,7 +13,7 @@ export class RoleEntity {
   private _updatedAt: Date | null;
   private _deletedAt: Date | null;
   private _userRoles?: UserRoleEntity[]|[];
-  private _permissions?: any[]; // Asegúrate de tipar correctamente según tu modelo
+  private _rolePermissions?: RolePermissionEntity[]; // Asegúrate de tipar correctamente según tu modelo
   private _domainEvents: DomainEvent<RoleEntity>[] = [];
 
   private constructor(
@@ -23,6 +24,7 @@ export class RoleEntity {
     deletedAt: Date | null,
     description?: RoleDescriptionVO | null,
     userRoles?: UserRoleEntity[]|[],
+    rolePermissions?: RolePermissionEntity[],
   ) {
     this._roleId = roleId;
     this._name = name;
@@ -31,6 +33,7 @@ export class RoleEntity {
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
     this._userRoles = userRoles;
+    this._rolePermissions = rolePermissions;
   }
 
   /**
@@ -55,7 +58,7 @@ export class RoleEntity {
       null,
       null,
       description,
-      [],
+      undefined,
     );
     role.recordEvent(new RoleCreatedEvent(role));
     return role;
@@ -69,6 +72,7 @@ export class RoleEntity {
     deletedAt: Date | null,
     description?: RoleDescriptionVO | null,
     userRoles?: UserRoleEntity[]|[],
+    rolePermissions?: RolePermissionEntity[],
   ): RoleEntity {
     return new RoleEntity(
       roleId,
@@ -78,6 +82,7 @@ export class RoleEntity {
       deletedAt,
       description,
       userRoles,
+      rolePermissions,
     );
   }
 
@@ -110,8 +115,8 @@ export class RoleEntity {
     return this._deletedAt;
   }
 
-  get permissions(): any[] {
-    return this._permissions || [];
+  get rolePermissions(): any[] {
+    return this._rolePermissions || [];
   }
 
   // Métodos de comportamiento del dominio
@@ -173,6 +178,6 @@ export class RoleEntity {
   }
 
   public setPermissions(permissions: any[]): void {
-    this._permissions = permissions;
+    this._rolePermissions = permissions;
   }
 }

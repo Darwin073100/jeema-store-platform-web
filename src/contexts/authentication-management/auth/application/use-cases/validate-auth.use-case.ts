@@ -2,6 +2,7 @@ import { UserRepository } from "src/contexts/authentication-management/auth/doma
 import { EncryptionRepository } from "../../domain/repositories/encryption.repository";
 import { LoginAuthDTO } from "../dtos/login-auth.dto";
 import { UserEntity } from "src/contexts/authentication-management/auth/domain/entities/user.entity";
+import { UserConflictException } from "../../domain/exceptions/user-conflict.exception";
 
 export class ValidateAuthUseCase{
     constructor(
@@ -9,22 +10,22 @@ export class ValidateAuthUseCase{
         private encryprionRepository: EncryptionRepository
     ){}
 
-    async execute(dto: LoginAuthDTO): Promise<UserEntity | null>{
+    async execute(dto: LoginAuthDTO): Promise<UserEntity>{
         let user: UserEntity|null;
-        // user = await this.userRepository.findByUsername(dto.email);
-        // if(!user){
-        //     return null;
-        // }
+        user = await this.userRepository.findByUsername(dto.email);
+        if(!user){
+            throw new UserConflictException('Usuario, Email o Contraseña incorrecta');
+        }
     
         user = await this.userRepository.findByEmail(dto.email);
         if(!user){
-            return null;
+            throw new UserConflictException('Usuario, Email o Contraseña incorrecta');
         }
 
         const isPasswordValid = await this.encryprionRepository.compare(dto.password, user.passwordHash.value);
         
         if(!isPasswordValid){
-            return null;
+            throw new UserConflictException('Usuario, Email o Contraseña incorrecta');
         }
         
         // Retornar la entidad completa, no destructurarla

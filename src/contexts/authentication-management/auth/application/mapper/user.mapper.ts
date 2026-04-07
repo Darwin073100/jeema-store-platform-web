@@ -44,7 +44,7 @@ export class UserMapper{
                 email: entity.email?.value || '',
                 employeeId: entity.employeeId,
                 // permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.rolePermissions?.map(rp => rp.permission.name)) || [],
-                permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.permissions) || [],
+                permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.rolePermissions) || [],
                 roles: entity.userRoles?.map(ur => ur.role?.name.name) || [],
                 userId: entity.userId,
                 username: entity.username?.value || ''
@@ -101,7 +101,7 @@ export class UserMapper{
                 email: entity.email?.value || '',
                 employeeId: entity.employeeId?.toString() || '0',
                 // permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.rolePermissions?.map(rp => rp.permission.name)) || [],
-                permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.permissions) || [],
+                permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.rolePermissions) || [],
                 roles: entity.userRoles?.map(ur => ur.role?.name.name) || [],
                 userId: entity.userId?.toString() || '0',
                 username: entity.username?.value || ''
