@@ -125,7 +125,13 @@ export class TyperomUserRepository implements UserRepository {
             where: { 
                 username: username as any,
                 isActive: true, 
-            }
+            },
+            relations: [
+                'userRoles',
+                'userRoles.role',
+                'userRoles.role.rolePermissions',
+                'userRoles.role.rolePermissions.permission'
+            ]
         });
 
         if (!resp) {

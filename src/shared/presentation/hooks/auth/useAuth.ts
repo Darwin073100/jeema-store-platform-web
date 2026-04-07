@@ -41,17 +41,14 @@ export function useAuth() {
     
     // Datos del usuario
     user: session?.user || null,
-    accessToken: session?.accessToken || null,
     
     // Datos del workspace (cached)
-    workspace: session?.workspace || null,
+    workspace: session?.user.workspace || null,
     
     // Métodos
     login,
     logout,
-
     loading,
-    
     // Session completa por si necesitas algo más específico
     session,
   };
@@ -85,10 +82,9 @@ export function useWorkspace() {
 
 // Hook para obtener el accessToken para hacer peticiones
 export function useAccessToken() {
-  const { accessToken, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   
   return {
-    accessToken,
-    isReady: isAuthenticated && !!accessToken,
+    isReady: isAuthenticated,
   };
 }

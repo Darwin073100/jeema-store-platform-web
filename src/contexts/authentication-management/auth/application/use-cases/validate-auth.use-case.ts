@@ -14,20 +14,17 @@ export class ValidateAuthUseCase{
         let user: UserEntity|null;
         user = await this.userRepository.findByUsername(dto.email);
         if(!user){
-            throw new UserConflictException('Usuario, Email o Contraseña incorrecta');
+            user = await this.userRepository.findByEmail(dto.email);
+            if(!user){
+                throw new UserConflictException('Usuario, Email o Contraseña incorrecta');
+            }
         }
     
-        user = await this.userRepository.findByEmail(dto.email);
-        if(!user){
-            throw new UserConflictException('Usuario, Email o Contraseña incorrecta');
-        }
-
         const isPasswordValid = await this.encryprionRepository.compare(dto.password, user.passwordHash.value);
         
         if(!isPasswordValid){
             throw new UserConflictException('Usuario, Email o Contraseña incorrecta');
-        }
-        
+        }        
         // Retornar la entidad completa, no destructurarla
         // La contraseña está encapsulada en el objeto de dominio y no se expone en JSON
         return user;

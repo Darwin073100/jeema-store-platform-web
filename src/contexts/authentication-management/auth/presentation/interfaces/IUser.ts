@@ -2,8 +2,8 @@ import { IEmployee } from "@/contexts/employee-management/employee/presentation/
 import { IUserRole } from "./IUserRole";
 
 export interface IUser {
-        userId: string;
-        employeeId: string;
+        userId: bigint;
+        employeeId: bigint;
         username: string;
         email: string;
         passwordHash: string;

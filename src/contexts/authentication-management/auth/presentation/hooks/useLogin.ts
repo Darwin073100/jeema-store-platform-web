@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { useAuth } from '@/shared/presentation/hooks/auth/useAuth';
 
 const schema = yup.object({
-    email: yup.string().email('El formato del correo no es correcto').required('El correo es obligatorio.').min(3, 'El correo debe tener al menos 3 caracteres.'),
+    email: yup.string().required('El correo es obligatorio.').min(3, 'El correo debe tener al menos 3 caracteres.'),
     password: yup.string().required('La contraseña es obligatoria.').min(8, 'La contraseña debe tener al menos 8 caracteres.').max(20, 'La contraseña debe tener como máximo 20 caracteres.'),
 }).required();
 

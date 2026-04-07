@@ -3,29 +3,35 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { userWorkspaceAction } from "@/contexts/authentication-management/auth/presentation/actions/user-workspace.action";
 import { validateAuthAction } from "@/contexts/authentication-management/auth/presentation/actions/validate-auth.action";
 import { LoginAuthDTO } from "@/contexts/authentication-management/auth/application/dtos/login-auth.dto";
+import { IUserWorkspace } from "@/contexts/authentication-management/auth/application/dtos/IUserWorkspace";
 
 // Extender los tipos de NextAuth para incluir nuestros datos personalizados
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string;
+      id: bigint;
       name: string;
       email: string;
       roles: string[];
       permissions: string[];
+      workspace: IUserWorkspace;
     }
   }
 
   interface User {
+    id: bigint;
     roles: string[];
     permissions: string[];
+    workspace: IUserWorkspace;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
+    id: bigint;
     roles: string[];
     permissions: string[];
+    workspace: IUserWorkspace;
   }
 }
 
@@ -62,7 +68,7 @@ export const authOptions: NextAuthOptions = {
           const accessToken = '';
 
           // Obtener la información del workspace usando el accessToken
-          const workspaceResult = await userWorkspaceAction({ accessToken });
+          const workspaceResult = await userWorkspaceAction();
 
           if (!workspaceResult.ok || !workspaceResult.value) {
             const errorMessage = workspaceResult.error?.message;
@@ -95,6 +101,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       // Si el usuario acaba de loguearse, inyectamos los datos en el token
       if (user) {
+        token.id = BigInt(user.id);
         token.roles = user.roles;
         token.permissions = user.permissions;
       }
@@ -104,8 +111,10 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       // Hacemos que los datos del token estén disponibles en la sesión del cliente
       if (session.user) {
+        session.user.id = token.id;
         session.user.roles = token.roles;
         session.user.permissions = token.permissions;
+        session.user.workspace = token.workspace;
       }
       return session;
     },
