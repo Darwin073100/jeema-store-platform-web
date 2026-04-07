@@ -2,17 +2,12 @@
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { RoleEntity } from "@/features/auth/domain/entities/role.entity";
-import { RegisterUserDTO } from "@/features/auth/application/dtos/register-user.dto";
-import { RegisterEmployeeDTO } from "../../../../../../features/employee/application/dtos/register-employee.dto";
-import { saveEmployeeAction } from "../../actions/save-employee.action";
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
-import { useEffect, useState } from 'react';
-import { EmployeeEntity } from '../../../../../../features/employee/domain/entities/employee.entity';
+import { useEffect } from 'react';
 import { updateEmployeeAction } from '../../actions/update-employee.action';
-import { UpdateEmployeeDTO } from '../../../../../../features/employee/application/dtos/update-employee.dto';
 import { formatDateForInput } from '@/shared/lib/utils/date-formatter';
 import { useEmployeeStore } from '../../stores/employee-store';
+import { UpdateEmployeeDto } from '../../../application/dtos/update-employee.dto';
 
 export const schema = yup.object().shape({
     employeeRoleId: yup.string()
@@ -88,9 +83,9 @@ const useEmployeeUpdate = () => {
 
     const onSubmit = async (data: FormData) => {
         runLoading('editEmployee');
-        const dto: UpdateEmployeeDTO = {
+        const dto: UpdateEmployeeDto = {
             isActive: true,
-            birthDate: data.birthDate? new Date(data.birthDate): null,
+            birthDate: data.birthDate,
             branchOfficeId: employee?.branchOfficeId ?? BigInt(0),
             currentSalary: Number(data.currentSalary ?? 0),
             email: data.email,
@@ -99,7 +94,7 @@ const useEmployeeUpdate = () => {
             exitTime: data.exitTime ?? null,
             firstName: data.firstName,
             gender: data.gender ?? null,
-            hireDate: data.hireDate? new Date(data.hireDate): null,
+            hireDate: data.hireDate,
             lastName: data.lastName,
             phoneNumber: data.phoneNumber,
             photoUrl: data.phoneNumber,

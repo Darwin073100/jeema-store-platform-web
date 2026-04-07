@@ -5,11 +5,11 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
 import { SelectMenuOption } from "@/shared/ui/components/inputs";
-import { UpdateUserRoleDTO } from "@/features/auth/application/dtos/update-user-role.dto";
 import { useEmployeeStore } from "../../stores/employee-store";
 import { UserRoleEntity } from "@/features/auth/domain/entities/user-role.entity";
 import { updateUserRoleAction } from "@/contexts/authentication-management/auth/presentation/actions/update-user-role.action";
 import { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
+import { UpdateUserRoleDTO } from "@/contexts/authentication-management/auth/application/dtos/update-user-role.dto";
 
 export const schema = yup.object().shape({
     roleId: yup.string().trim()

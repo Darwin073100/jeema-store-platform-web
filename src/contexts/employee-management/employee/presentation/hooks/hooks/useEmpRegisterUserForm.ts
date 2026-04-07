@@ -3,11 +3,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { RegisterUserDTO } from "@/features/auth/application/dtos/register-user.dto";
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
 import { SelectMenuOption } from "@/shared/ui/components/inputs";
 import { registerUserAction } from "@/contexts/authentication-management/auth/presentation/actions/register-user.action";
 import { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
+import { RegisterUserDTO } from "@/contexts/authentication-management/auth/application/dtos/register-user.dto";
 
 export const schema = yup.object().shape({
     //? VALIDACION PARA EL USUARIO
@@ -136,7 +136,7 @@ const useEmpRegisterUserForm = () => {
                 email: data.userEmail ?? '',
                 employeeId: employeeId,
                 roleId: BigInt(data.userRoleId ?? 0),
-                passwordHash: data.userPassword ?? '',
+                passwordPlain: data.userPassword ?? '',
                 username: data.userUsername ?? ''
             }
             const result = await registerUserAction(userDTO);

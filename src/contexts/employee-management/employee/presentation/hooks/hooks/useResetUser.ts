@@ -36,7 +36,7 @@ const useResetUser = () => {
 
     const onSubmit = async(data: FormData)=> {
         runLoading('resetPassword');
-        const result = await updateUserAction(userId, {password: data.password});
+        const result = await updateUserAction(userId, {passwordPlain: data.password});
         stopLoading();
         if(result.ok){
             setFloatMessageState({

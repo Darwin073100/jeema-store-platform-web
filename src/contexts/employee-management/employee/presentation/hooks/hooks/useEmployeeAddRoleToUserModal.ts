@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { useEmployeeUIStore } from "../../stores/employee-ui.store";
 import { SelectMenuOption } from "@/shared/ui/components/inputs";
 import { useEmployeeStore } from "../../stores/employee-store";
-import { AddRoleToUserDTO } from "@/features/auth/application/dtos/add-role-to-user.dto";
 import { addRoleToUserAction } from "@/contexts/authentication-management/auth/presentation/actions/add-role-to-user.action";
 import { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
+import { AddRoleToUserDTO } from "@/contexts/authentication-management/auth/application/dtos/add-role-to-user.dto";
 
 export const schema = yup.object().shape({
     roleId: yup.string().trim()
