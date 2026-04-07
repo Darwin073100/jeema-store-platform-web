@@ -6,22 +6,22 @@ import { UserUsernameVO } from "../../domain/value-objects/user.username.vo";
 import { RegisterUserDTO } from "../dtos/register-user.dto";
 import { UserRoleRepository } from "../../domain/repositories/user-role.repository";
 import { UserRoleEntity } from "../../domain/entities/user-role.entity";
-import { RoleCheckerPort } from "src/contexts/authentication-management/role/domain/ports/out/role-checker.port";
 import { NotFoundRoleException } from "src/contexts/authentication-management/role/domain/exceptions/not-found-role.exception";
-import { EmployeeChekerPort } from "src/contexts/employee-management/employee/domain/ports/out/employee-checker.port";
 import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
+import { EmployeeRepository } from "@/contexts/employee-management/employee/domain/repositories/employee.repository";
+import { RoleRepository } from "@/contexts/authentication-management/role/domain/repositories/role.repository";
 
 export class RegisterUserUseCase{
     constructor(
-        private readonly roleCheckerPort: RoleCheckerPort,
-        private readonly employeeCheckerPort: EmployeeChekerPort,
+        private readonly roleRepository: RoleRepository,
+        private readonly employeeRepository: EmployeeRepository,
         private readonly userRoleRepository: UserRoleRepository,
         private readonly encryptionRepository: EncryptionRepository,
     ){}
 
     async excecute(dto: RegisterUserDTO):Promise<UserRoleEntity>{
-        const roleIsValid = await this.roleCheckerPort.check(dto.roleId);
-        const employeeIsValid = await this.employeeCheckerPort.exists(dto.employeeId);
+        const roleIsValid = await this.roleRepository.existById(dto.roleId);
+        const employeeIsValid = await this.employeeRepository.existById(dto.employeeId);
         // Verificamos que el id del rol asignado al usuario exista.
         if(!roleIsValid){
             throw new NotFoundRoleException('El rol asignado a este usuario no existe.');

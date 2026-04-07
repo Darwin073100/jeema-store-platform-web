@@ -7,15 +7,15 @@ import { UserRoleRepository } from "../../domain/repositories/user-role.reposito
 import { UserRoleEntity } from "../../domain/entities/user-role.entity";
 import { EmployeeEntity } from "src/contexts/employee-management/employee/domain/entities/employee.entity";
 import { RegisterUserWithEmployeeDTO } from "../dtos/register-user-with-employee.dto";
-import { BranchOfficeCheckerPort } from "src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port";
 import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
 import { EmployeeRoleRepository } from "src/contexts/employee-management/employee-role/domain/repositories/employee-role.repository";
 import { RoleRepository } from "src/contexts/authentication-management/role/domain/repositories/role.repository";
+import { BranchOfficeRepository } from "@/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository";
 
 export class RegisterUserWithEmployeeUseCase{
     constructor(
         private readonly userRoleRepository: UserRoleRepository,
-        private readonly branchOfficeCheckerPort: BranchOfficeCheckerPort,
+        private readonly branchOfficeRepository: BranchOfficeRepository,
         private readonly employeeRoleRepository: EmployeeRoleRepository,
         private readonly roleRepository: RoleRepository,
         private readonly encryptionRepository: EncryptionRepository,
@@ -24,7 +24,7 @@ export class RegisterUserWithEmployeeUseCase{
     async excecute(dto: RegisterUserWithEmployeeDTO):Promise<UserRoleEntity>{
        try {
          // Verificamos si la sucursal existe
-        const branchOfficeExists = await this.branchOfficeCheckerPort.existById(dto.branchOfficeId);
+        const branchOfficeExists = await this.branchOfficeRepository.existById(dto.branchOfficeId);
         if(!branchOfficeExists){
             throw new UserNotFoundException(`Sucursal con id ${dto.branchOfficeId} no existe.`);
         }

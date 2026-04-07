@@ -1,29 +1,38 @@
 'use server'
+import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
 import { revalidatePath } from "next/cache";
-import { UserRepositoryFactory } from "../../../../../features/auth/infraestructure/factories/user-repository.factory";
-import { UpdateUserDTO } from "../../../../../features/auth/application/dtos/update-user.dto";
-import { UpdateUserUseCase } from "../../../../../features/auth/application/use-cases/update-user.use-case";
 import { cookies } from "next/headers";
-import { EstablishmentEntity } from "@/features/establishment/domain/entities/establishment.entity";
+import { UpdateUserUseCase } from "../../application/use-cases/update-user.use-case";
+import { UpdateUserDTO } from "../../application/dtos/update-user.dto";
+import { TyperomUserRepository } from "../../infraestructure/repositories/typeorm-user.repository";
+import { BcryptEncryptionRepository } from "../../infraestructure/encryption/bcrypt.encryption.repository";
+import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
+import { Result } from "@/shared/features/result";
+import { UserMapper } from "../../application/mapper/user.mapper";
 
 export async function updateUserAction(userId: bigint, dto: UpdateUserDTO) {
-    const userFetchRepositoryImpl = UserRepositoryFactory.create();
-    const useCase = new UpdateUserUseCase(userFetchRepositoryImpl);
+    try {
+        const userRepository = await TyperomUserRepository.create();
+        const encryptionRepository = await BcryptEncryptionRepository.create();
+        const useCase = new UpdateUserUseCase(userRepository, encryptionRepository);
 
-    const cookieStore = await cookies();
-    let establishmentString = cookieStore.get('establishmentCookie')?.value ?? null;
-    let establishment: EstablishmentEntity | null = null;
-    if (establishmentString) {
-        establishment = JSON.parse(establishmentString) as EstablishmentEntity;
-    }
-    const result = await useCase.execute(establishment?.establishmentId ?? BigInt(0), userId, dto);
-    
-    if (result.ok) {
+        const cookieStore = await cookies();
+        let establishmentString = cookieStore.get('establishmentCookie')?.value ?? null;
+        let establishment: IEstablishment | null = null;
+        if (establishmentString) {
+            establishment = JSON.parse(establishmentString) as IEstablishment;
+        }
+        const result = await useCase.execute(establishment?.establishmentId ?? BigInt(0), userId, dto);
+
         revalidatePath('/configurations/employees');
         revalidatePath('/configurations/users');
-    }
 
-    return {
-        ...result
+        return {
+            ...Result.success(UserMapper.toIResponse(result))
+        }
+    } catch (error) {
+        return {
+            ...handleError(error, 'updateUserAction')
+        }
     }
 }
