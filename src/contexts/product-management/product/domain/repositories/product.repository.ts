@@ -1,5 +1,6 @@
 import { TemplateRepository } from 'src/shared/domain/repositories/template.repository';
 import { ProductEntity } from '../entities/product.entity';
+import { PaginationDTO } from '@/shared/application/dtos/pagination.dto';
 
 export const PRODUCT_REPOSITORY = Symbol('PRODUCT_REPOSITORY');
 
@@ -10,7 +11,7 @@ export interface ProductRepository extends TemplateRepository<ProductEntity>{
   saveProductWithLotAdnInventoryItem(product: ProductEntity): Promise<ProductEntity>;
   findByIdCategoryBrandSeason(entityId: bigint): Promise<ProductEntity | null>;
   saveCompleteProduct(product: ProductEntity): Promise<ProductEntity>;
-  findAllByEstablishment(establishmentId: bigint): Promise<ProductEntity[]>;
+  findAllByEstablishment(establishmentId: bigint, dto: PaginationDTO): Promise<ProductEntity[]>;
   findAllByBranchOffice(branchOfficeId: bigint): Promise<ProductEntity[]>;
   existById(productId: bigint):Promise<ProductEntity | null>;
 }

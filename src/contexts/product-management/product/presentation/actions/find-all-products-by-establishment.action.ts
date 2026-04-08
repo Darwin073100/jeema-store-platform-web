@@ -5,8 +5,9 @@ import { TypeOrmProductRepository } from '../../infraestructure/persistence/type
 import { ViewAllProductsByEstablishmentUseCase } from '../../application/use-cases/view-all-products-by-establishment.use-case';
 import { ProductMapper } from '../../application/mappers/product.mapper';
 import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
+import { PaginationDTO } from '@/shared/application/dtos/pagination.dto';
 
-export async function findAllProductsByEstablishmentAction(){
+export async function findAllProductsByEstablishmentAction(dto?: PaginationDTO){
     try{
         const repository = await TypeOrmProductRepository.create();
         const useCase = new ViewAllProductsByEstablishmentUseCase(repository);
@@ -20,7 +21,7 @@ export async function findAllProductsByEstablishmentAction(){
         if (establishment) {
             establishmentId = (JSON.parse(establishment) as IEstablishment).establishmentId;
         }
-        const result = await useCase.execute(establishmentId);
+        const result = await useCase.execute(establishmentId, dto);
         return result.map(item => ProductMapper.toIResponse(item));
     } catch(error){
         return [];

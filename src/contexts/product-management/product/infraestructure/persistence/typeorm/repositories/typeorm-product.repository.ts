@@ -12,6 +12,9 @@ import { ProductNotFoundException } from 'src/contexts/product-management/produc
 import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
 import { SaleStatusEnum } from 'src/contexts/sale-management/sale/domain/enums/sale-status.enum';
 import { getDataSource } from '@/configuration/databases/typeorm/config';
+import { PaginationDTO } from '@/shared/application/dtos/pagination.dto';
+import { typeormPagination } from '@/shared/infrastructure/typeorm/typeorm-pagination';
+import { skip } from 'node:test';
 
 export class TypeOrmProductRepository implements ProductRepository {
   private readonly productRepository: Repository<ProductOrmEntity>;
@@ -309,22 +312,25 @@ export class TypeOrmProductRepository implements ProductRepository {
 
     return Promise.resolve([]);
   }
-  async findAllByEstablishment(establishmentId: bigint): Promise<ProductEntity[]> {
+  async findAllByEstablishment(establishmentId: bigint, dto: PaginationDTO): Promise<ProductEntity[]> {
+    const { skip, take } = typeormPagination(dto.page, dto.pageSize);
     const result = await this.productRepository.find({
       where: {
-        establishmentId
+        establishmentId,
       },
-      relations: ['establishment', 'category', 'brand', 'season', 'lots', 'inventory.inventoryItems']
+      skip,
+      take,
+      relations: ['category', 'brand', 'season', 'inventory.inventoryItems']
     });
-    // Ordenar los lots para que el lote más reciente (por receivedDate) sea el primero
-    result.forEach((orm) => {
-      if (orm.lots && orm.lots.length > 0) {
-        orm.lots.sort((a, b) => {
-          const ta = a.receivedDate ? new Date(a.receivedDate).getTime() : 0;
-          const tb = b.receivedDate ? new Date(b.receivedDate).getTime() : 0;
-          return tb - ta; // descendente: más reciente primero
-        });
-      }
+    return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
+  }
+  async findAllByEstablishmentAndName(establishmentId: bigint, name: string, barcode: string): Promise<ProductEntity[]> {
+    const result = await this.productRepository.find({
+      where: {
+        establishmentId,
+        name
+      },
+      relations: ['category', 'brand', 'season', 'inventory.inventoryItems']
     });
     return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
   }
