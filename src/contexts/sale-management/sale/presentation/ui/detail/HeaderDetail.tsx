@@ -1,23 +1,22 @@
 'use client'
 import React from 'react'
+import { IPaymentMethod } from '@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod';
 import { SaleStatusEnum } from '../../../domain/enums/sale-status.enum';
 import { Button } from '@/shared/ui/components/buttons';
-import { SaleEntity } from '../../../../../../features/sale/domain/entities/sale-entity';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { usePayment } from '../../hooks/details/usePayment';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { useSaleUIStore } from '../../stores/sale.ui.store';
 import { SalePaymentDetailModal } from './SalePaymentModal';
-import { PaymentMethodEntity } from '@/features/payment-method/domain/entities/payment-method-entity';
 import { IoBagHandle, IoPrintSharp, IoWalletSharp } from 'react-icons/io5';
 import { useSaleContinue } from '../../hooks/details/useSaleContinue';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { SaleTicketModal } from '../SaleTicketModal';
 import { SaleReprintTicketModal } from '../SaleReprintTicketModal';
+import { ISale } from '../../interfaces/ISale';
 
 interface Props {
-    sale: SaleEntity;
-    paymentMethods: PaymentMethodEntity[];
+    sale: ISale;
+    paymentMethods: IPaymentMethod[];
 }
 
 const HeaderDetail = ({ sale, paymentMethods }: Props) => {

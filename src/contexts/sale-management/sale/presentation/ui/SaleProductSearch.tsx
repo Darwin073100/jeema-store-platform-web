@@ -5,10 +5,10 @@ import { TextInput } from "@/shared/ui/components/inputs";
 import { IoIosBarcode, IoMdCheckmark } from "react-icons/io";
 import { useSale } from "../hooks/useSale";
 import { Spinner } from "@/shared/ui/components/loadings/Spinner";
-import { CashSessionEntity } from "@/features/cash/domain/entities/cash-session.entity";
 import { useSaleStore } from "../stores/sale.store";
+import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
 interface Props {
-    cashSession: CashSessionEntity | null;
+    cashSession: ICashSession | null;
 }
 const SaleProductSearch = ({ cashSession }: Props) => {
     const { handleSubmit, inputRef, handleChangeSearch, searchValue, loading } = useSale();

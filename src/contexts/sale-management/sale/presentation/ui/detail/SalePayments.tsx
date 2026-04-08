@@ -1,9 +1,9 @@
 import React from 'react'
-import { SaleEntity } from '../../../../../../features/sale/domain/entities/sale-entity';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { FcCurrencyExchange } from 'react-icons/fc';
+import { ISale } from '../../interfaces/ISale';
 interface Props {
-    data: SaleEntity
+    data: ISale
 }
 const SalePayments = ({ data }: Props) => {
     return (

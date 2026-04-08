@@ -1,16 +1,16 @@
 import { Button } from "@/shared/ui/components/buttons";
 import { IoIosTrash } from "react-icons/io";
-import { SaleDetailEntity } from "../../../../../features/sale/domain/entities/sale-detail-entity";
 import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { HiPencilSquare } from "react-icons/hi2";
 import { useDeleteDetail } from "../hooks/useDeleteDetail";
 import { useUpdateDetailModal } from "../hooks/useUpdateDetailModal";
 import { Badge } from "@/shared/ui/components/badges/Badge";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
+import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
 // import { useSale } from "../hooks/useSale";
 
 interface Props {
-    saleDetail?: SaleDetailEntity
+    saleDetail?: ISaleDetail
 }
 
 const SaleDetailItem = ({ saleDetail }: Props) => {

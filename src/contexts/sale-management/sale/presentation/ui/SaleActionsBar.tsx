@@ -4,16 +4,15 @@ import { Button } from '@/shared/ui/components/buttons';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
-import { IoMdAdd } from 'react-icons/io';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { downloadXLSX } from '@/shared/lib/utils/download.excel';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
-import { SaleEntity } from '../../../../../features/sale/domain/entities/sale-entity';
 import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 import { IoReturnDownBack } from 'react-icons/io5';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
+import { ISale } from '../interfaces/ISale';
 interface Props{
-    sales: SaleEntity[]
+    sales: ISale[]
 }
 const SaleActionsBar = ({ sales }:Props) => {
     const [loading, setLoading] = useState(false);

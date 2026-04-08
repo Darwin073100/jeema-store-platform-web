@@ -5,17 +5,17 @@ import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { useSaleSummary } from "../hooks/useSaleSummary";
 import { SalePaymentModal } from "./SalePaymentModal";
 import { useSalePayment } from "../hooks/useSalePayment";
-import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity";
 import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
 import { SaleCustomerListModal } from "./SaleCustomerListModal";
 import { useCustomerSale } from "../hooks/useCustomerSale";
-import { CustomerEntity } from "@/features/customer/domain/entities/customer.entity";
-import { InventoryItemEntity } from "@/features/inventory/domain/entities/inventory-item.entity";
+import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
+import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
+import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
 
 interface Props {
-    paymentMethods: PaymentMethodEntity[],
-    customers: CustomerEntity[],
-    inventoryItems: InventoryItemEntity[],
+    paymentMethods: IPaymentMethod[],
+    customers: ICustomer[],
+    inventoryItems: IInventoryItem[],
 }
 
 const SaleSummaryMovile = ({ paymentMethods, customers, inventoryItems }: Props) => {

@@ -1,9 +1,9 @@
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import React from 'react'
-import { SaleEntity } from '../../../../../../features/sale/domain/entities/sale-entity';
 import { FcKindle } from 'react-icons/fc';
+import { ISale } from '../../interfaces/ISale';
 interface Props {
-    data: SaleEntity
+    data: ISale
 }
 const SaleEmployeeInfo = ({ data }: Props) => {
     return (

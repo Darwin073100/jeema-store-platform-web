@@ -1,6 +1,5 @@
 'use client';
 import React from 'react'
-import { SaleEntity } from '../../../../../features/sale/domain/entities/sale-entity'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
@@ -10,9 +9,10 @@ import { useSaleListBranch } from '../hooks/useSaleList';
 import { BCol, BRow, BTableEmpty } from '@/shared/ui/components/tables/BasicTable';
 import { useRouter } from 'next/navigation';
 import { PrimaryTable } from '@/shared/ui/components/tables/PrimaryTable';
+import { ISale } from '../interfaces/ISale';
 
 interface Props {
-    sales: SaleEntity[]
+    sales: ISale[]
 }
 
 const SaleDesktopTable = ({ sales }: Props) => {

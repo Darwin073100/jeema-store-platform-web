@@ -28,7 +28,7 @@ const useCashTransactionModal = () => {
     const { cashSessionSelected } = useCashStore();
     const handleTransactionsTypeInput = (transactionsTypes: ITransactionType[])=> {
         const options:SelectMenuOption[] = transactionsTypes
-            .filter(item => item.name !== 'Ingreso por Venta de Mercancía')
+            // .filter(item => item.name !== 'Ingreso por Venta de Mercancía')
             .filter(item => item.name !== 'Apertura de Caja')
             .filter(item => item.name !== 'Devolución por Venta al Cliente')
             .filter(item => item.name !== 'Ingreso por Sobrante en caja')

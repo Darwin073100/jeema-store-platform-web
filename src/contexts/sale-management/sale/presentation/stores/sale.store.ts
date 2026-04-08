@@ -1,18 +1,18 @@
 import { create } from "zustand"
-import { SaleEntity } from "../../../../../features/sale/domain/entities/sale-entity"
-import { CashSessionEntity } from "@/features/cash/domain/entities/cash-session.entity"
+import { ISale } from "../interfaces/ISale";
+import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
 
 type State = {
     saleId: bigint
     setSaleId: (saleId: bigint)=> void,
     resetSaleId: ()=> void,
-    sale: SaleEntity| null,
-    setSale:(sale: SaleEntity|null)=> void,
+    sale: ISale| null,
+    setSale:(sale: ISale|null)=> void,
     resetSale:()=> void,
     total: number,
     setTotal: (total: number)=> void,
-    cashSessionActive: CashSessionEntity | null,
-    setCashSessionActive: (payload: CashSessionEntity | null)=> void,
+    cashSessionActive: ICashSession | null,
+    setCashSessionActive: (payload: ICashSession | null)=> void,
     resetSaleStore: ()=> void,
 }
 
@@ -38,7 +38,7 @@ export const useSaleStore = create<State>()((set, get)=>({
     resetSale: ()=> {
         set(()=>({sale: null}))
     },
-    setSale: (sale: SaleEntity| null)=>{
+    setSale: (sale: ISale| null)=>{
         set(()=>({
             sale
         }))
@@ -48,7 +48,7 @@ export const useSaleStore = create<State>()((set, get)=>({
             total
         }))
     },
-    setCashSessionActive: (payload: CashSessionEntity | null)=> {
+    setCashSessionActive: (payload: ICashSession | null)=> {
         set(()=>({
             cashSessionActive: payload
         }));

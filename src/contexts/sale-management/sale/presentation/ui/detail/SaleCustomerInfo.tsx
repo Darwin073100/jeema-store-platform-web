@@ -1,13 +1,13 @@
 'use client'
 import React, { useState } from 'react'
-import { SaleEntity } from '../../../../../../features/sale/domain/entities/sale-entity';
 import { Button } from '@/shared/ui/components/buttons';
 import { useRouter } from 'next/navigation';
 import { IoPersonSharp } from 'react-icons/io5';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { FcButtingIn } from 'react-icons/fc';
+import { ISale } from '../../interfaces/ISale';
 interface Props {
-    data: SaleEntity
+    data: ISale
 }
 const SaleCustomerInfo = ({data}: Props) => {
     const [loading, setLoading] = useState(false);

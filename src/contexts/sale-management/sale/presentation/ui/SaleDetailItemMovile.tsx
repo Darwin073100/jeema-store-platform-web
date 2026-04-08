@@ -7,11 +7,11 @@ import { BiTrash } from 'react-icons/bi';
 import { SaleForEnum } from '../../domain/enums/sale-for.enum';
 import { HiPencilSquare } from 'react-icons/hi2';
 import { Button } from '@/shared/ui/components/buttons';
-import { SaleDetailEntity } from '../../../../../features/sale/domain/entities/sale-detail-entity';
 import { useDeleteDetail } from '../hooks/useDeleteDetail';
 import { useUpdateDetailModal } from '../hooks/useUpdateDetailModal';
+import { ISaleDetail } from '@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail';
 interface Props {
-    saleDetail: SaleDetailEntity
+    saleDetail: ISaleDetail
 }
 const SaleDetailItemMovile = ({saleDetail}:Props) => {
         const { handleOpenModalDeleteDetail } = useDeleteDetail();

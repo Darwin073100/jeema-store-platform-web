@@ -2,14 +2,12 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Logo from "../../assets/images/logologo.png";
-import Sale from '../../../ui/assets/images/sale.svg';
 import { IoChevronDownSharp, IoNotifications, IoPeopleOutline } from 'react-icons/io5'
 import { RoundedButton } from '../buttons/RoundedButton';
 import { RoundedBadge } from '../badges/RoundedBadge';
 import { LogoutModal } from '../modals/LogoutModal';
 import { useAuth, useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { Button } from '../buttons';
-import Link from 'next/link';
 import { useSideStore } from '../side-bar/side.store';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';

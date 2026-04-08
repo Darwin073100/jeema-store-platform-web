@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from '@/shared/ui/components/buttons';
-import { SaleEntity } from '../../../../../features/sale/domain/entities/sale-entity';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { useSaleListBranch } from '../hooks/useSaleList';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
@@ -9,9 +8,10 @@ import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { useRouter } from 'next/navigation';
 import { FiExternalLink } from 'react-icons/fi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { ISale } from '../interfaces/ISale';
 
 interface Props {
-    sales: SaleEntity[]
+    sales: ISale[]
 }
 
 const SaleCardList = ({ sales }: Props) => {

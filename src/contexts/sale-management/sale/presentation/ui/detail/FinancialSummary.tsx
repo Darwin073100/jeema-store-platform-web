@@ -1,10 +1,10 @@
 import React from 'react'
-import { SaleEntity } from '../../../../../../features/sale/domain/entities/sale-entity';
-import { numberBasicFormat, numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
+import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { FcBullish } from 'react-icons/fc';
+import { ISale } from '../../interfaces/ISale';
 
 interface Props {
-    data: SaleEntity
+    data: ISale
 }
 const FinancialSummary = ({ data }: Props) => {
     const subtotal = data.discountAmount+data.subTotalAmount;

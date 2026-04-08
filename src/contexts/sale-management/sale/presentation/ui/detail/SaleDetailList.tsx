@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { SaleEntity } from '../../../../../../features/sale/domain/entities/sale-entity'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 import { RoundedButton } from '@/shared/ui/components/buttons/RoundedButton'
 import { IoReturnDownForward } from 'react-icons/io5'
@@ -8,8 +7,9 @@ import { ReturnsPoductsModal } from './ReturnsProductsModal'
 import { useReturnsProducts } from '../../hooks/details/useReturnsProducts'
 import { SaleStatusEnum } from '../../../domain/enums/sale-status.enum'
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement'
+import { ISale } from '../../interfaces/ISale'
 interface Props {
-    data: SaleEntity
+    data: ISale
 }
 const SaleDetailList = ({ data }: Props) => {
     const { handleSelectDetailToReturn } = useReturnsProducts();
