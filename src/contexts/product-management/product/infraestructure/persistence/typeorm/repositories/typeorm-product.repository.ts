@@ -1,4 +1,4 @@
-import { DataSource, QueryFailedError, Repository } from 'typeorm';
+import { DataSource, Like, QueryFailedError, Repository } from 'typeorm';
 import { ProductOrmEntity } from '../entities/product.orm-entity';
 import { ProductTypeOrmMapper } from '../mappers/product.mapper';
 import { ProductRepository } from 'src/contexts/product-management/product/domain/repositories/product.repository';
@@ -14,7 +14,7 @@ import { SaleStatusEnum } from 'src/contexts/sale-management/sale/domain/enums/s
 import { getDataSource } from '@/configuration/databases/typeorm/config';
 import { PaginationDTO } from '@/shared/application/dtos/pagination.dto';
 import { typeormPagination } from '@/shared/infrastructure/typeorm/typeorm-pagination';
-import { skip } from 'node:test';
+import { FilterProductListDTO } from '@/contexts/product-management/product/application/dtos/filter-product-list.dto';
 
 export class TypeOrmProductRepository implements ProductRepository {
   private readonly productRepository: Repository<ProductOrmEntity>;
@@ -324,11 +324,17 @@ export class TypeOrmProductRepository implements ProductRepository {
     });
     return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
   }
-  async findAllByEstablishmentAndName(establishmentId: bigint, name: string, barcode: string): Promise<ProductEntity[]> {
+  async findAllByEstablishmentAndName(establishmentId: bigint, dto: FilterProductListDTO): Promise<ProductEntity[]> {
     const result = await this.productRepository.find({
       where: {
         establishmentId,
-        name
+        name: dto.product? Like(`%${dto.product}%`): undefined,
+        category: {
+          name: dto.category? Like(`%${dto.category}%`): undefined,
+        },
+        inventory: {
+          internalBarCode: dto.barcode? Like(`%${dto.barcode}%`): undefined,
+        }
       },
       relations: ['category', 'brand', 'season', 'inventory.inventoryItems']
     });

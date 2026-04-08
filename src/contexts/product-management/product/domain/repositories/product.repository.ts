@@ -1,6 +1,7 @@
 import { TemplateRepository } from 'src/shared/domain/repositories/template.repository';
 import { ProductEntity } from '../entities/product.entity';
 import { PaginationDTO } from '@/shared/application/dtos/pagination.dto';
+import { FilterProductListDTO } from '../../application/dtos/filter-product-list.dto';
 
 export const PRODUCT_REPOSITORY = Symbol('PRODUCT_REPOSITORY');
 
@@ -14,4 +15,5 @@ export interface ProductRepository extends TemplateRepository<ProductEntity>{
   findAllByEstablishment(establishmentId: bigint, dto: PaginationDTO): Promise<ProductEntity[]>;
   findAllByBranchOffice(branchOfficeId: bigint): Promise<ProductEntity[]>;
   existById(productId: bigint):Promise<ProductEntity | null>;
+  findAllByEstablishmentAndName(establishmentId: bigint, dto: FilterProductListDTO): Promise<ProductEntity[]>;
 }
