@@ -1,5 +1,5 @@
 'use client'
-import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth'
+import { useAuth } from '@/shared/presentation/hooks/auth/useAuth'
 import React, { ReactNode } from 'react'
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const HideElement = ({ permissions, roles, children, requireAll = false }: Props) => {
-    const { workspace } = useWorkspace();
+    const { user } = useAuth();
 
     // Validar si el usuario tiene los roles requeridos
     const hasRequiredRoles = (): boolean => {
@@ -20,7 +20,7 @@ const HideElement = ({ permissions, roles, children, requireAll = false }: Props
         }
 
         // Obtener los roles del usuario
-        const userRoles = workspace?.user?.roles ?? [];
+        const userRoles = user?.roles ?? [];
 
         // Si requireAll es true, el usuario debe tener TODOS los roles especificados
         if (requireAll) {
@@ -47,7 +47,7 @@ const HideElement = ({ permissions, roles, children, requireAll = false }: Props
         }
 
         // Obtener los permisos del usuario
-        const userPermissions = workspace?.user?.permissions ?? [];
+        const userPermissions = user?.permissions ?? [];
 
         // Si requireAll es true, el usuario debe tener TODOS los permisos especificados
         if (requireAll) {
