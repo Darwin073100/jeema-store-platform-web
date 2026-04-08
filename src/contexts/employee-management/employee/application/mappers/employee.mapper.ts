@@ -6,6 +6,7 @@ import { EmployeeResponseDto } from '../dtos/employee-response.dto';
 import { UserMapper } from 'src/contexts/authentication-management/auth/application/mapper/user.mapper';
 import { AddressMapper } from '@/contexts/establishment-management/address/application/mappers/address.mapper';
 import { IEmployee } from '../../presentation/interfaces/IEmployee';
+import { BranchOfficeMapper } from '@/contexts/establishment-management/branch-office/application/mappers/branch-office.mapper';
 
 /**
  * EstablishmentMapper es una clase que se encarga de transformar
@@ -71,6 +72,7 @@ export class EmployeeMapper {
       photoUrl: entity.photoUrl,
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt,
+      branchOffice: entity.branchOffice? BranchOfficeMapper.toIResponse(entity.branchOffice): null,
       employeeRole: entity.employeeRole? EmployeeRoleMapper.toIResponse(entity.employeeRole): null,
       address: entity.address? AddressMapper.toIResponse(entity.address) : null,
       user: entity.user? {...UserMapper.toIResponse(entity.user), passwordHash: ''}: null

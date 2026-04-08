@@ -9,7 +9,7 @@ import { IUserWorkspace } from "@/contexts/authentication-management/auth/applic
 declare module "next-auth" {
   interface Session {
     user: {
-      id: bigint;
+      id: string;
       name: string;
       email: string;
       roles: string[];
@@ -19,7 +19,7 @@ declare module "next-auth" {
   }
 
   interface User {
-    id: bigint;
+    id: string;
     roles: string[];
     permissions: string[];
     workspace: IUserWorkspace;
@@ -28,7 +28,7 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id: bigint;
+    id: string;
     roles: string[];
     permissions: string[];
     workspace: IUserWorkspace;
@@ -65,8 +65,6 @@ export const authOptions: NextAuthOptions = {
             throw new Error(message);
           }
 
-          const accessToken = '';
-
           // Obtener la información del workspace usando el accessToken
           const workspaceResult = await userWorkspaceAction();
 
@@ -82,12 +80,11 @@ export const authOptions: NextAuthOptions = {
 
           // Retornar el usuario con toda la información necesaria
           return {
-            id: loginResult.value.userId,
+            id: loginResult.value.userId.toString(),
             email: loginResult.value.email,
             username: loginResult.value.username,
             roles: loginResult.value.userRoles.map(item => item.role?.name ?? ''),
             permissions: loginResult.value.userRoles.flatMap(item => item.role?.rolePermissions.map(item => item.permission?.name ?? '') ?? ''),
-            accessToken,
             workspace,
           };
         } catch (error) {
@@ -101,9 +98,10 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       // Si el usuario acaba de loguearse, inyectamos los datos en el token
       if (user) {
-        token.id = BigInt(user.id);
+        token.id = user.id;
         token.roles = user.roles;
         token.permissions = user.permissions;
+        token.workspace = user.workspace;
       }
       return token;
     },

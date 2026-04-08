@@ -3,6 +3,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { useState } from "react";
+import { safeJsonSerialize } from "@/shared/lib/utils/safe-json-serialize";
 
 export function useAuth() {
   const { data: session, status } = useSession();
@@ -57,10 +58,10 @@ export function useAuth() {
 // Hook específico para obtener información del workspace
 export function useWorkspace() {
   const { workspace, isAuthenticated } = useAuth();
-  setCookie("establishmentCookie", workspace?.establishment || "", {maxAge: 60*60})
-  setCookie("branchOfficeCookie", workspace?.branchOffice || "", {maxAge: 60*60})
-  setCookie("employeeCookie", workspace?.employee || "", {maxAge: 60*60})
-
+  setCookie("establishmentCookie", safeJsonSerialize(workspace?.establishment ?? {}), {maxAge: 60*60})
+  setCookie("branchOfficeCookie", safeJsonSerialize(workspace?.branchOffice ?? {}), {maxAge: 60*60})
+  setCookie("employeeCookie", safeJsonSerialize(workspace?.employee ?? {}), {maxAge: 60*60})
+  console.log(safeJsonSerialize(workspace ?? {}))
   return {
     // Información del establecimiento
     establishment: workspace?.establishment || null,

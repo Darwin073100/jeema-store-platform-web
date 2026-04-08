@@ -126,12 +126,21 @@ export class TyperomUserRepository implements UserRepository {
                 username: username as any,
                 isActive: true, 
             },
-            relations: [
-                'userRoles',
-                'userRoles.role',
-                'userRoles.role.rolePermissions',
-                'userRoles.role.rolePermissions.permission'
-            ]
+            relations: {
+                employee: {
+                    address: true,
+                    branchOffice: {
+                        establishment: true,
+                    }
+                },
+                userRoles: {
+                    role: {
+                        rolePermissions: {
+                            permission: true
+                        }
+                    }
+                }
+            }
         });
 
         if (!resp) {
@@ -146,13 +155,21 @@ export class TyperomUserRepository implements UserRepository {
             where: {
                 userId: id as any,
             },
-            relations: [
-                'userRoles',
-                'employee',
-                'userRoles.role',
-                'userRoles.role.rolePermissions',
-                'userRoles.role.rolePermissions.permission'
-            ]
+            relations: {
+                employee: {
+                    address: true,
+                    branchOffice: {
+                        establishment: true,
+                    }
+                },
+                userRoles: {
+                    role: {
+                        rolePermissions: {
+                            permission: true
+                        }
+                    }
+                }
+            }
         });
 
         if (!resp) {
