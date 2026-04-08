@@ -1,9 +1,10 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { userWorkspaceAction } from "@/contexts/authentication-management/auth/presentation/actions/user-workspace.action";
 import { validateAuthAction } from "@/contexts/authentication-management/auth/presentation/actions/validate-auth.action";
 import { LoginAuthDTO } from "@/contexts/authentication-management/auth/application/dtos/login-auth.dto";
-import { IUserWorkspace } from "@/contexts/authentication-management/auth/application/dtos/IUserWorkspace";
+
+// NOTA: No incluimos workspace en el JWT para mantenerlo pequeño
+// El workspace se carga lazy mediante useWorkspace hook en el cliente
 
 // Extender los tipos de NextAuth para incluir nuestros datos personalizados
 declare module "next-auth" {
@@ -14,7 +15,6 @@ declare module "next-auth" {
       email: string;
       roles: string[];
       permissions: string[];
-      workspace: IUserWorkspace;
     }
   }
 
@@ -22,7 +22,6 @@ declare module "next-auth" {
     id: string;
     roles: string[];
     permissions: string[];
-    workspace: IUserWorkspace;
   }
 }
 
@@ -31,7 +30,6 @@ declare module "next-auth/jwt" {
     id: string;
     roles: string[];
     permissions: string[];
-    workspace: IUserWorkspace;
   }
 }
 
@@ -65,27 +63,14 @@ export const authOptions: NextAuthOptions = {
             throw new Error(message);
           }
 
-          // Obtener la información del workspace usando el accessToken
-          const workspaceResult = await userWorkspaceAction();
-
-          if (!workspaceResult.ok || !workspaceResult.value) {
-            const errorMessage = workspaceResult.error?.message;
-            const message = Array.isArray(errorMessage) ? errorMessage.join(', ') : errorMessage || "Error obteniendo información del workspace";
-            console.error('❌ Error obteniendo workspace:', message);
-            console.error('Error completo:', workspaceResult.error);
-            throw new Error(message);
-          }
-
-          const workspace = workspaceResult.value;
-
-          // Retornar el usuario con toda la información necesaria
+          // Retornar el usuario CON LOS DATOS BÁSICOS
+          // El workspace se obtendrá en el callback jwt() para evitar ciclos
           return {
             id: loginResult.value.userId.toString(),
             email: loginResult.value.email,
             username: loginResult.value.username,
             roles: loginResult.value.userRoles.map(item => item.role?.name ?? ''),
             permissions: loginResult.value.userRoles.flatMap(item => item.role?.rolePermissions.map(item => item.permission?.name ?? '') ?? ''),
-            workspace,
           };
         } catch (error) {
           console.error("Error en autorización:", error);
@@ -96,12 +81,12 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // Si el usuario acaba de loguearse, inyectamos los datos en el token
+      // Si el usuario acaba de loguearse, inyectar solo datos esenciales
       if (user) {
         token.id = user.id;
         token.roles = user.roles;
         token.permissions = user.permissions;
-        token.workspace = user.workspace;
+        // NO incluir workspace aquí para mantener el token pequeño
       }
       return token;
     },
@@ -112,7 +97,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.roles = token.roles;
         session.user.permissions = token.permissions;
-        session.user.workspace = token.workspace;
+        // Workspace se cargará mediante useAuth hook (lazy loading)
       }
       return session;
     },
@@ -126,6 +111,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: 1 * 60 * 60, // 1 hora
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);
