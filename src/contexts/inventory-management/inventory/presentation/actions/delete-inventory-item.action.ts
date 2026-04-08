@@ -1,7 +1,7 @@
 "use server"
 import { DeleteInventoryItemUseCase } from "@/contexts/inventory-management/inventory-item/application/use-case/delete-inventory-item.use-case";
 import { TypeormInventoryItemRepository } from "@/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/repositories/typeorm-inventory-item.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { revalidatePath } from "next/cache";
 

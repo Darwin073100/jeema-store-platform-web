@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
 import { DeleteLotUseCase } from "../../application/use-case/delete-lot.use-case";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 
 export async function deleteLotAction(lotId: bigint) {
     try {

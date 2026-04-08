@@ -2,7 +2,7 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import { TypeormCashSessionRepository } from '../../infraestructure/repositories/typeorm-cash-session.repository';
 import { FindCashSessionWithTransactionsUseCase } from '../../application/use-cases/find-cash-session-with-transactions.use-case';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { CashSessionMapper } from '../../application/mappers/cash-session.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

@@ -1,6 +1,6 @@
 'use server';
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { InventoryMapper } from "../../application/mapper/inventory.mapper";
 import { TypeormInventoryRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository";
 import { InventoryNotFoundException } from "../../domain/exceptions/inventory-not-found.exception";

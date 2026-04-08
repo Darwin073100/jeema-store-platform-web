@@ -3,7 +3,7 @@ import { unstable_noStore as noStore } from 'next/cache';import { cookies } from
 import { TypeOrmEstablishmentRepository } from '../../infraestruture/persistence/typeorm/repositories/typeorm-establishment.repository';
 import { FindEstablishmentByIdUseCase } from '../../application/use-cases/find-establishment-by-id.use-case';
 import { IEstablishment } from '../interfaces/IEstablishment';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { EstablishmentMapper } from '../../application/mappers/establishment.mapper';
 import { EstablishmentNotFoundException } from '../../domain/exceptions/establishment-not-found.exception';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';

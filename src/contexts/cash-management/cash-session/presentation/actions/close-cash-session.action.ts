@@ -7,7 +7,7 @@ import { CloseCashSessionDTO } from '../../application/dtos/close-cash-session.d
 import { TypeormCashSessionRepository } from '../../infraestructure/repositories/typeorm-cash-session.repository';
 import { CloseCashSessionUseCase } from '../../application/use-cases/close-cash-session.use-case';
 import { TypeormTransactionRepository } from '@/contexts/transaction-management/transaction/infraestructure/repositories/typeorm-transaction.repository';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { CashSessionMapper } from '../../application/mappers/cash-session.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

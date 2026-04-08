@@ -3,7 +3,7 @@ import { IEstablishment } from "@/contexts/establishment-management/establishmen
 import { cookies } from "next/headers";
 import { TypeOrmSuplierRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-suplier.repository";
 import { FindAllSuplierByEstablishmentUseCase } from "../../application/use-cases/find-all-supliers-by-establishment.use-case";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SuplierMapper } from "../../application/mappers/suplier.mapper";
 
 export async function findAllSuplierByEstablishmentId(isAddress?: boolean) {

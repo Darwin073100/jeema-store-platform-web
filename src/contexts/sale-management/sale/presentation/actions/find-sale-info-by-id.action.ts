@@ -1,6 +1,6 @@
 'use server';
 
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SaleMapper } from "../../application/mappers/sale-mapper";
 import { FindFinishSaleByIdUseCase } from "../../application/use-cases/find-finish-sale-by-id.use-case";
 import { TypeormSaleRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-sale.repository";

@@ -5,7 +5,7 @@ import { RegisterBrandDto } from '../../application/dtos/register-brand.dto';
 import { TypeOrmBrandRepository } from '../../infraestruture/persistence/typeorm/repositories/typeorm-brand.repository';
 import { RegisterBrandUseCase } from '../../application/use-cases/register-brand.use-case';
 import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { BrandMapper } from '../../application/mappers/brand.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

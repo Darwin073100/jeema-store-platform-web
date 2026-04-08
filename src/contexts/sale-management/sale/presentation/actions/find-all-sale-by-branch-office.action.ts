@@ -4,7 +4,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { TypeormSaleRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-sale.repository";
 import { FindAllByBranchOfficeSaleUseCase } from "../../application/use-cases/find-all-by-branch-office-sale.use-case";
 import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SaleMapper } from "../../application/mappers/sale-mapper";
 
 export async function findAllSaleByBranchOfficeAction() {

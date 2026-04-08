@@ -9,7 +9,7 @@ import { TypeOrmEmployeeRepository } from '@/contexts/employee-management/employ
 import { TypeormTransactionRepository } from '@/contexts/transaction-management/transaction/infraestructure/repositories/typeorm-transaction.repository';
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
 import { IEmployee } from '@/contexts/employee-management/employee/presentation/interfaces/IEmployee';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { CashSessionMapper } from '../../application/mappers/cash-session.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

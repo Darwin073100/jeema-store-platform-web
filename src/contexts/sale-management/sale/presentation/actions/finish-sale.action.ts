@@ -15,7 +15,7 @@ import { TypeormPaymentMethodRepository } from "@/contexts/sale-management/payme
 import { TypeormTransactionRepository } from "@/contexts/transaction-management/transaction/infraestructure/repositories/typeorm-transaction.repository";
 import { CalculateSaleDTO } from "../../application/dtos/calculate-sale.dto";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SaleMapper } from "../../application/mappers/sale-mapper";
 
 export async function finishSaleAction(dto: CalculateSaleDTO) {

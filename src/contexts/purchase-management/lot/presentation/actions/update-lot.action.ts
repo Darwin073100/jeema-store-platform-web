@@ -4,7 +4,7 @@ import { UpdateLotDto } from "../../application/dtos/update-lot.dto";
 import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
 import { UpdateLotUseCase } from "../../application/use-case/update-lot.use-case";
 import { TypeOrmProductRepository } from "@/contexts/product-management/product/infraestructure/persistence/typeorm/repositories/typeorm-product.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { LotMapper } from "../../application/mappers/lot.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

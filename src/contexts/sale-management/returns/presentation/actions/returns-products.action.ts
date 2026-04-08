@@ -14,7 +14,7 @@ import { TypeormTransactionRepository } from "@/contexts/transaction-management/
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 import { TypeormCashSessionRepository } from "@/contexts/cash-management/cash-session/infraestructure/repositories/typeorm-cash-session.repository";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { ReturnsAppMapper } from "../../application/mappers/returns-app.mapper";
 
 export async function returnsProductsAction(dto: ReturnsProductsDTO) {

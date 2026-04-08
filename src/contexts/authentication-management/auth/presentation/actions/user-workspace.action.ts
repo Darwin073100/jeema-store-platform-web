@@ -4,9 +4,9 @@ import { GetUserWorkspaceUseCase } from "../../application/use-cases/get-user-wo
 import { TyperomUserRepository } from "../../infraestructure/repositories/typeorm-user.repository";
 import { authOptions } from "@/shared/lib/auth";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UserMapper } from "../../application/mapper/user.mapper";
-import { ErrorEntity } from "@/shared/features/error.entity";
+import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 import { IUserWorkspace } from "../../application/dtos/IUserWorkspace";
 
 export async function userWorkspaceAction(): Promise<{

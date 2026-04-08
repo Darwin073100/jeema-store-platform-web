@@ -5,7 +5,7 @@ import { TypeormTransactionRepository } from '../../infraestructure/repositories
 import { FindAllManyFilterTransactionsUseCase } from '../../application/use-cases/find-all-many-filter-transactions.use-case';
 import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { TransactionMapper } from '../../application/mappers/transaction.mapper';
 
 export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTransactionsDTO, 'establishmentId'|'branchOfficeId'>){

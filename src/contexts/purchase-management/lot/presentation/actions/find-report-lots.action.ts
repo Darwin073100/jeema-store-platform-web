@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
 import { FindReportLotsUseCase } from "../../application/use-case/find-report-lots.use-case";
 import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { LotMapper } from "../../application/mappers/lot.mapper";
 
 export async function findReportsLotsAction(dateInit: Date | null, dateFinish: Date | null) {

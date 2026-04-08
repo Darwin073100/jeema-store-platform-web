@@ -1,4 +1,4 @@
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { LotRepository } from "../../domain/repositories/lot.repository";
 import { FindReportLotsDTO } from "../dtos/find-report-lots.dto";
 import { ILot } from "../../presentation/interfaces/ILot";

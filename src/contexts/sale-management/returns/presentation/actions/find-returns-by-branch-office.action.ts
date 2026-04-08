@@ -4,7 +4,7 @@ import { unstable_noStore } from "next/cache";
 import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
 import { TypeormReturnsRepository } from "../../infraestructure/repositories/typeorm-returns.repository";
 import { FindReturnsByBranchOfficeUseCase } from "../../application/use-cases/find-returns-by-branch-office.use-cases";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { ReturnsAppMapper } from "../../application/mappers/returns-app.mapper";
 
 unstable_noStore();

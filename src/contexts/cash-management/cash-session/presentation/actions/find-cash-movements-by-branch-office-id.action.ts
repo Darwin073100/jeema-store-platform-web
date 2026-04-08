@@ -4,7 +4,7 @@ import { IBranchOffice } from '@/contexts/establishment-management/branch-office
 import { TypeormCashSessionRepository } from '../../infraestructure/repositories/typeorm-cash-session.repository';
 import { FindCashSessionAllByBranchOfficeUseCase } from '../../application/use-cases/find-cash-session-all-by-branch-office-id.use-case';
 import { FindCashMovementsByBranchOfficeDTO } from '../../application/dtos/find-cash-movements-by-branch-office.dto';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { CashSessionMapper } from '../../application/mappers/cash-session.mapper';
 
 export async function findCashMovementsByBranchOfficeIdAction(dto: FindCashMovementsByBranchOfficeDTO){

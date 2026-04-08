@@ -1,4 +1,4 @@
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 
 export function errorHandler<E>(error: any, path: string, statusCode: number = 500): Result<any, E> {
     return {

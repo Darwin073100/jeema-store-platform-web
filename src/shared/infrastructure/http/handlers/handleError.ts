@@ -1,6 +1,6 @@
 import { DomainException } from "@/shared/domain/exceptions/domain.exceptions";
-import { ErrorEntity } from "@/shared/features/error.entity";
-import { Result } from "@/shared/features/result";
+import { ErrorEntity } from "@/shared/lib/utils/error.entity";
+import { Result } from "@/shared/lib/utils/result";
 
 /**
  * Manejo centralizado de errores para el request

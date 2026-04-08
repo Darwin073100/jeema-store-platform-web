@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { UpdateBrandDto } from '../../application/dtos/update-brand.dto';
 import { TypeOrmBrandRepository } from '../../infraestruture/persistence/typeorm/repositories/typeorm-brand.repository';
 import { UpdateBrandUseCase } from '../../application/use-cases/update-brand.use-case';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { BrandMapper } from '../../application/mappers/brand.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

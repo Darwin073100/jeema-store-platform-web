@@ -6,7 +6,7 @@ import { TypeOrmSuplierRepository } from "../../infraestructure/persistence/type
 import { RegisterSuplierUseCase } from "../../application/use-cases/register-suplier.use-case";
 import { TypeOrmEstablishmentRepository } from "@/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/repositories/typeorm-establishment.repository";
 import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SuplierMapper } from "../../application/mappers/suplier.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

@@ -4,7 +4,7 @@ import { UpdateInventoryItemUseCase } from "@/contexts/inventory-management/inve
 import { TypeormInventoryItemRepository } from "@/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/repositories/typeorm-inventory-item.repository";
 import { revalidatePath } from "next/cache";
 import { TypeormInventoryRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { InventoryItemMapper } from "@/contexts/inventory-management/inventory-item/application/mapper/inventory-item.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

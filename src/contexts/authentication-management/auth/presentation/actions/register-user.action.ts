@@ -6,7 +6,7 @@ import { TypeormUserRoleRepository } from "../../infraestructure/repositories/ty
 import { BcryptEncryptionRepository } from "../../infraestructure/encryption/bcrypt.encryption.repository";
 import { TypeormRoleRepository } from "@/contexts/authentication-management/role/infraestructure/persistence/typeorm/repositories/typeorm-role.repository";
 import { TypeOrmEmployeeRepository } from "@/contexts/employee-management/employee/infraestruture/persistence/typeorm/repositories/typeorm-employee.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UserRoleMapper } from "../../application/mapper/user-role.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

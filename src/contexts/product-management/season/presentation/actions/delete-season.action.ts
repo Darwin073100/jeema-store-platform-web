@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { TypeormSeasonRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-season.repository';
 import { DeleteSeasonUseCase } from '../../application/use-cases/delete-season.use-case';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 
 export async function deleteSeasonAction(seasonId: bigint) {
     try {

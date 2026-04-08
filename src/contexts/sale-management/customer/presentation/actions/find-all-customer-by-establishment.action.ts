@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
 import { TypeOrmCustomerRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-customer.repository";
 import { FindAllCustomerByEstablishmentUseCase } from "../../application/use-cases/find-all-customer-by-establishment.use-case";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { CustomerMapper } from "../../application/mappers/customer.mapper";
 import { CustomerNotFountException } from "../../domain/exceptions/customer-not-found.exception";
 

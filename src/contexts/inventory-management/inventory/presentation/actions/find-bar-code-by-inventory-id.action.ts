@@ -2,7 +2,7 @@
 import { unstable_noStore } from "next/cache";
 import { BarcodeTypeEnum } from "@/contexts/product-management/product/domain/enums/barcode-type.enum";
 import { ReportService } from "@/contexts/report-management/report/report.service";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 
 unstable_noStore();

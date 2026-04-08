@@ -16,7 +16,7 @@ import { TypeormSaleDetailRepository } from "@/contexts/sale-management/sale-det
 import { TypeormInventoryRepository } from "@/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository";
 import { RegisterSaleDto } from "../../application/dtos/register-sale.dto";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SaleMapper } from "../../application/mappers/sale-mapper";
 
 export async function CreateSaleAndAddDetailAction(customerId: bigint, cashRegisterId: bigint, addDetailDTO: AddDetailToSaleDto) {

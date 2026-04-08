@@ -5,7 +5,7 @@ import { TyperomUserRepository } from "../../infraestructure/repositories/typeor
 import { AddRoleToUserUseCase } from "../../application/use-cases/add-role-to-user.use-case";
 import { TypeormUserRoleRepository } from "../../infraestructure/repositories/typeorm-user-role.repository";
 import { TypeormRoleRepository } from "@/contexts/authentication-management/role/infraestructure/persistence/typeorm/repositories/typeorm-role.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UserRoleMapper } from "../../application/mapper/user-role.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

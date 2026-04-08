@@ -7,7 +7,7 @@ import { TypeOrmEmployeeRoleRepository } from "@/contexts/employee-management/em
 import { TypeormRoleRepository } from "@/contexts/authentication-management/role/infraestructure/persistence/typeorm/repositories/typeorm-role.repository";
 import { BcryptEncryptionRepository } from "../../infraestructure/encryption/bcrypt.encryption.repository";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UserRoleMapper } from "../../application/mapper/user-role.mapper";
 
 export async function registerUserWithEmployeeAction(dto: RegisterUserWithEmployeeDTO) {

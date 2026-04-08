@@ -4,7 +4,7 @@ import { RegisterLotDto } from "../../application/dtos/register-lot.dto";
 import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
 import { RegisterLotUseCase } from "../../application/use-case/register-lot.use-case";
 import { TypeOrmProductRepository } from "@/contexts/product-management/product/infraestructure/persistence/typeorm/repositories/typeorm-product.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { LotMapper } from "../../application/mappers/lot.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

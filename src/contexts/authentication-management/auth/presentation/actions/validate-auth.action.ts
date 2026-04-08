@@ -5,10 +5,10 @@ import { LoginAuthDTO } from "../../application/dtos/login-auth.dto";
 import { ValidateAuthUseCase } from "../../application/use-cases/validate-auth.use-case";
 import { BcryptEncryptionRepository } from "../../infraestructure/encryption/bcrypt.encryption.repository";
 import { TyperomUserRepository } from "../../infraestructure/repositories/typeorm-user.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { IUser } from "../interfaces/IUser";
 import { UserMapper } from "../../application/mapper/user.mapper";
-import { ErrorEntity } from "@/shared/features/error.entity";
+import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 
 export async function validateAuthAction(dto: LoginAuthDTO):Promise<{
     ok: boolean;

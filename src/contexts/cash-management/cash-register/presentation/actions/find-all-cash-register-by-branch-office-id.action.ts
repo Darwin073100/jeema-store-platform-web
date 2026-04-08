@@ -3,7 +3,7 @@ import { unstable_noStore as noStore } from 'next/cache';import { cookies } from
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
 import { TypeormCashRegisterRepository } from '../../infraestructure/repositories/typeorm-cash-register.repository';
 import { FindAllCashRegisterByBranchOfficeIdUseCase } from '../../application/use-cases/find-all-cash-register-by-branch-office-id.use-case';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { CashRegisterMapper } from '../../application/mappers/cash-register.mapper';
 
 export async function findAllCashRegisterByBranchOfficeIdAction(){

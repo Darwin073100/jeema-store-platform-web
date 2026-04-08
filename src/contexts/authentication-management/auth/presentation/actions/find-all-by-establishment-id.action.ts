@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { TyperomUserRepository } from "../../infraestructure/repositories/typeorm-user.repository";
 import { FindAllByEstablishmentIdUseCase } from "../../application/use-cases/find-all-by-establishment-id.use-case";
 import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UserMapper } from "../../application/mapper/user.mapper";
 import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
 

@@ -2,7 +2,7 @@
 import { EmployeeRoleMapper } from '@/contexts/employee-management/employee-role/application/mappers/employee-role.mapper';
 import { FindAllEmployeeRoleUseCase } from '@/contexts/employee-management/employee-role/application/use-cases/find-all-employee-role.use-case';
 import { TypeOrmEmployeeRoleRepository } from '@/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/repositories/typeorm-employee-role.repository';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export async function findAllEmployeeRolesAction() {

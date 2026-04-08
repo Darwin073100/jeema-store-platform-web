@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { UpdateSeasonDto } from "../../application/dtos/update-season.dto";
 import { TypeormSeasonRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-season.repository";
 import { UpdateSeasonUseCase } from "../../application/use-cases/update-season.use-case";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { SeasonMapper } from "../../application/mappers/season-mapper";
 

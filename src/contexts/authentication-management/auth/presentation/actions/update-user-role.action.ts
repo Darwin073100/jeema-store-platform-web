@@ -5,7 +5,7 @@ import { UpdateUserRoleUseCase } from "../../application/use-cases/update-user-r
 import { TypeormUserRoleRepository } from "../../infraestructure/repositories/typeorm-user-role.repository";
 import { TypeormRoleRepository } from "@/contexts/authentication-management/role/infraestructure/persistence/typeorm/repositories/typeorm-role.repository";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UserRoleMapper } from "../../application/mapper/user-role.mapper";
 
 export async function updateUserRoleAction(dto: UpdateUserRoleDTO) {

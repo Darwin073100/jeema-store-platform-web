@@ -6,7 +6,7 @@ import { TypeormInventoryRepository } from "../../infraestructure/persistence/ty
 import { RegisterInventoryUseCase } from "../../application/use-case/register-inventory.use-case";
 import { TypeOrmProductRepository } from "@/contexts/product-management/product/infraestructure/persistence/typeorm/repositories/typeorm-product.repository";
 import { TypeOrmBranchOfficeRepository } from "@/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { InventoryMapper } from "../../application/mapper/inventory.mapper";
 
 export async function registerInventoryAction(dto: InventoryRegisterDto) {

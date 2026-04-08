@@ -2,7 +2,7 @@
 import { TypeOrmBrandRepository } from '../../infraestruture/persistence/typeorm/repositories/typeorm-brand.repository';
 import { DeleteBrandUseCase } from '../../application/use-cases/delete-brand.use-case';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { revalidatePath } from 'next/cache';
 
 export async function deleteBrandAction(brandId: bigint) {

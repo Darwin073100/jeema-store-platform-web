@@ -5,7 +5,7 @@ import { RegisterCustomerDto } from "../../application/dtos/register-customer.dt
 import { TypeOrmCustomerRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-customer.repository";
 import { RegisterCustomerUseCase } from "../../application/use-cases/register-customer.use-case";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { CustomerMapper } from "../../application/mappers/customer.mapper";
 
 export async function registerCustomerAction(dto: Omit<RegisterCustomerDto, 'establishmentId'>) {

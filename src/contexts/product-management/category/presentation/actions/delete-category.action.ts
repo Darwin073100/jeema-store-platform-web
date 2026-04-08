@@ -2,7 +2,7 @@
 import { TypeormCategoryRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-category.repository';
 import { DeleteCategoryUseCase } from '../../application/use-cases/delete-category.use-case';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 
 export async function deleteCategoryAction(categoryId: bigint) {
     try {

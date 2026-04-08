@@ -3,7 +3,7 @@ import { IEmployee } from '@/contexts/employee-management/employee/presentation/
 import { unstable_noStore as noStore } from 'next/cache';import { cookies } from 'next/headers';
 import { TypeormCashSessionRepository } from '../../infraestructure/repositories/typeorm-cash-session.repository';
 import { FindCashSessionByEmployeeIdUseCase } from '../../application/use-cases/find-cash-session-by-employee-id.use-case';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { CashSessionMapper } from '../../application/mappers/cash-session.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

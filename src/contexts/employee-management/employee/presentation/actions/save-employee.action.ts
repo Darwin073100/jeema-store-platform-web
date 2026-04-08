@@ -9,7 +9,7 @@ import { TypeOrmBranchOfficeRepository } from "@/contexts/establishment-manageme
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { EmployeeMapper } from "../../application/mappers/employee.mapper";
 
 export async function saveEmployeeAction(registerEmployeeDto: RegisterEmployeeDto, registerUserDto: RegisterUserDTO | null){

@@ -2,7 +2,7 @@
 import { RoleMapper } from "@/contexts/authentication-management/role/application/mappers/role.mapper";
 import { FindAllRoleUseCase } from "@/contexts/authentication-management/role/application/use-cases/find-all-role.use-case";
 import { TypeormRoleRepository } from "@/contexts/authentication-management/role/infraestructure/persistence/typeorm/repositories/typeorm-role.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 
 export async function findAllRoleAction() {
     try {

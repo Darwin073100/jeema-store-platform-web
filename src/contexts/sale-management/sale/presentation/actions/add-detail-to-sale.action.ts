@@ -6,7 +6,7 @@ import { TypeormSaleDetailRepository } from "@/contexts/sale-management/sale-det
 import { TypeormInventoryRepository } from "@/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository";
 import { AddDetailToSaleDto } from "@/contexts/sale-management/sale-detail/application/dtos/add-detail-to-sale.dto";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SaleDetailAppMapper } from "@/contexts/sale-management/sale-detail/application/mappers/sale-detail.app-mapper";
 import { SaleConflictException } from "../../domain/exceptions/sale-conflict.exception";
 

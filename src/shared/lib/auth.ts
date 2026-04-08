@@ -3,8 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { validateAuthAction } from "@/contexts/authentication-management/auth/presentation/actions/validate-auth.action";
 import { LoginAuthDTO } from "@/contexts/authentication-management/auth/application/dtos/login-auth.dto";
 
-// NOTA: No incluimos workspace en el JWT para mantenerlo pequeño
-// El workspace se carga lazy mediante useWorkspace hook en el cliente
+// NOTA: El JWT siempre debe contener pocos caracteres ya que hya una capacidad maxima.
 
 // Extender los tipos de NextAuth para incluir nuestros datos personalizados
 declare module "next-auth" {
@@ -63,8 +62,6 @@ export const authOptions: NextAuthOptions = {
             throw new Error(message);
           }
 
-          // Retornar el usuario CON LOS DATOS BÁSICOS
-          // El workspace se obtendrá en el callback jwt() para evitar ciclos
           return {
             id: loginResult.value.userId.toString(),
             email: loginResult.value.email,

@@ -6,7 +6,7 @@ import { UpdateInventoryUseCase } from "../../application/use-case/update-invent
 import { TypeOrmProductRepository } from "@/contexts/product-management/product/infraestructure/persistence/typeorm/repositories/typeorm-product.repository";
 import { TypeOrmBranchOfficeRepository } from "@/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { InventoryMapper } from "../../application/mapper/inventory.mapper";
 import { IInventory } from "../interfaces/IInventory";
 

@@ -4,7 +4,7 @@ import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/
 import { DeleteLotUnitPurchaseUseCase } from "../../application/use-case/delete-lot-unit-purchase.use-case";
 import { TypeormLotUnitPurchaseRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot-unit-purchase.repository";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 
 export async function deleteLotUniPurchaseAction(lotId: bigint, lotUnitPurchaseId: bigint) {
     try {

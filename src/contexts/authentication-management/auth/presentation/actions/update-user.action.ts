@@ -7,7 +7,7 @@ import { UpdateUserDTO } from "../../application/dtos/update-user.dto";
 import { TyperomUserRepository } from "../../infraestructure/repositories/typeorm-user.repository";
 import { BcryptEncryptionRepository } from "../../infraestructure/encryption/bcrypt.encryption.repository";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UserMapper } from "../../application/mapper/user.mapper";
 
 export async function updateUserAction(userId: bigint, dto: UpdateUserDTO) {

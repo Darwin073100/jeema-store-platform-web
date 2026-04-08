@@ -1,6 +1,6 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { InventoryItemRegisterDto } from "@/contexts/inventory-management/inventory-item/application/dtos/inventory-item-register.dto";
 import { RegisterInventoryItemUseCase } from "@/contexts/inventory-management/inventory-item/application/use-case/register-inventory-item.use-case";
 import { TypeormInventoryItemRepository } from "@/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/repositories/typeorm-inventory-item.repository";

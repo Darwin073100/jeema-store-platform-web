@@ -1,6 +1,6 @@
 "use server"
 
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { RegisterEstablishmentDto } from "../../application/dtos/register-establishment.dto";
 import { RegisterEstablishmentUseCase } from "../../application/use-cases/register-establishment.use-case";
 import { TypeOrmEstablishmentRepository } from "../../infraestruture/persistence/typeorm/repositories/typeorm-establishment.repository";

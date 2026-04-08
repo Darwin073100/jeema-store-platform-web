@@ -4,7 +4,7 @@ import { RegisterCategoryDto } from '../../application/dtos/register-category.dt
 import { TypeormCategoryRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-category.repository';
 import { RegisterCategoryUseCase } from '../../application/use-cases/register-category.use-case';
 import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 import { CategoryMapper } from '../../application/mappers/category-mapper';
 

@@ -1,5 +1,5 @@
 'use server'
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { UpdateCategoryDTO } from "../../application/dtos/update-category.dto";
 import { UpdatedCategoryUseCase } from "../../application/use-cases/updated-category.use-case";
 import { TypeormCategoryRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-category.repository";

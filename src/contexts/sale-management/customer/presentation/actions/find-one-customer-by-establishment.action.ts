@@ -5,7 +5,7 @@ import { FindOneCustomerByEstablishmentUseCase } from "../../application/use-cas
 import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
 import { EstablishmentNotFoundException } from "@/contexts/establishment-management/establishment/domain/exceptions/establishment-not-found.exception";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { CustomerMapper } from "../../application/mappers/customer.mapper";
 
 export async function findOneCustomerByEstablishmentAction(customerId: bigint) {

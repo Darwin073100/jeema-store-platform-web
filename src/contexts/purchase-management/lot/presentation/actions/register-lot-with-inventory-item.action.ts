@@ -5,7 +5,7 @@ import { RegisterLotWithInventoryItemUseCase } from "../../application/use-case/
 import { TypeormInventoryItemRepository } from "@/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/repositories/typeorm-inventory-item.repository";
 import { AddInventoryItemUseCase } from "@/contexts/inventory-management/inventory-item/application/use-case/add-inventory-item.use-case";
 import { RegisterLotDto } from "../../application/dtos/register-lot.dto";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { LotMapper } from "../../application/mappers/lot.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

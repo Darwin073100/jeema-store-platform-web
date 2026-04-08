@@ -7,7 +7,7 @@ import { LocalTransferDTO } from "../../application/dtos/local-transfer.dto";
 import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
 import { IEmployee } from "@/contexts/employee-management/employee/presentation/interfaces/IEmployee";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { TransferMapper } from "../../application/mappers/transfer.mapper";
 import { TypeormInventoryRepository } from "@/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository";
 import { TypeormInventoryItemRepository } from "@/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/repositories/typeorm-inventory-item.repository";

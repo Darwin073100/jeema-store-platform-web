@@ -2,7 +2,7 @@
 import { unstable_noStore } from "next/cache";
 import { TypeormSaleRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-sale.repository";
 import { FindSaleTicketByIdUseCase } from "../../application/use-cases/find-sale-ticket-by-id.use-case";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SaleMapper } from "../../application/mappers/sale-mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

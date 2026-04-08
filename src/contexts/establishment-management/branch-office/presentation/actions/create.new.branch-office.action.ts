@@ -5,7 +5,7 @@ import { RegisterBranchOfficeUseCase } from "../../application/use-cases/registe
 import { TypeOrmBranchOfficeRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository";
 import { RegisterBranchOfficeDto } from "../../application/dtos/register-branch-office.dto";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { BranchOfficeMapper } from "../../application/mappers/branch-office.mapper";
 
 export async function createNewBranchOfficeAction(data: RegisterBranchOfficeDto) {

@@ -4,7 +4,7 @@ import { UpdateLotUnitPurchaseDTO } from "../../application/dtos/update-lot-unit
 import { TypeormLotUnitPurchaseRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot-unit-purchase.repository";
 import { UpdateLotUnitPurchaseUseCase } from "../../application/use-case/update-lot-unit-purchase.use-case";
 import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { LotUnitPurchaseMapper } from "../../application/mappers/lot-unit-purchase.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

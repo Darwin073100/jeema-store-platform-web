@@ -7,9 +7,9 @@ import { TypeormCategoryRepository } from '@/contexts/product-management/categor
 import { TypeOrmBrandRepository } from '@/contexts/product-management/brand/infraestruture/persistence/typeorm/repositories/typeorm-brand.repository';
 import { TypeormSeasonRepository } from '@/contexts/product-management/season/infraestructure/persistence/typeorm/repositories/typeorm-season.repository';
 import { TypeOrmEstablishmentRepository } from '@/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/repositories/typeorm-establishment.repository';
-import { ErrorEntity } from '@/shared/features/error.entity';
+import { ErrorEntity } from '@/shared/lib/utils/error.entity';
 import { errorHandler } from '@/shared/infrastructure/error/errorHandler';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { ProductMapper } from '../../application/mappers/product.mapper';
 import { cookies } from 'next/headers';
 import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';

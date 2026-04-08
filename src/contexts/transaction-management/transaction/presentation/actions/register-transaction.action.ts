@@ -10,7 +10,7 @@ import { TypeOrmEmployeeRepository } from '@/contexts/employee-management/employ
 import { TypeormCashSessionRepository } from '@/contexts/cash-management/cash-session/infraestructure/repositories/typeorm-cash-session.repository';
 import { IEmployee } from '@/contexts/employee-management/employee/presentation/interfaces/IEmployee';
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { TransactionMapper } from '../../application/mappers/transaction.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

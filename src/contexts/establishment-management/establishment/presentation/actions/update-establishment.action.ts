@@ -3,7 +3,7 @@ import { unstable_noStore as noStore, revalidatePath } from 'next/cache';import 
 import { TypeOrmEstablishmentRepository } from '../../infraestruture/persistence/typeorm/repositories/typeorm-establishment.repository';
 import { UpdateEstablishmentUseCase } from '../../application/use-cases/update-establishment.use-case';
 import { IEstablishment } from '../interfaces/IEstablishment';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { EstablishmentMapper } from '../../application/mappers/establishment.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

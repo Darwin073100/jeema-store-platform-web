@@ -5,7 +5,7 @@ import { IBranchOffice } from '@/contexts/establishment-management/branch-office
 import { TypeormCashRegisterRepository } from '../../infraestructure/repositories/typeorm-cash-register.repository';
 import { RegisterCashRegisterUseCase } from '../../application/use-cases/register-cash-register.use-case';
 import { TypeOrmBranchOfficeRepository } from '@/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { CashRegisterMapper } from '../../application/mappers/cash-register.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 

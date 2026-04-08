@@ -5,7 +5,7 @@ import { RegisterSeasonDto } from '../../application/dtos/register-season.dto';
 import { RegisterSeasonUseCase } from '../../application/use-cases/register-season.use-case';
 import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
-import { Result } from '@/shared/features/result';
+import { Result } from '@/shared/lib/utils/result';
 import { SeasonMapper } from '../../application/mappers/season-mapper';
 import { revalidatePath } from 'next/cache';
 

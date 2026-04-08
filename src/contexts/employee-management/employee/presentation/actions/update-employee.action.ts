@@ -5,7 +5,7 @@ import { TypeOrmEmployeeRepository } from "../../infraestruture/persistence/type
 import { UpdateEmployeeUseCase } from "../../application/use-cases/update-employee.use-case";
 import { TypeOrmEmployeeRoleRepository } from "@/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/repositories/typeorm-employee-role.repository";
 import { TypeOrmBranchOfficeRepository } from "@/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { EmployeeMapper } from "../../application/mappers/employee.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 

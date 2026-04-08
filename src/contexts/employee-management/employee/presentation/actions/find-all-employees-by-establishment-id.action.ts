@@ -4,7 +4,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { TypeOrmEmployeeRepository } from "../../infraestruture/persistence/typeorm/repositories/typeorm-employee.repository";
 import { FindAllEmployeeByEstablishmentIdUseCase } from "../../application/use-cases/find-all-employee-by-establishment-id.use-case";
 import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { EmployeeMapper } from "../../application/mappers/employee.mapper";
 import { EmployeeNotFoundException } from "../../domain/exceptions/employee-not-found.exception";
 

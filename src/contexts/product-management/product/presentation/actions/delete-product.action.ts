@@ -2,8 +2,8 @@
 import { TypeOrmProductRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-product.repository';
 import { DeleteProductUseCase } from '../../application/use-cases/delete-product.use-case';
 import { revalidatePath } from 'next/cache';
-import { Result } from '@/shared/features/result';
-import { ErrorEntity } from '@/shared/features/error.entity';
+import { Result } from '@/shared/lib/utils/result';
+import { ErrorEntity } from '@/shared/lib/utils/error.entity';
 
 export async function deleteProductAction(productId: bigint){
     try{

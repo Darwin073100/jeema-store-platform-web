@@ -2,7 +2,7 @@
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { FindByIdSaleUseCase } from "../../application/use-cases/find-by-id-sale.use-case";
 import { TypeormSaleRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-sale.repository";
-import { Result } from "@/shared/features/result";
+import { Result } from "@/shared/lib/utils/result";
 import { SaleMapper } from "../../application/mappers/sale-mapper";
 
 export async function findSaleWithDetailAction(saleId: bigint) {

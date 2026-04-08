@@ -6,8 +6,8 @@ import { GenerateBarcodeUseCase } from "../../application/use-case/generate-barc
 import { TypeOrmProductRepository } from "@/contexts/product-management/product/infraestructure/persistence/typeorm/repositories/typeorm-product.repository";
 import { IEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment";
 import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
-import { Result } from "@/shared/features/result";
-import { ErrorEntity } from "@/shared/features/error.entity";
+import { Result } from "@/shared/lib/utils/result";
+import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 
 export async function generateBarcodeAction(): Promise<{
     ok: boolean;
