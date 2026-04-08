@@ -20,7 +20,7 @@ export async function userWorkspaceAction(): Promise<{
 
         const session = await getServerSession(authOptions);
 
-        const result = await userWorkspaceUseCase.execute(BigInt(session?.user.id ?? 2));
+        const result = await userWorkspaceUseCase.execute(BigInt(session?.user.id ?? 0));
         console.log(UserMapper.toIUserWorkspace(result))
         return {
             ...Result.success(UserMapper.toIUserWorkspace(result))
