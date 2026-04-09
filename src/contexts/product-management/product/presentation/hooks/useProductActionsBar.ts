@@ -7,6 +7,7 @@ import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { IInventoryItem } from '@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem';
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct';
 import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
+import { findAllProductsByEstablishmentFilterAction } from '../actions/find-all-products-by-establishment-filter.action';
 
 const useProductActionsBar = () => {
     const [loading, setLoading] = useState(false);
@@ -24,47 +25,24 @@ const useProductActionsBar = () => {
         if (!searchCharacter) {
             setProductsFiltered(products);
         }
+    }, [products, lowStock]);
 
-        if (lowStock) {
-            const filtered = products.filter(item =>
-                item && totalStock(item.inventory?.inventoryItems ?? []) <= 0
-            );
-            const filteredByStockBrnch = products.filter(item =>
-                item && totalStock(item.inventory?.inventoryItems ?? []) <= (item.inventory?.minStockBranch ?? 1)
-            );
-            const filteredByStockGlobal = products.filter(item =>
-                item && totalStock(item.inventory?.inventoryItems ?? []) <= item.minStockGlobal
-            );
-            setProductsFiltered([...new Set([
-                ...filtered,
-                ...filteredByStockBrnch,
-                ...filteredByStockGlobal,
-            ])]);
-            if (searchCharacter.trim().length > 0) {
-                const filteredByCategory = productsFiltered.filter(item =>
-                    item && item.category?.name &&
-                    item.category.name?.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
-                );
-                setProductsFiltered(filteredByCategory);
-            }
+    const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>)=>{
+        e.preventDefault();
+        if(searchCharacter.trim() == '*'){
+            const result = await findAllProductsByEstablishmentFilterAction({});
+            setProductsFiltered(result)
+        } else if (searchCharacter.trim().length === 0){
+            setProductsFiltered(products);
         } else {
-            const filtered = products.filter(item =>
-                item && item.name &&
-                item.name.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
-            );
-            const filteredByBarCode = products.filter(item =>
-                item && item.inventory?.internalBarCode &&
-                item.inventory.internalBarCode?.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
-            );
-            const filteredByCategory = products.filter(item =>
-                item && item.category?.name &&
-                item.category.name?.trim().toLowerCase().includes(searchCharacter.trim().toLowerCase())
-            );
-
-            setProductsFiltered([...new Set([...filtered, ...filteredByBarCode, ...filteredByCategory])]);
+            const result = await findAllProductsByEstablishmentFilterAction({
+                internalBarcode: searchCharacter,
+                product: searchCharacter,
+                category: searchCharacter,
+            });
+            setProductsFiltered(result)
         }
-
-    }, [searchCharacter, products, lowStock]);
+    }
 
     const totalStock = (items: IInventoryItem[]) => {
         if (items.length <= 0) {
@@ -143,6 +121,7 @@ const useProductActionsBar = () => {
         loading,
         productId,
         handleColorRow,
+        onSubmit,
     }
 }
 

@@ -1,5 +1,6 @@
 export interface FilterProductListDTO{
-    barcode?: string;
+    internalBarcode?: string;
+    universalBarcode?: string;
     product?: string;
     category?: string;
 }
