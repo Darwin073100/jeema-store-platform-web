@@ -9,10 +9,10 @@ import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { ProductAudit } from "@/contexts/product-management/product/presentation/ui/product-catalog/ProductAudit";
 import { findAllProductsByEstablishmentAction } from "@/contexts/product-management/product/presentation/actions/find-all-products-by-establishment.action";
-import { ProductEntity } from "@/features/product/domain/entities/product.entity";
 import { findAllCategoriesByEstablishmentAction } from "@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action";
 import { findAllBrandsByEstablishmentAction } from "@/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action";
 import { findAllSeasonsByEstablishmentAction } from "@/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action";
+import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -27,7 +27,7 @@ export default async function ProductsPage() {
     // Llama al server action en el servidor con manejo de errores
     try {
         const inventoryItemsData = await findAllProductsByEstablishmentAction();
-        const items = inventoryItemsData as ProductEntity[];
+        const items = inventoryItemsData as IProduct[];
 
         const categories = await findAllCategoriesByEstablishmentAction();
         const brands = await findAllBrandsByEstablishmentAction();
@@ -39,7 +39,9 @@ export default async function ProductsPage() {
         ]
         return (
             <ProtectedRoute>
-                <TemplateHeader title="Catalogo de productos" detail="Lista de todos los productos en diferentes ubicaciones" breadcrumbItems={breadcrumbItems}>
+                <TemplateHeader title="Catalogo de productos" 
+                    detail="Lista de todos los productos en diferentes ubicaciones, para mostrar todo los productos ingresa * y da enter, para volver al estado anterior deja la caja de texto en blancoy dar enter." 
+                    breadcrumbItems={breadcrumbItems}>
                     <main className="flex flex-col gap-4 w-full">
                         <ProductActionsBar
                             data={items} />

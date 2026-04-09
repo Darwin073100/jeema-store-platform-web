@@ -36,9 +36,7 @@ const useProductActionsBar = () => {
             setProductsFiltered(products);
         } else {
             const result = await findAllProductsByEstablishmentFilterAction({
-                internalBarcode: searchCharacter,
                 product: searchCharacter,
-                category: searchCharacter,
             });
             setProductsFiltered(result)
         }

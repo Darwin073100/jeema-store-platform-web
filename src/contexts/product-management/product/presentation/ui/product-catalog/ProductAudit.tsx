@@ -1,20 +1,19 @@
 'use client'
-import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import React from 'react'
 import { MdLowPriority } from 'react-icons/md';
 import { useProductStore } from '../../stores/product.store';
-import clsx from 'clsx';
+import { Button } from '@/shared/ui/components/buttons';
 
 const ProductAudit = () => {
     const { lowStock, setLowStock } = useProductStore();
     return (
         <div className='flex justify-between items-center gap-2'>
-        <ButtonOutLine
+        {/* <Button
             onClick={()=> setLowStock(!lowStock)}
-            size='sm' color='red' className={clsx(`duration-75 ${lowStock? 'bg-red-600 text-white': ''}`)}>
+            size='sm' color='red'>
             <MdLowPriority/>
             Bajo stock
-        </ButtonOutLine>
+        </Button> */}
         </div>
     )
 }

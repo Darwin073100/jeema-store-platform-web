@@ -324,11 +324,13 @@ export class TypeOrmProductRepository implements ProductRepository {
     });
     return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
   }
-  async findAllByEstablishmentAndName(
+async findAllByEstablishmentAndName(
   establishmentId: bigint, 
   dto: FilterProductListDTO
 ): Promise<ProductEntity[]> {
   
+  // Extraemos el valor único (asumiendo que dto.product trae el string de búsqueda)
+  const searchTerm = dto.product; 
   const query = this.productRepository.createQueryBuilder('product')
     .leftJoinAndSelect('product.category', 'category')
     .leftJoinAndSelect('product.brand', 'brand')
@@ -337,47 +339,21 @@ export class TypeOrmProductRepository implements ProductRepository {
     .leftJoinAndSelect('inventory.inventoryItems', 'inventoryItems')
     .where('product.establishmentId = :establishmentId', { establishmentId });
 
-  // 1. Filtrado por Nombre (Insensible a mayúsculas)
-  if (dto.product) {
-    query.andWhere('product.name ILIKE :name', { name: `%${dto.product}%` });
-  }
-
-  // 2. Filtrado por Categoría
-  if (dto.category) {
-    query.andWhere('category.name ILIKE :categoryName', { categoryName: `%${dto.category}%` });
-  }
-
-  // 3. Filtrado por Códigos (Lógica OR: si coincide con interno O universal)
-  if (dto.internalBarcode || dto.universalBarcode) {
+  if (searchTerm) {
     query.andWhere(
       new Brackets((qb) => {
-        qb.where('inventory.internalBarCode ILIKE :barcode', { barcode: `%${dto.internalBarcode}%` })
-          .orWhere('product.universalBarCode ILIKE :barcode', { barcode: `%${dto.universalBarcode}%` });
+        qb.where('product.name ILIKE :term', { term: `%${searchTerm}%` })
+          .orWhere('product.universalBarCode ILIKE :term', { term: `%${searchTerm}%` })
+          .orWhere('category.name ILIKE :term', { term: `%${searchTerm}%` })
+          .orWhere('inventory.internalBarCode ILIKE :term', { term: `%${searchTerm}%` });
       }),
     );
   }
 
   const result = await query.getMany();
-  
   return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
 }
-  // async findAllByEstablishmentAndName(establishmentId: bigint, dto: FilterProductListDTO): Promise<ProductEntity[]> {
-  //   const result = await this.productRepository.find({
-  //     where: {
-  //       establishmentId,
-  //       name: dto.product? Like(`%${dto.product}%`): undefined,
-  //       category: {
-  //         name: dto.category? Like(`%${dto.category}%`): undefined,
-  //       },
-  //       inventory: {
-  //         internalBarCode: dto.internalBarcode? Like(`%${dto.internalBarcode}%`): undefined,
-  //       },
-  //       universalBarCode: dto.internalBarcode? Like(`%${dto.internalBarcode}%`): undefined,
-  //     },
-  //     relations: ['category', 'brand', 'season', 'inventory.inventoryItems']
-  //   });
-  //   return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
-  // }
+
   async findAllByBranchOffice(branchOfficeId: bigint): Promise<ProductEntity[]> {
     const result = await this.productRepository.find({
       where: {
