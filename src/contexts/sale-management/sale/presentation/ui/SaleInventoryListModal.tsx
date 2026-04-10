@@ -36,20 +36,20 @@ const SaleInventoryListModal = () => {
             <table className="w-full text-left rtl:text-right">
               <thead>
                 <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
-                  {/* <th scope="col" className="px-6 py-4 font-semibold">
+                  <th scope="col" className="px-6 py-4 font-semibold text-[10px]">
                     Código
-                  </th> */}
-                  <th scope="col" className="px-6 py-4 font-semibold">
-                    producto
                   </th>
                   <th scope="col" className="px-6 py-4 font-semibold">
-                    Precio unitario
+                    Producto
                   </th>
                   <th scope="col" className="px-6 py-4 font-semibold">
-                    Precio mayoreo
+                    P. unitario
                   </th>
                   <th scope="col" className="px-6 py-4 font-semibold">
-                    Cantidad mayoreo
+                    P. mayoreo
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-semibold">
+                    C. mayoreo
                   </th>
                   <th scope="col" className="px-6 py-4 font-semibold">
                     Stock
@@ -58,12 +58,12 @@ const SaleInventoryListModal = () => {
               </thead>
               <tbody>
                 { filterInventoryItems.map(item => (<>
-                  <tr key={item.inventory?.product?.sku ?? new Date().getTime()} 
+                  <tr key={item.inventory?.product?.productId} 
                     onClick={()=> handleSetItemSelected(item)} 
                     className={clsx(`text-sm ${itemSelected?.inventoryItemId === item.inventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
-                    {/* <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold">
+                    <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold text-[10px]">
                       {item.inventory?.internalBarCode}
-                    </th> */}
+                    </th>
                     <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold min-w-[200px]">
                       {item.inventory?.product?.name}
                     </th>
@@ -101,8 +101,8 @@ const SaleInventoryListModal = () => {
                             Agregar
                           </Button>
                       </th>
-                      <th>
-                      </th>
+                      <th></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
