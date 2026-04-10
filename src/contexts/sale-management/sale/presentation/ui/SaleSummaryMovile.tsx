@@ -8,18 +8,16 @@ import { useSalePayment } from "../hooks/useSalePayment";
 import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
 import { SaleCustomerListModal } from "./SaleCustomerListModal";
 import { useCustomerSale } from "../hooks/useCustomerSale";
-import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
 import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
 
 interface Props {
     paymentMethods: IPaymentMethod[],
     customers: ICustomer[],
-    inventoryItems: IInventoryItem[],
 }
 
-const SaleSummaryMovile = ({ paymentMethods, customers, inventoryItems }: Props) => {
-    const { } = useTransferDataToClientNewSale({ methods: paymentMethods, customers, inventoryItems });
+const SaleSummaryMovile = ({ paymentMethods, customers,}: Props) => {
+    const { } = useTransferDataToClientNewSale({ methods: paymentMethods, customers});
     const { productQuantity, total } = useSaleSummary();
     const { handleCheckerOpenModalFinishSale } = useSalePayment();
     const { customerSelected, openSaleModal } = useCustomerSale();

@@ -13,7 +13,7 @@ import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 
 const SaleInventoryListModal = () => {
   const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,
-    setSearchProductValue, filterInventoryItems, itemSelected, saleModals, closeSaleModal
+    setSearchProductValue, filterInventoryItems, itemSelected, saleModals, closeSaleModal, onSubmit,
   } = useInventoryListModal()
   return (
     <TemplateModal size='full' isOpen={saleModals==='inventoryListModal'} onClose={closeSaleModal} title='Catalogo de productos'>
@@ -24,13 +24,13 @@ const SaleInventoryListModal = () => {
               <FcIdea className='w-9 h-9'/> 
               <span>Para agregar el producto a la venta, da click al producto que desees agregar y en el dialogo anota la cantidad y la unidad.</span>
             </span>
-            <div className='flex items-center gap-2'>
+            <form onSubmit={(e)=> onSubmit(e)} className='flex items-center gap-2'>
               <TextInput
                 value={searchProductValue}
                 onChange={(e)=> setSearchProductValue(e.target.value)}
                 autoFocus={true}
-                placeholder='Filtrar por nombre o código de barras'/>
-            </div>
+                placeholder='Filtrar por nombre o código de barras o categoria.'/>
+            </form>
           </div>
           <div className='w-full overflow-auto'>
             <table className="w-full text-left rtl:text-right">

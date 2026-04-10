@@ -2,6 +2,7 @@ import { InventoryItemRepository } from "../../domain/repositories/inventory-ite
 import { LocationEnum } from "../../domain/enums/location.enum";
 import { InventoryNotFoundException } from "src/contexts/inventory-management/inventory/domain/exceptions/inventory-not-found.exception";
 import { BranchOfficeRepository } from "src/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository";
+import { FilterProductListDTO } from "@/contexts/product-management/product/application/dtos/filter-product-list.dto";
 
 export class FindByLocationAndBranchOfficeItemUseCase {
     constructor(
@@ -9,9 +10,17 @@ export class FindByLocationAndBranchOfficeItemUseCase {
         private readonly itemRepository: InventoryItemRepository,
     ){}
 
-    async execute(branchOfficeId: bigint, location: string | null ){
+    async execute(branchOfficeId: bigint, dto: FilterProductListDTO, location: string | null ){
+        console.log(dto);
         try {
-             const currentLocation = location? location: 'venta'
+            let currentProductSearch:undefined|string = dto.product;
+            if(!dto.product){
+                return [];
+            }
+            if(dto.product.trim()==='*'){
+                currentProductSearch = undefined;
+            }
+            const currentLocation = location? location: 'venta'
             const objLocation = Object.values(LocationEnum);
             const locationExist = await objLocation.find(item => item.trim().toLocaleLowerCase() === currentLocation.trim().toLowerCase());
             
@@ -24,7 +33,7 @@ export class FindByLocationAndBranchOfficeItemUseCase {
                 throw new InventoryNotFoundException(`La sucursal con ID(${branchOfficeId}) no existe.`);
             }
 
-            const result = await this.itemRepository.findByLocationAndBranchOffice(branchOfficeId, currentLocation as LocationEnum);
+            const result = await this.itemRepository.findByLocationAndBranchOffice(branchOfficeId, {product: currentProductSearch}, currentLocation as LocationEnum);
             if(!result){
                 throw new InventoryNotFoundException(`La sucursal con ID(${branchOfficeId}) no tiene items en la ubicacion (${location}).`);
             }

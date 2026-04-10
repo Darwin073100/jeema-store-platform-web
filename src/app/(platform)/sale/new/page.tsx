@@ -27,8 +27,6 @@ export default async function() {
     const currentPaymentMethods = resultPaymentMethods.value?.paymentMethods ?? [];
     const resultCustomers = await findAllCustomerByEstablishmentAction();
     const currentCustomers = resultCustomers?.value?.customers ?? [];
-    const resultInventoryItemsList = await findAllInventoryItemsByLocationAndBranchOfficeAction();
-    const currentInventoryItems = resultInventoryItemsList?.value?.items ?? [];
     const resultCashSession = await findCashSessionByEmployeeIdAction();
     const currentCashSession = resultCashSession.value ?? null;
 
@@ -46,12 +44,10 @@ export default async function() {
                     <SaleProductList />
                     {/* Potential Component: SaleSummary */}
                     <SaleSummary 
-                        inventoryItems={currentInventoryItems}
                         customers={currentCustomers}
                         paymentMethods={currentPaymentMethods} />
                 </article>
                 <SaleSummaryMovile
-                    inventoryItems={currentInventoryItems}
                     customers={currentCustomers}
                     paymentMethods={currentPaymentMethods} />
 

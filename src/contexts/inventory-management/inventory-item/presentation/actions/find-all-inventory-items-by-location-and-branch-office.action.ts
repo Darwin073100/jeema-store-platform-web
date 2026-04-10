@@ -7,8 +7,9 @@ import { Result } from "@/shared/lib/utils/result";
 import { FindByLocationAndBranchOfficeItemUseCase } from "../../application/use-case/find-by-location-and-branch-office-item.use-case";
 import { TypeOrmBranchOfficeRepository } from "@/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository";
 import { InventoryItemMapper } from "../../application/mapper/inventory-item.mapper";
+import { FilterProductListDTO } from "@/contexts/product-management/product/application/dtos/filter-product-list.dto";
 
-export async function findAllInventoryItemsByLocationAndBranchOfficeAction(location?: LocationEnum) {
+export async function findAllInventoryItemsByLocationAndBranchOfficeAction(dto?:FilterProductListDTO, location?: LocationEnum) {
     try {
         const inventoryItemRepository = await TypeormInventoryItemRepository.create();
         const branchRepository = await TypeOrmBranchOfficeRepository.create();
@@ -21,7 +22,7 @@ export async function findAllInventoryItemsByLocationAndBranchOfficeAction(locat
             if (branchOffice) {
                 branchOffice = JSON.parse(branchOffice) as IBranchOffice;
 
-                const result = await useCase.execute(branchOffice.branchOfficeId, location?.toString() ?? null);
+                const result = await useCase.execute(branchOffice.branchOfficeId,{ product: dto?.product }, location?.toString() ?? null);
                 return {
                     ...Result.success({ items: result.map(item => InventoryItemMapper.toIResponse(item)) })
                 }

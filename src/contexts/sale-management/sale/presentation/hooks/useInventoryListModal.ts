@@ -3,10 +3,12 @@ import { useSaleStore } from "../stores/sale.store";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { useSale } from "./useSale";
-import { SaleEntity } from "../../../../../features/sale/domain/entities/sale-entity";
 import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
+import { ISale } from "../interfaces/ISale";
+import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/contexts/inventory-management/inventory-item/presentation/actions/find-all-inventory-items-by-location-and-branch-office.action";
+import { LocationEnum } from "@/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 
 const useInventoryListModal = () => {
     const { inventoryItems, itemSelected, setItemSelected,
@@ -23,7 +25,8 @@ const useInventoryListModal = () => {
 
 
     useEffect(() => {
-        setFilterInventoryItems(inventoryItems);
+        setFilterInventoryItems([]);
+        setSearchProductValue('');
     }, [saleModals]);
 
     useEffect(() => {
@@ -35,23 +38,21 @@ const useInventoryListModal = () => {
         setItemSelected(null);
     }, [saleModals]);
 
-    useEffect(() => {
-        const regex = new RegExp(searchProductValue, 'i');
-        const newInventoryFilter = inventoryItems.filter(item => regex.test(item.inventory?.product?.name ?? ''));
-        const barCodeFilter = inventoryItems.filter(item => 
-            regex.test(item.inventory?.internalBarCode ?? '') ||
-            regex.test(item.inventory?.product?.universalBarCode ?? '')
-        );
-        const combinedFilters = [...new Set([...newInventoryFilter, ...barCodeFilter])];    
-        setFilterInventoryItems(combinedFilters);
-    }, [searchProductValue]);
-
-    const handleVerifyExistDetail = (sale: SaleEntity, inventory?: IInventory, )=>{
+    const handleVerifyExistDetail = (sale: ISale, inventory?: IInventory, )=>{
         const existingProduct = sale?.saleDetails?.find(
                 detail => detail.productBarCodeAtSale === (inventory?.internalBarCode || '') 
                     || detail.productBarCodeAtSale === (inventory?.product?.universalBarCode || '') 
         );
         return existingProduct;
+    }
+
+    const onSubmit = async(e:React.SubmitEvent<HTMLFormElement>)=> {
+        e.preventDefault();
+        const result = await findAllInventoryItemsByLocationAndBranchOfficeAction(
+            {product:searchProductValue}, 
+            LocationEnum.SALE
+        );
+        setFilterInventoryItems(result?.value?.items ?? []);
     }
 
     const handleAddDetail = async () => {
@@ -147,7 +148,8 @@ const useInventoryListModal = () => {
         openSaleModal,
         saleModals,
         filterInventoryItems,
-        itemSelected
+        itemSelected,
+        onSubmit,
     }
 }
 

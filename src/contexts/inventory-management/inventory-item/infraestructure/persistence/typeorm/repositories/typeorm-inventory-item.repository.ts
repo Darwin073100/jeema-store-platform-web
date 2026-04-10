@@ -1,4 +1,4 @@
-import { DataSource, Not, Or, Repository } from "typeorm";
+import { Brackets, DataSource, Not, Or, Repository } from "typeorm";
 import { InventoryItemOrmEntity } from "../entities/inventory-item.orm-entity";
 import { InventoryItemMapper } from "../mapper/inventory-item.mapper";
 import { InventoryItemEntity } from "src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity";
@@ -9,6 +9,7 @@ import { InventoryItemNotFoundException } from "src/contexts/inventory-managemen
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 import { getDataSource } from "@/configuration/databases/typeorm/config";
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
+import { FilterProductListDTO } from "@/contexts/product-management/product/application/dtos/filter-product-list.dto";
 
 export class TypeormInventoryItemRepository implements InventoryItemRepository {
     private readonly inventoryItemRepository: Repository<InventoryItemOrmEntity>;
@@ -91,26 +92,26 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
 
             // Mantenemos el inventoryId original
             const updateResult = await this.transactionDB.getManager().save(InventoryItemOrmEntity, existingEntity);
-            
+
             return InventoryItemMapper.toDomain(updateResult);
         } catch (error) {
             throw error;
         }
     }
 
-    async stockDuplicated(itemId: bigint, inventoryId: bigint, location: LocationEnum):Promise<boolean>{
+    async stockDuplicated(itemId: bigint, inventoryId: bigint, location: LocationEnum): Promise<boolean> {
         const item = await this.inventoryItemRepository.exists({
-                where: {
-                    location: location,
-                    inventoryItemId: Not(itemId),
-                    inventoryId: inventoryId
-                }
-            });
+            where: {
+                location: location,
+                inventoryItemId: Not(itemId),
+                inventoryId: inventoryId
+            }
+        });
         return item;
     }
 
     async existById(entityId: bigint): Promise<boolean> {
-        return await this.inventoryItemRepository.existsBy({inventoryItemId: entityId});
+        return await this.inventoryItemRepository.existsBy({ inventoryItemId: entityId });
     }
 
     async findByLocation(inventoryId: bigint, location: LocationEnum): Promise<InventoryItemEntity | null> {
@@ -136,25 +137,49 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
         return result ? InventoryItemMapper.toDomain(result) : null;
     }
 
-    async findByLocationAndBranchOffice(branchOfficeId: bigint, location?: LocationEnum): Promise<InventoryItemEntity[]> {
-        const result = await this.inventoryItemRepository.find({
-            where: {
-                inventory: {
-                    branchOfficeId: branchOfficeId,
-                },
-                location: location
-            },
-            relations: [
-                'inventory', 'inventory.product', 'inventory.product.category',
-                'inventory.product.brand', 'inventory.product.season'
-            ]
-        });
+    // async findByLocationAndBranchOffice(branchOfficeId: bigint, location?: LocationEnum): Promise<InventoryItemEntity[]> {
+    //     const result = await this.inventoryItemRepository.find({
+    //         where: {
+    //             inventory: {
+    //                 branchOfficeId: branchOfficeId,
+    //             },
+    //             location: location
+    //         },
+    //         relations: [
+    //             'inventory', 'inventory.product', 'inventory.product.category',
+    //             'inventory.product.brand', 'inventory.product.season'
+    //         ]
+    //     });
 
-        if (result.length === 0) return [];
+    //     if (result.length === 0) return [];
 
-        const items = result.map(item => InventoryItemMapper.toDomain(item));
+    //     const items = result.map(item => InventoryItemMapper.toDomain(item));
 
-        return items;
+    //     return items;
+    // }
+    async findByLocationAndBranchOffice(branchOfficeId: bigint, dto: FilterProductListDTO, location?: LocationEnum): Promise<InventoryItemEntity[]> {
+        // Extraemos el valor único (asumiendo que dto.product trae el string de búsqueda)
+        const searchTerm = dto.product;
+        const query = this.inventoryItemRepository.createQueryBuilder('inventoryItem')
+            .leftJoinAndSelect('inventoryItem.inventory', 'inventory')
+            .leftJoinAndSelect('inventory.product', 'product')
+            .leftJoinAndSelect('product.category', 'category')
+            .where('inventory.branchOfficeId = :branchOfficeId', { branchOfficeId })
+            .andWhere('inventoryItem.location = :location', { location });
+        if (searchTerm) {
+            query.andWhere(
+                new Brackets((qb) => {
+                    qb.where('product.name ILIKE :term', { term: `%${searchTerm}%` })
+                        .orWhere('product.universalBarCode ILIKE :term', { term: `%${searchTerm}%` })
+                        .orWhere('category.name ILIKE :term', { term: `%${searchTerm}%` })
+                        .orWhere('inventory.internalBarCode ILIKE :term', { term: `%${searchTerm}%` });
+                }),
+            );
+        }
+
+        const result = await query.getMany();
+
+        return result.map(item => InventoryItemMapper.toDomain(item));
     }
 
     async findAll(): Promise<[] | InventoryItemEntity[]> {
