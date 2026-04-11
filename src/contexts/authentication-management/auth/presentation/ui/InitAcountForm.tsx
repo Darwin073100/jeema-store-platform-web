@@ -11,10 +11,10 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useRouter } from 'next/navigation';
 import { HiMiniArrowLongRight } from 'react-icons/hi2';
-import { RegisterUserWithEmployeeDTO } from '../../../../../features/auth/application/dtos/register-user-with-employee.dto';
 import { registerUserWithEmployeeAction } from '../actions/register-user-with-employee.action';
 import { useBranchOfficeStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office.store';
 import { useEstablishmentStore } from '@/contexts/establishment-management/establishment/presentation/stores/establishment.store';
+import { RegisterUserWithEmployeeDTO } from '../../application/dtos/register-user-with-employee.dto';
 
 const schema = yup.object({
     firstName: yup.string().trim()
@@ -70,7 +70,7 @@ export const InitAcountForm = () => {
             email: data.email,
             firstName: data.firstName,
             lastName: data.lastName,
-            password: data.password,
+            passwordPlain: data.password,
             username: data.username,
             phoneNumber: data.phoneNumber
         };

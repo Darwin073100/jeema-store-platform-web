@@ -40,7 +40,10 @@ export class RegisterUserWithEmployeeUseCase{
             throw new UserNotFoundException(`Rol 'establishment_manager' no encontrado.`);
         }
 
-        // Realizamos el hash de la contraseña en texto plano
+        // Validamos y realizamos el hash de la contraseña en texto plano
+        if (!dto.passwordPlain) {
+            throw new Error('La contraseña es requerida para registrar el usuario');
+        }
         const hashedPassword = await this.encryptionRepository.encrypt(dto.passwordPlain);
         const usernameVO = UserUsernameVO.create(dto.username);
         const email = UserEmailVO.create(dto.email);

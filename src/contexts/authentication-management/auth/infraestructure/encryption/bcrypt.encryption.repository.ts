@@ -10,6 +10,10 @@ export class BcryptEncryptionRepository implements EncryptionRepository{
         return new BcryptEncryptionRepository();
     }
     async encrypt (value: string): Promise<string> {
+        if (value === undefined || value === null || value === '') {
+            throw new Error('Value to encrypt is required');
+        }
+
         const hashedPassword = await bcrypt.hash(value, 10);
         return hashedPassword;
     };

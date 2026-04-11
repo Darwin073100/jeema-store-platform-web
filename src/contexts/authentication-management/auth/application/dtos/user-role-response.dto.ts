@@ -2,9 +2,9 @@ import { RoleResponseDto } from "src/contexts/authentication-management/role/app
 import { UserResponseDTO } from "./user-response.dto";
 
 export class UserRoleResponseDTO {
-    userId: string;
-    roleId: string;
-    userRoleId: string;
+    userId: bigint;
+    roleId: bigint;
+    userRoleId: bigint;
     createdAt: Date;
     user: UserResponseDTO | null;
     role: RoleResponseDto | null;

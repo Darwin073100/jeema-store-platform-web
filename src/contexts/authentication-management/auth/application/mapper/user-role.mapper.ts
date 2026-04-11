@@ -7,9 +7,9 @@ import { IUserRole } from "../../presentation/interfaces/IUserRole";
 export class UserRoleMapper {
     static toResponse(entity: UserRoleEntity): UserRoleResponseDTO{
         const response: UserRoleResponseDTO = {
-            userRoleId: entity.userRoleId.toString(),
-            userId: entity.userId.toString(),
-            roleId: entity.roleId.toString(),
+            userRoleId: entity.userRoleId,
+            userId: entity.userId,
+            roleId: entity.roleId,
             role: entity?.role ? RoleMapper.toResponseDto(entity.role): null,
             user: entity?.user ? UserMapper.toResponseUserDTO(entity.user): null,
             createdAt: entity.createdAt,
@@ -20,9 +20,9 @@ export class UserRoleMapper {
     }
     static toIResponse(entity: UserRoleEntity): IUserRole{
         return {
-            userRoleId: entity.userRoleId.toString(),
-            userId: entity.userId.toString(),
-            roleId: entity.roleId.toString(),
+            userRoleId: entity.userRoleId,
+            userId: entity.userId,
+            roleId: entity.roleId,
             role:  entity?.role ? RoleMapper.toIResponse(entity.role): null,
             user: entity?.user ? UserMapper.toIResponse(entity.user): null,
             createdAt: entity.createdAt,
