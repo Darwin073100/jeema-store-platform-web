@@ -1,9 +1,8 @@
-import { JwtService } from "@nestjs/jwt";
 import { UserEntity } from "src/contexts/authentication-management/auth/domain/entities/user.entity";
 
 export class loginAuthUseCase{
     constructor(
-    private readonly jwtService: JwtService,
+    private readonly jwtService: any,
   ) {}
 
     // Este método es para generar el JWT después de una validación exitosa

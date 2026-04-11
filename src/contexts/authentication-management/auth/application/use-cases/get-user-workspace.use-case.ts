@@ -8,7 +8,6 @@ export class GetUserWorkspaceUseCase {
     ) {}
   
     async execute(userId: bigint): Promise<UserEntity> {
-      console.log({userId})
       if(userId <= BigInt(0)){
         throw new Error('Ha ocurrido un error en el servidor.');
       }
