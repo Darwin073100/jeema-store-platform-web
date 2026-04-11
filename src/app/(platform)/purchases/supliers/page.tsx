@@ -4,6 +4,10 @@ import { SuplierDesktopTable } from "@/contexts/purchase-management/suplier/pres
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 
+// Configurar la página para que no se cachée y siempre obtenga datos frescos
+export const revalidate = 0; // Revalidar en cada request
+export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {label: 'Compras', href: '/purchases'},
     {label: 'Proveedores'},

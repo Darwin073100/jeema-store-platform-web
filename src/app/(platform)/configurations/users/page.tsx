@@ -8,6 +8,10 @@ import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates
 import { Metadata } from "next";
 import { IoPersonAdd } from "react-icons/io5";
 
+// Configurar la página para que no se cachée y siempre obtenga datos frescos
+export const revalidate = 0; // Revalidar en cada request
+export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
+
 export const metadata: Metadata = {
     title: 'Configurations'
 }

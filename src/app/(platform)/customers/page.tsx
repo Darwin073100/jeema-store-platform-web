@@ -6,6 +6,10 @@ import { findAllCustomerByEstablishmentAction } from '@/contexts/sale-management
 import CustomerDesktopTable from '@/contexts/sale-management/customer/presentation/ui/CustomerDesktopTable';
 import { CustomerOptios } from '@/contexts/sale-management/customer/presentation/ui/CustomerOptios';
 
+// Configurar la página para que no se cachée y siempre obtenga datos frescos
+export const revalidate = 0; // Revalidar en cada request
+export const dynamic = 'force-dynamic'; // Forzar renderizado dinámico
+
 export const metadata: Metadata = {
     title: 'Customers'
 }
