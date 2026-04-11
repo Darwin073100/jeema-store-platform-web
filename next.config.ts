@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     esmExternals: true,
+    serverMinification: false,
   },
   webpack: (config, { isServer }) => {
     // Asegurar que react-icons siempre esté en el lado del cliente
