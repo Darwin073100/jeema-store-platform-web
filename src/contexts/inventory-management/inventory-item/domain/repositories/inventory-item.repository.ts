@@ -33,4 +33,11 @@ export interface InventoryItemRepository extends TemplateRepository<InventoryIte
      */
     stockDuplicated(itemId: bigint, inventoryId: bigint, location: LocationEnum):Promise<boolean>;
     existById(entityId: bigint):Promise<boolean>;
+    /**
+     * Busca un Item de Inventario, con la relacion de Product, Category y el mismo Inventory
+     * @param inventoryId 
+     * @param barcode 
+     * @param location 
+     */
+    searchInventoryItemInformation(inventoryId: bigint, barcode: string, location: LocationEnum): Promise<InventoryItemEntity | null>;
 }

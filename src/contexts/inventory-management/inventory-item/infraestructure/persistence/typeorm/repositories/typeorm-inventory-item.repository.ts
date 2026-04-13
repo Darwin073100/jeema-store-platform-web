@@ -137,26 +137,6 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
         return result ? InventoryItemMapper.toDomain(result) : null;
     }
 
-    // async findByLocationAndBranchOffice(branchOfficeId: bigint, location?: LocationEnum): Promise<InventoryItemEntity[]> {
-    //     const result = await this.inventoryItemRepository.find({
-    //         where: {
-    //             inventory: {
-    //                 branchOfficeId: branchOfficeId,
-    //             },
-    //             location: location
-    //         },
-    //         relations: [
-    //             'inventory', 'inventory.product', 'inventory.product.category',
-    //             'inventory.product.brand', 'inventory.product.season'
-    //         ]
-    //     });
-
-    //     if (result.length === 0) return [];
-
-    //     const items = result.map(item => InventoryItemMapper.toDomain(item));
-
-    //     return items;
-    // }
     async findByLocationAndBranchOffice(branchOfficeId: bigint, dto: FilterProductListDTO, location?: LocationEnum): Promise<InventoryItemEntity[]> {
         // Extraemos el valor único (asumiendo que dto.product trae el string de búsqueda)
         const searchTerm = dto.product;
@@ -180,6 +160,23 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
         const result = await query.getMany();
 
         return result.map(item => InventoryItemMapper.toDomain(item));
+    }
+    async searchInventoryItemInformation(inventoryId: bigint, barcode: string, location: LocationEnum): Promise<InventoryItemEntity | null> {
+        const query = this.inventoryItemRepository.createQueryBuilder('inventoryItem')
+            .leftJoinAndSelect('inventoryItem.inventory', 'inventory')
+            .leftJoinAndSelect('inventory.product', 'product')
+            .leftJoinAndSelect('product.category', 'category')
+            .where('inventory.inventoryId = :inventoryId', { inventoryId })
+            .andWhere('inventoryItem.location = :location', { location });
+        query.andWhere(
+            new Brackets((qb) => {
+                qb.where('product.universalBarCode ILIKE :term', { term: `%${barcode}%` })
+                    .orWhere('inventory.internalBarCode ILIKE :term', { term: `%${barcode}%` });
+            }),
+        );
+        const result = await query.getOne();
+
+        return result ? InventoryItemMapper.toDomain(result) : null;
     }
 
     async findAll(): Promise<[] | InventoryItemEntity[]> {

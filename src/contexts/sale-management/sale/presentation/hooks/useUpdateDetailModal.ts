@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { SaleDetailEntity } from "../../../../../features/sale/domain/entities/sale-detail-entity";
 import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-detail.action";
 import { useSale } from "./useSale";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
@@ -7,6 +6,8 @@ import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { useSaleStore } from "../stores/sale.store";
 import { AddDetailToSaleDto } from "@/contexts/sale-management/sale-detail/application/dtos/add-detail-to-sale.dto";
+import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
+import { searchInventoryItemInformationAction } from "@/contexts/inventory-management/inventory-item/presentation/actions/search-inventory-item-information.action";
 
 type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
 
@@ -15,7 +16,7 @@ const useUpdateDetailModal = () => {
         saleModals, openSaleModal, closeSaleModal, setFloatMessageState, finishLoading, initLoading, loading
     } = useSaleUIStore();
     const {
-        setDetailSelected, detailSelected, itemMatchDetail, setItemMatchDetail, inventoryItems
+        setDetailSelected, detailSelected, itemMatchDetail, setItemMatchDetail
     } = useSaleProcessStore();
     const { setSale, setSaleId, saleId, cashSessionActive } = useSaleStore();
     const { hancleCalculateDetailPrice } = useSale()
@@ -23,24 +24,20 @@ const useUpdateDetailModal = () => {
     const [detailQuantity, setDetailQuantity] = useState<number>(0);
     const [detailCurrentTotal, setDetailCurrentTotal] = useState<number>(0);
     const [saleFor, setSaleFor] = useState<SaleForEnum>(SaleForEnum.ONE);
-
+    
+    // Buscar el item de inventario
+    //TODO: Debemos usar un server action para traer los items y hacer el filtro
+    const handleSearchItemInfo = async (inventoryId: bigint, barCode: string) => {
+        const itemResult = await searchInventoryItemInformationAction(inventoryId, barCode);
+        setItemMatchDetail(itemResult?.value ?? null);
+    }
     // Metodo para abriri y seleccionar el detalle en la UI
-    const handleLoadUpdateDetail = (detail: SaleDetailEntity) => {
+    const handleLoadUpdateDetail = async (detail: ISaleDetail) => {
         setDetailSelected(detail);
         openSaleModal('updateDetailModal');
-        handleSearchItemInfo(detail.inventoryId, detail.productBarCodeAtSale);
+        await handleSearchItemInfo(detail.inventoryId, detail.productBarCodeAtSale);
     }
 
-    // Buscar el item de inventario
-    const handleSearchItemInfo = (inventoryId: bigint, barCode: string) => {
-        const itemResult = inventoryItems.find(item =>
-            (item.inventory?.isSellable === true) &&
-            (item.inventoryId === inventoryId) &&
-            ((barCode.trim().toLowerCase() === item?.inventory?.internalBarCode?.trim().toLowerCase()) ||
-                (barCode.trim().toLowerCase() === item?.inventory?.product?.universalBarCode?.trim().toLowerCase()))
-        );
-        setItemMatchDetail(itemResult ?? null);
-    }
 
     // Actualizar el total en la UI
     const currencyDetailTotal = () => {
@@ -49,6 +46,7 @@ const useUpdateDetailModal = () => {
 
     // Actualizar el precio del detalle, dependiendo si es mayoreo o menudeo
     const currencyDetailPrice = () => {
+        console.log(itemMatchDetail);
         if(
             (!itemMatchDetail?.inventory?.salePriceMany || (itemMatchDetail?.inventory?.salePriceMany && itemMatchDetail?.inventory?.salePriceMany <= 0)) ||
             (!itemMatchDetail?.inventory?.saleQuantityMany || (itemMatchDetail?.inventory?.saleQuantityMany && itemMatchDetail?.inventory?.saleQuantityMany <= 0))
@@ -92,7 +90,7 @@ const useUpdateDetailModal = () => {
         currencyDetailTotal()
     }, [detailPrice, saleFor, detailQuantity]);
 
-    const handleApplyManualSaleFor = async (detail?: SaleDetailEntity, specialprice?: number) => {
+    const handleApplyManualSaleFor = async (detail?: ISaleDetail, specialprice?: number) => {
         if(!cashSessionActive){
             setFloatMessageState({
                 summary: '404: ¡Error! 😢',
