@@ -1,6 +1,4 @@
-import { ProductCheckerPort } from "src/contexts/product-management/product/domain/ports/out/product-checker.port";
 import { InventoryRepository } from "../../domain/repositories/inventory.repository";
-import { BranchOfficeCheckerPort } from "src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port";
 import { InventoryEntity } from "../../domain/entities/inventory.entity";
 import { InventorySalePriceOneVO } from "../../domain/value-objects/inventory-sale-price-one.vo";
 import { InventorySalePriceManyVO } from "../../domain/value-objects/inventory-sale-price-many.vo";

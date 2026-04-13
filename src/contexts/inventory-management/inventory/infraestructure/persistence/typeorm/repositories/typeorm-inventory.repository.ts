@@ -46,8 +46,7 @@ export class TypeormInventoryRepository implements InventoryRepository{
             inventoryExist.maxStockBranch = entity.maxStockBranch?.value;
             inventoryExist.minStockBranch = entity.minStockBranch?.value;
             inventoryExist.productId = entity.productId;
-            
-            console.log(inventoryExist);
+
             const updatedInventory = await this.inventoryRepository.save(inventoryExist);
 
             return InventoryMapper.toDomain(updatedInventory);

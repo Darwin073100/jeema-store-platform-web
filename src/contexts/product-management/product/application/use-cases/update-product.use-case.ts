@@ -7,7 +7,7 @@ import { ProductUniversalBarCodeVO } from '../../domain/value-objects/product-un
 import { ForSaleEnum } from '../../../../../shared/domain/enums/for-sale.enum';
 import { ProductAlreadyExistsException } from '../../domain/exceptions/product-already-exists.exception';
 import { ProductNotFoundException } from '../../domain/exceptions/product-not-found.exception';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { UpdateProductDto } from '../dtos/update-product.dto';
 import { EstablishmentRepository } from '@/contexts/establishment-management/establishment/domain/repositories/establishment.repository';
 import { CategoryRepository } from '@/contexts/product-management/category/domain/repositories/category.repository';
@@ -21,7 +21,7 @@ export class UpdateProductUseCase {
         private readonly categoryChecker: CategoryRepository,
         private readonly brandChecker: BrandRepository,
         private readonly seasonChecker: SeasonRepository,
-        private readonly establishmentChecker: EstablishmentRepository, 
+        private readonly establishmentChecker: EstablishmentRepository,
     ) { }
 
     async execute(dto: UpdateProductDto): Promise<ProductEntity> {
@@ -36,11 +36,16 @@ export class UpdateProductUseCase {
         if (dto.universalBarCode) {
             const existingByBarCode = await this.productRepository.findByEstablishmentAndUniversalBarCode(dto.establishmentId, dto.universalBarCode);
             if (existingByBarCode) {
-                throw ProductAlreadyExistsException.forUniversalBarCode(dto.establishmentId, dto.universalBarCode);
+                if (
+                    existingByBarCode.universalBarCode.value?.trim().toUpperCase() === dto.universalBarCode.trim().toUpperCase() &&
+                    existingByBarCode.productId != dto.productId
+                ) {
+                    throw ProductAlreadyExistsException.forUniversalBarCode(dto.establishmentId, dto.universalBarCode);
+                }
             }
         }
 
-        if(dto.brandId) {
+        if (dto.brandId) {
             // Validar existencia de la marca
             const brandExists = await this.brandChecker.existById(dto.brandId);
             if (!brandExists) {
@@ -48,7 +53,7 @@ export class UpdateProductUseCase {
             }
         }
 
-        if(dto.seasonId) {
+        if (dto.seasonId) {
             // Validar existencia de la temporada
             const seasonExists = await this.seasonChecker.existById(dto.seasonId);
             if (!seasonExists) {
@@ -56,16 +61,16 @@ export class UpdateProductUseCase {
             }
         }
 
-        if(dto.establishmentId){
+        if (dto.establishmentId) {
             const establishmentExists = await this.establishmentChecker.existById(dto.establishmentId);
-            if(!establishmentExists){
+            if (!establishmentExists) {
                 throw new ProductNotFoundException(`El establecimiento al que deseas asignar el producto no existe.`);
             }
         }
 
-        if(dto.categoryId){
+        if (dto.categoryId) {
             const categoryExists = await this.categoryChecker.existById(dto.categoryId);
-            if(!categoryExists){
+            if (!categoryExists) {
                 throw new ProductNotFoundException(`La categoría a la que deseas asignar el producto no existe.`);
             }
         }
