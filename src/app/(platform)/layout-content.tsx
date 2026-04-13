@@ -12,7 +12,7 @@ export function LayoutContent({ children }: LayoutContentProps) {
   return (
     <>
       <NavBar />
-      <main className="flex py-4">
+      <main className="flex py-4 bg-gradient-to-br from-blue-50 to-indigo-100">
         <SideBar />
         <SideBarMovile />
         {children}
