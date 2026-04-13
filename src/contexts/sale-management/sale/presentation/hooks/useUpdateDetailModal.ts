@@ -46,7 +46,6 @@ const useUpdateDetailModal = () => {
 
     // Actualizar el precio del detalle, dependiendo si es mayoreo o menudeo
     const currencyDetailPrice = () => {
-        console.log(itemMatchDetail);
         if(
             (!itemMatchDetail?.inventory?.salePriceMany || (itemMatchDetail?.inventory?.salePriceMany && itemMatchDetail?.inventory?.salePriceMany <= 0)) ||
             (!itemMatchDetail?.inventory?.saleQuantityMany || (itemMatchDetail?.inventory?.saleQuantityMany && itemMatchDetail?.inventory?.saleQuantityMany <= 0))

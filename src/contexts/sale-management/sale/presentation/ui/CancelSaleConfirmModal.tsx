@@ -28,7 +28,8 @@ const CancelSaleConfirmModal = () => {
           >
              { loading==='cancelSaleLoading'
               ? <Spinner/>
-              : <><IoMdTrash className="w-4 h-4" />Cancelar venta</> }
+              : <IoMdTrash className="w-4 h-4" /> }
+              Cancelar venta
           </Button>
           <Button
             onClick={()=> closeSaleModal()}
