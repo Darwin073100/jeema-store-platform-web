@@ -31,7 +31,7 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center py-1.5 px-6 bg-white shadow-md hover:shadow-lg transition-all w-full">
+    <nav className="flex justify-between items-center py-1.5 px-4 bg-white shadow-md hover:shadow-lg transition-all w-full">
       {/* Brand Section */}
       <div className='flex items-center gap-4'>
         <div className={clsx(`relative group ${sideBar? 'rotate-90': 'rotate-0'} transition-all duration-300 md:rotate-0`)} onClick={()=> onToggelSideBar()}>
@@ -39,8 +39,8 @@ export const NavBar = () => {
             className="rounded-lg shadow-sm group-hover:shadow-md transition-all"
             src={Logo}
             alt="Logo de la empresa"
-            width={40}
-            height={40}
+            width={50}
+            height={50}
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-700/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" />

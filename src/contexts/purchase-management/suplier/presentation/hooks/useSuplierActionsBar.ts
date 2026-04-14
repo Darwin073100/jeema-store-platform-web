@@ -13,7 +13,7 @@ const useSuplierActionsBar = () => {
 
     const handleSuplierDetail = (suplierId: string) => {
         setSuplierId(suplierId);
-        router.push(`/products/supliers/${suplierId}`);
+        router.push(`/purchases/supliers/${suplierId}`);
     };
 
     useEffect(() => {

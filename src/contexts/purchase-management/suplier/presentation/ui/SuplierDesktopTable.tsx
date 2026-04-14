@@ -29,6 +29,7 @@ export function SuplierDesktopTable({}: Props) {
                         <PCol>{item?.address?.postalCode}</PCol>
                         <PCol className="flex justify-end">
                             <Button
+                                disabled={suplierId===item.suplierId.toString()}
                                 size="sm"
                                 color="yellow"
                                 onClick={() => handleSuplierDetail(item?.suplierId?.toString() || '')}
