@@ -57,7 +57,9 @@ export class TypeOrmSuplierRepository implements SuplierRepository {
   async findById(id: bigint): Promise<SuplierEntity | null> {
     const suplierOrmEntity = await this.repository.findOne({
       where: { suplierId: id },
-      relations: ['address'], // 'eager: true' en la entidad ya debería cargarla, pero es buena práctica indicarlo
+      relations: {
+        address: true
+      },
     });
 
     if (!suplierOrmEntity) {
