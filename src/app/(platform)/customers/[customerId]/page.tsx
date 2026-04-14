@@ -1,8 +1,10 @@
 import { findOneCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-one-customer-by-establishment.action";
+import { CustomerAddressCard } from "@/contexts/sale-management/customer/presentation/ui/details/CustomerAddressCard";
 import { CustomerSaleList } from "@/contexts/sale-management/customer/presentation/ui/details/CustomerSaleList";
 import { Button } from "@/shared/ui/components/buttons";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
+import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNotFoundDinamic";
 import { Metadata } from "next";
 import Link from "next/link";
 import { FcComboChart, FcLink, FcTimeline } from "react-icons/fc";
@@ -38,24 +40,7 @@ export default async function SaleInformationPage({ params }: Props) {
         ]
 
         if (!customer?.ok || !data) {
-            return (
-                <ProtectedRoute>
-                    <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
-                        <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
-                            <div className="text-6xl mb-4">🔍</div>
-                            <h2 className="text-xl font-bold mb-2">¡Oops! No pudimos encontrar la informacion del cliente</h2>
-                            <p className="text-red-700">El perfil del usuario no existe en nuestra base de datos o no se pudo cargar en este momento.</p>
-                            <div className="mt-6">
-                                <Link href="/customers">
-                                    <Button color="red">
-                                        🏠 Volver a la lista de clientes
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </main>
-                </ProtectedRoute>
-            );
+            throw new Error();
         }
         return (
             <ProtectedRoute>
@@ -137,6 +122,8 @@ export default async function SaleInformationPage({ params }: Props) {
                                     </div>
                                 </div>
                             </div>
+                            <CustomerAddressCard 
+                                customer={data}/>
 
                         </aside>
 
@@ -147,20 +134,11 @@ export default async function SaleInformationPage({ params }: Props) {
     } catch (error) {
         return (
             <ProtectedRoute>
-                <main className="flex flex-col gap-6 w-full min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 p-4">
-                    <div className="bg-gradient-to-r from-gray-100 to-gray-100 border-2 border-gray-300 text-red-800 px-6 py-8 rounded-xl shadow-lg text-center">
-                        <div className="text-6xl mb-4">🔍</div>
-                        <h2 className="text-xl font-bold mb-2">¡Oops! No pudimos encontrar la informacion del cliente</h2>
-                        <p className="text-red-700">El perfil del usuario no existe en nuestra base de datos o no se pudo cargar en este momento.</p>
-                        <div className="mt-6">
-                            <Link href="/customers">
-                                <Button color="red">
-                                    🏠 Volver a la lista de clientes
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </main>
+                <TemplateNotFoundDinamic
+                    linkHref="/customers/"
+                    linkText="Volver a la lista de clientes."
+                    title="¡Oops! No pudimos encontrar este cliente"
+                    description="El cliente solicitado no existe en nuestra base de datos o no se pudo cargar en este momento." />
             </ProtectedRoute>
         );
     }

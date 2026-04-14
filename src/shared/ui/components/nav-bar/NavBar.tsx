@@ -2,15 +2,13 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Logo from "../../assets/images/logologo.png";
-import { IoChevronDownSharp, IoNotifications, IoPeopleOutline } from 'react-icons/io5'
+import { IoChevronDownSharp, IoNotifications } from 'react-icons/io5'
 import { RoundedButton } from '../buttons/RoundedButton';
-import { RoundedBadge } from '../badges/RoundedBadge';
 import { LogoutModal } from '../modals/LogoutModal';
 import { useAuth, useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { Button } from '../buttons';
 import { useSideStore } from '../side-bar/side.store';
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 import { NavLink } from './NavLink';
 import { FcMindMap, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
@@ -20,7 +18,6 @@ export const NavBar = () => {
   const { establishment, branchOffice } = useWorkspace();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { onToggelSideBar, sideBar } = useSideStore();
-  const router = useRouter();
 
   const handleOpenLogoutModal = () => {
     setIsLogoutModalOpen(true);
@@ -79,14 +76,9 @@ export const NavBar = () => {
 
         {/* User Section */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3 bg-blue-50 px-4 py-2 rounded-lg">
-            <RoundedBadge color='blue'>
-              <IoPeopleOutline className="text-lg" />
-            </RoundedBadge>
-            <span className='max-sm:hidden text-sm font-medium text-blue-800'>
-              {user?.email ?? '--'}
-            </span>
-          </div>
+          <span className='max-sm:hidden text-sm font-medium text-blue-800'>
+            {user?.email ?? '--'}
+          </span>
 
           <Button
             color='red'

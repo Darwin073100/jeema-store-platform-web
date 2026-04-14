@@ -1,17 +1,16 @@
 'use client'
-import { CustomerEntity } from '@/features/customer/domain/entities/customer.entity'
 import { SaleStatusEnum } from '@/contexts/sale-management/sale/domain/enums/sale-status.enum'
 import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 import { Badge } from '@/shared/ui/components/badges/Badge'
 import { Button } from '@/shared/ui/components/buttons'
 import { Spinner } from '@/shared/ui/components/loadings/Spinner'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { IoBasketSharp } from 'react-icons/io5'
+import { ICustomer } from '../../interfaces/ICustomer'
 interface Props {
-    data: CustomerEntity
+    data: ICustomer
 }
 const CustomerSaleList = ({ data }: Props) => {
     const [loading, setLoading] = React.useState(false);
