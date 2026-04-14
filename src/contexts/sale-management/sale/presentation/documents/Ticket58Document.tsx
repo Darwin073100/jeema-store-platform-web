@@ -1,9 +1,9 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { formatDate } from "@/shared/lib/utils/date-formatter";
-import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
 import { ISale } from '../interfaces/ISale';
 import logo from 'src/shared/ui/assets/images/la_bonita_1.png';
+import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
 const mmToPt = (mm: number) => mm * 2.83465;
@@ -36,33 +36,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   folio: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'right',
     marginBottom: 1,
   },
   fecha: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'right',
     marginBottom: 2,
   },
   sucursal: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'left',
     marginTop: 2,
     marginBottom: 1,
   },
   direccion: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'left',
     marginBottom: 1,
   },
   cliente: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'left',
     marginBottom: 1,
   },
   empleado: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'left',
     marginBottom: 2,
   },
@@ -76,13 +76,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   productName: {
-    fontSize: 8,
+    fontSize: 7,
     fontWeight: 'bold',
     textAlign: 'left',
     marginBottom: 1,
   },
   productDetail: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'left',
   },
   tableDivider: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   totalColumn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    fontSize: 8,
+    fontSize: 7,
     marginBottom: 1,
   },
   totalBold: {
@@ -104,18 +104,18 @@ const styles = StyleSheet.create({
     marginBottom: 1,
   },
   contacto: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'center',
     marginTop: 2,
     marginBottom: 1,
   },
   facebook: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'center',
     marginBottom: 2,
   },
   mensaje: {
-    fontSize: 8,
+    fontSize: 7,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 5,
@@ -134,25 +134,27 @@ interface Prop {
 
 export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
   const address = `${sale.branchOffice?.address.city ?? ''} ${sale.branchOffice?.address.state ?? ''}, ${sale.branchOffice?.address.country ?? ''}, ${sale.branchOffice?.address.neighborhood ?? ''}, ${sale.branchOffice?.address.postalCode ?? ''}, ${sale.branchOffice?.address.street ?? ''}`;
-
+  const sizeAdd = ()=> {
+    return mmToPt(3) * sale.saleDetails.length;
+  }
   const productRows = sale.saleDetails ? sale.saleDetails.map((item) => (
     <View key={item.saleDetailId}>
       <Text style={styles.productName}>{item.productNameAtSale}</Text>
       <View style={{ flexDirection: 'row', width: '100%', marginBottom: 1 }}>
         <Text style={{ ...styles.productDetail, width: '15%' }}>{item.quantity}</Text>
-        <Text style={{ ...styles.productDetail, width: '15%' }}></Text>
-        <Text style={{ ...styles.productDetail, width: '20%' }}>${item.unitPriceAtSale?.toFixed(2) ?? '0.00'}</Text>
-        <Text style={{ ...styles.productDetail, width: '20%' }}>${item.discountItem?.toFixed(2) ?? '0.00'}</Text>
-        <Text style={{ ...styles.productDetail, width: '15%' }}>${((item.subtotalItem ?? 0) + (item.discountItem ?? 0)).toFixed(2)}</Text>
-        <Text style={{ ...styles.productDetail, fontWeight: 'bold', width: '15%' }}>${item.subtotalItem?.toFixed(2) ?? '0.00'}</Text>
+        <Text style={{ ...styles.productDetail, width: '1%' }}></Text>
+        <Text style={{ ...styles.productDetail, width: '20%' }}>{numberMoneyFormat(item.unitPriceAtSale)}</Text>
+        <Text style={{ ...styles.productDetail, width: '20%' }}>-{numberMoneyFormat(item.discountItem)}</Text>
+        <Text style={{ ...styles.productDetail, width: '24%' }}>{numberMoneyFormat((item.subtotalItem ?? 0) + (item.discountItem ?? 0))}</Text>
+        <Text style={{ ...styles.productDetail, fontWeight: 'bold', width: '20%' }}>{numberMoneyFormat(item.subtotalItem)}</Text>
       </View>
-      <Text style={styles.tableDivider}>---------------------------------------------------</Text>
+      <Text style={styles.tableDivider}>---------------------------------------------------------</Text>
     </View>
   )) : [];
 
   return (
     <Document>
-      <Page size={[mmToPt(58), mmToPt(250)]} style={styles.page}>
+      <Page size={[mmToPt(58), mmToPt((120+sizeAdd()))]} style={styles.page}>
         {/* Logo */}
         <Image
           src={logo.src}
@@ -187,11 +189,11 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
         {/* Headers de tabla */}
         <View style={{ flexDirection: 'row', width: '100%', marginBottom: 2 }}>
           <Text style={{ ...styles.tableHeader, width: '15%' }}>CANT.</Text>
-          <Text style={{ ...styles.tableHeader, width: '15%' }}></Text>
+          <Text style={{ ...styles.tableHeader, width: '1%' }}></Text>
           <Text style={{ ...styles.tableHeader, width: '20%' }}>PRECIO</Text>
           <Text style={{ ...styles.tableHeader, width: '20%' }}>DES.</Text>
-          <Text style={{ ...styles.tableHeader, width: '15%' }}>S.TOTAL</Text>
-          <Text style={{ ...styles.tableHeader, width: '15%' }}>TOTAL</Text>
+          <Text style={{ ...styles.tableHeader, width: '24%' }}>S.TOTAL</Text>
+          <Text style={{ ...styles.tableHeader, width: '20%' }}>TOTAL</Text>
         </View>
 
         {/* Productos */}
@@ -201,28 +203,28 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
         <View style={styles.totalColumn}>
           <Text style={{ width: '60%', textAlign: 'right' }}>SUBTOTAL:</Text>
           <Text style={{ width: '40%', textAlign: 'right' }}>
-            ${(Number(sale.subTotalAmount.toFixed(2)) + Number(sale.discountAmount.toFixed(2))).toFixed(2)}
+            {numberMoneyFormat(Number(sale.subTotalAmount) + Number(sale.discountAmount))}
           </Text>
         </View>
 
         <View style={styles.totalColumn}>
           <Text style={{ width: '60%', textAlign: 'right' }}>DESCUENTO:</Text>
-          <Text style={{ width: '40%', textAlign: 'right' }}>${sale.discountAmount.toFixed(2)}</Text>
+          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(sale.discountAmount)}</Text>
         </View>
 
         <View style={styles.totalBold}>
           <Text style={{ width: '60%', textAlign: 'right' }}>TOTAL:</Text>
-          <Text style={{ width: '40%', textAlign: 'right' }}>${sale.totalAmount.toFixed(2)}</Text>
+          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(sale.totalAmount)}</Text>
         </View>
 
         <View style={styles.totalColumn}>
           <Text style={{ width: '60%', textAlign: 'right' }}>RECIBIDO:</Text>
-          <Text style={{ width: '40%', textAlign: 'right' }}>${sale.inAmount.toFixed(2)}</Text>
+          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(sale.inAmount)}</Text>
         </View>
 
         <View style={{ ...styles.totalColumn, marginBottom: 5 }}>
           <Text style={{ width: '60%', textAlign: 'right' }}>CAMBIO:</Text>
-          <Text style={{ width: '40%', textAlign: 'right' }}>${sale.outAmount.toFixed(2)}</Text>
+          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(sale.outAmount)}</Text>
         </View>
 
         {/* Divider */}
