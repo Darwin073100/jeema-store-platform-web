@@ -1,14 +1,24 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import { ICustomer } from '../../interfaces/ICustomer';
 import { FcComboChart, FcLink } from 'react-icons/fc';
 import { CustomerAddressCard } from './CustomerAddressCard';
 import { Card } from '@/shared/ui/components/cards';
 import { Button } from '@/shared/ui/components/buttons';
 import { BiPencil } from 'react-icons/bi';
+import { useCustomerStore } from '../../stores/customer.store';
+import { useCustomerUIStore } from '../../stores/customer-ui.store';
+import { CustomerUpdateModal } from './CustomerUpdateModal';
+import { FloatMessage } from '@/shared/ui/components/messages';
 interface Props {
     customer: ICustomer
 }
 const CustomerInformation = ({ customer }:Props) => {
+    const { setCustomer } = useCustomerStore();
+    const { openCustomerModal, floatMessageState } = useCustomerUIStore();
+    useEffect(()=>{
+        setCustomer(customer);
+    }, [customer]);
     return (
         <aside className="lg:col-span-1 space-y-6">
             {/* 1. FICHA DE CONTACTO PRINCIPAL */}
@@ -18,7 +28,7 @@ const CustomerInformation = ({ customer }:Props) => {
                         <span className="text-blue-500 mr-2"><FcLink /></span> 
                         <span>Contacto Principal</span>
                     </h2>
-                    <Button size='sm' color='yellow'><BiPencil/> Editar</Button>
+                    <Button size='sm' color='yellow' onClick={()=> openCustomerModal('editCustomer')}><BiPencil/> Editar</Button>
                 </div>
 
                 <dl className="text-sm space-y-3">
@@ -53,7 +63,7 @@ const CustomerInformation = ({ customer }:Props) => {
                     </div>
                 </dl>
             </Card>
-
+            <CustomerUpdateModal />
             {/* 2. ESTADÍSTICAS DEL CLIENTE (Placeholder) */}
             <Card>
                 <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4">
@@ -72,7 +82,8 @@ const CustomerInformation = ({ customer }:Props) => {
             </Card>
             <CustomerAddressCard
                 customer={customer} />
-
+            <FloatMessage 
+                {...floatMessageState} />
         </aside>
     )
 }

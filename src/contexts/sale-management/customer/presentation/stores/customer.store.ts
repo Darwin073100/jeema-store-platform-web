@@ -1,29 +1,37 @@
 import { create } from "zustand";
-import { CustomerEntity } from "../../../../../features/customer/domain/entities/customer.entity";
+import { ICustomer } from "../interfaces/ICustomer";
 
 interface State {
+    customer: ICustomer | null,
+    setCustomer: (payload: ICustomer | null)=> void,
     searchValue: string,
     setSearchValue: (value: string) => void,
-    customers: CustomerEntity[],
-    setCustomers: (customers: CustomerEntity[]) => void,
-    customersFilter: CustomerEntity[],
-    setCustomersFilter: (customers: CustomerEntity[]) => void,
+    customers: ICustomer[],
+    setCustomers: (customers: ICustomer[]) => void,
+    customersFilter: ICustomer[],
+    setCustomersFilter: (customers: ICustomer[]) => void,
 }
 
 const initialState = {
     searchValue: '',
     customers: [],
     customersFilter: [],
+    customer: null,
 }
 
 export const useCustomerStore = create<State>()((set, get) => ({
     ...initialState,
-    setCustomers: (customers: CustomerEntity[]) => {
+    setCustomer: (payload: ICustomer | null)=> {
+        set(()=>({
+            customer: payload
+        }))
+    },
+    setCustomers: (customers: ICustomer[]) => {
         set(()=>({
             customers
         }));
     },
-    setCustomersFilter: (customers: CustomerEntity[]) => {
+    setCustomersFilter: (customers: ICustomer[]) => {
         set(()=>({
             customersFilter: customers
         }));

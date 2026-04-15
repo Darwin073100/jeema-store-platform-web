@@ -1,7 +1,6 @@
 import { CustomerFirstNameVO } from "../value-objects/customer-first-name.vo";
 import { DomainEvent } from "src/shared/domain/events/domain-events";
 import { CustomerCreatedEvent } from "../events/customer-created.event";
-import { CategoryCreatedEvent } from "src/contexts/product-management/category/domain/events/category-created.event";
 import { CustomerRFCVO } from "../value-objects/customer-rfc.vo";
 import { CustomerPhoneNumberVO } from "../value-objects/customer-phone-number.vo";
 import { CustomerEmailVO } from "../value-objects/customer-email.vo";
@@ -227,16 +226,33 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
         return events;
       }
     
-      // Métodos de comportamiento del dominio
-      public updateName(newName: CustomerFirstNameVO): void {
-        if (this._firstName.equals(newName)) {
-          return; // No hay cambio, no se hace nada
-        }
-        this._firstName = newName;
-        this._updatedAt = new Date();
-        this.recordEvent(new CategoryCreatedEvent(this)); // Un evento de ejemplo
+
+      public updateFirstName(firstName: string) {
+        this._firstName = CustomerFirstNameVO.create(firstName)
       }
-    
+      public updateLastName(lastName: string | null) {
+        this._lastName = CustomerLastNameVO.create(lastName)
+      }
+      public updateSaleDefault(saleDefault: boolean) {
+        this._saleDefault = saleDefault;
+      }
+      public updateCompanyName(companyName: string | null) {
+        this._companyName = CustomerCompanyNameVO.create(companyName);
+      }
+      public updateRFC(rfc: string | null){
+        this._rfc = CustomerRFCVO.create(rfc);
+      }
+      public updateEmail(email: string | null){
+        this._email = CustomerEmailVO.create(email);
+      }
+      public updateCustomerType(customerType: string | null){
+        this._customerType = CustomerTypeVO.create(customerType);
+      }
+      public updatePhoneNumber(phoneNumber: string | null){
+        this._phoneNumber = CustomerPhoneNumberVO.create(phoneNumber)
+      }
+        
+          
       public softDelete(): void {
         if (this._deletedAt) {
           return; // Ya está marcado como eliminado

@@ -2,7 +2,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
-import { RegisterAddressDTO } from "@/shared/application/dtos/register-address.dto";
 import { useCustomerUIStore } from "../stores/customer-ui.store";
 import { registerCustomerAction } from "../actions/register-customer.action";
 import { CustomerTypeEnum } from "../../domain/enums/customer-type-enum";
@@ -149,7 +148,7 @@ const useCustomerForm = () => {
     const onSubmit = async (data: FormData) => {
         runLoading('saveCustomer');
         
-        let addressDTO: RegisterAddressDTO | null = null;
+        let addressDTO: any | null = null;
         if(addressCheck){
             addressDTO = {
                 country: data.addressCountry ?? '',
