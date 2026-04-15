@@ -7,14 +7,18 @@ import { EstablishmentOrmEntity } from "src/contexts/establishment-management/es
 import { BranchOfficeNotFoundException } from "src/contexts/establishment-management/branch-office/domain/exceptions/branch-office-not-found.exception";
 import { AddressOrmEntity } from "@/contexts/establishment-management/address/infraestructure/entities/address.orm-entity";
 import { getDataSource } from "@/configuration/databases/typeorm/config";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
+import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
 export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
   private ormBranchOfficeRepository: Repository<BranchOfficeOrmEntity>;
   private ormEstablishmentRepository: Repository<EstablishmentOrmEntity>;
+  private branchTransactionRepository: Repository<BranchOfficeOrmEntity>;
 
-  constructor(private readonly dataSource: DataSource) {
+  constructor(private readonly dataSource: DataSource, private readonly transactionDB: TransactionDBRepository) {
     this.ormBranchOfficeRepository = this.dataSource.getRepository(BranchOfficeOrmEntity);
     this.ormEstablishmentRepository = this.dataSource.getRepository(EstablishmentOrmEntity);
+    this.branchTransactionRepository = this.transactionDB.getManager().getRepository(BranchOfficeOrmEntity);
   }
 
   /**
@@ -23,25 +27,26 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
    */
   static async create(): Promise<TypeOrmBranchOfficeRepository> {
     const dataSource = await getDataSource();
-    return new TypeOrmBranchOfficeRepository(dataSource);
+    const tsDB = await TypeormTransactionDBRepository.create();
+    return new TypeOrmBranchOfficeRepository(dataSource, tsDB);
   }
 
   async save(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity> {
-    let branchExist = await this.ormBranchOfficeRepository.findOneBy({branchOfficeId: branchOffice.branchOfficeId});
-    if(branchExist){
-      branchExist = {
-        ...branchExist,
-        name: branchExist.name,
-        deletedAt: branchExist.deletedAt
-      }
-        // Guardar la entidad
-      const resp = await this.ormBranchOfficeRepository.save(branchExist); // El cascade se encargará de guardar/actualizar la dirección
+    // let branchExist = await this.ormBranchOfficeRepository.findOneBy({branchOfficeId: branchOffice.branchOfficeId});
+    // if(branchExist){
+    //   branchExist = {
+    //     ...branchExist,
+    //     name: branchExist.name,
+    //     deletedAt: branchExist.deletedAt
+    //   }
+    //     // Guardar la entidad
+    //   const resp = await this.ormBranchOfficeRepository.save(branchExist); // El cascade se encargará de guardar/actualizar la dirección
       
-      // Convertir una entidad de Typeorm a una entidad de dominio
-      const entity = BranchOfficeMapper.toDomainEntity(resp);
+    //   // Convertir una entidad de Typeorm a una entidad de dominio
+    //   const entity = BranchOfficeMapper.toDomainEntity(resp);
 
-      return entity;
-    }
+    //   return entity;
+    // }
     const isEstablishment = await this.ormEstablishmentRepository.findBy({establishmentId: branchOffice.establishmentId});
     // ...removed console.log...
     
@@ -88,10 +93,33 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
 
       branchExist = {
         ...branchExist,
-        name: branchOffice.name
+        name: branchOffice.name,
+        cloudBranchOfficeId: branchOffice.cloudBranchOfficeId
       }
 
       const save = await this.ormBranchOfficeRepository.save(branchExist);
+
+      return BranchOfficeMapper.toDomainEntity(save);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateTransactional(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity>{
+    try {
+      let branchExist = await this.ormBranchOfficeRepository.findOneBy({ branchOfficeId: branchOffice.branchOfficeId });
+      
+      if(!branchExist){
+        throw new BranchOfficeNotFoundException('No se encontró la sucursal a editar.');
+      }
+
+      branchExist = {
+        ...branchExist,
+        name: branchOffice.name,
+        cloudBranchOfficeId: branchOffice.cloudBranchOfficeId
+      }
+
+      const save = await this.branchTransactionRepository.save(branchExist);
 
       return BranchOfficeMapper.toDomainEntity(save);
     } catch (error) {

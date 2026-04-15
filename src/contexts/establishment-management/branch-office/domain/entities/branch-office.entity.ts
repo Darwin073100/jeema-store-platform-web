@@ -14,6 +14,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
    */
   export class BranchOfficeEntity {
     private readonly _branchId: bigint;
+    private _cloudBranchOfficeId: bigint |null; // ID de la sucursal en la nube
     private _name: BranchOfficeNameVO;
     private _addressId: bigint;
     private _establishmentId: bigint; // ID del Establishment al que pertenece
@@ -30,6 +31,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     // Esto asegura que la entidad solo se cree en un estado válido.
     private constructor(
       branchOfficeId: bigint,
+      cloudBranchOfficeId: bigint |null,
       establishmentId: bigint,
       addressId: bigint,
       name: BranchOfficeNameVO,
@@ -44,6 +46,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
       cashRegister: CashRegisterEntity[] | null,
     ) {
         this._branchId = branchOfficeId;
+        this._cloudBranchOfficeId = cloudBranchOfficeId;
         this._addressId = addressId;
         this._name = name;
         this._address = address;
@@ -59,6 +62,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     }
   
     get branchOfficeId(): bigint { return this._branchId; }
+    get cloudBranchOfficeId(): bigint | null { return this._cloudBranchOfficeId; }
     get addressId(): bigint { return this._addressId; }
     get name(): string { return this._name.value; }
     get address(): AddressEntity { return this._address; }
@@ -79,6 +83,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     ): BranchOfficeEntity {
       const branchOffice = new BranchOfficeEntity(
         BigInt(0),
+        null,
         establishmentId,
         address.addressId,
         EstablishmentNameVO.create(name),
@@ -97,6 +102,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
   
     public static reconstitute(
       branchOfficeId: bigint,
+      cloudBranchOfficeId: bigint |null,
       establishmentId: bigint,
       addressId: bigint,
       name: string,
@@ -112,6 +118,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     ): BranchOfficeEntity {
       return new BranchOfficeEntity(
         branchOfficeId,
+        cloudBranchOfficeId,
         establishmentId,
         addressId,
         BranchOfficeNameVO.create(name),
@@ -133,5 +140,8 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     }
     public updateAddressId(addressId: bigint){
       this._addressId = addressId;
-    }  
+    }
+    public updateCloudBranchOfficeId(id: bigint | null){
+      this._cloudBranchOfficeId = id;
+    }
   }

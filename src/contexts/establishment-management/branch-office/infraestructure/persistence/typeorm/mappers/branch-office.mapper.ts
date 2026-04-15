@@ -22,6 +22,7 @@ export class BranchOfficeMapper {
     const ormEntity = new BranchOfficeOrmEntity();
     ormEntity.branchOfficeId = domainEntity.branchOfficeId;
     ormEntity.name = domainEntity.name;
+    ormEntity.cloudBranchOfficeId = domainEntity.cloudBranchOfficeId;
     ormEntity.establishmentId = domainEntity.establishmentId;
     ormEntity.createdAt = domainEntity.createdAt;
     ormEntity.updatedAt = domainEntity.updatedAt;
@@ -67,6 +68,7 @@ export class BranchOfficeMapper {
     // Reconstituir la entidad de dominio
     return BranchOfficeEntity.reconstitute(
       ormEntity.branchOfficeId,
+      ormEntity.cloudBranchOfficeId,
       ormEntity.establishmentId,
       ormEntity.addressId,
       ormEntity.name,

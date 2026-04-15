@@ -13,6 +13,7 @@ export interface BranchOfficeRepository {
     findById(id: bigint): Promise<BranchOfficeEntity | null>;
     existById(branchOfficeId: bigint):Promise<BranchOfficeEntity | null>;
     update(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity>;
+    updateTransactional(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity>;
   }
   
   // Define el token de inyección para esta interfaz.
