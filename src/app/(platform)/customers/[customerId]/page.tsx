@@ -1,5 +1,6 @@
 import { findOneCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-one-customer-by-establishment.action";
 import { CustomerAddressCard } from "@/contexts/sale-management/customer/presentation/ui/details/CustomerAddressCard";
+import { CustomerInformation } from "@/contexts/sale-management/customer/presentation/ui/details/CustomerInformation";
 import { CustomerSaleList } from "@/contexts/sale-management/customer/presentation/ui/details/CustomerSaleList";
 import { Button } from "@/shared/ui/components/buttons";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
@@ -65,67 +66,8 @@ export default async function SaleInformationPage({ params }: Props) {
 
                         </div>
                         {/* COLUMNA LATERAL (DATOS DEL CLIENTE) */}
-                        <aside className="lg:col-span-1 space-y-6">
-
-                            {/* 1. FICHA DE CONTACTO PRINCIPAL */}
-                            <div className="bg-white p-6 rounded-xl shadow-lg border-t-4 border-blue-500">
-                                <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                                    <span className="text-blue-500 mr-2"><FcLink /></span> Contacto Principal
-                                </h2>
-
-                                <dl className="text-sm space-y-3">
-                                    {/* Nombre Completo */}
-                                    <div>
-                                        <dt className="font-semibold text-gray-600">Nombre Completo:</dt>
-                                        <dd className="text-lg font-bold text-gray-900">{data?.firstName} {data?.lastName}</dd>
-                                    </div>
-
-                                    {/* Tipo de Cliente */}
-                                    <div className="pt-2 border-t border-gray-100">
-                                        <dt className="font-semibold text-gray-600">Tipo de Cliente:</dt>
-                                        <dd className="text-gray-800">{data?.customerType}</dd>
-                                    </div>
-
-                                    {/* Compañía/RFC */}
-                                    <div className="pt-2 border-t border-gray-100">
-                                        <dt className="font-semibold text-gray-600">Compañía / RFC:</dt>
-                                        <dd className="text-gray-800">{data?.companyName} / <span className="font-medium text-orange-600">{data?.rfc}</span></dd>
-                                    </div>
-
-                                    {/* Teléfono */}
-                                    <div className="pt-2 border-t border-gray-100">
-                                        <dt className="font-semibold text-gray-600">Teléfono:</dt>
-                                        <dd className="text-blue-600 hover:underline cursor-pointer">{data?.phoneNumber}</dd>
-                                    </div>
-
-                                    {/* Email */}
-                                    <div className="pt-2 border-t border-gray-100">
-                                        <dt className="font-semibold text-gray-600">Email:</dt>
-                                        <dd className="text-blue-600 hover:underline cursor-pointer break-all">{data?.email}</dd>
-                                    </div>
-                                </dl>
-                            </div>
-
-                            {/* 2. ESTADÍSTICAS DEL CLIENTE (Placeholder) */}
-                            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                                <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4">
-                                    <FcComboChart /> <span>Estadísticas</span>
-                                </h2>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                                        <p className="text-xs text-blue-700 font-semibold">Total Compras</p>
-                                        <p className="text-2xl font-extrabold text-blue-900">{data?.sales?.length ?? 0}</p>
-                                    </div>
-                                    <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                                        <p className="text-xs text-orange-700 font-semibold">Monto Acumulado</p>
-                                        <p className="text-lg font-extrabold text-orange-900">0</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <CustomerAddressCard 
-                                customer={data}/>
-
-                        </aside>
+                    <CustomerInformation 
+                        customer={data}/>
 
                     </div>
                 </TemplateHeader>
