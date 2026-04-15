@@ -20,5 +20,7 @@ export interface EstablishmentRepository {
    */
   findById(id: bigint): Promise<EstablishmentEntity | null>;
 
+  transactionUpdate(establishment: EstablishmentEntity): Promise<EstablishmentEntity>;
+
   existById(establishmentId: bigint): Promise<EstablishmentEntity | null>;
 }

@@ -1,7 +1,10 @@
+import { CloudEstablishmentEnrollmentVO } from "../values-objects/cloud-establishment-enrollment-key.vo";
 import { EstablishmentNameVO } from "../values-objects/establishment-name.vo";
 
 export class EstablishmentEntity {
     private readonly _establishmentId: bigint;
+    private _cloudEstablishmentId: bigint | null;
+    private _enrollmentKey: CloudEstablishmentEnrollmentVO;
     private _name: EstablishmentNameVO;
     private readonly _createdAt: Date;
     private _updatedAt: Date | null;
@@ -13,6 +16,8 @@ export class EstablishmentEntity {
 
     private constructor(
     establishmentId: bigint,
+    cloudEstablishmentId: bigint | null,
+    enrollmentKey: CloudEstablishmentEnrollmentVO,
     name: EstablishmentNameVO,
     createdAt: Date,
     updatedAt: Date | null,
@@ -23,6 +28,8 @@ export class EstablishmentEntity {
     supliers: any[] | null,
     ) {
         this._establishmentId = establishmentId;
+        this._cloudEstablishmentId = cloudEstablishmentId;
+        this._enrollmentKey = enrollmentKey;
         this._name = name;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
@@ -44,6 +51,8 @@ export class EstablishmentEntity {
   static create(name: string): EstablishmentEntity {
     const establishment = new EstablishmentEntity(
       BigInt(0),
+      null,
+      CloudEstablishmentEnrollmentVO.create(null),
       EstablishmentNameVO.create(name),
       new Date(), // createdAt
       null, // updatedAt
@@ -69,6 +78,8 @@ export class EstablishmentEntity {
    */
   static reconstitute(
     establishmentId: bigint,
+    cloudEstablishmentId: bigint | null,
+    enrollmentKey: string | null,
     name: string,
     createdAt: Date,
     updatedAt: Date | null,
@@ -80,6 +91,8 @@ export class EstablishmentEntity {
   ): EstablishmentEntity {
     return new EstablishmentEntity(
       establishmentId, 
+      cloudEstablishmentId,
+      CloudEstablishmentEnrollmentVO.create(enrollmentKey),
       EstablishmentNameVO.create(name), 
       createdAt, 
       updatedAt, 
@@ -92,43 +105,29 @@ export class EstablishmentEntity {
   }
 
   // Getters
-  get establishmentId(): bigint {
-    return this._establishmentId;
-  }
-
-  get name(): string {
-    return this._name.value;
-  }
-
-  get createdAt(): Date {
-    return this._createdAt;
-  }
-
-  get updatedAt(): Date | null {
-    return this._updatedAt;
-  }
-
-  get deletedAt(): Date | null {
-    return this._deletedAt;
-  }
-
-  get products(): any[] | null {
-    return this._products;
-  }
-
-  get customers(): any[] | null{
-    return this._customers;
-  }
-  get branchOffices(){
-    return this._branchOffices;
-  }
-  get supliers(){
-    return this._supliers;
-  }
+  get establishmentId(): bigint { return this._establishmentId; }
+  get cloudEstablishmentId(): bigint | null { return this._cloudEstablishmentId; }
+  get enrollmentKey(): string | null { return this._enrollmentKey.value; }
+  get name(): string { return this._name.value; }
+  get createdAt(): Date { return this._createdAt; }
+  get updatedAt(): Date | null { return this._updatedAt; }
+  get deletedAt(): Date | null { return this._deletedAt; }
+  get products(): any[] | null { return this._products; }
+  get customers(): any[] | null { return this._customers; }
+  get branchOffices(){ return this._branchOffices; }
+  get supliers(){ return this._supliers; }
 
   public updateName(name: string){
     this._name = EstablishmentNameVO.create(name);
     this._updatedAt= new Date();
+  }
+  public updateCloudEstablishmentId(id: bigint | null){
+    this._cloudEstablishmentId = id;
+    this._updatedAt = new Date();
+  }
+  public updateEnrollmentKey(key: string | null){
+    this._enrollmentKey = CloudEstablishmentEnrollmentVO.create(key);
+    this._updatedAt = new Date();
   }
 }
 

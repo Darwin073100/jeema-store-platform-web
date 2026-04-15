@@ -9,6 +9,8 @@ export class EstablishmentMapper{
     static toOrmEntity(domainEntity: EstablishmentEntity){
         const ormEntity = new EstablishmentOrmEntity();
         ormEntity.name = domainEntity.name;
+        ormEntity.cloudEstablishmentId = domainEntity.cloudEstablishmentId;
+        ormEntity.enrollmentKey = domainEntity.enrollmentKey;
         ormEntity.createdAt = domainEntity.createdAt;
         ormEntity.updatedAt = domainEntity.updatedAt;
         ormEntity.deletedAt = domainEntity.deletedAt;
@@ -22,6 +24,8 @@ export class EstablishmentMapper{
     static toDomainEntity(ormEntity: EstablishmentOrmEntity){
         return EstablishmentEntity.reconstitute(
             ormEntity.establishmentId,
+            ormEntity.cloudEstablishmentId,
+            ormEntity.enrollmentKey,
             ormEntity.name,
             ormEntity.createdAt,
             ormEntity.updatedAt,

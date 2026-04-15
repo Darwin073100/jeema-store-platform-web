@@ -6,12 +6,16 @@ import { EstablishmentNotFoundException } from 'src/contexts/establishment-manag
 import { EstablishmentAlreadyExistsException } from 'src/contexts/establishment-management/establishment/domain/exceptions/establishment-already-exists.exception';
 import { EstablishmentMapper } from '../mappers/establishment.mapper';
 import { getDataSource } from '@/configuration/databases/typeorm/config';
+import { TransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository';
+import { TypeormTransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository';
 
 export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
   private readonly typeOrmRepository: Repository<EstablishmentOrmEntity>;
+  private readonly establishmentTransactionDB: Repository<EstablishmentOrmEntity>;
 
-  constructor(private readonly datasource: DataSource) {
+  constructor(private readonly datasource: DataSource, private readonly transactionDB: TransactionDBRepository) {
     this.typeOrmRepository = this.datasource.getRepository(EstablishmentOrmEntity);
+    this.establishmentTransactionDB = this.transactionDB.getManager().getREpository(EstablishmentOrmEntity);
   }
 
   /**
@@ -20,7 +24,8 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
    */
   static async create(): Promise<TypeOrmEstablishmentRepository> {
     const dataSource = await getDataSource();
-    return new TypeOrmEstablishmentRepository(dataSource);
+    const tsDB = await TypeormTransactionDBRepository.create();
+    return new TypeOrmEstablishmentRepository(dataSource, tsDB);
   }
 
   /**
@@ -53,6 +58,40 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
       }
 
       const savedOrmEntity = await this.typeOrmRepository.save(ormEntity);
+      return EstablishmentMapper.toDomainEntity(savedOrmEntity);
+    } catch (error) {
+      if(error instanceof QueryFailedError){
+        const  pgError = error as any;
+        if(pgError.code === '23505'){
+          throw new EstablishmentAlreadyExistsException('Ya existe un establecimiento con ese nombre.');
+        }
+        if(pgError.code === '23503'){
+          throw new EstablishmentNotFoundException('Establecimeinto no encontrado.');
+        }
+      }
+      throw error;
+    }
+  }
+
+  async transactionUpdate(establishment: EstablishmentEntity): Promise<EstablishmentEntity> {
+    try {
+      let ormEntity = await this.typeOrmRepository.findOne({
+        where: { establishmentId: establishment.establishmentId }, // TypeORM puede necesitar un cast para bigint en algunos casos
+      });
+
+      if (ormEntity) {
+        // Actualizar entidad existente
+        ormEntity.name = establishment.name;
+        ormEntity.cloudEstablishmentId = establishment.cloudEstablishmentId;
+        ormEntity.enrollmentKey = establishment.enrollmentKey;
+        ormEntity.updatedAt = establishment.updatedAt;
+        ormEntity.deletedAt = establishment.deletedAt;
+      } else {
+        // Crear nueva entidad
+        throw new EstablishmentNotFoundException('No encontramos el establecimiendo a editar.');
+      }
+
+      const savedOrmEntity = await this.establishmentTransactionDB.save(ormEntity);
       return EstablishmentMapper.toDomainEntity(savedOrmEntity);
     } catch (error) {
       if(error instanceof QueryFailedError){
