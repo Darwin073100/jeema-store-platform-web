@@ -23,6 +23,8 @@ import {
 export class BranchOfficeOrmEntity {
   @PrimaryGeneratedColumn('increment',{ name: 'branch_office_id', type: 'bigint' })
   branchOfficeId: bigint;
+  @Column({type: 'bigint', nullable: true, name: 'cloud_branch_office_id'})
+  cloudBranchOfficeId: bigint |null;
   @Column({ type: 'bigint', name: 'address_id', nullable: false, unique: true })
   addressId: bigint;
   @Column({ type: 'bigint', name: 'establishment_id' })

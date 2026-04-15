@@ -21,6 +21,12 @@ export class EstablishmentOrmEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint', name: 'establishment_id' })
   establishmentId: bigint; // Usamos bigint para corresponder con bigserial de PostgreSQL
 
+  @Column({type: 'bigint', nullable: true, name: 'cloud_establishment_id'})
+  cloudEstablishmentId: bigint |null;
+
+  @Column({ type: 'varchar', length: 255, unique: true, nullable: true, name: 'enrollment_key' })
+  enrollmentKey: string | null;
+
   @Column({ type: 'varchar', length: 250, unique: true, nullable: false })
   name: string;
 
