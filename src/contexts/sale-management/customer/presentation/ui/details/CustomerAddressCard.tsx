@@ -6,6 +6,7 @@ import { TbHomeEdit } from 'react-icons/tb';
 import { useCustomerUIStore } from '../../stores/customer-ui.store';
 import { ICustomer } from '../../interfaces/ICustomer';
 import { Card } from '@/shared/ui/components/cards';
+import { CustomerAddAddressModal } from './CustomerAddAddressModal';
 interface Props {
     customer: ICustomer
 }
@@ -18,7 +19,7 @@ const CustomerAddressCard = ({ customer }: Props) => {
                 {
                     customer?.address
                         ? <Button size='sm' color='yellow'><MdOutlineAddHomeWork /> Editar</Button>
-                        : <Button size='sm' color='blue'><TbHomeEdit /> Agregar</Button>
+                        : <Button size='sm' color='blue' onClick={()=> openCustomerModal('addAddress')}><TbHomeEdit /> Agregar</Button>
                 }
             </div>
             {/* Ficha de Detalles */}
@@ -63,6 +64,7 @@ const CustomerAddressCard = ({ customer }: Props) => {
                 <div className='mt-4 text-gray-700 italic'>
                     No se encontró una dirección
                 </div>}
+            <CustomerAddAddressModal />
         </Card>
     )
 }
