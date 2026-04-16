@@ -2,5 +2,5 @@ import { TemplateRepository } from "@/shared/domain/repositories/template.reposi
 import { AddressEntity } from "../entities/address.entity";
 
 export interface AddressRepository extends TemplateRepository<AddressEntity> {
-    
+    existById(entityId: bigint): Promise<AddressEntity | null>;
 }

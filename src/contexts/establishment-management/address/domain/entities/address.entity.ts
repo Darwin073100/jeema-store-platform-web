@@ -13,16 +13,16 @@ import { SuplierEntity } from "@/contexts/purchase-management/suplier/domain/ent
 
 export class AddressEntity  {
     private readonly _addressId: bigint;
-    private readonly _street: AddressStreetVO; // Calle // Juan ruiz de alarcon
-    private readonly _externalNumber: AddressExternalNumberVO; // Número exterior // 23
-    private readonly _internalNumber: AddressInternalNumberVO; // Número Interior Opcional //SN
-    private readonly _neighborhood: AddressNeighborhoodVO; // Colonia
-    private readonly _municipality: AddressMunicipalityVO; // Municipio
-    private readonly _city: AddressCityVO; // Ciudad //Ometepec
-    private readonly _state: AddressStateVO; // Estado // Guerrero
-    private readonly _postalCode: AddressPostalCodeVO; // Código Postal // 41700
-    private readonly _country: AddressCountryVO; // País // México
-    private readonly _reference: string|null; // Referencia //
+    private _street: AddressStreetVO; // Calle // Juan ruiz de alarcon
+    private _externalNumber: AddressExternalNumberVO; // Número exterior // 23
+    private _internalNumber: AddressInternalNumberVO; // Número Interior Opcional //SN
+    private _neighborhood: AddressNeighborhoodVO; // Colonia
+    private _municipality: AddressMunicipalityVO; // Municipio
+    private _city: AddressCityVO; // Ciudad //Ometepec
+    private _state: AddressStateVO; // Estado // Guerrero
+    private _postalCode: AddressPostalCodeVO; // Código Postal // 41700
+    private _country: AddressCountryVO; // País // México
+    private _reference: string|null; // Referencia //
     private readonly _createdAt: Date;
     private readonly _updatedAt: Date | null;
     private readonly _deletedAt: Date | null;
@@ -159,5 +159,34 @@ export class AddressEntity  {
         )
     }
 
-    
+    public updateStreet(street: string | null){
+        this._street = AddressStreetVO.create(street);
+    }
+    public updateExternalNumber(externalNumber: string | null){
+        this._externalNumber = AddressExternalNumberVO.create(externalNumber);
+    }
+    public updateInternalNumber(internalNumber: string | null){
+        this._internalNumber = AddressInternalNumberVO.create(internalNumber);
+    }
+    public updateNeighborhood(neighborhood: string | null){
+        this._neighborhood = AddressNeighborhoodVO.create(neighborhood);
+    }
+    public updateCity(city: string){
+        this._city = AddressCityVO.create(city);
+    }
+    public updateCountry(country: string){
+        this._country = AddressCountryVO.create(country);
+    }
+    public updateState(state: string){
+        this._state = AddressStateVO.create(state);
+    }
+    public updateMunicipality(municipality: string){
+        this._municipality = AddressMunicipalityVO.create(municipality);
+    }
+    public updatePostalCode(postalCode: string){
+        this._postalCode = AddressPostalCodeVO.create(postalCode);
+    }
+    public updateReference(reference: string | null){
+        this._reference = reference;
+    }
   }

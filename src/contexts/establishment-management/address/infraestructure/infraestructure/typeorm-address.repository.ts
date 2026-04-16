@@ -3,7 +3,6 @@ import { AddressEntity } from "../../domain/entities/address.entity";
 import { AddressRepository } from "../../domain/repository/address.repository";
 import { AddressOrmEntity } from "../entities/address.orm-entity";
 import { AddressMapper } from "../mappers/address.mapper";
-import { getDataSource } from "@/configuration/databases/typeorm/config";
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
@@ -47,6 +46,12 @@ export class TypeormAddressRepository implements AddressRepository {
     }
 
     async findById(entityId: bigint): Promise<AddressEntity | null> {
+        const result = await this.repository.findOne({ where:{
+            addressId: entityId
+        }});
+        return result? AddressMapper.toDomain(result): null;
+    }
+    async existById(entityId: bigint): Promise<AddressEntity | null> {
         const result = await this.repository.findOne({ where:{
             addressId: entityId
         }});
