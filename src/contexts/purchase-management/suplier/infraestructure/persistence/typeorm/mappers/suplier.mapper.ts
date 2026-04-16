@@ -15,6 +15,7 @@ export class SuplierMapper {
     const ormEntity = new SuplierOrmEntity();
     ormEntity.suplierId = domainEntity.suplierId;
     ormEntity.establishmentId = domainEntity.establishmentId;
+    ormEntity.addressId = domainEntity.addressId;
     ormEntity.name = domainEntity.name;
     ormEntity.phoneNumber = domainEntity.phoneNumber;
     ormEntity.contactPerson = domainEntity.contactPerson;
@@ -41,6 +42,7 @@ export class SuplierMapper {
     return SuplierEntity.reconstitute(
       ormEntity.suplierId,
       ormEntity.establishmentId,
+      ormEntity.addressId,
       ormEntity.name,
       ormEntity.contactPerson,
       ormEntity.phoneNumber,

@@ -5,8 +5,7 @@ import { AddressOrmEntity } from "../entities/address.orm-entity";
 import { AddressEntity } from "../../domain/entities/address.entity";
 
 export class AddressMapper {
-    static toDomain(ormEntity?: AddressOrmEntity | null): AddressEntity | null {
-        if (!ormEntity) return null;
+    static toDomain(ormEntity: AddressOrmEntity): AddressEntity {
         const addressVo = AddressEntity.reconstitute(
             ormEntity.addressId,
             ormEntity.country,

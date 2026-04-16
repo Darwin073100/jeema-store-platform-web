@@ -130,5 +130,8 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     public updateName(name: string){
       this._name = BranchOfficeNameVO.create(name);
       this._updatedAt = new Date();
-    }    
+    }
+    public updateAddressId(addressId: bigint){
+      this._addressId = addressId;
+    }  
   }

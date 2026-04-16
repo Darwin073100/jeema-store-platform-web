@@ -120,10 +120,11 @@ export class TypeOrmEmployeeRepository implements EmployeeRepository {
     return EmployeeMapper.toDomainEntity(ormEntity);
   }
 
-  async existById(employeeId: bigint): Promise<boolean> {
-    return await this.typeOrmRepository.existsBy({
+  async existById(employeeId: bigint): Promise<EmployeeEntity | null> {
+    const result =  await this.typeOrmRepository.findOneBy({
       employeeId
     });
+    return result? EmployeeMapper.toDomainEntity(result): null;
   }
 
   async delete(entityId: bigint): Promise<EmployeeEntity | null> {

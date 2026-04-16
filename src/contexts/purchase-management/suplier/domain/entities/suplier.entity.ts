@@ -11,6 +11,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
   export class SuplierEntity {
     private readonly _suplierId: bigint;
     private _establishmentId: bigint;
+    private _addressId: bigint | null;
     private _name: SuplierNameVO;
     private _contactPerson: SuplierContactPersonVO;
     private _phoneNumber: SuplierPhoneNumberVO;
@@ -27,6 +28,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     private constructor(
       suplierId: bigint,
       establishmentId: bigint,
+      addressId: bigint | null,
       name: SuplierNameVO,
       contactPerson: SuplierContactPersonVO,
       phoneNumber: SuplierPhoneNumberVO,
@@ -42,6 +44,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     ) {
         this._suplierId = suplierId;
         this._establishmentId = establishmentId;
+        this._addressId = addressId;
         this._name = name;
         this._rfc = rfc;
         this._phoneNumber = phoneNumber;
@@ -58,6 +61,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
   
     get suplierId(): bigint { return this._suplierId; }
     get establishmentId(){ return this._establishmentId; }
+    get addressId(){ return this._addressId; }
     get name() { return this._name.value; }
     get phoneNumber(){ return this._phoneNumber.value; }
     get email(){ return this._email.value; }
@@ -73,6 +77,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
 
     public static create(
       establishmentId: bigint,
+      addressId: bigint | null,
       name: string,
       contactPerson: string | null,
       phoneNumber: string | null,
@@ -84,6 +89,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
       const suplier = new SuplierEntity(
         BigInt(0),
         establishmentId,
+        addressId,
         SuplierNameVO.create(name),
         SuplierContactPersonVO.create(contactPerson),
         SuplierPhoneNumberVO.create(phoneNumber),
@@ -103,6 +109,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     public static reconstitute(
       suplierId: bigint,
       establishmentId: bigint,
+      addressId: bigint | null,
       name: string,
       contactPerson: string | null,
       phoneNumber: string | null,
@@ -119,6 +126,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
       return new SuplierEntity(
         suplierId,
         establishmentId,
+        addressId,
         SuplierNameVO.create(name),
         SuplierContactPersonVO.create(contactPerson),
         SuplierPhoneNumberVO.create(phoneNumber),
@@ -132,5 +140,9 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
         updatedAt,
         deletedAt,
       );
+    }
+
+    public updateAddressId(addressId: bigint | null){
+      this._addressId = addressId;
     }
   }

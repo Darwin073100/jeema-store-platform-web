@@ -14,5 +14,6 @@ export interface SuplierRepository extends TemplateRepository<SuplierEntity> {
   findByEmail(email: string, establishmentId: bigint):Promise<SuplierEntity| null>;
   findByRfc(rfc: string, establishmentId: bigint):Promise<SuplierEntity| null>;
   findAllByEstablishmentId(establishmentId: bigint, isAddress: boolean): Promise<SuplierEntity[]>;
+  existById(id: bigint): Promise<SuplierEntity | null>;
 }
   

@@ -251,6 +251,9 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
       public updatePhoneNumber(phoneNumber: string | null){
         this._phoneNumber = CustomerPhoneNumberVO.create(phoneNumber)
       }
+      public updateAddressId(addressId: bigint){
+        this._addressId = addressId;
+      }
         
           
       public softDelete(): void {

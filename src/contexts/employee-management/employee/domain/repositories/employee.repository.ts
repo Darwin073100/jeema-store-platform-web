@@ -11,7 +11,7 @@ export const EMPLOYEE_REPOSITORY = Symbol('EMPLOYEE_REPOSITORY');
  * Esto asegura la Inversión de Dependencias y la Independencia del Framework.
  */
 export interface EmployeeRepository extends TemplateRepository<EmployeeEntity> {
-  existById(employeeId: bigint): Promise<boolean>;
+  existById(employeeId: bigint): Promise<EmployeeEntity | null>;
   findAllByEstablishmentId(establishmentId: bigint): Promise<EmployeeEntity[]>;
   update(employee: EmployeeEntity): Promise<EmployeeEntity>;
 }

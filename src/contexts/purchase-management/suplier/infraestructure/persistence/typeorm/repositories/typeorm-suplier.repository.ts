@@ -69,6 +69,12 @@ export class TypeOrmSuplierRepository implements SuplierRepository {
     const suplierEntity = SuplierMapper.toDomainEntity(suplierOrmEntity);
     return suplierEntity;
   }
+  async existById(id: bigint): Promise<SuplierEntity | null> {
+    const result = await this.repository.findOne({
+      where: { suplierId: id },
+    });
+    return result? SuplierMapper.toDomainEntity(result): null;
+  }
 
   delete(entityId: bigint): Promise<SuplierEntity | null> {
     throw new Error('Este metodo no esta implementado');
