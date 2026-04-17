@@ -7,6 +7,7 @@ import { useCustomerUIStore } from '../../stores/customer-ui.store';
 import { ICustomer } from '../../interfaces/ICustomer';
 import { Card } from '@/shared/ui/components/cards';
 import { CustomerAddAddressModal } from './CustomerAddAddressModal';
+import { CustomerUpdateAddressModal } from './CustomerUpdateAddressModal';
 interface Props {
     customer: ICustomer
 }
@@ -18,7 +19,7 @@ const CustomerAddressCard = ({ customer }: Props) => {
                 <h2 className="text-2xl font-bold text-gray-900">Dirección</h2>
                 {
                     customer?.address
-                        ? <Button size='sm' color='yellow'><MdOutlineAddHomeWork /> Editar</Button>
+                        ? <Button size='sm' color='yellow' onClick={()=> openCustomerModal('editAddress')}><MdOutlineAddHomeWork /> Editar</Button>
                         : <Button size='sm' color='blue' onClick={()=> openCustomerModal('addAddress')}><TbHomeEdit /> Agregar</Button>
                 }
             </div>
@@ -33,12 +34,16 @@ const CustomerAddressCard = ({ customer }: Props) => {
                     <span className="text-gray-800">{customer?.address?.state ?? 'N/A'}</span>
                 </div>
                 <div className="py-1 bg-gray-100 flex justify-between p-2 rounded-lg">
+                    <span className="font-semibold text-gray-600">Municipio:</span>
+                    <span className="text-gray-800 capitalize">{customer?.address?.municipality ?? 'N/A'}</span>
+                </div>
+                <div className="py-1 bg-gray-100 flex justify-between p-2 rounded-lg">
                     <span className="font-semibold text-gray-600">Ciudad:</span>
                     <span className="text-gray-800">{customer?.address?.city ?? 'N/A'}</span>
                 </div>
                 <div className="py-1 bg-gray-100 flex justify-between p-2 rounded-lg">
-                    <span className="font-semibold text-gray-600">Municipio:</span>
-                    <span className="text-gray-800 capitalize">{customer?.address?.municipality ?? 'N/A'}</span>
+                    <span className="font-semibold text-gray-600">Colonia o barrio:</span>
+                    <span className="text-gray-800 capitalize">{customer?.address?.neighborhood ?? 'N/A'}</span>
                 </div>
                 <div className="py-1 bg-gray-100 flex justify-between p-2 rounded-lg">
                     <span className="font-semibold text-gray-600">Código postal:</span>
@@ -65,6 +70,7 @@ const CustomerAddressCard = ({ customer }: Props) => {
                     No se encontró una dirección
                 </div>}
             <CustomerAddAddressModal />
+            <CustomerUpdateAddressModal />
         </Card>
     )
 }

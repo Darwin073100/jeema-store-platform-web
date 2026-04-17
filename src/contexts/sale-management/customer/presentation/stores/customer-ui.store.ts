@@ -1,8 +1,8 @@
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { create } from "zustand";
 
-type ModalType  = 'editCustomer' | 'addAddress' | 'none';
-type LoadingType = 'editCustomer' | 'addAddress' | 'saveCustomer' | 'none';
+type ModalType  = 'editCustomer' | 'addAddress' | 'editAddress' | 'none';
+type LoadingType = 'editCustomer' | 'addAddress' | 'editAddress' | 'saveCustomer' | 'none';
 
 interface State {
     customerModal: ModalType,

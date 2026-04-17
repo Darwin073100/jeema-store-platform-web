@@ -80,8 +80,13 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
   }
 
   async findAllByEstablishment(establishmentId: bigint): Promise<CustomerEntity[]> {
-    const result = await this.ormCustomerRepository.findBy({
-      establishmentId
+    const result = await this.ormCustomerRepository.find({
+      where:{
+        establishmentId
+      },
+      relations: {
+        address: true
+      }
     });
 
     return result.map(item => CustomerMapper.toDomainEntity(item));

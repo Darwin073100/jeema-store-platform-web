@@ -34,7 +34,7 @@ export class UpdateAddressUseCase {
                 addressExist.updateCity(dto.city);
             }
             if(dto.country !== undefined){
-                addressExist.updateCity(dto.country);
+                addressExist.updateCountry(dto.country);
             }
             if(dto.postalCode !== undefined){
                 addressExist.updatePostalCode(dto.postalCode);
