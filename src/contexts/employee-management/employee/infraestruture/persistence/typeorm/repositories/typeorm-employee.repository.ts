@@ -63,6 +63,7 @@ export class TypeOrmEmployeeRepository implements EmployeeRepository {
       }
       employeeExist = {
         ...employeeExist,
+        addressId: employee.addressId,
         branchOfficeId: employee.branchOfficeId,
         employeeRoleId: employee.employeeRoleId,
         firstName: employee.firstName,

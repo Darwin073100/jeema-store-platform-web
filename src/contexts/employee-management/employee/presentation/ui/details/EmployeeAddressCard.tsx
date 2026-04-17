@@ -5,6 +5,7 @@ import { useEmployeeStore } from '../../stores/employee-store';
 import { Button } from '@/shared/ui/components/buttons';
 import { MdOutlineAddHomeWork } from 'react-icons/md';
 import { TbHomeEdit } from 'react-icons/tb';
+import { EmployeeAddAddressModal } from './EmployeeAddAddressModal';
 interface Props {
 }
 const EmployeeAddressCard = ({ }: Props) => {
@@ -18,7 +19,7 @@ const EmployeeAddressCard = ({ }: Props) => {
                     {
                         employee?.address
                             ? <Button size='sm' color='yellow'><MdOutlineAddHomeWork /> Editar</Button>
-                            : <Button size='sm' color='blue'><TbHomeEdit /> Agregar</Button>
+                            : <Button size='sm' color='blue' onClick={()=> openEmployeeModal('addAddress')}><TbHomeEdit /> Agregar</Button>
                     }
                 </div>
                 {/* Ficha de Detalles */}
@@ -64,6 +65,7 @@ const EmployeeAddressCard = ({ }: Props) => {
                     No se encontró una dirección
                 </div> }
             </div>
+            <EmployeeAddAddressModal />
 
             {/* <EmployeeUpdateModal
                 employeeRoles={employeeRoles} 
