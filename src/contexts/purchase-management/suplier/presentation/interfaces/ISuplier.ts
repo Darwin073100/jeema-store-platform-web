@@ -2,6 +2,7 @@ import { IAddress } from "@/contexts/establishment-management/address/presentati
 
 export interface ISuplier {
     suplierId: bigint,
+    addressId: bigint | null,
     name: string,
     phoneNumber: string | null,
     address: IAddress | null,

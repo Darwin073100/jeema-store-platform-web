@@ -6,6 +6,7 @@ import { PiAddressBookFill, PiCactus } from 'react-icons/pi';
 import { useSuplierStore } from '../stores/suplier.store';
 import { SuplierAddAddressModal } from './SuplierAddAddressModal';
 import { useSuplierUIStore } from '../stores/suplier-ui.store';
+import { SuplierUpdateAddressModal } from './SuplierUpdateAddressModal';
 
 const SuplierAddress = () => {
     const { suplier } = useSuplierStore();
@@ -16,7 +17,7 @@ const SuplierAddress = () => {
                 <PiAddressBookFill />
                 <h2 className="text-lg font-bold">Dirección</h2>
                 {suplier?.address
-                    ?<Button size="sm" color="yellow">Editar</Button>
+                    ?<Button size="sm" color="yellow" onClick={()=> openSuplierModal('editAddress')}>Editar</Button>
                     :<Button size="sm" onClick={()=> openSuplierModal('addAddress')}>Agregar</Button>}
             </div>
             {suplier?.address ? <>
@@ -54,6 +55,7 @@ const SuplierAddress = () => {
                 </CardGrid></>
                 : <span className='text-lg italic'>No se encontró la dirección</span>}
                 <SuplierAddAddressModal />
+                <SuplierUpdateAddressModal />
         </>
     )
 }

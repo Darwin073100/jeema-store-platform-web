@@ -36,6 +36,7 @@ export class SuplierMapper {
     public static toIResponse(entity: SuplierEntity): ISuplier {
       return {
         suplierId: entity.suplierId,
+        addressId: entity.addressId,
         name: entity.name,
         phoneNumber: entity.phoneNumber,
         address: entity.address? AddressMapper.toIResponse(entity.address): null,
