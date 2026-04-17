@@ -62,7 +62,7 @@ export class EmployeeOrmEntity {
   employeeRole: EmployeeRoleOrmEntity | null;
   @OneToMany(()=> SaleOrmEntity, item=> item.employee)
   sales: SaleOrmEntity[] | null;
-  @OneToOne(()=> AddressOrmEntity, (address)=> address.employee,{ nullable: true, cascade: true, eager: true, onDelete: 'CASCADE' })
+  @OneToOne(()=> AddressOrmEntity, (address)=> address.employee,{ nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'address_id' })
   address: AddressOrmEntity | null;
   @OneToOne(()=> UserOrmEntity, (user)=> user.employee, {onDelete: 'CASCADE'})

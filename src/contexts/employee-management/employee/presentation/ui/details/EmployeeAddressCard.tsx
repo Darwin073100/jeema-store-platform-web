@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/components/buttons';
 import { MdOutlineAddHomeWork } from 'react-icons/md';
 import { TbHomeEdit } from 'react-icons/tb';
 import { EmployeeAddAddressModal } from './EmployeeAddAddressModal';
+import { EmployeeUpdateAddressModal } from './EmployeeUpdateAddressModal';
 interface Props {
 }
 const EmployeeAddressCard = ({ }: Props) => {
@@ -18,7 +19,7 @@ const EmployeeAddressCard = ({ }: Props) => {
                     <h2 className="text-2xl font-bold text-gray-900">Dirección</h2>
                     {
                         employee?.address
-                            ? <Button size='sm' color='yellow'><MdOutlineAddHomeWork /> Editar</Button>
+                            ? <Button size='sm' color='yellow' onClick={()=> openEmployeeModal('editAddress')}><MdOutlineAddHomeWork /> Editar</Button>
                             : <Button size='sm' color='blue' onClick={()=> openEmployeeModal('addAddress')}><TbHomeEdit /> Agregar</Button>
                     }
                 </div>
@@ -66,6 +67,7 @@ const EmployeeAddressCard = ({ }: Props) => {
                 </div> }
             </div>
             <EmployeeAddAddressModal />
+            <EmployeeUpdateAddressModal />
 
             {/* <EmployeeUpdateModal
                 employeeRoles={employeeRoles} 

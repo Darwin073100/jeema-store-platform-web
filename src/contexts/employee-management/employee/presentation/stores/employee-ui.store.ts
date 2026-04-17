@@ -3,9 +3,10 @@ import { create } from "zustand";
 
 type ModalType  = 'registerUser' | 'editEmployee' | 'resetPassword' |
     'none' | 'editUser' | 'editUserRole' | 'deleteUserRole' | 'addRoleToUser' |
-    'addAddress';
+    'addAddress' | 'editAddress';
 type LoadingType = 'registerUser' | 'editEmployee' | 'stateUser' | 'resetPassword' | 
-    'none' | 'editUser' | 'editUserRole' | 'deleteUserRole' | 'addRoleToUser' | 'addAddress';
+    'none' | 'editUser' | 'editUserRole' | 'deleteUserRole' | 'addRoleToUser' | 'addAddress' |
+    'editAddress';
 
 interface State {
     employeeModal: ModalType,
