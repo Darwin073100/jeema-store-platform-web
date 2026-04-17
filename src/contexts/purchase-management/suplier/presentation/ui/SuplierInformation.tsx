@@ -7,11 +7,14 @@ import { PiCactus } from 'react-icons/pi';
 import { ISuplier } from '../interfaces/ISuplier';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import { useSuplierStore } from '../stores/suplier.store';
+import { FloatMessage } from '@/shared/ui/components/messages';
+import { useSuplierUIStore } from '../stores/suplier-ui.store';
 interface Props {
     suplier: ISuplier
 }
 const SuplierInformation = ({ suplier }:Props) => {
     const { setSuplier } = useSuplierStore();
+    const { floatMessageState } = useSuplierUIStore();
     
     useEffect(()=> {
         setSuplier(suplier);
@@ -51,6 +54,8 @@ const SuplierInformation = ({ suplier }:Props) => {
             <CardGrid title="Notas" icon={<PiCactus />}>
                 {suplier.notes}
             </CardGrid>
+            <FloatMessage
+                {...floatMessageState} />
         </>
     )
 }

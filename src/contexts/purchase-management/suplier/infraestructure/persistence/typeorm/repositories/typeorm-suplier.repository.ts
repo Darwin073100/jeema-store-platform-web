@@ -23,7 +23,21 @@ export class TypeOrmSuplierRepository implements SuplierRepository {
     return new TypeOrmSuplierRepository(dataSource);
   }
   async save(suplierEntity: SuplierEntity): Promise<SuplierEntity> {
-
+    let suplierExist = await this.repository.findOneBy({suplierId: suplierEntity.suplierId});
+    if(suplierExist){
+      suplierExist = {
+        ...suplierExist,
+        addressId: suplierEntity.addressId,
+        contactPerson: suplierEntity.contactPerson,
+        email: suplierEntity.email,
+        name: suplierEntity.name,
+        notes: suplierEntity.notes,
+        phoneNumber: suplierEntity.phoneNumber,
+        rfc: suplierEntity.rfc,
+      }
+      const result = await this.repository.save(suplierExist);
+      return SuplierMapper.toDomainEntity(result);
+    }
     let addressOrmEntity: AddressOrmEntity | null = null;
     if (suplierEntity.suplierId) {
       // Intentamos cargar la entidad ORM existente para BranchOffice

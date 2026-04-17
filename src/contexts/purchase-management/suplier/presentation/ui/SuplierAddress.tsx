@@ -4,9 +4,12 @@ import { CardGrid } from '@/shared/ui/components/grids/CardGrid';
 import React from 'react'
 import { PiAddressBookFill, PiCactus } from 'react-icons/pi';
 import { useSuplierStore } from '../stores/suplier.store';
+import { SuplierAddAddressModal } from './SuplierAddAddressModal';
+import { useSuplierUIStore } from '../stores/suplier-ui.store';
 
 const SuplierAddress = () => {
     const { suplier } = useSuplierStore();
+    const { openSuplierModal } = useSuplierUIStore();
     return (
         <>
             <div className="my-4 flex gap-2 items-center">
@@ -14,7 +17,7 @@ const SuplierAddress = () => {
                 <h2 className="text-lg font-bold">Dirección</h2>
                 {suplier?.address
                     ?<Button size="sm" color="yellow">Editar</Button>
-                    :<Button size="sm">Agregar</Button>}
+                    :<Button size="sm" onClick={()=> openSuplierModal('addAddress')}>Agregar</Button>}
             </div>
             {suplier?.address ? <>
                 <div className="grid grid-cols-4 gap-2 mb-2">
@@ -50,6 +53,7 @@ const SuplierAddress = () => {
                     {suplier?.address?.reference}
                 </CardGrid></>
                 : <span className='text-lg italic'>No se encontró la dirección</span>}
+                <SuplierAddAddressModal />
         </>
     )
 }
