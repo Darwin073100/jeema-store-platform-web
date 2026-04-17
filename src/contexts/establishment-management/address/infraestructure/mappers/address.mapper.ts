@@ -44,9 +44,9 @@ export class AddressMapper {
         addressOrmEntity.createdAt = domainEntity.createdAt;
         addressOrmEntity.updatedAt = domainEntity.updatedAt;
         addressOrmEntity.deletedAt = domainEntity.deletedAt;
-        addressOrmEntity.branchOffice = domainEntity.branchOffice? BranchOfficeMapper.toOrmEntity(domainEntity.branchOffice): null;
-        addressOrmEntity.employee = domainEntity.employee? EmployeeMapper.toOrmEntity(domainEntity.employee): null;
-        addressOrmEntity.suplier = domainEntity.suplier? SuplierMapper.toOrmEntity(domainEntity.suplier): null
+        // No mapear relaciones aquí. TypeORM manejará las relaciones automáticamente
+        // a través de las claves foráneas en las entidades relacionadas.
+        // Mapear relaciones aquí causa que se actualicen con datos incompletos.
         return addressOrmEntity;
     }
 }
