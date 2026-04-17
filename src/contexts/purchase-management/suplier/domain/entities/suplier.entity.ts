@@ -145,4 +145,22 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     public updateAddressId(addressId: bigint | null){
       this._addressId = addressId;
     }
+    public updateName(name: string){
+      this._name = SuplierNameVO.create(name);
+    }
+    public updateContactPerson(contactPerson: string | null){
+      this._contactPerson = SuplierContactPersonVO.create(contactPerson);
+    }
+    public updatePhoneNumber(phoneNumber: string | null){
+      this._phoneNumber = SuplierPhoneNumberVO.create(phoneNumber);
+    }
+    public updateEmail(email: string | null){
+      this._email = SuplierEmailVO.create(email);
+    }
+    public updateRFC(rfc: string | null){
+      this._rfc = SuplierRFCVO.create(rfc);
+    }
+    public updateNotes(notes: string | null){
+      this._notes = SuplierNotesVO.create(notes);
+    }
   }

@@ -32,6 +32,7 @@ export class RegisterSuplierUseCase {
 
     const suplier = SuplierEntity.create(
       request.establishmentId,
+      null,
       request.name,
       request.contactPerson,
       request.phoneNumber,

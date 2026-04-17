@@ -31,7 +31,7 @@ export async function registerSuplierAction(dto: Omit<RegisterSuplierDto, 'estab
 
     const result = await useCase.execute(currentDto);
     
-    revalidatePath('/products/supliers');
+    revalidatePath('/purchases/supliers');
     
     return {
         ...Result.success(SuplierMapper.toIResponse(result))
