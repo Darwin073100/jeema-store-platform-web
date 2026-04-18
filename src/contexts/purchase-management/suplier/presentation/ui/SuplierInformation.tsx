@@ -10,6 +10,7 @@ import { useSuplierStore } from '../stores/suplier.store';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { useSuplierUIStore } from '../stores/suplier-ui.store';
 import { SuplierUpdateModal } from './SuplierUpdateModal';
+import { SuplierDeleteModal } from './SuplierDeleteModal';
 interface Props {
     suplier: ISuplier
 }
@@ -27,7 +28,7 @@ const SuplierInformation = ({ suplier }:Props) => {
                 <BiSolidPurchaseTag />
                 <h2 className="text-lg font-bold">Proveedor</h2>
                 <Button size="sm" color="yellow" onClick={()=> openSuplierModal('editSuplier')}><BiPencil/> Editar</Button>
-                <Button size="sm" color="red"><BiTrash/> Eliminar</Button>
+                <Button size="sm" color="red" onClick={()=> openSuplierModal('deleteSuplier')}><BiTrash/> Eliminar</Button>
             </div>
             <div className="grid grid-cols-4 gap-2 mb-2">
                 <CardGrid title="Nombre" icon={<PiCactus />}>
@@ -56,6 +57,7 @@ const SuplierInformation = ({ suplier }:Props) => {
                 {suplier.notes}
             </CardGrid>
             <SuplierUpdateModal />
+            <SuplierDeleteModal />
             <FloatMessage
                 {...floatMessageState} />
         </>

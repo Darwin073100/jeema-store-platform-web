@@ -6,4 +6,5 @@ export interface UpdateSuplierDto {
     readonly contactPerson?: string | null;
     readonly email?: string | null;
     readonly notes?: string | null;
+    readonly softDelete?: boolean;
   }

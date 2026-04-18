@@ -1,8 +1,8 @@
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { create } from "zustand";
 
-type ModalType  = 'editSuplier' | 'addAddress' | 'editAddress' | 'none';
-type LoadingType = 'editSuplier' | 'saveSuplier' | 'addAddress' | 'editAddress' | 'none';
+type ModalType  = 'editSuplier' | 'addAddress' | 'editAddress' | 'deleteSuplier' | 'none';
+type LoadingType = 'editSuplier' | 'saveSuplier' | 'addAddress' | 'editAddress' | 'deleteSuplier' | 'none';
 
 interface State {
     suplierModal: ModalType,

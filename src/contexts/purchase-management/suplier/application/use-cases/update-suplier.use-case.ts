@@ -51,6 +51,9 @@ export class UpdateSuplierUseCase {
     if(request.email !== undefined){
       suplier.updateEmail(request.email);
     }
+    if(request.softDelete !== undefined){
+      suplier.softDelete();
+    }
 
     const resp = await this.suplierRepository.save(suplier);
     return resp;
