@@ -9,12 +9,13 @@ import { IBranchOffice } from '../interfaces/IBranchOffice';
 import { useBranchOfficeStore } from '../stores/branch-office.store';
 import { useBranchOfficeUIStore } from '../stores/branch-office-ui.store';
 import { FloatMessage } from '@/shared/ui/components/messages';
+import { BranchOfficeUpdateModal } from './BranchOfficeUpdateModal';
 interface Props {
     branchOffice: IBranchOffice
 }
 const BranchOfficeInformation = ({ branchOffice }:Props) => {
     const { setBranchOffice } = useBranchOfficeStore();
-    const { floatMessageState } = useBranchOfficeUIStore()
+    const { floatMessageState, openBranchOfficeModal } = useBranchOfficeUIStore()
     
     useEffect(()=> {
         setBranchOffice(branchOffice);
@@ -25,7 +26,7 @@ const BranchOfficeInformation = ({ branchOffice }:Props) => {
             <div className="my-4 flex gap-2 items-center">
                 <BiSolidPurchaseTag />
                 <h2 className="text-lg font-bold">Sucursal</h2>
-                <Button size="sm" color="yellow"><BiPencil/> Editar</Button>
+                <Button size="sm" color="yellow" onClick={()=> openBranchOfficeModal('editBranchOffice')}><BiPencil/> Editar</Button>
             </div>
             <div className="grid grid-cols-4 gap-2 mb-2">
                 <CardGrid title="Nombre" icon={<PiCactus />}>
@@ -38,6 +39,7 @@ const BranchOfficeInformation = ({ branchOffice }:Props) => {
                     {formatDate(branchOffice.updatedAt)}
                 </CardGrid>
             </div>
+            <BranchOfficeUpdateModal />
             <FloatMessage
                 {...floatMessageState} />
         </>
