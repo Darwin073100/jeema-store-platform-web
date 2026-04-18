@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEstablishmentStore } from '../stores/establishment.store'
 import { CreateEstablishmentDTO } from '../../../../../features/establishment/application/dtos/create-establishment.dto'
-import { useBranchOfficeStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office.store'
+import { useBranchOfficeStorageStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office-storage.store'
 
 const schema = yup.object({
     name: yup.string().required('El campo nombre es requerido').min(3, 'El valor debe ser mayor a 3 caracteres')
@@ -32,7 +32,7 @@ export const CreateEstablishmentForm = () => {
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [isLoading, setIsLoading] = useState(false);
     const { setEstablishment, clearEstablishment } = useEstablishmentStore();
-    const { clearBranchOffice } = useBranchOfficeStore();
+    const { clearBranchOffice } = useBranchOfficeStorageStore();
     
     useEffect(()=>{
         clearEstablishment();

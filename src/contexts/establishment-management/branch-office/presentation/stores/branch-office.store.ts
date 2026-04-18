@@ -1,22 +1,44 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { IBranchOffice } from '../interfaces/IBranchOffice';
+import { create } from "zustand";
+import { IBranchOffice } from "../interfaces/IBranchOffice";
 
-interface State{
-    branchOffice?: IBranchOffice
-    setBranchOffice: (data: IBranchOffice) => void;
-    clearBranchOffice:()=> void;
+interface State {
+    branchOffice: IBranchOffice | null,
+    setBranchOffice: (payload: IBranchOffice | null)=> void,
+    searchValue: string,
+    setSearchValue: (value: string) => void,
+    branchOffices: IBranchOffice[],
+    setBranchOffices: (branchOffices: IBranchOffice[]) => void,
+    branchOfficesFilter: IBranchOffice[],
+    setBranchOfficesFilter: (branchOffices: IBranchOffice[]) => void,
 }
 
-export const useBranchOfficeStore = create<State>()(
-    persist(
-      (set) => ({
-        branchOffice: undefined,
-        setBranchOffice: (data) => set({ branchOffice: data }),
-        clearBranchOffice: () => set({ branchOffice: undefined }),
-      }),
-      {
-        name: 'branch-office-storage', // clave que usará en localStorage
-      }
-    )
-  );
+const initialState = {
+    searchValue: '',
+    branchOffices: [],
+    branchOfficesFilter: [],
+    branchOffice: null,
+}
+
+export const useBranchOfficeStore = create<State>()((set, get) => ({
+    ...initialState,
+    setBranchOffice: (payload: IBranchOffice | null)=> {
+        set(()=>({
+            branchOffice: payload
+        }))
+    },
+    setBranchOffices: (branchOffices: IBranchOffice[]) => {
+        set(()=>({
+            branchOffices
+        }));
+    },
+    setBranchOfficesFilter: (branchOffices: IBranchOffice[]) => {
+        set(()=>({
+            branchOfficesFilter: branchOffices
+        }));
+    },
+    setSearchValue: (value: string) => {
+        set(()=>({
+            searchValue: value
+        }));
+    }
+}));

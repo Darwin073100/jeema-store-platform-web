@@ -12,7 +12,7 @@ import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
 import { useRouter } from 'next/navigation';
 import { HiMiniArrowLongRight } from 'react-icons/hi2';
 import { registerUserWithEmployeeAction } from '../actions/register-user-with-employee.action';
-import { useBranchOfficeStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office.store';
+import { useBranchOfficeStorageStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office-storage.store';
 import { useEstablishmentStore } from '@/contexts/establishment-management/establishment/presentation/stores/establishment.store';
 import { RegisterUserWithEmployeeDTO } from '../../application/dtos/register-user-with-employee.dto';
 
@@ -46,7 +46,7 @@ type FormData = yup.InferType<typeof schema>
 export const InitAcountForm = () => {
     const [floatMessageState, setFloatMessageState] = useState<FloatMessageType>({});
     const [isLoading, setIsLoading] = useState(false);
-    const {clearBranchOffice, branchOffice} = useBranchOfficeStore();
+    const {clearBranchOffice, branchOffice} = useBranchOfficeStorageStore();
     const { clearEstablishment} = useEstablishmentStore();
     const router = useRouter();
 
