@@ -10,75 +10,90 @@ import { CustomerAlreadyExistsException } from "../../domain/exceptions/customer
 import { CustomerLastNameVO } from "../../domain/value-objects/customer-last-name.vo";
 import { CustomerCompanyNameVO } from "../../domain/value-objects/customer-company-name.vo";
 import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
+import { AddressRepository } from "@/contexts/establishment-management/address/domain/repository/address.repository";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 
 export class RegisterCustomerUseCase {
   constructor(
     private readonly customerRepository: CustomerRepository,
-  ) {}
+    private readonly addressRepository: AddressRepository,
+    private readonly transactionDB: TransactionDBRepository,
+  ) { }
 
   async execute(request: RegisterCustomerDto): Promise<CustomerEntity> {
-    const establishmentId = request.establishmentId;
-    const firstName = CustomerFirstNameVO.create(request.firstName);
-    const lastName = request.lastName ? CustomerLastNameVO.create(request.lastName) : undefined;
-    const companyName = request.companyName ? CustomerCompanyNameVO.create(request.companyName) : undefined;
-    const phoneNumberVo = CustomerPhoneNumberVO.create(request.phoneNumber);const rfcVo = request.rfc? CustomerRFCVO.create(request.rfc): undefined;
-    const emailVo = request.email? CustomerEmailVO.create(request.email): undefined;
-    const customerType = request.customerType? CustomerTypeVO.create(request.customerType): undefined;
-    const address = request.address? AddressEntity.create(
-      request.address.country,
-      request.address.state,
-      request.address.postalCode,
-      request.address.municipality,
-      request.address.city,
-      request.address.neighborhood,
-      request.address.street ?? null,
-      request.address.externalNumber ?? null,
-      request.address.internalNumber ?? null,
-      request.address.reference ?? null
-    ): null;
+    try {
+      await this.transactionDB.beginTransaction();
+      const establishmentId = request.establishmentId;
+      const firstName = CustomerFirstNameVO.create(request.firstName);
+      const lastName = request.lastName ? CustomerLastNameVO.create(request.lastName) : undefined;
+      const companyName = request.companyName ? CustomerCompanyNameVO.create(request.companyName) : undefined;
+      const phoneNumberVo = CustomerPhoneNumberVO.create(request.phoneNumber); const rfcVo = request.rfc ? CustomerRFCVO.create(request.rfc) : undefined;
+      const emailVo = request.email ? CustomerEmailVO.create(request.email) : undefined;
+      const customerType = request.customerType ? CustomerTypeVO.create(request.customerType) : undefined;
+      const address = request.address ? AddressEntity.create(
+        request.address.country,
+        request.address.state,
+        request.address.postalCode,
+        request.address.municipality,
+        request.address.city,
+        request.address.neighborhood,
+        request.address.street ?? null,
+        request.address.externalNumber ?? null,
+        request.address.internalNumber ?? null,
+        request.address.reference ?? null
+      ) : null;
 
-    const customerId = BigInt(0);
+      const customerId = BigInt(0);
 
-    if(request.saleDefault){
-      const customerDefault = await this.customerRepository.findSaleDefault(establishmentId ?? BigInt(0));
-      if(!!customerDefault){
-        throw new CustomerAlreadyExistsException('Ya hay un cliente por defecto para ventas.');
+      if (request.saleDefault) {
+        const customerDefault = await this.customerRepository.findSaleDefault(establishmentId ?? BigInt(0));
+        if (!!customerDefault) {
+          throw new CustomerAlreadyExistsException('Ya hay un cliente por defecto para ventas.');
+        }
       }
-    }
 
-    const suplier = CustomerEntity.create(
-      customerId,
-      firstName,
-      request.saleDefault,
-      null,
-      establishmentId,
-      lastName,
-      companyName,
-      phoneNumberVo,
-      address,
-      rfcVo,
-      emailVo,
-      customerType
-    );
+      const customer = CustomerEntity.create(
+        customerId,
+        firstName,
+        request.saleDefault,
+        null,
+        establishmentId,
+        lastName,
+        companyName,
+        phoneNumberVo,
+        null,
+        rfcVo,
+        emailVo,
+        customerType
+      );
 
-    if(!!suplier.email?.value){
-      const emailExist = await this.customerRepository.findByEmail(suplier.email?.value);
-      if(emailExist){
-        throw new CustomerAlreadyExistsException('Ya hay un cliente con el mismo correo electrónico.');
+      if (address) {
+        const resultAddress = await this.addressRepository.save(address);
+        customer.updateAddressId(resultAddress.addressId);
       }
-    }
 
-    if(!!suplier.rfc?.value){
-      const rfcExist = await this.customerRepository.findByRfc(suplier.rfc?.value);
-      if(rfcExist){
-        throw new CustomerAlreadyExistsException('Ya hay un cliente con el mismo RFC.');
+      if (!!customer.email?.value) {
+        const emailExist = await this.customerRepository.findByEmail(customer.email?.value);
+        if (emailExist) {
+          throw new CustomerAlreadyExistsException('Ya hay un cliente con el mismo correo electrónico.');
+        }
       }
+
+      if (!!customer.rfc?.value) {
+        const rfcExist = await this.customerRepository.findByRfc(customer.rfc?.value);
+        if (rfcExist) {
+          throw new CustomerAlreadyExistsException('Ya hay un cliente con el mismo RFC.');
+        }
+      }
+
+      const resp = await this.customerRepository.save(customer);
+
+      const domainEvents = customer.getAndClearEvents();
+      await this.transactionDB.commit();
+      return resp;
+    } catch (error) {
+      await this.transactionDB.rollback();
+      throw error;
     }
-
-    const resp = await this.customerRepository.save(suplier);
-
-    const domainEvents = suplier.getAndClearEvents();
-
-    return resp;
   }
 }

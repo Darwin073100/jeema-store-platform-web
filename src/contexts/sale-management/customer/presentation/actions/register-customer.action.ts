@@ -7,11 +7,15 @@ import { RegisterCustomerUseCase } from "../../application/use-cases/register-cu
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { Result } from "@/shared/lib/utils/result";
 import { CustomerMapper } from "../../application/mappers/customer.mapper";
+import { TypeormAddressRepository } from "@/contexts/establishment-management/address/infraestructure/infraestructure/typeorm-address.repository";
+import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
 export async function registerCustomerAction(dto: Omit<RegisterCustomerDto, 'establishmentId'>) {
     try {
         const repository = await TypeOrmCustomerRepository.create();
-        const useCase = new RegisterCustomerUseCase(repository);
+        const addressRepository = await TypeormAddressRepository.create();
+        const transaction = await TypeormTransactionDBRepository.create();
+        const useCase = new RegisterCustomerUseCase(repository, addressRepository, transaction);
         const cookieStore = await cookies();
 
         let establishment = cookieStore.get('establishmentCookie')?.value ?? null;
