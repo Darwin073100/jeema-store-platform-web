@@ -91,7 +91,9 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
   async findById(id: bigint): Promise<BranchOfficeEntity | null> {
     const branchOrmEntity = await this.ormBranchOfficeRepository.findOne({
       where: { branchOfficeId: id },
-      relations: ['address'], // 'eager: true' en la entidad ya debería cargarla, pero es buena práctica indicarlo
+      relations: {
+        address: true,
+      }
     });
 
     if (!branchOrmEntity) {

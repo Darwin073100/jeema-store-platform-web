@@ -1,3 +1,6 @@
+import { findBranchOfficeByIdAction } from "@/contexts/establishment-management/branch-office/presentation/actions/find-branch-office-by-id.action"
+import { BranchOfficeAddress } from "@/contexts/establishment-management/branch-office/presentation/ui/BranchOfficeAddress"
+import { BranchOfficeInformation } from "@/contexts/establishment-management/branch-office/presentation/ui/BranchOfficeInformation"
 import { findSuplierByIdAction } from "@/contexts/purchase-management/suplier/presentation/actions/find-suplier-by-id.action"
 import { ISuplier } from "@/contexts/purchase-management/suplier/presentation/interfaces/ISuplier"
 import { SuplierAddress } from "@/contexts/purchase-management/suplier/presentation/ui/SuplierAddress"
@@ -18,9 +21,9 @@ export const metadata = {
 export default async function ({ params }: Props) {
     try {
         const { branchOfficeId } = await params;
-        const suplier = (await findSuplierByIdAction(BigInt(branchOfficeId))).value as ISuplier | null;
+        const branchOffice = (await findBranchOfficeByIdAction(BigInt(branchOfficeId))).value;
 
-        if (!suplier) {
+        if (!branchOffice) {
             throw Error();
         }
 
@@ -28,15 +31,15 @@ export default async function ({ params }: Props) {
             { label: 'Configuración', href: '/configurations' },
             { label: 'Establecimiento', href: '/configurations/establishment' },
             { label: 'Sucursal' },
-            { label: suplier.name },
+            { label: branchOffice.name },
         ]
 
         return (
             <ProtectedRoute>
-                <TemplateHeader title={suplier.name} detail="Visualización de la información de la sucursal." breadcrumbItems={breadCrumbItems}>
-                    <SuplierInformation 
-                        suplier={suplier}/>
-                    <SuplierAddress />                    
+                <TemplateHeader title={branchOffice.name} detail="Visualización de la información de la sucursal." breadcrumbItems={breadCrumbItems}>
+                    <BranchOfficeInformation
+                        branchOffice={branchOffice}/>
+                    <BranchOfficeAddress />                    
                 </TemplateHeader>
             </ProtectedRoute>
         )
