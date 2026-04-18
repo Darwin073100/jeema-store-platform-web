@@ -7,11 +7,14 @@ import { PiCactus } from 'react-icons/pi';
 import { formatDate } from '@/shared/lib/utils/date-formatter';
 import { IBranchOffice } from '../interfaces/IBranchOffice';
 import { useBranchOfficeStore } from '../stores/branch-office.store';
+import { useBranchOfficeUIStore } from '../stores/branch-office-ui.store';
+import { FloatMessage } from '@/shared/ui/components/messages';
 interface Props {
     branchOffice: IBranchOffice
 }
 const BranchOfficeInformation = ({ branchOffice }:Props) => {
     const { setBranchOffice } = useBranchOfficeStore();
+    const { floatMessageState } = useBranchOfficeUIStore()
     
     useEffect(()=> {
         setBranchOffice(branchOffice);
@@ -35,8 +38,8 @@ const BranchOfficeInformation = ({ branchOffice }:Props) => {
                     {formatDate(branchOffice.updatedAt)}
                 </CardGrid>
             </div>
-            {/* <FloatMessage
-                {...floatMessageState} /> */}
+            <FloatMessage
+                {...floatMessageState} />
         </>
     )
 }

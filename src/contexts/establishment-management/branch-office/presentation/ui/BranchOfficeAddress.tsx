@@ -5,15 +5,18 @@ import React from 'react'
 import { PiAddressBookFill, PiCactus } from 'react-icons/pi';
 import { BiPencil } from 'react-icons/bi';
 import { useBranchOfficeStore } from '../stores/branch-office.store';
+import { useBranchOfficeUIStore } from '../stores/branch-office-ui.store';
+import { BranchOfficeUpdateAddressModal } from './BranchOfficeUpdateAddressModal';
 
 const BranchOfficeAddress = () => {
     const { branchOffice } = useBranchOfficeStore();
+    const { openBranchOfficeModal } = useBranchOfficeUIStore()
     return (
         <>
             <div className="my-4 flex gap-2 items-center">
                 <PiAddressBookFill />
                 <h2 className="text-lg font-bold">Dirección</h2>
-                <Button size="sm" color="yellow"><BiPencil/> Editar</Button>
+                <Button size="sm" color="yellow" onClick={()=> openBranchOfficeModal('editAddress')}><BiPencil/> Editar</Button>
             </div>
             {branchOffice?.address ? <>
                 <div className="grid grid-cols-4 gap-2 mb-2">
@@ -49,6 +52,7 @@ const BranchOfficeAddress = () => {
                     {branchOffice?.address?.reference}
                 </CardGrid></>
                 : <span className='text-lg italic'>No se encontró la dirección</span>}
+                <BranchOfficeUpdateAddressModal />
         </>
     )
 }

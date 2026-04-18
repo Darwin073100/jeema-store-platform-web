@@ -6,6 +6,7 @@ import { ISale } from "@/contexts/sale-management/sale/presentation/interfaces/I
 export interface IBranchOffice {
     branchOfficeId: bigint;
     establishmentId: bigint;
+    addressId: bigint;
     name: string;
     createdAt: Date;
     updatedAt: Date | null;

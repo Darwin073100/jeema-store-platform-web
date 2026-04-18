@@ -24,6 +24,7 @@ export class BranchOfficeMapper {
       const branch: IBranchOffice = {
         branchOfficeId: entity.branchOfficeId,
         establishmentId: entity.establishmentId,
+        addressId: entity.addressId,
         name: entity.name,
         address: AddressMapper.toIResponse(entity.address),
         createdAt: entity.createdAt,

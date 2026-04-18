@@ -28,7 +28,7 @@ const initialState = {
     loading: 'none' as LoadingType,
 }
 
-export const useCustomerUIStore = create<State>()((set, get) => ({
+export const useBranchOfficeUIStore = create<State>()((set, get) => ({
     ...initialState,
     closeBranchOfficeModal: () => {
         set(() => ({
