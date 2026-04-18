@@ -34,6 +34,7 @@ export class TypeOrmSuplierRepository implements SuplierRepository {
         notes: suplierEntity.notes,
         phoneNumber: suplierEntity.phoneNumber,
         rfc: suplierEntity.rfc,
+        deletedAt: suplierEntity.deletedAt
       }
       const result = await this.repository.save(suplierExist);
       return SuplierMapper.toDomainEntity(result);

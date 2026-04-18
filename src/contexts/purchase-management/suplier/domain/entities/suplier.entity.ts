@@ -163,4 +163,7 @@ import { AddressEntity } from "@/contexts/establishment-management/address/domai
     public updateNotes(notes: string | null){
       this._notes = SuplierNotesVO.create(notes);
     }
+    public softDelete(){
+      this._deletedAt = new Date();
+    }
   }

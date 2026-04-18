@@ -7,6 +7,8 @@ import { useSuplierStore } from '../stores/suplier.store';
 import { SuplierAddAddressModal } from './SuplierAddAddressModal';
 import { useSuplierUIStore } from '../stores/suplier-ui.store';
 import { SuplierUpdateAddressModal } from './SuplierUpdateAddressModal';
+import { BiPencil } from 'react-icons/bi';
+import { IoAdd } from 'react-icons/io5';
 
 const SuplierAddress = () => {
     const { suplier } = useSuplierStore();
@@ -17,8 +19,8 @@ const SuplierAddress = () => {
                 <PiAddressBookFill />
                 <h2 className="text-lg font-bold">Dirección</h2>
                 {suplier?.address
-                    ?<Button size="sm" color="yellow" onClick={()=> openSuplierModal('editAddress')}>Editar</Button>
-                    :<Button size="sm" onClick={()=> openSuplierModal('addAddress')}>Agregar</Button>}
+                    ?<Button size="sm" color="yellow" onClick={()=> openSuplierModal('editAddress')}><BiPencil/> Editar</Button>
+                    :<Button size="sm" onClick={()=> openSuplierModal('addAddress')}><IoAdd/> Agregar</Button>}
             </div>
             {suplier?.address ? <>
                 <div className="grid grid-cols-4 gap-2 mb-2">
