@@ -27,10 +27,21 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
   }
 
   async save(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity> {
-    // 1. Mapear el Value Object de dominio Address a AddressOrmEntity
-    // Si la BranchOffice ya existe (tiene un ID), su AddressOrmEntity asociada
-    // debería haber sido cargada por 'eager: true'.
-    // Si es una nueva BranchOffice, se crea una nueva AddressOrmEntity.
+    let branchExist = await this.ormBranchOfficeRepository.findOneBy({branchOfficeId: branchOffice.branchOfficeId});
+    if(branchExist){
+      branchExist = {
+        ...branchExist,
+        name: branchExist.name,
+        deletedAt: branchExist.deletedAt
+      }
+        // Guardar la entidad
+      const resp = await this.ormBranchOfficeRepository.save(branchExist); // El cascade se encargará de guardar/actualizar la dirección
+      
+      // Convertir una entidad de Typeorm a una entidad de dominio
+      const entity = BranchOfficeMapper.toDomainEntity(resp);
+
+      return entity;
+    }
     const isEstablishment = await this.ormEstablishmentRepository.findBy({establishmentId: branchOffice.establishmentId});
     // ...removed console.log...
     
