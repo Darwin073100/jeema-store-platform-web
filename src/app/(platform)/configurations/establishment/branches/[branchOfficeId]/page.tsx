@@ -8,7 +8,7 @@ import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNo
 
 interface Props {
     params: {
-        suplierId: string
+        branchOfficeId: string
     }
 }
 
@@ -17,22 +17,23 @@ export const metadata = {
 }
 export default async function ({ params }: Props) {
     try {
-        const { suplierId } = await params;
-        const suplier = (await findSuplierByIdAction(BigInt(suplierId))).value as ISuplier | null;
+        const { branchOfficeId } = await params;
+        const suplier = (await findSuplierByIdAction(BigInt(branchOfficeId))).value as ISuplier | null;
 
         if (!suplier) {
             throw Error();
         }
 
         const breadCrumbItems = [
-            { label: 'Compras', href: '/purchases' },
-            { label: 'Proveedores', href: '/purchases/supliers' },
+            { label: 'Configuración', href: '/configurations' },
+            { label: 'Establecimiento', href: '/configurations/establishment' },
+            { label: 'Sucursal' },
             { label: suplier.name },
         ]
 
         return (
             <ProtectedRoute>
-                <TemplateHeader title={suplier.name} detail="Visualización de la informacion del proveedor." breadcrumbItems={breadCrumbItems}>
+                <TemplateHeader title={suplier.name} detail="Visualización de la información de la sucursal." breadcrumbItems={breadCrumbItems}>
                     <SuplierInformation 
                         suplier={suplier}/>
                     <SuplierAddress />                    
@@ -43,10 +44,10 @@ export default async function ({ params }: Props) {
         return (
             <ProtectedRoute>
                 <TemplateNotFoundDinamic
-                    linkHref="/purchases/supliers"
-                    linkText="Volver a la lista de proveedores."
-                    title="¡Oops! No pudimos encontrar este proveedor"
-                    description="El proveedor solicitado no existe en nuestra base de datos o no se pudo cargar en este momento." />
+                    linkHref="/configurations/establishment"
+                    linkText="Volver a la vista general."
+                    title="¡Oops! No pudimos encontrar esta sucursal"
+                    description="La sucursal solicitada no existe en nuestra base de datos o no se pudo cargar en este momento." />
             </ProtectedRoute>
         )
     }
