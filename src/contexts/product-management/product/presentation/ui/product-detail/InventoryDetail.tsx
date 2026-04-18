@@ -9,7 +9,6 @@ import { ImPrinter } from 'react-icons/im'
 import { TbBoxMultiple, TbCurrencyDollar, TbTransfer } from 'react-icons/tb'
 import { ProductBarCodeModal } from './ProductBarCodesModal'
 import Barcode from 'react-barcode'
-import { InfoCard } from '@/shared/ui/components/cards'
 import { RegisterInventoryItemModal } from '@/contexts/inventory-management/inventory/presentation/ui/RegisterInventoryItemModal'
 import { UpdateInventoryItemModal } from '@/contexts/inventory-management/inventory/presentation/ui/UpdateInventoryItemModal'
 import { DeleteInventoryItemModal } from '@/contexts/inventory-management/inventory/presentation/ui/DeleteInventoryItemModal'
@@ -26,6 +25,7 @@ import { ProductPrice27x13Modal } from './ProductPrice27x13Modal'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 import { useRegisterLotModal } from '@/contexts/purchase-management/lot/presentation/hooks'
+import { CardGrid } from '@/shared/ui/components/grids/CardGrid'
 
 interface Props {
     product: IProduct
@@ -41,11 +41,11 @@ const InventoryDetail = ({ product }: Props) => {
     const { openLocalTransferInventoryItemModal } = useLocalTransferInventoryItemModal();
     return (
         <>
-            <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <div className="px-6 pt-4 flex justify-between items-center">
+                <div className="flex gap-2 items-center">
                     <TbBoxMultiple className="w-5 h-5 text-blue-600" />
-                    Inventario del producto
-                </h2>
+                    <h2 className="text-lg font-bold">Información del inventario</h2>
+                </div>
                 <div className='flex gap-4'>
                     <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
                         <Button color='yellow' onClick={() => handleOpenModalInventory(product?.inventory ?? null, product)}>
@@ -82,11 +82,10 @@ const InventoryDetail = ({ product }: Props) => {
             {product.inventory && (
                 <div className="space-y-4">
                     <UpdateInventoryModal/>
-                    <div key={product.inventory.inventoryId} className="bg-gray-50 rounded-lg p-4">
+                    <div key={product.inventory.inventoryId} className="">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4">
-                            <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
+                            <CardGrid title='Código de barra interno' icon={<HiOutlineQrcode />}>
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-gray-600"> <HiOutlineQrcode /> </span>
                                     <Button
                                         size='sm'
                                         title='Imprimir código de barras'
@@ -125,36 +124,31 @@ const InventoryDetail = ({ product }: Props) => {
                                     </div>
 
                                 </div>
-                            </div>
-                            <InfoCard
-                                label="Precio de menudeo"
-                                value={`$${product?.inventory.salePriceOne}`}
+                            </CardGrid>
+                            <CardGrid
+                                title="Precio de menudeo"
+                                children={`${numberMoneyFormat(product?.inventory.salePriceOne ?? 0)}`}
                                 icon={<TbCurrencyDollar className="w-4 h-4" />}
-                                className="bg-white"
                             />
-                            <InfoCard
-                                label="Stock mínimo"
-                                value={(product?.inventory.minStockBranch ?? 0).toString()}
+                            <CardGrid
+                                title="Stock mínimo"
+                                children={(product?.inventory.minStockBranch ?? 0).toString()}
                                 icon={<TbBoxMultiple className="w-4 h-4" />}
-                                className="bg-white"
                             />
-                            <InfoCard
-                                label="Stock máximo"
-                                value={(product.inventory.maxStockBranch ?? 0).toString()}
+                            <CardGrid
+                                title="Stock máximo"
+                                children={(product.inventory.maxStockBranch ?? 0).toString()}
                                 icon={<TbBoxMultiple className="w-4 h-4" />}
-                                className="bg-white"
                             />
-                            <InfoCard
-                                label="Unidades para mayoreo"
-                                value={(product.inventory.saleQuantityMany ?? 'N/A').toString()}
+                            <CardGrid
+                                title="Unidades para mayoreo"
+                                children={(product.inventory.saleQuantityMany ?? 'N/A').toString()}
                                 icon={<TbBoxMultiple className="w-4 h-4" />}
-                                className="bg-white"
                             />
-                            <InfoCard
-                                label="Precio de mayoreo"
-                                value={`${product.inventory.salePriceMany? numberMoneyFormat(product.inventory.salePriceMany): 'N/A'}`}
+                            <CardGrid
+                                title="Precio de mayoreo"
+                                children={`${numberMoneyFormat(product.inventory.salePriceMany ?? 0)}`}
                                 icon={<TbCurrencyDollar className="w-4 h-4" />}
-                                className="bg-white"
                             />
                         </div>
 

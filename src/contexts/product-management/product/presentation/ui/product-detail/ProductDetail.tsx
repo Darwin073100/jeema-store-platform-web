@@ -6,7 +6,6 @@ import { HiOutlineCalendar, HiOutlineCube, HiOutlineQrcode, HiOutlineTag, HiOutl
 import { UpdateProductModal } from './UpdateProductModal'
 import { DeleteProductModal } from './DeleteProductModal'
 import { TbBoxMultiple, TbPackage } from 'react-icons/tb'
-import { InfoCard } from '@/shared/ui/components/cards'
 import Barcode from 'react-barcode'
 import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { useDeleteProductModal } from '../../hooks/useDeleteProductModal'
@@ -16,6 +15,8 @@ import { useRegisterInventoryItemStore } from '@/contexts/inventory-management/i
 import { useInventoryItemUIStore } from '@/contexts/inventory-management/inventory/presentation/stores/inventory-item-ui.store'
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 import { useProductStore } from '../../stores/product.store'
+import { BiSolidPurchaseTag } from 'react-icons/bi'
+import { CardGrid } from '@/shared/ui/components/grids/CardGrid'
 interface Props {
     product: IProduct;
 }
@@ -26,16 +27,16 @@ const ProductDetail = ({ product }: Props) => {
     const { floatMessageState } = useInventoryItemUIStore();
     const { setProduct } = useProductStore();
 
-    useEffect(()=>{
+    useEffect(() => {
         setProduct(product);
         setInventoryItems(product.inventory?.inventoryItems ?? []);
-    },[product]);
-    
+    }, [product]);
+
     return (
         <>
             <div className="flex gap-2">
                 <FloatMessage
-                    key='product-details-general' 
+                    key='product-details-general'
                     {...floatMessageState} />
                 <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
                     <Button color='yellow' onClick={() => handleOpenUpdateProductModal(product)}>
@@ -51,74 +52,63 @@ const ProductDetail = ({ product }: Props) => {
             <UpdateProductModal />
             <DeleteProductModal />
             {/* Información del producto */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="border-b border-gray-200 px-6 py-4">
-                    <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                        <TbPackage className="w-5 h-5 text-blue-600" />
-                        Información del producto
-                    </h2>
+            <div className="">
+                <div className="my-4 flex gap-2 items-center">
+                    <BiSolidPurchaseTag />
+                    <h2 className="text-lg font-bold">Información del producto</h2>
                 </div>
-                <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <InfoCard
-                            label="Nombre del producto"
-                            value={product.name}
-                            icon={<HiOutlineTag className="w-4 h-4" />}
-                        />
-                        <div className={`bg-gray-50 border border-gray-200 rounded-lg p-2`}>
-                            <div className="flex items-center gap-1 mb-1">
-                                <span className="text-gray-600"> <HiOutlineQrcode /> </span>
-                                <label className="text-sm font-medium text-gray-600 uppercase tracking-wide">
-                                    Código de barra universal
-                                </label>
-                            </div>
-                            <div className="text-gray-900 font-semibold">
-                                <Barcode
-                                    format='CODE128'
-                                    value={product.universalBarCode ?? ''}
-                                    width={1}
-                                    height={50}
-                                    fontSize={16} />
-                            </div>
-                        </div>
-                        <InfoCard
-                            label="Unidad de medida para ventas"
-                            value={product.unitOfMeasure.toUpperCase()}
-                            icon={<HiOutlineCube className="w-4 h-4" />}
-                        />
-                        <InfoCard
-                            label="Stock mínimo global"
-                            value={product.minStockGlobal.toString()}
-                            icon={<TbBoxMultiple className="w-4 h-4" />}
-                        />
-                        <InfoCard
-                            label="Categoría"
-                            value={product.category?.name || 'Sin categoría'}
-                            icon={<HiOutlineTag className="w-4 h-4" />}
-                        />
-                        <InfoCard
-                            label="Marca"
-                            value={product.brand?.name || 'Sin marca'}
-                            icon={<HiOutlineTag className="w-4 h-4" />}
-                        />
-                        <InfoCard
-                            label="Temporada"
-                            value={product.season?.name || 'Todo el año'}
-                            icon={<HiOutlineCalendar className="w-4 h-4" />}
-                        />
-                        <InfoCard
-                            label="Última Actualización"
-                            value={formatDate(product.updatedAt)}
-                            icon={<HiOutlineCalendar className="w-4 h-4" />}
-                        />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 mt-4">
-                        <InfoCard
-                            label="Descripción del producto"
-                            value={product.description}
-                            icon={<HiOutlineTicket className="w-4 h-4" />}
-                        />
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <CardGrid
+                        title="Nombre del producto"
+                        children={product.name}
+                        icon={<HiOutlineTag className="w-4 h-4" />}
+                    />
+                    <CardGrid title='Código de barra universal' icon={<HiOutlineQrcode />}>
+                        <Barcode
+                            format='CODE128'
+                            value={product.universalBarCode ?? ''}
+                            width={1}
+                            height={50}
+                            fontSize={16} />
+                    </CardGrid>
+
+                    <CardGrid
+                        title="Unidad de medida para ventas"
+                        children={product.unitOfMeasure.toUpperCase()}
+                        icon={<HiOutlineCube className="w-4 h-4" />}
+                    />
+                    <CardGrid
+                        title="Stock mínimo global"
+                        children={product.minStockGlobal.toString()}
+                        icon={<TbBoxMultiple className="w-4 h-4" />}
+                    />
+                    <CardGrid
+                        title="Categoría"
+                        children={product.category?.name || 'Sin categoría'}
+                        icon={<HiOutlineTag className="w-4 h-4" />}
+                    />
+                    <CardGrid
+                        title="Marca"
+                        children={product.brand?.name || 'Sin marca'}
+                        icon={<HiOutlineTag className="w-4 h-4" />}
+                    />
+                    <CardGrid
+                        title="Temporada"
+                        children={product.season?.name || 'Todo el año'}
+                        icon={<HiOutlineCalendar className="w-4 h-4" />}
+                    />
+                    <CardGrid
+                        title="Última Actualización"
+                        children={formatDate(product.updatedAt)}
+                        icon={<HiOutlineCalendar className="w-4 h-4" />}
+                    />
+                </div>
+                <div className="grid grid-cols-1 gap-4 mt-4">
+                    <CardGrid
+                        title="Descripción del producto"
+                        children={product.description}
+                        icon={<HiOutlineTicket className="w-4 h-4" />}
+                    />
                 </div>
             </div>
         </>

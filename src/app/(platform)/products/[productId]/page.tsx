@@ -55,7 +55,7 @@ export default async function ProductDetailsPage({ params }: Props) {
             <ProtectedRoute>
                 <TemplateHeader title={product.name} detail='Detalles del producto' breadcrumbItems={breadcrumbItems}>
                     <ProductDetail product={product} />
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div>
                         <InventoryDetail product={product} />
                     </div>
                     <LotDetail 
