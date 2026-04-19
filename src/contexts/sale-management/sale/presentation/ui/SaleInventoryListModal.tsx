@@ -10,6 +10,7 @@ import { useInventoryListModal } from '../hooks/useInventoryListModal';
 import { IoMdAdd } from 'react-icons/io';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 
 const SaleInventoryListModal = () => {
   const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,
@@ -17,7 +18,7 @@ const SaleInventoryListModal = () => {
   } = useInventoryListModal()
   return (
     <TemplateModal size='full' isOpen={saleModals==='inventoryListModal'} onClose={closeSaleModal} title='Catalogo de productos'>
-      <div className="p-6 space-y-4">
+      <div className="p-2 space-y-4">
         <div className="flex flex-col justify-center items-center gap-4">
           <div className='flex flex-col gap-2'>
             <span className='flex gap-2 items-center'>
@@ -36,9 +37,6 @@ const SaleInventoryListModal = () => {
             <table className="w-full text-left rtl:text-right">
               <thead>
                 <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
-                  <th scope="col" className="px-6 py-4 font-semibold text-[10px]">
-                    Código
-                  </th>
                   <th scope="col" className="px-6 py-4 font-semibold">
                     Producto
                   </th>
@@ -61,11 +59,9 @@ const SaleInventoryListModal = () => {
                   <tr key={item.inventory?.product?.productId} 
                     onClick={()=> handleSetItemSelected(item)} 
                     className={clsx(`text-sm ${itemSelected?.inventoryItemId === item.inventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
-                    <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold text-[10px]">
-                      {item.inventory?.internalBarCode}
-                    </th>
-                    <th scope="row" className="px-5 py-1 whitespace-nowrap font-semibold min-w-[200px]">
-                      {item.inventory?.product?.name}
+                    <th scope="row" className="flex gap-2 px-5 py-1 whitespace-nowrap font-semibold min-w-[200px]">
+                      <Badge type='green'>{item.inventory?.internalBarCode}</Badge>
+                      <span>{item.inventory?.product?.name}</span>
                     </th>
                     <td className="px-5 py-1">
                       ${item.inventory?.salePriceOne}
@@ -101,7 +97,6 @@ const SaleInventoryListModal = () => {
                             Agregar
                           </Button>
                       </th>
-                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
