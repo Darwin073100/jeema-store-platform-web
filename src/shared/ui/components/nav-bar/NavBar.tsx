@@ -31,9 +31,9 @@ export const NavBar = () => {
     <nav className="flex justify-between items-center py-1.5 px-4 bg-white shadow-md hover:shadow-lg transition-all w-full">
       {/* Brand Section */}
       <div className='flex items-center gap-4'>
-        <div className={clsx(`relative group ${sideBar? 'rotate-90': 'rotate-0'} transition-all duration-300 md:rotate-0`)} onClick={()=> onToggelSideBar()}>
+        <div className={clsx(`relative group ${sideBar ? 'rotate-90' : 'rotate-0'} transition-all duration-300 md:rotate-0`)} onClick={() => onToggelSideBar()}>
           <Image
-            className="rounded-lg shadow-sm group-hover:shadow-md transition-all"
+            className="rounded-lg shadow-sm group-hover:shadow-md transition-all max-sm:w-10 max-sm:h-10"
             src={Logo}
             alt="Logo de la empresa"
             width={50}
@@ -42,22 +42,24 @@ export const NavBar = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-700/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
-        <div className="flex flex-col">
-          <h1 className='text-lg font-semibold text-gray-800 max-sm:hidden max-md:hidden max-lg:text-sm'>
+        <div className="flex flex-col max-sm:hidden max-md:hidden max-lg:hidden">
+          <h1 className='text-lg font-semibold text-gray-800 max-lg:text-sm'>
             {establishment?.name ?? '--'}
           </h1>
-          <span className="text-sm text-gray-500 max-sm:hidden">
+          <span className="text-sm text-gray-500">
             {branchOffice?.name}
           </span>
         </div>
-        <NavLink hover='' Icon={FcPaid} href='/sale/new' value='Nueva Venta'/>
-        <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-          <NavLink  hover='' Icon={FcShop} href='/sale' value='Ventas'/>
-        </HideElement>
-        <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-          <NavLink  hover='' Icon={FcShipped} href='/purchases' value='Compras'/>
-        </HideElement>
-        <NavLink hover='' Icon={FcMindMap} href='/products' value='Productos'/>
+        <div className='max-md:hidden flex gap-2'>
+          <NavLink hover='' Icon={FcPaid} href='/sale/new' value='Nueva Venta' />
+          <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
+            <NavLink hover='' Icon={FcShop} href='/sale' value='Ventas' />
+          </HideElement>
+          <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
+            <NavLink hover='' Icon={FcShipped} href='/purchases' value='Compras' />
+          </HideElement>
+          <NavLink hover='' Icon={FcMindMap} href='/products' value='Productos' />
+        </div>
       </div>
 
       {/* Actions Section */}
