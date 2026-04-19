@@ -4,16 +4,16 @@ import React, { useState } from 'react'
 import { FaCashRegister, FaCircle } from 'react-icons/fa'
 import { MdClosedCaption, MdClosedCaptionDisabled } from 'react-icons/md'
 import { TbCashRegister } from 'react-icons/tb'
-import { CashRegisterEntity } from '../../../../../features/cash/domain/entities/cash-register.entity'
 import clsx from 'clsx'
 import { BiPencil } from 'react-icons/bi'
 import { OpenCashSessionModal } from './OpenCashSessionModal'
 import { useOpenCashSession } from '../hooks/useOpenCashSession'
 import { useRouter } from 'next/navigation'
 import { Spinner } from '@/shared/ui/components/loadings/Spinner'
+import { ICashRegister } from '@/contexts/cash-management/cash-register/presentation/interfaces/ICashRegister'
 
 interface Props {
-    cashRegister: CashRegisterEntity
+    cashRegister: ICashRegister
 }
 
 const CashRegisterItem = ({ cashRegister }: Props) => {
