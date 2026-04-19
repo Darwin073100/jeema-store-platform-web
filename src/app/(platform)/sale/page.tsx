@@ -27,7 +27,7 @@ export default async function(){
                     <SaleDesktopTable
                         sales={currentSales}/>
                 </div>
-                <div className="md:hidden">
+                <div className="md:hidden mt-2 flex flex-col items-center gap-2 w-full">
                     <SaleCardList
                         sales={currentSales} />
                 </div>

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { FiExternalLink } from 'react-icons/fi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { ISale } from '../interfaces/ISale';
+import { Card } from '@/shared/ui/components/cards';
 
 interface Props {
     sales: ISale[]
@@ -24,7 +25,7 @@ const SaleCardList = ({ sales }: Props) => {
     }
     return (<>
         {sales.map(sale => (
-            <div key={sale.saleId.toString()} className="bg-white p-4 mb-3 border border-gray-200 rounded-lg shadow-sm">
+            <Card key={sale.saleId.toString()} className='w-full'>
                 {/* Cabecera de la Tarjeta (Folio y Status) */}
                 <div className="flex justify-between items-start pb-2 border-b border-gray-100 mb-2">
                     <p className="text-lg font-bold text-gray-900">
@@ -56,16 +57,13 @@ const SaleCardList = ({ sales }: Props) => {
                 {/* Totales (Footer) */}
                 <div className="mt-3 pt-3 border-t border-gray-100">
                     <p className="text-sm text-gray-500 font-medium">Total: <span className="text-lg font-extrabold text-gray-900 ml-1">{numberMoneyFormat(sale.totalAmount)}</span></p>
-                    <p className="text-xs text-gray-500 mt-1">
-                        Efectivo: <span className="font-medium text-green-700">{'$--'}</span> | Transf.: <span className="font-medium text-blue-700">{'$--'}</span>
-                    </p>
                 </div>
 
                 {/* Botón de Acción (Detalles, usando tu color de acento Naranja) */}
-                <Button className='w-full mt-3' onClick={()=> handleRouter(sale.saleId)}>
+                <Button className='w-full mt-3' onClick={()=> handleRouter(sale.saleId)} disabled={saleId===sale.saleId}>
                     {saleId===sale.saleId? <Spinner size={14}/>: <FiExternalLink />} Ver Detalles
                 </Button>
-            </div>
+            </Card>
         ))}
     </>);
 }
