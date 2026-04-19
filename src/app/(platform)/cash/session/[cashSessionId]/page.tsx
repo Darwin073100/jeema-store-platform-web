@@ -11,6 +11,7 @@ import TemplateNotFoundDinamic from "@/shared/ui/components/templates/TemplateNo
 import clsx from "clsx";
 import { Metadata } from "next";
 import { AccountTypeEnum } from "@/contexts/transaction-management/transaction-type/domain/enums/account-type.enum";
+import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -30,7 +31,7 @@ export default async function SaleInformationPage({ params }: Props) {
     try {
         const { cashSessionId } = await params;
         const customer = await findCashSessionWithTransactionsAction(BigInt(cashSessionId));
-        const data = customer?.value;
+        const data = customer?.value as ICashSession | undefined;
         const resultExpenseAcounts = await findAllTransactionsTypeAction(AccountTypeEnum.EXPENSE);
         const currentExpenseAcounts = resultExpenseAcounts.value?.transactionsType ?? [];
         const resultIncomeAcounts = await findAllTransactionsTypeAction(AccountTypeEnum.INCOME);
@@ -55,7 +56,7 @@ export default async function SaleInformationPage({ params }: Props) {
         
         const headTable = ['Folio', 'Típo', 'Movimiento', 'Descripción', 'Monto', 'Hora', 'Cajero']
         return (
-            <ProtectedRoute>
+            <ProtectedRoute requiredRoles={['global_admin', 'establishment_manager', 'branch_office_management', 'cajero']}>
                 <TemplateHeader title={`${data?.cashRegister?.name ?? ''}`} detail="Información del perfil del cliente." breadcrumbItems={breadcrumbItems}>
                     <CashCloseOptios
                         cashSession={data}
