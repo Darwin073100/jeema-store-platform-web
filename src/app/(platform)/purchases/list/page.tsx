@@ -34,7 +34,9 @@ export default async function ProductsPage() {
                         <LotActionsBar
                             data={items} />
                         <LotSearch />
-                        <TableLotsDesktop />
+                        <div className="max-lg:hidden block">
+                            <TableLotsDesktop />
+                        </div>
                     </main>
                 </TemplateHeader>
             </ProtectedRoute>

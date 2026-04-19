@@ -3,18 +3,17 @@ import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import React, { useEffect } from 'react'
-import { IoMdAdd } from 'react-icons/io';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
-import { LotEntity } from '../../../../../../features/lot/domain/entities/lot.entity';
 import { useLotStore } from '../../stores/lot.store';
 import { useLotActionsBar } from '../../hooks/useLotActionsBar';
 import { TextInput } from '@/shared/ui/components/inputs';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { FaFilter } from 'react-icons/fa';
 import { useLotUIStore } from '../../stores/lot-ui.store';
+import { ILot } from '../../interfaces/ILot';
 interface Props{
-    data: LotEntity[]
+    data: ILot[]
 }
 const LotActionsBar = ({ data }:Props) => {
     const { lotsFiltered, setLots } = useLotStore();
@@ -48,10 +47,10 @@ const LotActionsBar = ({ data }:Props) => {
                                 name='dateFinish'
                                 type='date' />
                         </div>
-                        <div className='flex items-end'>
+                        <div className='flex items-center'>
                             <Button color='yellow' disabled={loading === 'find-report-lots'}>
                                 {loading === 'find-report-lots' ? <Spinner size={14} /> : <FaFilter size={14} />}
-                                Aplicar filtro
+                                <span className='max-lg:hidden'>Aplicar filtro</span>
                             </Button>
                         </div>
                     </form>
