@@ -18,7 +18,7 @@ export default async function () {
         {label: 'Producto e inventario'}
     ]
     return (
-        <ProtectedRoute>
+        <ProtectedRoute requiredRoles={['global_admin','establishment_manager', 'branch_office_management']}>
             <TemplateHeader title="Alta de productos e inventario" detail="Da de alta un producto con lote inicial e inventario." breadcrumbItems={breadcrumbItems}>
                 <FormRegisterCompleteProduct
                     brandList={brands}
