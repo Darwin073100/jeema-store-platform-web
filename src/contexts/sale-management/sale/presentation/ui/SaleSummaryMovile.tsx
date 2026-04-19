@@ -23,7 +23,7 @@ const SaleSummaryMovile = ({ paymentMethods, customers,}: Props) => {
     const { customerSelected, openSaleModal } = useCustomerSale();
 
     return (
-        <section className="lg:hidden absolute w-screen">
+        <section className="xl:hidden absolute w-screen">
             <div className="w-full fixed z-10 bottom-0 left-0 right-0 bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-2">
                 <div className="bg-blue-50 rounded-lg p-4">
                     <h3 className="font-medium text-blue-800 flex justify-between">

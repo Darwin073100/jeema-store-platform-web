@@ -31,7 +31,7 @@ const SaleProductList = () => {
                 <SaleTicketModal saleId={sale?.saleId ?? BigInt(0)} />
                 <SaleInventoryListModal key='sale-inventory-items-modal' />
             </div>
-            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all max-md:hidden">
+            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all max-xl:hidden">
                 <table className="w-full text-left rtl:text-right">
                     <thead>
                         <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
@@ -73,7 +73,7 @@ const SaleProductList = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="flex flex-col items-center gap-4 w-full lg:hidden">
+            <div className="flex flex-col items-center gap-4 w-full xl:hidden">
                 {sale?.saleDetails?.map(item => <>
                     <SaleDetailItemMovile key={item.saleDetailId} 
                         saleDetail={item}/>

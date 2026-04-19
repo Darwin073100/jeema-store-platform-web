@@ -23,7 +23,7 @@ const SaleSummary = ({ paymentMethods, customers }: Props) => {
     const { customerSelected, openSaleModal } = useCustomerSale();
 
     return (
-        <section className="sticky top-4 max-lg:hidden">
+        <section className="sticky top-4 max-xl:hidden">
             <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-6 w-[300px]">
                 <div className="space-y-6 border-b border-gray-200 pb-6">
                     <div className="text-center">
