@@ -143,7 +143,6 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
         const query = this.inventoryItemRepository.createQueryBuilder('inventoryItem')
             .leftJoinAndSelect('inventoryItem.inventory', 'inventory')
             .leftJoinAndSelect('inventory.product', 'product')
-            .leftJoinAndSelect('product.category', 'category')
             .where('inventory.branchOfficeId = :branchOfficeId', { branchOfficeId })
             .andWhere('inventoryItem.location = :location', { location });
         if (searchTerm) {
@@ -151,7 +150,6 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
                 new Brackets((qb) => {
                     qb.where('product.name ILIKE :term', { term: `%${searchTerm}%` })
                         .orWhere('product.universalBarCode ILIKE :term', { term: `%${searchTerm}%` })
-                        .orWhere('category.name ILIKE :term', { term: `%${searchTerm}%` })
                         .orWhere('inventory.internalBarCode ILIKE :term', { term: `%${searchTerm}%` });
                 }),
             );

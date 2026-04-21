@@ -14,6 +14,8 @@ export function useAuthenticatedData<T>(url: string, dependencies: any[] = []) {
   useEffect(() => {
     if (!isReady) return;
 
+    let isMounted = true;
+
     const fetchData = async () => {
       setLoading(true);
       setError(null);
@@ -21,19 +23,30 @@ export function useAuthenticatedData<T>(url: string, dependencies: any[] = []) {
       try {
         const response = await get(url);
         const result = await response.json();
-        setData(result);
+        if (isMounted) {
+          setData(result);
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Error desconocido");
+        if (isMounted) {
+          setError(err instanceof Error ? err.message : "Error desconocido");
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
-  }, [url, isReady, ...dependencies]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [url, isReady, ...(Array.isArray(dependencies) ? dependencies : [])]);
 
   return { data, loading, error, refetch: () => {
     if (isReady) {
+      let isMounted = true;
       // Re-ejecutar la petición
       const fetchData = async () => {
         setLoading(true);
@@ -42,14 +55,23 @@ export function useAuthenticatedData<T>(url: string, dependencies: any[] = []) {
         try {
           const response = await get(url);
           const result = await response.json();
-          setData(result);
+          if (isMounted) {
+            setData(result);
+          }
         } catch (err) {
-          setError(err instanceof Error ? err.message : "Error desconocido");
+          if (isMounted) {
+            setError(err instanceof Error ? err.message : "Error desconocido");
+          }
         } finally {
-          setLoading(false);
+          if (isMounted) {
+            setLoading(false);
+          }
         }
       };
       fetchData();
+      return () => {
+        isMounted = false;
+      };
     }
   }};
 }

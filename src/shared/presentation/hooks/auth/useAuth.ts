@@ -62,15 +62,19 @@ export function useWorkspace() {
   const [workspaceError, setWorkspaceError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated || isLoading || workspaceLoading) return;
+    if (!isAuthenticated || isLoading) return;
 
     // Evitar cargar si ya tenemos datos
     if (workspace) return;
+
+    let isMounted = true;
 
     const loadWorkspace = async () => {
       try {
         setWorkspaceLoading(true);
         const result = await userWorkspaceAction();
+        
+        if (!isMounted) return;
         
         if (result.ok && result.value) {
           setWorkspace(result.value);
@@ -82,14 +86,22 @@ export function useWorkspace() {
           setWorkspaceError(result.error?.message?.toString() || "Error cargando workspace");
         }
       } catch (error) {
-        setWorkspaceError(error instanceof Error ? error.message : "Error desconocido");
+        if (isMounted) {
+          setWorkspaceError(error instanceof Error ? error.message : "Error desconocido");
+        }
       } finally {
-        setWorkspaceLoading(false);
+        if (isMounted) {
+          setWorkspaceLoading(false);
+        }
       }
     };
 
     loadWorkspace();
-  }, [isAuthenticated, isLoading, workspace, workspaceLoading]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated, isLoading]);
 
   return {
     // Información del establecimiento

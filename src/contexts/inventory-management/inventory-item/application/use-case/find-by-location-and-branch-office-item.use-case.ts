@@ -11,7 +11,6 @@ export class FindByLocationAndBranchOfficeItemUseCase {
     ){}
 
     async execute(branchOfficeId: bigint, dto: FilterProductListDTO, location: string | null ){
-        console.log(dto);
         try {
             let currentProductSearch:undefined|string = dto.product;
             if(!dto.product){

@@ -14,7 +14,6 @@ export class CreateSaleAndAddDetailUseCase {
     ) { }
 
     async execute(saveSaleDTO: RegisterSaleDto, addDetailDTO: AddDetailToSaleDto) {
-        console.log([saveSaleDTO, addDetailDTO]);
         if (addDetailDTO.productBarCodeAtSale === '') {
             throw new SaleConflictException('Hubo un error al agregar el producto a la venta.');
         }
