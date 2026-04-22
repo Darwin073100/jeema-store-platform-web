@@ -10,11 +10,11 @@ export default async function () {
 
   return (
     <>
-      <div className="flex w-full sm:flex-col md:flex-col lg:flex-col md:gap-2 justify-around items-center py-4">
+      <div className="flex w-full flex-col md:gap-2 justify-around items-center p-4">
         <div className="flex flex-col items-center">
-          <Image className="2xl:w-[250px] 2xl:h-[250px] xl:w-[250px] xl:h-[250px] lg:w-[250px] lg:h-[250px] md:w-[200px] md:h-[200px] sm:w-[150px] sm:h-[150px] rounded-full"
+          <Image className="w-[250px] max-2xl:w-[250px] max-xl:w-[250px] max-lg:w-[250px] max-md:w-[200px] rounded-full"
             alt="logo" src={Logo} />
-          <div className="w-[800px]">
+          <div className="w-full">
             <h1 className="text-lg text-center text-gray-700">
               !Excelente¡ Llegó el momento de dar de alta el usuario con el que por fin podras utilizar la aplicación.
             </h1>

@@ -120,9 +120,9 @@ export const CreateBranchForm = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-[800px] rounded-2xl shadow-md p-8 flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full rounded-2xl shadow-md p-4 flex flex-col gap-4">
                 <h1 className="text-3xl mb-4 text-gray-700">Alta de una sucursal</h1>
-                <div className='w-full flex justify-center gap-4'>
+                <div className='w-full flex max-sm:flex-col justify-center gap-4'>
                     <div className='w-full'>
                         <div>
                             <LabelInput htmlFor="name" value="Nombre de la sucursal" required='yes' />
@@ -218,7 +218,8 @@ export const CreateBranchForm = () => {
                 </div>
                 <Button
                     type='submit'
-                    color="blue">
+                    color="blue"
+                    disabled={isLoading}>
                     {isLoading ? <>Procesando <Spinner /></> : <>Siguiente<HiMiniArrowLongRight /></>}
                 </Button>
             </form>

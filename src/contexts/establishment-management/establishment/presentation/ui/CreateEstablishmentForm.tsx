@@ -12,7 +12,6 @@ import * as yup from 'yup';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEstablishmentStore } from '../stores/establishment.store'
-import { CreateEstablishmentDTO } from '../../../../../features/establishment/application/dtos/create-establishment.dto'
 import { useBranchOfficeStorageStore } from '@/contexts/establishment-management/branch-office/presentation/stores/branch-office-storage.store'
 
 const schema = yup.object({
@@ -45,12 +44,10 @@ export const CreateEstablishmentForm = () => {
         setFloatMessageState(()=>({}));
         setIsLoading(true);
 
-        const dto: CreateEstablishmentDTO = {
-            name: data.name
-        }
-
         let resp;
-        resp = await createEstablishmentAction(dto);
+        resp = await createEstablishmentAction({
+            name: data.name
+        });
 
         if (resp?.ok) {
             setFloatMessageState(()=>({
@@ -90,7 +87,8 @@ export const CreateEstablishmentForm = () => {
                     errorMessage={errors.name?.message} />
                 <Button
                     type='submit'
-                    color="blue">
+                    color="blue"
+                    disabled={isLoading}>
                     {isLoading ?<>Procesando <Spinner /></> : <>Siguiente<HiMiniArrowLongRight /></>}
                 </Button>
             </form>

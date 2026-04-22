@@ -102,9 +102,9 @@ export const InitAcountForm = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-[800px] rounded-2xl shadow-md p-8 flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full rounded-2xl shadow-md p-8 flex flex-col gap-4">
                 <h1 className="text-3xl text-gray-700">Alta de la cuenta de usuario</h1>
-                <div className='w-full flex justify-center gap-4'>
+                <div className='w-full flex max-sm:flex-col justify-center gap-4'>
                     <div className='w-full'>
                         <div>
                             <LabelInput htmlFor="firstname" value="Nombre del usuario" required='yes' />
@@ -175,7 +175,8 @@ export const InitAcountForm = () => {
                 </div>
                 <Button
                     type='submit'
-                    color="blue">
+                    color="blue"
+                    disabled={isLoading}>
                     {isLoading ?<>Procesando <Spinner /></> : <>Terminar<HiMiniArrowLongRight /></>}
                 </Button>
             </form>
