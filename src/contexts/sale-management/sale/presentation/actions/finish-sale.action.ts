@@ -1,6 +1,5 @@
 'use server';
 import { revalidatePath } from "next/cache";
-import { FinalizeSaleDto } from "../../../../../features/sale/application/dtos/finalize-sale.dto";
 import { TypeormSaleRepository } from "../../infraestructure/persistence/typeorm/repositories/typeorm-sale.repository";
 import { CalculateSaleUseCase } from "../../application/use-cases/calculate-sale.use-case";
 import { TypeOrmEmployeeRepository } from "@/contexts/employee-management/employee/infraestruture/persistence/typeorm/repositories/typeorm-employee.repository";
@@ -37,7 +36,6 @@ export async function finishSaleAction(dto: CalculateSaleDTO) {
 
         revalidatePath('/sale');
         revalidatePath('/sale/new');
-        console.log(dto);
         return {
             ...Result.success(SaleMapper.toIResponse(result))
         }
