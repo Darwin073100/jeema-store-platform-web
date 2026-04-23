@@ -11,20 +11,18 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: [
-      'your-database-domain.com'
-    ], // Si estás usando imágenes desde tu base de datos o un CDN
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+        port: '',
+        pathname: '/images/**', // Wildcard for all paths under /images
+      },
+    ],
   },
   experimental: {
     esmExternals: true,
     serverMinification: false,
-  },
-  webpack: (config, { isServer }) => {
-    // Asegurar que react-icons siempre esté en el lado del cliente
-    if (isServer) {
-      config.externals.push('react-icons');
-    }
-    return config;
   },
 };
 
