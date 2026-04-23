@@ -45,7 +45,7 @@ const useTicketSale = ({ saleId }: Props) => {
 
     useEffect(() => {
         handlePrint();
-    }, [saleId, saleModals === 'saleTicketModal', pdfUrl]);
+    }, [saleId, saleModals === 'saleTicketModal', pdfUrl!==null]);
 
     return {
         pdfUrl,

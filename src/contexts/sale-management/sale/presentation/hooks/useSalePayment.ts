@@ -61,8 +61,11 @@ const useSalePayment = () => {
         // 4. Actualizar el estado `salePaids` con el nuevo array.
         // Aquí se le pasa el array completo, que reemplazará el estado anterior.
         setSalePaids(newPaids);
-        setPaidAmount(Number(cashAmount) + Number(transferAmount));
-    }, [cashAmount, transferAmount, transferNumberRef, paymentMethods]);
+        const newPaidAmount = Number(cashAmount) + Number(transferAmount);
+        if (paidAmount !== newPaidAmount) {
+            setPaidAmount(newPaidAmount);
+        }
+    }, [cashAmount, transferAmount, transferNumberRef, paymentMethods.length, paidAmount]);
 
     // Efecto para calcular el cambio del cliente
     useEffect(() => {

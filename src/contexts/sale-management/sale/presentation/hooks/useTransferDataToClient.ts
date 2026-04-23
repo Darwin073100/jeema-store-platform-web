@@ -1,6 +1,6 @@
 import { ICustomer } from '@/contexts/sale-management/customer/presentation/interfaces/ICustomer';
 import { IPaymentMethod } from '@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSaleProcessStore } from '../stores/sale.process.store';
 
 interface Props {
@@ -9,19 +9,21 @@ interface Props {
 }
 
 const useTransferDataToClientNewSale = ({ methods, customers }: Props) => {
-    const { setPaymentMethods, paidAmount, setCustomers } = useSaleProcessStore();
+    const { setPaymentMethods, setCustomers } = useSaleProcessStore();
+
+    // Memoizar métodos para evitar recrearlos en cada render
+    const memoizedMethods = useMemo(() => methods, [methods]);
+    const memoizedCustomers = useMemo(() => customers ?? [], [customers]);
 
     useEffect(()=>{
-        setCustomers(customers ?? []);
-    },[customers]);
+        setCustomers(memoizedCustomers);
+    },[memoizedCustomers, setCustomers]);
 
     useEffect(()=>{
-        setPaymentMethods(methods);
-    },[paidAmount, methods]);
+        setPaymentMethods(memoizedMethods);
+    },[memoizedMethods, setPaymentMethods]);
 
-    return {
-
-  }
+    return {}
 }
 
 export default useTransferDataToClientNewSale
