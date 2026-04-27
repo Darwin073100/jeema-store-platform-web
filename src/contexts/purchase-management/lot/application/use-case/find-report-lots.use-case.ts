@@ -1,7 +1,6 @@
-import { Result } from "@/shared/lib/utils/result";
 import { LotRepository } from "../../domain/repositories/lot.repository";
 import { FindReportLotsDTO } from "../dtos/find-report-lots.dto";
-import { ILot } from "../../presentation/interfaces/ILot";
+import TimeMaster from "@/shared/lib/utils/TimeMaster";
 
 export class FindReportLotsUseCase {
     constructor(
@@ -12,12 +11,13 @@ export class FindReportLotsUseCase {
         if (branchOfficeId <= BigInt(0)) {
             return [];
         }
-        // Optener año actual
-        let getYear = new Date().getFullYear();
-        // Generamos la fecha de inicio, desde el primer dia del año
-        let currentDateInit = new Date(`${getYear}-01-01`);
-        // Generamos la fecha final, hasta el ultimo dia del año
-        let currentDateFinish = new Date(`${getYear}-12-31`);
+        // Utilizamos nuestra libreria local para fechas.
+        const date = new TimeMaster('America/Mexico_City');
+
+        // Generamos la fecha de inicio, desde el primer dia del mes actual.
+        let currentDateInit = date.getCurrentMonthRange().start;
+        // Generamos la fecha final, hasta el ultimo dia del mes actual.
+        let currentDateFinish = date.getCurrentMonthRange().end;
         if (dto.dateInit) {
             currentDateInit = dto.dateInit;
         }
