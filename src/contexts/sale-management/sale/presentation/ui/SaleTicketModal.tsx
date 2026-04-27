@@ -6,15 +6,11 @@ import { useSaleUIStore } from '../stores/sale.ui.store';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
 interface Props {
-    saleId: bigint,
 }
-const SaleTicketModal = ({ saleId }: Props) => {
+const SaleTicketModal = ({ }: Props) => {
     const { saleModals, closeSaleModal } = useSaleUIStore();
-    const { error, loading, pdfUrl } = useTicketSale({ saleId });
+    const { error, loading, pdfUrl } = useTicketSale({});
 
-    if (!pdfUrl) {
-        return;
-    }
     return (
         <TemplateModal isOpen={saleModals === 'saleTicketModal'} size='2xl' onClose={closeSaleModal} title='Vista previa del ticket'>
             <div className='h-[500px]'>
@@ -22,17 +18,19 @@ const SaleTicketModal = ({ saleId }: Props) => {
                     error && <div style={{ color: 'red' }}>{error}</div>
                 }
                 {
-                    !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
+                    loading==='saleTicket' && <div className='flex gap-2 w-full h-full justify-center items-center'><Spinner color='black' size={14} /> Esperando datos...</div>
                 }
-                <iframe
-                    src={pdfUrl}
-                    title="Documento PDF incrustado"
-                    width="100%"
-                    height="500px"
-                    style={{ border: '1px solid #ccc' }}
-                >
-                    <p>Tu navegador no soporta iframes.</p>
-                </iframe>
+                {
+                    pdfUrl && <iframe
+                        src={pdfUrl}
+                        title="Documento PDF incrustado"
+                        width="100%"
+                        height="500px"
+                        style={{ border: '1px solid #ccc' }}
+                    >
+                        <p>Tu navegador no soporta iframes.</p>
+                    </iframe>
+                }
             </div>
             <div className="flex justify-end gap-3 flex-wrap p-4">
                 <Button

@@ -7,9 +7,11 @@ import { useSaleProcessStore } from "../stores/sale.process.store";
 import { useSaleStore } from "../stores/sale.store";
 import { CalculateSaleDTO } from "../../application/dtos/calculate-sale.dto";
 import { RegisterSalePaymentDTO } from "@/contexts/sale-management/sale-payment/application/dtos/register-sale-payment.dto";
+import useTicketSale from "./useTicketSale";
 
 
 const useSalePayment = () => {
+    const { handlePrint } = useTicketSale({});
     const { 
         setFloatMessageState, closeSaleModal, openSaleModal, saleModals, loading, 
         initLoading, finishLoading, setViewTicket
@@ -231,9 +233,10 @@ const useSalePayment = () => {
                     });
                     setTimeout(() => {
                         closeSaleModal();
-                        openSaleModal('saleTicketModal');
                         resetSaleStore();
                         resetSaleProcessStore();
+                        //! Ejecutar el ticket
+                        handlePrint(result.value.saleId);
                     }, 1000);
                 }
             setTimeout(()=>{

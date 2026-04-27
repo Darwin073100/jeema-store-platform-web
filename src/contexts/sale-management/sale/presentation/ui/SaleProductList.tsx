@@ -28,7 +28,7 @@ const SaleProductList = () => {
                     <IoIosTrash className="text-lg" />
                     <span className="max-sm:hidden">Cancelar venta</span>
                 </Button>
-                <SaleTicketModal saleId={sale?.saleId ?? BigInt(0)} />
+                <SaleTicketModal />
                 <SaleInventoryListModal key='sale-inventory-items-modal' />
             </div>
             <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all max-xl:hidden">

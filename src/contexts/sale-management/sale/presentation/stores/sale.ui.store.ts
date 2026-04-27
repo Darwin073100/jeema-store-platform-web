@@ -17,6 +17,8 @@ interface UIState {
     finishLoading        : ()=> void,
     resetModals          : () => void;
     //? Ticket
+    pdfUrl: string | null;
+    setPdfUrl: (payload: string | null)=> void;
     viewTicket: boolean;
     setViewTicket: (payload: boolean)=> void;
 }
@@ -30,6 +32,7 @@ const initialState = {
     loading           : 'empty' as SaleLoadingsType,
     //? Ticket
     viewTicket        : false,
+    pdfUrl: null,
 };
 
 export const useSaleUIStore = create<UIState>()((set, get) => ({
@@ -43,6 +46,11 @@ export const useSaleUIStore = create<UIState>()((set, get) => ({
     initLoading          : (payload: SaleLoadingsType) => set({ loading: payload }),
     finishLoading        : () => set({ loading: 'none' }),
     //? Ticket
+    setPdfUrl: (payload: string | null)=>{
+        set(()=>({
+            pdfUrl: payload
+        }))
+    },
     setViewTicket        : (payload)=> set(()=>({viewTicket: payload})),
     //? Reset Store 
     resetModals          : () => set(initialState),

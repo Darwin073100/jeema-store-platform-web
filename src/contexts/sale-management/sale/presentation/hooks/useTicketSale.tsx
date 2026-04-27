@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { findTicketBySaleIdAction } from "../actions/find-ticket-by-sale-id.action";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { pdf } from "@react-pdf/renderer";
 import { Ticket58Document } from "../documents/Ticket58Document";
 interface Props {
-    saleId: bigint,
 }
-const useTicketSale = ({ saleId }: Props) => {
-    const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
+const useTicketSale = ({}: Props) => {
     const [error, setError] = useState<string | null>(null);
 
-    const { saleModals } = useSaleUIStore();
+    const { openSaleModal, setPdfUrl, pdfUrl, initLoading, loading, finishLoading } = useSaleUIStore();
 
-    const handlePrint = async () => {
-        setLoading(true);
+    const handlePrint = async (saleId: bigint) => {
+        initLoading('saleTicket');
+        openSaleModal("saleTicketModal");
         try {
             if (saleId === BigInt(0)) {
                 return;
@@ -39,18 +37,15 @@ const useTicketSale = ({ saleId }: Props) => {
         } catch (error) {
             setError("No se pudo cargar el documento.");
         } finally {
-            setLoading(false);
+            finishLoading();
         }
     };
-
-    useEffect(() => {
-        handlePrint();
-    }, [saleId, saleModals === 'saleTicketModal', pdfUrl!==null]);
 
     return {
         pdfUrl,
         loading,
-        error
+        error,
+        handlePrint,
     }
 }
 
