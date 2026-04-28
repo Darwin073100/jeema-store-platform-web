@@ -1,4 +1,4 @@
-import { DataSource, Repository } from "typeorm";
+import { Brackets, DataSource, Repository } from "typeorm";
 import { SaleOrmEntity } from "../entities/sale.orm-entity";
 import { SaleMapper } from "../mappers/sale.mapper";
 import { PaymentMethodNotFoundException } from "src/contexts/sale-management/payment-method/domain/exceptions/payment-method-not-found.exception";
@@ -122,6 +122,30 @@ export class TypeormSaleRepository implements SaleRepository{
         });
         const categoryList = result.map(item => SaleMapper.toDomainEntity(item));
         return categoryList;
+    }
+    async findAllByBranchOfficeAndFilter(branchOfficeId: bigint, dateStart?: Date, dateEnd?: Date, search?:string): Promise<SaleEntity[]> {
+        const query = await this.typeormRepository.createQueryBuilder('sale')
+            .leftJoinAndSelect('sale.customer', 'customer')
+            .leftJoinAndSelect('sale.employee', 'employee')
+            .where('sale.branchOfficeId = :branchOfficeId', {branchOfficeId});
+
+            if(dateStart){
+                query.andWhere('sale.createdAt >= :dateStart', {dateStart});
+            }
+            if(dateEnd){
+                query.andWhere('sale.createdAt <= :dateEnd', {dateEnd});
+            }
+
+            if(search){
+                query.andWhere(new Brackets((qb)=>{
+                    qb.where('sale.saleId ILIKE :search', {search: `%${search}%`})
+                    .orWhere('employee.firstName ILIKE :search', {search: `%${search}%`})
+                    .orWhere('customer.firstName ILIKE :search', {search: `%${search}%`});
+                }));
+            }
+        const result = await query.orderBy('sale.createdAt', 'DESC').getMany();
+
+        return result.map(item => SaleMapper.toDomainEntity(item));
     }
 
     // Metodo para guardar un metodo de pago y para actualizarla

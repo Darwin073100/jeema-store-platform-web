@@ -8,4 +8,5 @@ export interface SaleRepository extends TemplateRepository<SaleEntity>{
     findFinishSaleById(saleId: bigint): Promise<SaleEntity | null>;
     existById(saleId: bigint): Promise<boolean>;
     findSaleTicketById(saleId: bigint): Promise<SaleEntity | null>;
+    findAllByBranchOfficeAndFilter(branchOfficeId: bigint, dateStart?: Date, dateEnd?: Date, search?:string): Promise<SaleEntity[]>;
 }
