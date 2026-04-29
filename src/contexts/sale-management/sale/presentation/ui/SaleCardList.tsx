@@ -8,16 +8,13 @@ import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { useRouter } from 'next/navigation';
 import { FiExternalLink } from 'react-icons/fi';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { ISale } from '../interfaces/ISale';
 import { Card } from '@/shared/ui/components/cards';
+import { useSaleStore } from '../stores/sale.store';
 
-interface Props {
-    sales: ISale[]
-}
-
-const SaleCardList = ({ sales }: Props) => {
+const SaleCardList = () => {
     const router = useRouter();
     const [saleId, setSaleId] = useState(BigInt(0));
+    const { sales } = useSaleStore();
     const { handleBadgeType } = useSaleListBranch();
     const handleRouter = (id: bigint)=> {
         setSaleId(id);

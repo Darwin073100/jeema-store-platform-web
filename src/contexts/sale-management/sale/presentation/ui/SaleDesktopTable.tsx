@@ -9,15 +9,13 @@ import { useSaleListBranch } from '../hooks/useSaleList';
 import { BCol, BRow, BTableEmpty } from '@/shared/ui/components/tables/BasicTable';
 import { useRouter } from 'next/navigation';
 import { PrimaryTable } from '@/shared/ui/components/tables/PrimaryTable';
-import { ISale } from '../interfaces/ISale';
+import { useSaleStore } from '../stores/sale.store';
 
-interface Props {
-    sales: ISale[]
-}
 
-const SaleDesktopTable = ({ sales }: Props) => {
+const SaleDesktopTable = () => {
     const tableColumns = ['Folio', 'Cliente', 'Empleado', 'Status', 'Total', 'Fecha'];
     const { handleBadgeType } = useSaleListBranch();
+    const { sales } = useSaleStore();
     const router = useRouter();
     return (
         <PrimaryTable theadList={tableColumns} isActions={true}>

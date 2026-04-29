@@ -138,9 +138,11 @@ export class TypeormSaleRepository implements SaleRepository{
 
             if(search){
                 query.andWhere(new Brackets((qb)=>{
-                    qb.where('sale.saleId ILIKE :search', {search: `%${search}%`})
-                    .orWhere('employee.firstName ILIKE :search', {search: `%${search}%`})
-                    .orWhere('customer.firstName ILIKE :search', {search: `%${search}%`});
+                    qb.where('employee.firstName ILIKE :textSearch', {textSearch: `%${search}%`})
+                    .orWhere('employee.lastName ILIKE :textSearch', {textSearch: `%${search}%`})
+                    .orWhere('customer.firstName ILIKE :textSearch', {textSearch: `%${search}%`})
+                    .orWhere('customer.lastName ILIKE :textSearch', {textSearch: `%${search}%`})
+                    // .orWhere('sale.saleId = :numSearch', {numSearch: BigInt(search)})
                 }));
             }
         const result = await query.orderBy('sale.createdAt', 'DESC').getMany();

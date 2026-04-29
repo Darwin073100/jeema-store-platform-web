@@ -1,4 +1,4 @@
 export type SaleLoadingsType = 
     'none' | 'cancelSaleLoading' | 'addDetailToSaleLoading' | 'deleteDetailLoading' | 'finishSaleLoading' | 
     'findInventoryItemsLoading' | 'salePaymentLoading' | 'updateDetailLoading' | 'aplyManualSaleForLoading' |
-    'saleContinue' | 'returnsLoading' | 'saleTicket';
+    'saleContinue' | 'returnsLoading' | 'saleTicket' | 'find-sales' | 'view-returns' | 'exportExcel';

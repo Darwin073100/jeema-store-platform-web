@@ -3,6 +3,8 @@ import { ISale } from "../interfaces/ISale";
 import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
 
 type State = {
+    sales: ISale[],
+    setSales: (payload: ISale[])=> void,
     saleId: bigint
     setSaleId: (saleId: bigint)=> void,
     resetSaleId: ()=> void,
@@ -20,10 +22,16 @@ const initialValues = {
     saleId: BigInt(0),
     sale: null,
     total: 0,
+    sales: [],
 }
 
 export const useSaleStore = create<State>()((set, get)=>({
     ...initialValues,
+    setSales(payload) {
+        set(()=>({
+            sales: payload
+        }))
+    },
     cashSessionActive: null,
     setSaleId: (saleId: bigint)=> {
         set(()=>({
