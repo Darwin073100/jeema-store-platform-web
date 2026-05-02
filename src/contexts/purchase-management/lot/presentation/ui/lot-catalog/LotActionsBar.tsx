@@ -12,6 +12,7 @@ import { LabelInput } from '@/shared/ui/components/labels';
 import { FaFilter } from 'react-icons/fa';
 import { useLotUIStore } from '../../stores/lot-ui.store';
 import { ILot } from '../../interfaces/ILot';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 interface Props{
     data: ILot[]
 }
@@ -48,7 +49,7 @@ const LotActionsBar = ({ data }:Props) => {
                                 type='date' />
                         </div>
                         <div className='flex items-center'>
-                            <Button color='yellow' disabled={loading === 'find-report-lots'}>
+                            <Button disabled={loading === 'find-report-lots'}>
                                 {loading === 'find-report-lots' ? <Spinner size={14} /> : <FaFilter size={14} />}
                                 <span className='max-lg:hidden'>Aplicar filtro</span>
                             </Button>
@@ -59,10 +60,10 @@ const LotActionsBar = ({ data }:Props) => {
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <Button disabled={loading==='find-report-lots'} color='green' onClick={()=> handleDownloadExcel()}>
+                        <ButtonOutLine disabled={loading==='find-report-lots'} color='green' onClick={()=> handleDownloadExcel()}>
                             <PiMicrosoftExcelLogoFill />
                             <span className='max-md:hidden'>Exportar a Excel</span>
-                        </Button>
+                        </ButtonOutLine>
                     </HideElement>
                     <div>
                         Compras<Badge>{lotsFiltered.length}</Badge>

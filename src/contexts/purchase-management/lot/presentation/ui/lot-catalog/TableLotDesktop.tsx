@@ -33,7 +33,6 @@ export function TableLotsDesktop({}: TableLotsProps) {
                         <PCol className="flex justify-end">
                             <Button
                                 size="sm"
-                                color="yellow"
                                 onClick={() => handleViewProduct(item?.productId?.toString() || '')}
                                 title="Ver detalles del producto"
                             >

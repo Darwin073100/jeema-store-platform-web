@@ -31,7 +31,6 @@ export function SuplierDesktopTable({}: Props) {
                             <Button
                                 disabled={suplierId===item.suplierId.toString()}
                                 size="sm"
-                                color="yellow"
                                 onClick={() => handleSuplierDetail(item?.suplierId?.toString() || '')}
                                 title="Ver detalles del producto"
                             >

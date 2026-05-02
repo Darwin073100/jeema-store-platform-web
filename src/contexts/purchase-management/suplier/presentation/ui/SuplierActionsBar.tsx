@@ -9,6 +9,7 @@ import { HideElement } from '@/contexts/authentication-management/auth/presentat
 import { useSuplierStore } from '../stores/suplier.store';
 import { useSuplierActionsBar } from '../hooks/useSuplierActionsBar';
 import { ISuplier } from '../interfaces/ISuplier';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 interface Props{
     data: ISuplier[]
 }
@@ -22,18 +23,18 @@ const SuplierActionsBar = ({ data }:Props) => {
     return (
         <div className="flex justify-between gap-2">
             <div className='flex items-center gap-2'>
-                    <Button color="blue" size="md" onClick={()=> newSuplierPage()}>
+                    <ButtonOutLine color="blue" size="md" onClick={()=> newSuplierPage()}>
                         {loading? <Spinner/>: <IoMdAdd size={14}/>}
                         <span className='max-sm:hidden'>Nuevo Proveedor</span>
-                    </Button>
+                    </ButtonOutLine>
             </div>
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <Button disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
+                        <ButtonOutLine disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
                             <PiMicrosoftExcelLogoFill />
                             <span className='max-md:hidden'>Exportar a Excel</span>
-                        </Button>
+                        </ButtonOutLine>
                     </HideElement>
                     <div>
                         Proveedores<Badge>{supliersFiltered.length}</Badge>

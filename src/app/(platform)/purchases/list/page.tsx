@@ -42,7 +42,6 @@ export default async function ProductsPage() {
             </ProtectedRoute>
         );
     } catch (error) {
-        console.error('Error loading products page:', error);
         return (
             <ProtectedRoute>
                 <main className="flex flex-col gap-4 w-full">
