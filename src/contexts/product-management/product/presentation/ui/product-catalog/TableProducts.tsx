@@ -6,6 +6,7 @@ import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 import { PCol, PrimaryTable, PRow, PTableEmpty } from "@/shared/ui/components/tables/PrimaryTable";
 import { useProductActionsBar } from "@/contexts/product-management/product/presentation/hooks/useProductActionsBar";
 import clsx from "clsx";
+import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
 
 interface TableProductProps {
 }
@@ -31,7 +32,7 @@ export function TableProduct({}: TableProductProps) {
                         <PCol className="flex justify-end">
                             <Button
                                 size="sm"
-                                color="yellow"
+                                color="blue"
                                 onClick={() => handleViewProduct(item?.productId?.toString() || '')}
                                 title="Ver detalles del producto"
                             >

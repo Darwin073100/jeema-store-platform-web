@@ -13,6 +13,7 @@ import { HideElement } from '@/contexts/authentication-management/auth/presentat
 import { useProductStore } from '../../stores/product.store';
 import { useProductActionsBar } from '../../hooks/useProductActionsBar';
 import { IProduct } from '../../interfaces/IProduct';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 interface Props{
     data: IProduct[]
 }
@@ -31,19 +32,19 @@ const ProductActionsBar = ({ data }:Props) => {
         <div className="flex justify-between gap-2">
             <div className='flex items-center gap-2'>
                 <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                    <Button color="blue" size="md" onClick={()=> newProductPage()}>
+                    <ButtonOutLine size="md" onClick={()=> newProductPage()}>
                         {loading? <Spinner/>: <IoMdAdd size={14}/>}
                         <span className='max-sm:hidden'>Nuevo Producto</span>
-                    </Button>
-                    <Button color="yellow" size="md" onClick={() => setModalOpen(!modalOpen)}>
+                    </ButtonOutLine>
+                    <Button size="md" onClick={() => setModalOpen(!modalOpen)}>
                         <MdCategory />
                         <span className='max-sm:hidden'>Categorias</span>
                     </Button>
-                    <Button color="green" size="md" onClick={()=> setBrandModalOpen(!brandModalOpen)}>
+                    <Button size="md" onClick={()=> setBrandModalOpen(!brandModalOpen)}>
                         <IoMdAdd />
                         <span className='max-sm:hidden'>Marcas</span>
                     </Button>
-                    <Button color="gray" size="md" onClick={()=> setSeasonModalOpen(!seasonModalOpen)}>
+                    <Button size="md" onClick={()=> setSeasonModalOpen(!seasonModalOpen)}>
                         <MdOutlineViewTimeline />
                         <span className='max-sm:hidden'>Temporadas</span>
                     </Button>
@@ -52,10 +53,10 @@ const ProductActionsBar = ({ data }:Props) => {
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <Button disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
-                            <PiMicrosoftExcelLogoFill />
+                        <ButtonOutLine disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
+                            {loading? <Spinner/>: <PiMicrosoftExcelLogoFill />}
                             <span className='max-md:hidden'>Exportar a Excel</span>
-                        </Button>
+                        </ButtonOutLine>
                     </HideElement>
                     <div>
                         Productos<Badge>{productsFiltered.length}</Badge>
