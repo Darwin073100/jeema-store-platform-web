@@ -32,9 +32,11 @@ export class TypeOrmLotRepository implements LotRepository {
 
   async saveWithItems(lotEntity: LotEntity): Promise<LotEntity> {
     const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    
     try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      
       // Conversion de una entidad de dominio a una entidad de Typeorm
       const lotOrmEntity = LotMapper.toOrm(lotEntity);
       const lotUnitPurchases = lotOrmEntity.lotUnitPurchases;
@@ -45,11 +47,10 @@ export class TypeOrmLotRepository implements LotRepository {
       }
 
       // Guardar la entidad
-
       let resp = await this.transactionDB.getManager().getRepository(LotOrmEntity).save(lotOrmEntityClean);
+      
       // Guardar las relaciones de lotUnitPurchases
       if (lotUnitPurchases && lotUnitPurchases.length > 0) {
-
         // verificar que no vengan repetidos los unidades de compra, 
         // lanzar un error si es así y hacer rollback de la transacción
         const uniqueUnits = new Set();
@@ -65,25 +66,33 @@ export class TypeOrmLotRepository implements LotRepository {
         });
         await queryRunner.manager.save(LotUnitPurchaseOrmEntity, lotUnitPurchases);
       }
+      
       // Confirmar la transacción
       await queryRunner.commitTransaction();
+      
       // Convertir una entidad de Typeorm a una entidad de dominio
-      const resp2 = await this.ormLotRepository.findOne( {where:{
-        lotId: resp.lotId
-      }});
-      return LotMapper.toDomain(resp2??resp);
-    } catch (error) {
-        // Revertir la transacción en caso de error
-        await queryRunner.rollbackTransaction();
-
-        if(error instanceof QueryFailedError) {
-          const pgError = error as any;
-          // Manejo de errores específicos de TypeORM
-          if (pgError.code === '23505') { // Código de error para violación de clave única
-            throw new LotAlreadyExistsException('Ya existe un lote con el mismo número de lote o producto.');
-          }
+      const resp2 = await this.ormLotRepository.findOne({
+        where: {
+          lotId: resp.lotId
         }
+      });
+      
+      return LotMapper.toDomain(resp2 ?? resp);
+    } catch (error) {
+      // Revertir la transacción en caso de error
+      await queryRunner.rollbackTransaction();
+
+      if (error instanceof QueryFailedError) {
+        const pgError = error as any;
+        // Manejo de errores específicos de TypeORM
+        if (pgError.code === '23505') { // Código de error para violación de clave única
+          throw new LotAlreadyExistsException('Ya existe un lote con el mismo número de lote o producto.');
+        }
+      }
       throw error;
+    } finally {
+      // CRÍTICO: Siempre liberar la conexión al pool
+      await queryRunner.release();
     }
   }
 

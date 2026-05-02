@@ -30,10 +30,11 @@ export class TypeormUserRoleRepository implements UserRoleRepository{
     
     async save(entity: UserRoleEntity):Promise<UserRoleEntity>{
       const queryRunner = this.datasource.createQueryRunner();
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
-       try {
-         let ormEntity = UserRoleMapper.toOrmEntity(entity);
+      try {
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+        
+        let ormEntity = UserRoleMapper.toOrmEntity(entity);
         const isValidUsername = await this.userRepository.findOne({where:{username: ormEntity.user?.username}});
         if(isValidUsername){
             throw new UserAlreadyExistsException('El nombre de usuario ya existe.');
@@ -70,18 +71,21 @@ export class TypeormUserRoleRepository implements UserRoleRepository{
         }
         const result = await queryRunner.manager.save(UserRoleOrmEntity, ormEntity);
         await queryRunner.commitTransaction();
-        await queryRunner.release();
         return UserRoleMapper.toDomain(result);
        } catch (error) {
+        await queryRunner.rollbackTransaction();
         throw error;
+       } finally {
+        await queryRunner.release();
        }
     }
     async saveTwo(entity: UserRoleEntity):Promise<UserRoleEntity>{
       const queryRunner = this.datasource.createQueryRunner();
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
-       try {
-         let ormEntity = UserRoleMapper.toOrmEntity(entity);
+      try {
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+        
+        let ormEntity = UserRoleMapper.toOrmEntity(entity);
         const isValidUsername = await this.userRepository.findOne({where:{username: ormEntity.user?.username}});
         if(isValidUsername){
             throw new UserAlreadyExistsException('El nombre de usuario ya existe.');
@@ -112,10 +116,12 @@ export class TypeormUserRoleRepository implements UserRoleRepository{
         }
         const result = await queryRunner.manager.save(UserRoleOrmEntity, ormEntity);
         await queryRunner.commitTransaction();
-        await queryRunner.release();
         return UserRoleMapper.toDomain(result);
        } catch (error) {
+        await queryRunner.rollbackTransaction();
         throw error;
+       } finally {
+        await queryRunner.release();
        }
     }
 

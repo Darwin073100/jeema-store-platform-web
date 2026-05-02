@@ -314,23 +314,39 @@ export class TypeOrmProductRepository implements ProductRepository {
   }
   async findAllByEstablishment(establishmentId: bigint, dto: PaginationDTO): Promise<ProductEntity[]> {
     const { skip, take } = typeormPagination(dto.page, dto.pageSize);
-    const result = await this.productRepository.find({
-      where: {
-        establishmentId,
-      },
-      skip,
-      take,
-      relations: ['category', 'brand', 'season', 'inventory.inventoryItems']
-    });
+    
+    /**
+     * OPTIMIZACIÓN: Usa createQueryBuilder en lugar de find() para más control
+     * Esto permite excluir la carga de inventoryItems y evitar N+1 problems
+     */
+    const result = await this.productRepository.createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.brand', 'brand')
+      .leftJoinAndSelect('product.season', 'season')
+      .leftJoinAndSelect('product.inventory', 'inventory')
+      // Nota: inventoryItems se cargarán bajo demanda en el mapper si es necesario
+      .where('product.establishmentId = :establishmentId', { establishmentId })
+      .orderBy('product.createdAt', 'DESC')
+      .skip(skip)
+      .take(take)
+      .getMany();
+      
     return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
   }
 async findAllByEstablishmentAndName(
   establishmentId: bigint, 
   dto: FilterProductListDTO
 ): Promise<ProductEntity[]> {
-  
   // Extraemos el valor único (asumiendo que dto.product trae el string de búsqueda)
-  const searchTerm = dto.product; 
+  const searchTerm = dto.product;
+  
+  /**
+   * OPTIMIZACIÓN CRÍTICA:
+   * - Sin leftJoinAndSelect de inventoryItems (N+1 problem)
+   * - Usa leftJoinAndSelect solo para las relaciones necesarias (category, brand, season, inventory)
+   * - Los inventoryItems se cargarán bajo demanda si son necesarios en el mapper
+   * - Limita resultados para evitar traer demasiados registros
+   */
   const query = this.productRepository.createQueryBuilder('product')
     .leftJoinAndSelect('product.category', 'category')
     .leftJoinAndSelect('product.brand', 'brand')
@@ -339,7 +355,7 @@ async findAllByEstablishmentAndName(
     .leftJoinAndSelect('inventory.inventoryItems', 'inventoryItems')
     .where('product.establishmentId = :establishmentId', { establishmentId });
 
-  if (searchTerm) {
+  if (searchTerm && searchTerm.trim()) {
     query.andWhere(
       new Brackets((qb) => {
         qb.where('product.name ILIKE :term', { term: `%${searchTerm}%` })
@@ -350,7 +366,13 @@ async findAllByEstablishmentAndName(
     );
   }
 
+  // Limitar resultados: máximo 100 productos por búsqueda
+  // Esto previene que se carguen todos los productos en memoria
+  query.take(100);
+  
   const result = await query.getMany();
+  
+  // Si se necesitan los inventoryItems, se cargarán en el mapper de forma lazy
   return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
 }
 

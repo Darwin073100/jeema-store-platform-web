@@ -66,6 +66,18 @@ export const getDataSourceConfig = (): DataSourceOptions => {
     ],
     synchronize: false,
     logging: process.env.DB_LOGGING === 'true',
+    /**
+     * CONFIGURACIÓN CRÍTICA DE CONNECTION POOL
+     * Previene agotamiento de conexiones en producción
+     * Valores optimizados para Next.js con múltiples requests concurrentes
+     */
+    pool: {
+      max: 20,              // Máximo de conexiones en el pool
+      min: 2,               // Mínimo de conexiones siempre activas
+      idleTimeoutMillis: 30000,      // Cerrar conexiones inactivas después de 30 segundos
+      connectionTimeoutMillis: 2000, // Timeout al obtener una conexión del pool
+      maxUses: 7500,        // Reutilizar conexión máximo 7500 veces antes de cerrar
+    },
     // ...(isProduction && {
     //   ssl: {
     //     rejectUnauthorized: false,
