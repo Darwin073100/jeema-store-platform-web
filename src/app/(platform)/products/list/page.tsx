@@ -26,8 +26,9 @@ export default async function ProductsPage() {
 
     // Llama al server action en el servidor con manejo de errores
     try {
-        const inventoryItemsData = await findAllProductsByEstablishmentAction();
-        const items = inventoryItemsData as IProduct[];
+        // const inventoryItemsData = await findAllProductsByEstablishmentAction();
+        // const items = inventoryItemsData as IProduct[];
+        const items = [];
 
         const categories = await findAllCategoriesByEstablishmentAction();
         const brands = await findAllBrandsByEstablishmentAction();

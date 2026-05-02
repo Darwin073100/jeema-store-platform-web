@@ -368,7 +368,9 @@ async findAllByEstablishmentAndName(
 
   // Limitar resultados: máximo 100 productos por búsqueda
   // Esto previene que se carguen todos los productos en memoria
-  query.take(100);
+  // if(searchTerm.trim() === '*'){
+  //   query.take(100);
+  // }
   
   const result = await query.getMany();
   
