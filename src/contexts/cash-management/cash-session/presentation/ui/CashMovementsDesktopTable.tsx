@@ -27,7 +27,7 @@ const CashMovementsDesktopTable = () => {
                     <PCol><Badge type='green'>{item.cashRegister?.name}</Badge></PCol>
                     <PCol>{`${item.employee?.firstName}`}</PCol>
                     <PCol className="text-right flex justify-end">
-                        <Button onClick={()=> router.push(`session/${item.cashSessionId}`)} color='yellow' size='sm' title='Da click para ver el perfil del cliente.'>
+                        <Button onClick={()=> router.push(`session/${item.cashSessionId}`)} size='sm' title='Da click para ver el perfil del cliente.'>
                             <AiFillProfile size={14} /><span>Info.</span>
                         </Button>
                     </PCol>

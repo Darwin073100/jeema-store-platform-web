@@ -20,7 +20,7 @@ const CustomerDesktopTable = () => {
                     <PCol>{item.email}</PCol>
                     <PCol>{item.address?.city ?? 'N/A'}</PCol>
                     <PCol className="text-right flex justify-end">
-                        <Button onClick={()=> router.push(`customers/${item.customerId}`)} color='yellow' size='sm' title='Da click para ver el perfil del cliente.'>
+                        <Button onClick={()=> router.push(`customers/${item.customerId}`)} size='sm' title='Da click para ver el perfil del cliente.'>
                             <AiFillProfile size={14} /><span>Perfil</span>
                         </Button>
                     </PCol>

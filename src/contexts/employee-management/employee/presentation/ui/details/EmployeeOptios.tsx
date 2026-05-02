@@ -1,6 +1,6 @@
 'use client'
 import { Badge } from '@/shared/ui/components/badges/Badge';
-import { Button } from '@/shared/ui/components/buttons';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import { TextInput } from '@/shared/ui/components/inputs';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
@@ -20,15 +20,15 @@ const EmployeeOptios = ({ employeesNo }: Props) => {
     return (
         <>
             <div className="flex gap-4 items-center justify-between">
-                <Button onClick={() => handleNewEmployee()} disabled={loading}>
+                <ButtonOutLine onClick={() => handleNewEmployee()} disabled={loading}>
                     {loading ? <Spinner /> : <IoPersonAdd />}
                     Nuevo empleado
-                </Button>
+                </ButtonOutLine>
                 <div className='flex gap-4 items-center'>
-                    <Button disabled={loading} color='green'>
+                    <ButtonOutLine disabled={loading} color='green'>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
-                    </Button>
+                    </ButtonOutLine>
                     <div>
                         Empleados<Badge>{employeesNo}</Badge>
                     </div>

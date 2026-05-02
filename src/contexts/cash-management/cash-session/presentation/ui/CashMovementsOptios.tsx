@@ -14,6 +14,7 @@ import { CashClosedTicketListModal } from './close/CashClosedTicketListModal';
 import { useCashUIStore } from '../stores/cash-ui.store';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { ICashSession } from '../interfaces/ICashSession';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 interface Props {
     cashSessions: ICashSession[]
 }
@@ -45,17 +46,17 @@ const CashMovementsOptios = ({ cashSessions: data }: Props) => {
                             type='date' />
                     </div>
                     <div className='flex items-end'>
-                        <Button color='yellow' disabled={loading==='movementsCashSession'}>
+                        <Button disabled={loading==='movementsCashSession'}>
                             {loading ==='movementsCashSession'? <Spinner size={15} />: <FaFilter />}
                             Aplicar filtro
                         </Button>
                     </div>
                 </form>
                 <div className='flex gap-4 items-center'>
-                    <Button color='green'>
+                    <ButtonOutLine color='green'>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
-                    </Button>
+                    </ButtonOutLine>
                     <div>
                         Movimientos<Badge>{cashSessions.length}</Badge>
                     </div>

@@ -27,7 +27,7 @@ const TransactionMovementsDesktopTable = ({ }: Props) => {
                     <PCol>{item.branchOffice?.name}</PCol>
                     <PCol>{formatDateShort(item.createdAt)}</PCol>
                     <PCol className="text-right flex justify-end">
-                        <Button onClick={()=> router.push(`session/${item.transactionId}`)} color='yellow' size='sm' title='Da click para ver el perfil del cliente.'>
+                        <Button onClick={()=> router.push(`session/${item.transactionId}`)} size='sm' title='Da click para ver el perfil del cliente.'>
                             <AiFillProfile size={14} /><span>Info.</span>
                         </Button>
                     </PCol>

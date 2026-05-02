@@ -5,16 +5,17 @@ import { TextInput } from '@/shared/ui/components/inputs';
 import React, { useEffect } from 'react'
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { FaFilter } from 'react-icons/fa';
-import { TransactionEntity } from '../../../../../features/transaction/domain/entities/transaction.entity';
 import { useTransactionMovementsOptios } from '../hooks/useTransactionMovementsOptios';
 import { useTransactionStore } from '../stores/transaction.store';
 import { useTransactionUIStore } from '../stores/transaction-ui.store';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { LabelInput } from '@/shared/ui/components/labels';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
+import { ITransaction } from '../interfaces/ITransaction';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 
 interface Props {
-    transactions: TransactionEntity[]
+    transactions: ITransaction[]
 }
 
 const TransactionMovementsOptios = ({ transactions }: Props) => {
@@ -49,17 +50,17 @@ const TransactionMovementsOptios = ({ transactions }: Props) => {
                             type='date' />
                     </div>
                     <div className='flex items-end'>
-                        <Button color='yellow' disabled={loading === 'filterTransaction'}>
+                        <Button disabled={loading === 'filterTransaction'}>
                             {loading === 'filterTransaction' ? <Spinner size={14} /> : <FaFilter size={14} />}
                             Aplicar filtro
                         </Button>
                     </div>
                 </form>
                 <div className='flex gap-4 items-center'>
-                    <Button color='green' onClick={() => handleExport()}>
+                    <ButtonOutLine color='green' onClick={() => handleExport()}>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
-                    </Button>
+                    </ButtonOutLine>
                     <div>
                         Movimientos<Badge>{transactionsFiltered.length}</Badge>
                     </div>

@@ -1,14 +1,14 @@
 'use client'
 import React, { useState } from 'react'
-import { EmployeeEntity } from '../../../../../../features/employee/domain/entities/employee.entity';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { AiFillProfile } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
+import { IEmployee } from '../../interfaces/IEmployee';
 interface Props {
-    employees: EmployeeEntity[]
+    employees: IEmployee[]
 }
 const EmployeeDesktopTable = ({ employees }: Props) => {
     const heads = ['Folio', 'Empleado', 'Telefono', 'Correo', 'Rol', 'H. Entrada', 'H. Salida']
@@ -30,7 +30,7 @@ const EmployeeDesktopTable = ({ employees }: Props) => {
                     <PCol>{item.entryTime}</PCol>
                     <PCol>{item.exitTime}</PCol>
                     <PCol className="text-right flex justify-end">
-                        <Button onClick={() => handleRouter(item.employeeId)} color='yellow' size='sm' title='Da click para ver el perfil del empleado.'>
+                        <Button onClick={() => handleRouter(item.employeeId)} size='sm' title='Da click para ver el perfil del empleado.'>
                             {employeeId===item.employeeId ? <Spinner size={14} /> : <AiFillProfile size={14} />}<span>Perfil</span>
                         </Button>
                     </PCol>

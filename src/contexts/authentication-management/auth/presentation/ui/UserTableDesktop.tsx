@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { AiFillProfile } from 'react-icons/ai';
-import { UserEntity } from '../../../../../features/auth/domain/entities/user.entity';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useRouter } from 'next/navigation';
 import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
+import { IUser } from '../interfaces/IUser';
 interface Props {
-    data: UserEntity[]
+    data: IUser[]
 }
 const UserTableDesktop = ({ data }: Props) => {
     const [employeeId, setEmployeeId] = useState(BigInt(0));
@@ -34,7 +34,7 @@ const UserTableDesktop = ({ data }: Props) => {
                         </Badge>
                     </PCol>
                     <PCol className="text-right flex justify-end">
-                        <Button onClick={()=> handleRoute(user.employeeId)} color='yellow' size='sm' title='Da click para ver el perfil del cliente.'>
+                        <Button onClick={()=> handleRoute(user.employeeId)} size='sm' title='Da click para ver el perfil del cliente.'>
                             {employeeId===user.employeeId? <Spinner size={14}/> :<AiFillProfile size={14} />}<span>Detalles</span>
                         </Button>
                     </PCol>

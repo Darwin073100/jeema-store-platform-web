@@ -7,10 +7,11 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { IoPersonAdd } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
-import { CustomerEntity } from '../../../../../features/customer/domain/entities/customer.entity';
 import { useCustomerStore } from '../stores/customer.store';
+import { ICustomer } from '../interfaces/ICustomer';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 interface Props {
-    customersList: CustomerEntity[]
+    customersList: ICustomer[]
 }
 const CustomerOptios = ({ customersList }: Props) => {
     const router = useRouter();
@@ -37,15 +38,15 @@ const CustomerOptios = ({ customersList }: Props) => {
     return (
         <>
             <div className="flex gap-4 items-center justify-between">
-                <Button onClick={() => handleNewEmployee()} disabled={loading}>
+                <ButtonOutLine onClick={() => handleNewEmployee()} disabled={loading}>
                     {loading ? <Spinner /> : <IoPersonAdd />}
                     Cliente nuevo
-                </Button>
+                </ButtonOutLine>
                 <div className='flex gap-4 items-center'>
-                    <Button disabled={loading} color='green'>
+                    <ButtonOutLine disabled={loading} color='green'>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
-                    </Button>
+                    </ButtonOutLine>
                     <div>
                         Empleados<Badge>{customersFilter.length}</Badge>
                     </div>
