@@ -13,6 +13,7 @@ import { FaFilter } from 'react-icons/fa';
 import { useSaleStore } from '../stores/sale.store';
 import { useSaleActionsBar } from '../hooks/useSaleActionsBar';
 import { useSaleUIStore } from '../stores/sale.ui.store';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 interface Props {
     data: ISale[]
 }
@@ -50,7 +51,7 @@ const SaleActionsBar = ({ data }: Props) => {
                                             type='date' />
                                     </div>
                                     <div className='flex items-center'>
-                                        <Button color='yellow' disabled={loading === 'find-sales'}>
+                                        <Button  disabled={loading === 'find-sales'}>
                                             {loading === 'find-sales' ? <Spinner size={14} /> : <FaFilter size={14} />}
                                             <span className='max-lg:hidden'>Filtrar</span>
                                         </Button>
@@ -58,10 +59,10 @@ const SaleActionsBar = ({ data }: Props) => {
                                 </div>
                                 <div className='flex gap-4 items-center'>
                                     <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
-                                        <Button disabled={loading === 'exportExcel'} color='green' onClick={() => handleDownloadExcel()}>
+                                        <ButtonOutLine disabled={loading === 'exportExcel'} color='green' onClick={() => handleDownloadExcel()}>
                                             {loading === 'exportExcel' ? <Spinner /> : <PiMicrosoftExcelLogoFill size={14} />}
                                             <span className='max-md:hidden'>Exportar a Excel</span>
-                                        </Button>
+                                        </ButtonOutLine>
                                     </HideElement>
                                     <div>
                                         Ventas<Badge>{sales.length}</Badge>
@@ -81,7 +82,7 @@ const SaleActionsBar = ({ data }: Props) => {
                 </form>
             </div>
             <div className='py-4'>
-                <Button color="yellow" size="sm" onClick={() => redirectPage()}>
+                <Button size="sm" onClick={() => redirectPage()}>
                     {loading === 'view-returns' ? <Spinner /> : <IoReturnDownBack size={14} />}
                     <span className='max-sm:hidden'>Ver devoluciones</span>
                 </Button>

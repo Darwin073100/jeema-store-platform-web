@@ -33,7 +33,7 @@ const SaleDesktopTable = () => {
                     <BCol>{numberMoneyFormat(sale.totalAmount)}</BCol>
                     <BCol>{formatDateShort(sale.updatedAt ?? sale.createdAt)}</BCol>
                     <BCol className="text-right flex justify-end">
-                        <Button color='yellow' size='sm' onClick={() => router.push(`/sale/${sale.saleId}`)}>
+                        <Button size='sm' onClick={() => router.push(`/sale/${sale.saleId}`)}>
                             <FiExternalLink size={14} /><span>Detalles</span>
                         </Button>
                     </BCol>
