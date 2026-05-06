@@ -33,7 +33,7 @@ const ProductActionsBar = ({ data }:Props) => {
             <div className='flex items-center gap-2'>
                 <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
                     <ButtonOutLine size="md" onClick={()=> newProductPage()}>
-                        {loading? <Spinner/>: <IoMdAdd size={14}/>}
+                        {loading? <Spinner color='blue'/>: <IoMdAdd size={14}/>}
                         <span className='max-sm:hidden'>Nuevo Producto</span>
                     </ButtonOutLine>
                     <Button size="md" onClick={() => setModalOpen(!modalOpen)}>

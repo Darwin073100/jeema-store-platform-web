@@ -14,6 +14,7 @@ import { SeasonTable } from './SeasonTable';
 import { useDeleteSeason } from '../hooks/useDeleteSeason';
 import { useUpdateSeason } from '../hooks/useUpdateSeason';
 import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 
 interface Props{
     seasonList: ISeason[]
@@ -73,7 +74,7 @@ const SeasonModal = ({ seasonList }: Props) => {
                                 </>
                             )}
                         </Button>
-                        <Button color="yellow" onClick={() => resetForm()}><MdCleaningServices />Limpiar campos</Button>
+                        <ButtonOutLine onClick={() => resetForm()}><MdCleaningServices />Limpiar campos</ButtonOutLine>
                         <Button color="gray" onClick={() => handleOpenModal()}><IoClose />Cerrar</Button>
                     </div>
                 </form>

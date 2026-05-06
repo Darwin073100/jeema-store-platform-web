@@ -26,7 +26,7 @@ const BrandTable = () => {
                             <tr className="bg-white border-b border-gray-200" key={item.brandId}>
                                 <td className="px-6 py-4">{item.name}</td>
                                 <td className="px-6 py-4 flex gap-2 items-center">
-                                    <RoundedButton type='button' color="yellow" onClick={() => setBrand(item)}>
+                                    <RoundedButton type='button' onClick={() => setBrand(item)}>
                                         <MdEditSquare />
                                     </RoundedButton>
                                     <RoundedButton type='button' onClick={() => showConfirmation(item.brandId)} color="red">

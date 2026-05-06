@@ -14,6 +14,7 @@ import { useDeleteBrand } from '../hooks/useDeleteBrand';
 import { useUpdateBrand } from '../hooks/useUpdateBrand';
 import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
 import { BrandTable } from './BrandTable';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 
 interface Props{
     brandList: IBrand[]
@@ -56,7 +57,7 @@ const BrandModal = ({ brandList }: Props) => {
                                 <HiSave />
                             </>}
                         </Button>
-                        <Button color="yellow" onClick={() => resetForm()}><MdCleaningServices />Limpiar campos</Button>
+                        <ButtonOutLine onClick={() => resetForm()}><MdCleaningServices />Limpiar campos</ButtonOutLine>
                         <Button color="gray" onClick={() => handleOpenModal()}><IoClose />Cerrar</Button>
                     </div>
                 </form>

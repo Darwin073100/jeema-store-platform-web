@@ -14,6 +14,7 @@ import { useDeleteCategory } from '../hooks/useDeleteCategory';
 import { useUpdateCategory } from '../hooks/useUpdateCategory';
 import { CategoryTable } from './CategoryTable';
 import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
+import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 
 interface Props{
     categoryList: ICategory[]
@@ -63,7 +64,7 @@ const CategoryModal = ({ categoryList }: Props) => {
                                 </>
                             )}
                         </Button>
-                        <Button color="yellow" onClick={() => resetForm()}><MdCleaningServices />Limpiar campos</Button>
+                        <ButtonOutLine onClick={() => resetForm()}><MdCleaningServices />Limpiar campos</ButtonOutLine>
                         <Button color="gray" onClick={() => handleOpenModal()}><IoClose />Cerrar</Button>
                     </div>
                 </form>
