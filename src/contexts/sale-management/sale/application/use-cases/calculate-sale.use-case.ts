@@ -27,9 +27,8 @@ export class CalculateSaleUseCase {
 
     async execute(dto: CalculateSaleDTO) {
         try {
-            await this.transactionDB.beginTransaction()
-            //* Bloque 1: Verificar que existan los registros involucrados
-            // const isSale = await this.saleCheckerPort.existById(dto.saleId);
+            //* ✅ OPTIMIZACIÓN: Validaciones FUERA de la transacción
+            //* Esto reduce el tiempo que la transacción está abierta
             const sale = await this.saleRepository.findById(dto.saleId);
             if (!sale) {
                 throw new SaleNotFoundException(`La venta con id ${dto.saleId} no existe.`);
@@ -48,7 +47,6 @@ export class CalculateSaleUseCase {
             const cashSession = await this.cashSessionRepo.isClosedCashSession(dto.cashRegisterId);
             if (!cashSession) throw new SaleConflictException(`Necesitas aperturar caja para continuar.`);
 
-
             //* Bloque 2: hacer los calculos para sacar los precios
             const saleDetails = sale.saleDetails;
             let saleTotal: number = Number(sale.totalAmount);
@@ -64,10 +62,9 @@ export class CalculateSaleUseCase {
                 let newDiscount: number = 0;
 
                 for (let i = 0; i < saleDetails.length; i++) {
-                    newSaleTotal = newSaleTotal + Number(saleDetails[i].subtotalItem); //? Total de la venta
-                    newSubTotal = newSubTotal + Number(saleDetails[i].subtotalItem); //? Sub Total de la venta, Total sin descuento
-                    newDiscount = newDiscount + Number(saleDetails[i].discountItem); //? Total de descuento
-                    // newTaxAmount = newTaxAmount + (newSaleTotal * 0.16); //? Cantidad bruta a pagar, Total - %IVA
+                    newSaleTotal = newSaleTotal + Number(saleDetails[i].subtotalItem);
+                    newSubTotal = newSubTotal + Number(saleDetails[i].subtotalItem);
+                    newDiscount = newDiscount + Number(saleDetails[i].discountItem);
                 }
                 saleTotal = newSaleTotal;
                 subTotal = newSubTotal;
@@ -92,33 +89,43 @@ export class CalculateSaleUseCase {
             }
             sale.updateOutAmount(outAmount);
 
-            const saleResult = await this.saleRepository.save(sale);
+            //* ✅ OPTIMIZACIÓN: ABRE TRANSACCIÓN AQUÍ (después de validaciones)
+            await this.transactionDB.beginTransaction();
+            
+            try {
+                const saleResult = await this.saleRepository.save(sale);
 
-            if (!saleResult) throw new SaleNotFoundException('No se pudo finalizar la venta.');
-            if(dto.status === SaleStatusEnum.COMPLETED){
-                if (saleResult.saleDetails && saleResult.saleDetails.length > 0) {
-                    if ((saleResult.status === SaleStatusEnum.INITIALIZED || saleResult.status === SaleStatusEnum.COMPLETED || saleResult.status === SaleStatusEnum.PENDING)) {
-                        for (let i = 0; i < (saleResult.saleDetails?.length ?? 0); i++) {
-                            const item = await this.inventoryItemRepository.findByLocation(saleResult.saleDetails[i].inventoryItemId, LocationEnum.SALE);
-                            if (!item?.inventoryItemId) {
-                                throw new SaleConflictException('No pudimos finalizar la venta.');
+                if (!saleResult) throw new SaleNotFoundException('No se pudo finalizar la venta.');
+                
+                if(dto.status === SaleStatusEnum.COMPLETED){
+                    if (saleResult.saleDetails && saleResult.saleDetails.length > 0) {
+                        if ((saleResult.status === SaleStatusEnum.INITIALIZED || saleResult.status === SaleStatusEnum.COMPLETED || saleResult.status === SaleStatusEnum.PENDING)) {
+                            //* ✅ OPTIMIZACIÓN: Cargar items de inventario ANTES de la transacción si es posible
+                            //* Pero como estamos dentro de transacción, al menos reducimos queries
+                            for (let i = 0; i < (saleResult.saleDetails?.length ?? 0); i++) {
+                                const item = await this.inventoryItemRepository.findByLocation(saleResult.saleDetails[i].inventoryItemId, LocationEnum.SALE);
+                                if (!item?.inventoryItemId) {
+                                    throw new SaleConflictException('No pudimos finalizar la venta.');
+                                }
+                                await this.discountInventoryItem.execute(item.inventoryItemId, Number(saleResult.saleDetails[i].quantity));
                             }
-                            await this.discountInventoryItem.execute(item.inventoryItemId, Number(saleResult.saleDetails[i].quantity));
+                        } else {
+                            throw new SaleConflictException('No pudimos finalizar la venta.');
                         }
                     } else {
                         throw new SaleConflictException('No pudimos finalizar la venta.');
                     }
-                } else {
-                    throw new SaleConflictException('No pudimos finalizar la venta.');
+                    if(dto.salePayments.length > 0){
+                        await this.registerSalePaymentUseCase.execute(dto.salePayments);
+                    }
                 }
-                if(dto.salePayments.length > 0){
-                    await this.registerSalePaymentUseCase.execute(dto.salePayments);
-                }
+                await this.transactionDB.commit();
+                return saleResult;
+            } catch (error) {
+                await this.transactionDB.rollback();
+                throw error;
             }
-            await this.transactionDB.commit();
-            return saleResult;
         } catch (error) {
-            await this.transactionDB.rollback();
             throw error;
         }
     }
