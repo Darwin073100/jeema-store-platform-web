@@ -27,7 +27,7 @@ export class CalculateSaleUseCase {
 
     async execute(dto: CalculateSaleDTO) {
         try {
-            this.transactionDB.beginTransaction()
+            await this.transactionDB.beginTransaction()
             //* Bloque 1: Verificar que existan los registros involucrados
             // const isSale = await this.saleCheckerPort.existById(dto.saleId);
             const sale = await this.saleRepository.findById(dto.saleId);
@@ -115,10 +115,10 @@ export class CalculateSaleUseCase {
                     await this.registerSalePaymentUseCase.execute(dto.salePayments);
                 }
             }
-            this.transactionDB.commit();
+            await this.transactionDB.commit();
             return saleResult;
         } catch (error) {
-            this.transactionDB.rollback();
+            await this.transactionDB.rollback();
             throw error;
         }
     }
