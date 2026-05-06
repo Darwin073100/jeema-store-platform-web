@@ -11,6 +11,7 @@ import { UpdateDetailModal } from "./UpdateDetailModal";
 import { useInventoryListModal } from "../hooks/useInventoryListModal";
 import { SaleTicketModal } from "./SaleTicketModal";
 import { SaleDetailItemMovile } from "./SaleDetailItemMovile";
+import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
 const SaleProductList = () => {
 
     const { sale } = useSaleStore();
@@ -20,10 +21,10 @@ const SaleProductList = () => {
     return (
         <section className="flex-1">
             <div className="flex gap-4 mb-4">
-                <Button onClick={() => openSaleModal('inventoryListModal')} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                <ButtonOutLine onClick={() => openSaleModal('inventoryListModal')} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosSearch className="text-lg" />
                     <span className="max-sm:hidden">Catálogo de productos</span>
-                </Button>
+                </ButtonOutLine>
                 <Button onClick={() => handleCheckerOpenModalCancelSale()} color="red" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosTrash className="text-lg" />
                     <span className="max-sm:hidden">Cancelar venta</span>

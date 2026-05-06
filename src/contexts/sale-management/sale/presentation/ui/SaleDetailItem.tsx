@@ -7,6 +7,7 @@ import { useUpdateDetailModal } from "../hooks/useUpdateDetailModal";
 import { Badge } from "@/shared/ui/components/badges/Badge";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
 import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
+import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
 // import { useSale } from "../hooks/useSale";
 
 interface Props {
@@ -52,12 +53,12 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
             <td className="px-2 py-1 flex justify-center gap-1">
                 { saleDetail 
                     ? <>
-                    <Button onClick={()=> handleLoadUpdateDetail(saleDetail)} color="yellow" title="Modifica cantidades y unidades de productos en la venta.">
+                    <ButtonOutLine onClick={()=> handleLoadUpdateDetail(saleDetail)} title="Modifica cantidades y unidades de productos en la venta.">
                         <HiPencilSquare/>
-                    </Button>
-                    <Button type="button" onClick={()=> handleOpenModalDeleteDetail(saleDetail)} color="red" title="Elimina todos los productos de la venta.">
+                    </ButtonOutLine>
+                    <ButtonOutLine type="button" onClick={()=> handleOpenModalDeleteDetail(saleDetail)} color="red" title="Elimina todos los productos de la venta.">
                         <IoIosTrash />
-                    </Button>
+                    </ButtonOutLine>
                     </>
                     : null 
                 }
