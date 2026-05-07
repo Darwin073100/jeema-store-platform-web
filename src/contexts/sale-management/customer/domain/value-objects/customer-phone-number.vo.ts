@@ -9,7 +9,7 @@ export class CustomerPhoneNumberVO extends ValueObject<Prop> {
     super(prop);
   }
   public static create(value?: string|null): CustomerPhoneNumberVO {
-      if(value===null || value===undefined){
+      if(value===null || value===undefined || value.trim().length<= 0){
         return new CustomerPhoneNumberVO({ value:null });
       }
 
