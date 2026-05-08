@@ -39,7 +39,7 @@ const CustomerOptios = ({ customersList }: Props) => {
         <>
             <div className="flex gap-4 items-center justify-between">
                 <ButtonOutLine onClick={() => handleNewEmployee()} disabled={loading}>
-                    {loading ? <Spinner /> : <IoPersonAdd />}
+                    {loading ? <Spinner color='blue'/> : <IoPersonAdd />}
                     Cliente nuevo
                 </ButtonOutLine>
                 <div className='flex gap-4 items-center'>
