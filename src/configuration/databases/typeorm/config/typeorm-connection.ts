@@ -1,10 +1,5 @@
 import { DataSource } from 'typeorm';
 import { getDataSourceConfig } from './config';
-// import { entityRegistry } from './entities';
-// import { registerAllEntities } from './register-entities';
-
-// Registrar todas las entidades al importar este módulo
-// registerAllEntities();
 
 /**
  * Variable singleton para la conexión de TypeORM

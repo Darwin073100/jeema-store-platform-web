@@ -29,6 +29,8 @@ export const getDataSourceConfig = (): DataSourceOptions => {
     url: databaseUrl,
     entities,
     synchronize: false,
+    // migrations: [`${__dirname}/../migrations/*.{ts,js}`],
+    // migrationsTableName: 'migrations',
     logging: process.env.DB_LOGGING === 'true',
     // ✅ POOL CONFIGURATION - Previene agotamiento de conexiones
     // En TypeORM v0.3.x, la configuración del pool se pasa a través de 'extra'
