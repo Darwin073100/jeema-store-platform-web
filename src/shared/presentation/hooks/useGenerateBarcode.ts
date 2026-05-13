@@ -29,6 +29,18 @@ const useGenerateBarcode = () => {
         });
         return canvas.toDataURL('image/png');
       } catch (e) {
+        if(definitionBcid(barcode)==='ean13'){
+          let canvas = document.createElement('canvas');
+          BwipJs.toCanvas(canvas, {
+            bcid: 'code128', // Tipo de código de barras
+            text: barcode, // Valor del código
+            scale: scale, // Resolución
+            height: height, // Altura del código
+            includetext: includetext, // Mostrar texto debajo
+            textxalign: textxalign,
+          });
+          return canvas.toDataURL('image/png');
+        }
         console.error("Error generando barcode:", e);
         return null;
       }
