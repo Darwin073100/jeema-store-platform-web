@@ -1,3 +1,2 @@
 export * from './config';
-export * from './errors';
-export * from './typeorm-connection';
+// export * from './typeorm-connection';

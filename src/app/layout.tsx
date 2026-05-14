@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import "src/shared/ui/styles/globals.css";
 import { AuthProvider } from "@/shared/presentation/providers/auth-provider";
 

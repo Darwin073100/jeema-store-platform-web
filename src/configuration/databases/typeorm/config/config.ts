@@ -1,61 +1,107 @@
-import { DataSourceOptions } from 'typeorm';
-import { entities } from './entities';
+import 'reflect-metadata';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
+import { EstablishmentOrmEntity } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
+import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import { CategoryOrmEntity } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/entities/category.orm-entity';
+import { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
+import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
+import { UserOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user.orm-entity';
+import { RoleOrmEntity } from 'src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role.orm-entity';
+import { UserRoleOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user-role.orm-entity';
+import { PermissionOrmEntity } from 'src/contexts/authentication-management/permission/infraestructure/persistence/typeorm/entities/permission.orm-entity';
+import { RolePermissionOrmEntity } from 'src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity';
+import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
+import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
+import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
+import { EmployeeRoleOrmEntity } from 'src/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/entities/employee-role-orm-entity';
+import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
+import { InventoryOrmEntity } from 'src/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/entities/inventory.orm-entity';
+import { CustomerOrmEntity } from 'src/contexts/sale-management/customer/infraestructure/persistence/typeorm/entities/customer.orm-entity';
+import { LotUnitPurchaseOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot-unit-purchase.orm-entity';
+import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
+import { PaymentMethodOrmEntity } from 'src/contexts/sale-management/payment-method/infraestructure/persistence/typeorm/entities/payment-method.orm-entity';
+import { SaleOrmEntity } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity';
+import { SaleDetailOrmEntity } from 'src/contexts/sale-management/sale-detail/infraestructure/persistence/typeorm/entities/sale-detail.orm-entity';
+import { SalePaymentOrmEntity } from 'src/contexts/sale-management/sale-payment/infraestructure/entities/sale-payment.orm-entity';
+import { TransactionTypeOrmEntity } from 'src/contexts/transaction-management/transaction-type/infraestructure/entities/transaction-type.orm-entity';
+import { TransactionOrmEntity } from 'src/contexts/transaction-management/transaction/infraestructure/entities/transaction.orm-entity';
+import { TransferOrmEntity } from 'src/contexts/inventory-management/transfer/infraestructure/entities/transfer.orm-entity';
+import { CashRegisterOrmEntity } from 'src/contexts/cash-management/cash-register/infraestructure/entities/cash-register.orm-entity';
+import { CashSessionOrmEntity } from 'src/contexts/cash-management/cash-session/infraestructure/entities/cash-session.orm-entity';
+import { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestructure/entities/returns.orm-entity';
+import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
 
 
-/**
- * Configuración base de TypeORM
- * Se carga desde variables de entorno
- * 
- * Variables de entorno requeridas:
- * - DATABASE_URL: Conexión completa a PostgreSQL (ej: postgres://user:password@host:5432/dbname)
- * O alternativamente:
- * - DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME
- */
+// Cargar variables de entorno
 config();
-export const getDataSourceConfig = (): DataSourceOptions => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const databaseUrl = process.env.DATABASE_URL;
 
-  // Validar que existe la conexión
-  if (!databaseUrl) {
-    throw new Error(
-      'Missing required environment variable: DATABASE_URL (ej: postgres://user:password@host:5432/dbname)'
-    );
+const isProduction = process.env.NODE_ENV === 'production';
+
+// 2. CONFIGURACIÓN ÚNICA
+export const dbOptions: DataSourceOptions = {
+  type: 'postgres',
+  url: process.env.DATABASE_URL,
+  entities:[
+    EstablishmentOrmEntity, AddressOrmEntity, BranchOfficeOrmEntity, CategoryOrmEntity, BrandOrmEntity,
+    SeasonOrmEntity, UserOrmEntity, RoleOrmEntity, UserRoleOrmEntity, PermissionOrmEntity, RolePermissionOrmEntity,
+    ProductOrmEntity, SuplierOrmEntity, LotOrmEntity, EmployeeRoleOrmEntity, EmployeeOrmEntity, InventoryOrmEntity,
+    InventoryItemOrmEntity, CustomerOrmEntity, LotUnitPurchaseOrmEntity, PaymentMethodOrmEntity, SaleOrmEntity, 
+    SaleDetailOrmEntity, SalePaymentOrmEntity, TransactionTypeOrmEntity, TransactionOrmEntity, TransferOrmEntity,
+    CashRegisterOrmEntity, CashSessionOrmEntity, ReturnsOrmEntity
+  ],
+  synchronize: false,
+  logging: process.env.DB_LOGGING === 'true',
+  migrations: [`${__dirname}/../../../migrations/*.{ts,js}`], // Ajusta la ruta a tus migraciones
+  migrationsTableName: 'migrations',
+  extra: {
+    // Optimización para Vercel (Serverless)
+    max: isProduction ? 1 : 20, 
+    min: isProduction ? 0 : 2,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 5000,
+    maxUses: 7500,
+  },
+  ...(isProduction && {
+    ssl: { rejectUnauthorized: false },
+  }),
+};
+
+// 3. INSTANCIA PARA EL CLI (MIGRACIONES)
+// TypeORM CLI necesita que exportes una instancia de DataSource
+export const AppDataSource = new DataSource(dbOptions);
+
+// 4. TU LÓGICA SINGLETON (Mantenida porque confirmaste que te funciona el build)
+let dataSourceInstance: DataSource | null = null;
+let isInitializing = false;
+
+export async function getDataSource(): Promise<DataSource> {
+  if (dataSourceInstance && dataSourceInstance.isInitialized) {
+    return dataSourceInstance;
   }
 
-  const config: DataSourceOptions = {
-    type: 'postgres',
-    url: databaseUrl,
-    entities,
-    synchronize: false,
-    // migrations: [`${__dirname}/../migrations/*.{ts,js}`],
-    // migrationsTableName: 'migrations',
-    logging: process.env.DB_LOGGING === 'true',
-    // ✅ POOL CONFIGURATION - Previene agotamiento de conexiones
-    // En TypeORM v0.3.x, la configuración del pool se pasa a través de 'extra'
-    // que se envía directamente al driver 'pg' de node-postgres
-    extra: {
-      // Máximo de conexiones simultáneas (por defecto pg usa 10, con esto aumentamos a 20)
-      max: 20,
-      // Conexiones mínimas siempre activas
-      min: 2,
-      // Cierra conexiones inactivas después de 30 segundos
-      // Evita que conexiones muertas se acumulen
-      idleTimeoutMillis: 30000,
-      // Timeout al obtener conexión del pool (en lugar de esperar indefinidamente)
-      // Si no hay conexión disponible en 2s, falla la query
-      connectionTimeoutMillis: 2000,
-      // Reutilizar conexión máximo 7500 veces antes de cerrar
-      // Las conexiones degradadas se reciclan
-      maxUses: 7500,
-    },
-    // ...(isProduction && {
-    //   ssl: {
-    //     rejectUnauthorized: false,
-    //   },
-    // }),
-  };
+  if (isInitializing) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    return getDataSource();
+  }
 
-  return config;
-};
+  isInitializing = true;
+
+  try {
+    if (!dataSourceInstance) {
+      dataSourceInstance = AppDataSource; // Usamos la instancia ya configurada arriba
+    }
+
+    if (!dataSourceInstance.isInitialized) {
+      await dataSourceInstance.initialize();
+    }
+
+    return dataSourceInstance;
+  } catch (error) {
+    console.error('Error initializing DataSource:', error);
+    dataSourceInstance = null;
+    throw error;
+  } finally {
+    isInitializing = false;
+  }
+}
