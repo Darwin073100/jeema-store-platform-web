@@ -1,0 +1,6 @@
+allowBuilds:
+  bcrypt: false
+  esbuild: false
+  sharp: false
+  unrs-resolver: false
+minimumReleaseAge: 10080
