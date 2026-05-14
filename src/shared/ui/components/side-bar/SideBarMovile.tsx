@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { FcConferenceCall, FcCurrencyExchange, FcMindMap, FcOrgUnit, FcPaid, FcServices, FcShipped, FcShop } from "react-icons/fc";
+import { FcConferenceCall, FcCurrencyExchange, FcMindMap, FcOrgUnit, FcPaid, FcSerialTasks, FcServices, FcShipped, FcShop } from "react-icons/fc";
 import { SideMovileLink } from './SideMovileLink';
 import { useSideStore } from './side.store';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
@@ -27,6 +27,9 @@ export const SideBarMovile = () => {
                 </HideElement>
                 <SideMovileLink hover={hover} Icon={FcServices} href='/configurations' value='Config.' />
                 <SideMovileLink hover={hover} Icon={FcCurrencyExchange} href='/cash' value='Caja' />
+                <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                    <SideMovileLink hover={hover} Icon={FcSerialTasks} href='/transfers' value='Traspasos'/>
+                </HideElement>
             </form>
         </div>}
     </>)

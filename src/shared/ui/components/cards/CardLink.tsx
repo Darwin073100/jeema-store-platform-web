@@ -3,24 +3,30 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Spinner } from '../loadings/Spinner';
+import { IconType } from 'react-icons';
 
 interface Props {
     title: string;
     description: string;
-    image: any;
+    image?: any;
+    Icon?: IconType;
     to: string;
 }
 
-export const CardLink = ({ title, description, image, to }:Props) => {
+export const CardLink = ({ title, description, image, to, Icon }:Props) => {
     const [redirect, setRedirect] = React.useState(false);
     return (
         <Link href={ to } className="relative transition-all duration-300 bg-white rounded-xl p-4 shadow-xl flex flex-col max-md:flex-row items-center justify-center gap-1 hover:bg-blue-200 border-2 border-white hover:border-2 hover:border-blue-700">
-            <Image
-                src={ image }
-                alt={ title }
-                width={100}
-                height={100}
-            />
+            {
+                image && <Image
+                    src={ image }
+                    alt={ title }
+                    width={100}
+                    height={100} />
+            }
+            {
+                Icon && <Icon className='w-25 h-25' />
+            }
             <div className="flex flex-col justify-center items-center w-full">
                 <h2 className="text-2xl font-bold">{ title }</h2>
                 <span className='text-center'>{ description }</span>
