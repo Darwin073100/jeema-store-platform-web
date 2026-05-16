@@ -26,16 +26,17 @@ const useUpdateDetailModal = () => {
     const [saleFor, setSaleFor] = useState<SaleForEnum>(SaleForEnum.ONE);
     
     // Buscar el item de inventario
-    //TODO: Debemos usar un server action para traer los items y hacer el filtro
+    // TODO: Debemos usar un server action para traer los items y hacer el filtro
     const handleSearchItemInfo = async (inventoryId: bigint, barCode: string) => {
         const itemResult = await searchInventoryItemInformationAction(inventoryId, barCode);
         setItemMatchDetail(itemResult?.value ?? null);
     }
-    // Metodo para abriri y seleccionar el detalle en la UI
+
+    // Metodo para abrir y seleccionar el detalle en la UI
     const handleLoadUpdateDetail = async (detail: ISaleDetail) => {
+        await handleSearchItemInfo(detail.inventoryId, detail.productBarCodeAtSale);
         setDetailSelected(detail);
         openSaleModal('updateDetailModal');
-        await handleSearchItemInfo(detail.inventoryId, detail.productBarCodeAtSale);
     }
 
 
@@ -79,15 +80,11 @@ const useUpdateDetailModal = () => {
             }
         }
         currencyDetailPrice();
-    }, [detailQuantity]);
-
-    useEffect(() => {
-        currencyDetailPrice();
-    }, [saleFor]);
+    }, [detailQuantity, saleFor]);
 
     useEffect(() => {
         currencyDetailTotal()
-    }, [detailPrice, saleFor, detailQuantity]);
+    }, [detailPrice, saleFor, detailQuantity, saleModals]);
 
     const handleApplyManualSaleFor = async (detail?: ISaleDetail, specialprice?: number) => {
         if(!cashSessionActive){

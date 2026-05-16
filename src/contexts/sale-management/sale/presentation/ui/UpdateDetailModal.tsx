@@ -6,14 +6,15 @@ import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TextInput } from '@/shared/ui/components/inputs';
 import { useUpdateDetailModal } from '../hooks/useUpdateDetailModal';
-import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
+import { numberBasicFormat, numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { FiGitCommit, FiGitPullRequest } from 'react-icons/fi';
 import { SaleForEnum } from '../../domain/enums/sale-for.enum';
+import { Badge } from '@/shared/ui/components/badges/Badge';
 
 const UpdateDetailModal = () => {
   const { 
     closeSaleModal, saleModals, detailSelected, detailQuantity, setDetailQuantity, detailCurrentTotal, 
-    saleFor, detailPrice, handleUpdateQuantityDetail, loading, handleApplyManualSaleFor
+    saleFor, detailPrice, handleUpdateQuantityDetail, loading, handleApplyManualSaleFor, itemMatchDetail
   } = useUpdateDetailModal();
  return (
     <TemplateModal size='lg' isOpen={saleModals==='updateDetailModal'} onClose={closeSaleModal} title='Producto en venta'>
@@ -29,10 +30,20 @@ const UpdateDetailModal = () => {
             </Button>
           </div>
           <span className='text-green-600 font-bold'>{detailSelected?.productNameAtSale ?? 'S/N'}</span>
+          <div className='flex justify-center gap-4'>
+              <div>
+                <span className='font-bold'>Menudeo</span>
+                <Badge size='md'>{numberMoneyFormat(itemMatchDetail?.inventory?.salePriceOne ?? 0)}</Badge>
+              </div>
+              <div>
+                <span className='font-bold'>Mayoreo</span>
+                <Badge type='green' size='md'>{itemMatchDetail?.inventory?.salePriceMany ? numberMoneyFormat(itemMatchDetail?.inventory?.salePriceMany ?? 0): 'N/A'}</Badge>
+              </div>
+          </div>
           <div>
             <div className='flex flex-col items-center'>
               <div className='flex gap-1 items-center'>
-                <span>Precio</span>
+                <span>Precio actual</span>
                 <span className='text-sm text-blue-600 bg-blue-100 p-1 rounded-lg'>{ saleFor.toString() }</span>
               </div>
               <span>
@@ -67,7 +78,7 @@ const UpdateDetailModal = () => {
             onClick={()=> handleUpdateQuantityDetail()}
             type="button"
             color='purple'
-            className={clsx(`flex justify-center items-center min-w-[120px]`)}
+            className={clsx(`flex justify-center items-center min-w-30`)}
             disabled={loading === 'updateDetailLoading'}
           >
              { loading === 'updateDetailLoading'
