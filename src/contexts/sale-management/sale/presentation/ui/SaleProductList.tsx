@@ -32,8 +32,8 @@ const SaleProductList = () => {
                 <SaleTicketModal />
                 <SaleInventoryListModal key='sale-inventory-items-modal' />
             </div>
-            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-all max-xl:hidden">
-                <table className="w-full text-left rtl:text-right">
+            <div className="overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-all max-xl:hidden">
+                <table className="w-full text-left rtl:text-right rounded-xl overflow-hidden">
                     <thead>
                         <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
                             <th scope="col" className="px-2 py-4 font-semibold">
@@ -55,7 +55,7 @@ const SaleProductList = () => {
                                 S.total
                             </th>
                             <th scope="col" className="px-2 py-4 font-semibold">
-                                P. Unitario
+                                P. Final
                             </th>
                             <th scope="col" className="px-2 py-4 font-semibold">
                                 Desc.

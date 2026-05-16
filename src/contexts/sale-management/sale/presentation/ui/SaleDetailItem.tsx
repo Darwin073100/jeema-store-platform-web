@@ -19,7 +19,7 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
     const { handleLoadUpdateDetail } = useUpdateDetailModal();
     // const { } = useSale();
     return (
-        <tr className="text-sm bg-white border-b dark:border-gray-700 border-gray-200 text-black">
+        <tr className="text-sm bg-white border-b dark:border-blue-600 border-gray-200 text-black">
             <td className="px-2 py-1 bg-blue-200 font-bold">
                 {saleDetail?.quantity ?? '0.00'}
             </td>

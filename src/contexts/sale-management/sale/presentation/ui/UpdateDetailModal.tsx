@@ -44,7 +44,7 @@ const UpdateDetailModal = () => {
             <div className='flex flex-col items-center'>
               <div className='flex gap-1 items-center'>
                 <span>Precio actual</span>
-                <span className='text-sm text-blue-600 bg-blue-100 p-1 rounded-lg'>{ saleFor.toString() }</span>
+                <Badge type={saleFor===SaleForEnum.ONE? 'blue': 'green' } size='lg'>{ saleFor.toString() }</Badge>
               </div>
               <span>
                 <span className='text-purple-600 text-2xl'>

@@ -9,8 +9,6 @@ import { AddDetailToSaleDto } from "@/contexts/sale-management/sale-detail/appli
 import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
 import { searchInventoryItemInformationAction } from "@/contexts/inventory-management/inventory-item/presentation/actions/search-inventory-item-information.action";
 
-type SaleForType = 'Menudeo' | 'Mayoreo' | 'Especial';
-
 const useUpdateDetailModal = () => {
     const {
         saleModals, openSaleModal, closeSaleModal, setFloatMessageState, finishLoading, initLoading, loading
