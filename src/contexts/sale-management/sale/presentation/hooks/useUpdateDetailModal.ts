@@ -229,9 +229,15 @@ const useUpdateDetailModal = () => {
         }
     }
 
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>)=> {
+        e.preventDefault();
+        await handleUpdateQuantityDetail();
+    }
+
 
 
     return {
+        handleSubmit,
         closeSaleModal,
         openSaleModal,
         saleModals,

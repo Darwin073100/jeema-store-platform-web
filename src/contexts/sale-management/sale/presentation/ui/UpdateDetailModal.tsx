@@ -14,7 +14,8 @@ import { Badge } from '@/shared/ui/components/badges/Badge';
 const UpdateDetailModal = () => {
   const { 
     closeSaleModal, saleModals, detailSelected, detailQuantity, setDetailQuantity, detailCurrentTotal, 
-    saleFor, detailPrice, handleUpdateQuantityDetail, loading, handleApplyManualSaleFor, itemMatchDetail
+    saleFor, detailPrice, handleUpdateQuantityDetail, loading, handleApplyManualSaleFor, itemMatchDetail,
+    handleSubmit,
   } = useUpdateDetailModal();
  return (
     <TemplateModal size='lg' isOpen={saleModals==='updateDetailModal'} onClose={closeSaleModal} title='Producto en venta'>
@@ -54,7 +55,7 @@ const UpdateDetailModal = () => {
             </div>
             <div className='flex flex-col items-center'>
               <label htmlFor="">Cantidad</label>
-              <div className='flex items-center gap-2'>
+              <form className='flex items-center gap-2' onSubmit={(e)=> handleSubmit(e)}>
                 <TextInput
                   onChange={(e)=> setDetailQuantity(Number(e.target.value ?? 0))}
                   value={detailQuantity}
@@ -63,7 +64,7 @@ const UpdateDetailModal = () => {
                   min={0} 
                   placeholder='Cantidad' 
                   className='text-center'/>
-              </div>
+              </form>
               
             </div>
           </div>
