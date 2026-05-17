@@ -12,6 +12,7 @@ import { IEmployee } from '@/contexts/employee-management/employee/presentation/
 import { Result } from '@/shared/lib/utils/result';
 import { CashSessionMapper } from '../../application/mappers/cash-session.mapper';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
+import { TypeormTransactionDBRepository } from '@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository';
 
 export async function openCashSessionAction(dto: Omit<OpenCashSessionDTO, 'branchOfficeId' | 'employeeId'>){ 
     try {
@@ -20,7 +21,8 @@ export async function openCashSessionAction(dto: Omit<OpenCashSessionDTO, 'branc
         const cashRegisterRepository = await TypeormCashRegisterRepository.create();
         const employeeRepository = await TypeOrmEmployeeRepository.create();
         const transactionRepository = await TypeormTransactionRepository.create();
-        const useCase = new OpenCashSessionUseCase(repository, cashRegisterRepository, employeeRepository, transactionRepository);
+        const transactionDBRepository = await TypeormTransactionDBRepository.create();
+        const useCase = new OpenCashSessionUseCase(repository, cashRegisterRepository, employeeRepository, transactionRepository, transactionDBRepository);
         
         const cookieStore = await cookies();
                 

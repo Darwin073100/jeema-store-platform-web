@@ -7,6 +7,7 @@ import { CashSessionConflictException } from "../../domain/exceptions/cash-sessi
 import { CashSessionEntity } from "../../domain/entities/cash-session.entity";
 import { TransactionRepository } from "src/contexts/transaction-management/transaction/domain/repositories/transaction.repository";
 import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
+import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 
 export class OpenCashSessionUseCase {
     constructor(
@@ -14,39 +15,47 @@ export class OpenCashSessionUseCase {
         private readonly cashRegisterRepo: CashRegisterRepository,
         private readonly employeeRepo: EmployeeRepository,
         private readonly transactionRepo: TransactionRepository,
-    ){}
+        private readonly transactionDB: TransactionDBRepository,
+    ) { }
 
-    async execute(command: OpenCashSessionDTO){
-        const cashRegisterExist = await this.cashRegisterRepo.existById(command.cashRegisterId);
-        if(!cashRegisterExist) throw new CashSessionNotFoundException(`La caja por aperturar no existe.`);
-        
-        const employeeExist = await this.employeeRepo.existById(command.employeeId);
-        if(!employeeExist) throw new CashSessionNotFoundException(`El empleado que va a aperturar caja no existe.`);
-        
-        const isClosed = await this.cashSesssionRepo.isClosedCashSession(command.cashRegisterId);
-        if(!!isClosed) throw new CashSessionConflictException(`La caja por aperturar, ya está aperturada, haz el corte del día y luego apertura.`);
+    async execute(command: OpenCashSessionDTO) {
+        try {
+            const cashRegisterExist = await this.cashRegisterRepo.existById(command.cashRegisterId);
+            if (!cashRegisterExist) throw new CashSessionNotFoundException(`La caja por aperturar no existe.`);
 
-        const entity = CashSessionEntity.create(
-            command.cashRegisterId,
-            command.employeeId,
-            command.startTime,
-            Number(command.startBalance.toFixed(2))
-        );
+            const employeeExist = await this.employeeRepo.existById(command.employeeId);
+            if (!employeeExist) throw new CashSessionNotFoundException(`El empleado que va a aperturar caja no existe.`);
 
-        const result = await this.cashSesssionRepo.save(entity);
-        if(result.cashSessionId > BigInt(0)){
-            const transaction = TransactionEntity.create(
-                BigInt(3),
-                BigInt(command.branchOfficeId),
-                null,
-                null,
+            const isClosed = await this.cashSesssionRepo.isClosedCashSession(command.cashRegisterId);
+            if (!!isClosed) throw new CashSessionConflictException(`La caja por aperturar, ya está aperturada, haz el corte del día y luego apertura.`);
+
+            const entity = CashSessionEntity.create(
+                command.cashRegisterId,
                 command.employeeId,
-                result.cashSessionId,
-                command.startBalance,
-                'Apertura de Caja.'
+                command.startTime,
+                Number(command.startBalance.toFixed(2))
             );
-            await this.transactionRepo.save(transaction);
+            await this.transactionDB.beginTransaction();
+
+            const result = await this.cashSesssionRepo.save(entity);
+            if (result.cashSessionId > BigInt(0)) {
+                const transaction = TransactionEntity.create(
+                    BigInt(3),
+                    BigInt(command.branchOfficeId),
+                    null,
+                    null,
+                    command.employeeId,
+                    result.cashSessionId,
+                    command.startBalance,
+                    'Apertura de Caja.'
+                );
+                await this.transactionRepo.save(transaction);
+            }
+            await this.transactionDB.commit();
+            return result;
+        } catch (error){
+            await this.transactionDB.rollback();
+            throw error;
         }
-        return result;
     }
 }
