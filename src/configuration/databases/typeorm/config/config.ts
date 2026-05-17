@@ -56,8 +56,8 @@ export const dbOptions: DataSourceOptions = {
   migrationsTableName: 'migrations',
   extra: {
     // Optimización para Vercel (Serverless)
-    max: isProduction ? 1 : 20, 
-    min: isProduction ? 0 : 2,
+    max: 20, 
+    min: 2,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000,
     maxUses: 7500,
