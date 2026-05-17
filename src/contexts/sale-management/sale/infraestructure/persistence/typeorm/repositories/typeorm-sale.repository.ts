@@ -9,12 +9,15 @@ import { getDataSource } from "@/configuration/databases/typeorm/config";
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
 export class TypeormSaleRepository implements SaleRepository{
-    private readonly typeormRepository: Repository<SaleOrmEntity>;
+    private readonly transactionRepository: Repository<SaleOrmEntity>;
+    private readonly repository: Repository<SaleOrmEntity>;
+
     constructor(
         private readonly datasource: DataSource,
         private readonly transactionDB: TransactionDBRepository
     ){
-        this.typeormRepository = this.transactionDB.getManager().getRepository(SaleOrmEntity);
+        this.transactionRepository = this.transactionDB.getManager().getRepository(SaleOrmEntity);
+        this.repository = this.datasource.getRepository(SaleOrmEntity);
     }
 
     /**
@@ -28,7 +31,7 @@ export class TypeormSaleRepository implements SaleRepository{
     }
 
     async findById(saleId: bigint): Promise<SaleEntity | null> {
-        const ormEntity = await this.typeormRepository.findOne({
+        const ormEntity = await this.repository.findOne({
             where: {
                 saleId: saleId
             },
@@ -42,7 +45,7 @@ export class TypeormSaleRepository implements SaleRepository{
         return SaleMapper.toDomainEntity(ormEntity);
     }
     async findFinishSaleById(saleId: bigint): Promise<SaleEntity | null> {
-        const ormEntity = await this.typeormRepository.findOne({
+        const ormEntity = await this.repository.findOne({
             where: {
                 saleId: saleId
             },
@@ -65,7 +68,7 @@ export class TypeormSaleRepository implements SaleRepository{
         return SaleMapper.toDomainEntity(ormEntity);
     }
     async findSaleTicketById(saleId: bigint): Promise<SaleEntity | null> {
-        const ormEntity = await this.typeormRepository.findOne({
+        const ormEntity = await this.repository.findOne({
             where: {
                 saleId: saleId
             },
@@ -90,13 +93,13 @@ export class TypeormSaleRepository implements SaleRepository{
 
 
     async existById(saleId: bigint): Promise<boolean> {
-        return await this.typeormRepository.existsBy({
+        return await this.repository.existsBy({
             saleId
         });    
     }
 
     async findAll(): Promise<SaleEntity[]> {
-        const result = await this.typeormRepository.find({
+        const result = await this.repository.find({
             where:{
                 deletedAt: undefined
             },
@@ -108,7 +111,7 @@ export class TypeormSaleRepository implements SaleRepository{
         return categoryList;
     }
     async findAllByBranchOffice(branchOfficeId: bigint): Promise<SaleEntity[]> {
-        const result = await this.typeormRepository.find({
+        const result = await this.repository.find({
             where:{
                 branchOfficeId
             },
@@ -124,7 +127,7 @@ export class TypeormSaleRepository implements SaleRepository{
         return categoryList;
     }
     async findAllByBranchOfficeAndFilter(branchOfficeId: bigint, dateStart?: Date, dateEnd?: Date, search?:string): Promise<SaleEntity[]> {
-        const query = await this.typeormRepository.createQueryBuilder('sale')
+        const query = await this.repository.createQueryBuilder('sale')
             .leftJoinAndSelect('sale.customer', 'customer')
             .leftJoinAndSelect('sale.employee', 'employee')
             .where('sale.branchOfficeId = :branchOfficeId', {branchOfficeId});
@@ -153,7 +156,7 @@ export class TypeormSaleRepository implements SaleRepository{
     // Metodo para guardar un metodo de pago y para actualizarla
     async save(entity: SaleEntity): Promise<SaleEntity> {
         try {
-            let ormEntity = await this.typeormRepository.findOne({
+            let ormEntity = await this.repository.findOne({
                 where: {saleId: entity.saleId},
             });
 
@@ -173,8 +176,8 @@ export class TypeormSaleRepository implements SaleRepository{
                 ormEntity = SaleMapper.toTypeOrmEntity(entity);
             }
 
-            const savedOrmEntity = await this.typeormRepository.save(ormEntity);
-            const currentSale = await this.typeormRepository.findOne({
+            const savedOrmEntity = await this.transactionRepository.save(ormEntity);
+            const currentSale = await this.repository.findOne({
                 where: {
                     saleId: savedOrmEntity.saleId
                 },
