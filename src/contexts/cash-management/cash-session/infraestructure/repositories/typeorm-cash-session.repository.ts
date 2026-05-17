@@ -8,12 +8,14 @@ import { TypeormTransactionDBRepository } from "@/configuration/databases/typeor
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 
 export class TypeormCashSessionRepository implements CashSessionRepository {
+    private readonly transactionRepository: Repository<CashSessionOrmEntity>;
     private readonly repository: Repository<CashSessionOrmEntity>;
     
     constructor(
         private readonly datasource: DataSource,
         private readonly connection: TransactionDBRepository
     ){
+        this.transactionRepository = this.connection.getManager().getRepository(CashSessionOrmEntity);
         this.repository = this.datasource.getRepository(CashSessionOrmEntity);
     }
 
@@ -45,11 +47,11 @@ export class TypeormCashSessionRepository implements CashSessionRepository {
                 cashRegisterId: entity.cashRegisterId,
                 employeeId: entity.employeeId,
             }
-            const updateResult = await this.connection.getManager().save(CashSessionOrmEntity, cashSessionExist);
+            const updateResult = await this.transactionRepository.save(cashSessionExist);
             return CashSessionMapper.toDomain(updateResult);
         }
         const ormEntity = CashSessionMapper.toOrm(entity);
-        const saveRessult = await this.connection.getManager().save(CashSessionOrmEntity, ormEntity);
+        const saveRessult = await this.transactionRepository.save(ormEntity);
         return CashSessionMapper.toDomain(saveRessult);
     }
 
