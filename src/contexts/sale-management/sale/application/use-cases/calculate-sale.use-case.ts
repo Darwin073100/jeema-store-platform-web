@@ -72,29 +72,25 @@ export class CalculateSaleUseCase {
                 discount = newDiscount;
                 outAmount = dto.inAmount - saleTotal;
             }
-
-            sale.updateCustomerId(dto.customerId);
-            sale.updateEmployeeId(dto.employeeId);
-            sale.updateCashSessionId(cashSession.cashSessionId);
-            sale.updateSubTotalAmount(subTotal);
-            sale.updateDiscountAmount(discount);
-            sale.updateTaxAmount(taxAmount);
-            sale.updateTotalAmount(saleTotal);
-            sale.updateStatus(dto.status);
-            sale.updateNotes(dto.notes);
-            sale.updateInAmount(dto.inAmount);
-            sale.updateCreatedAt(new Date(formatDateTimeForInput(new Date())));
-            if(dto.status === SaleStatusEnum.CANCELLED){
-                outAmount=0;
-            }
-            sale.updateOutAmount(outAmount);
-
-            //* ✅ OPTIMIZACIÓN: ABRE TRANSACCIÓN AQUÍ (después de validaciones)
-            await this.transactionDB.beginTransaction();
-            
-            try {
+            return await this.transactionDB.runInTransaction(async ()=> {
+                sale.updateCustomerId(dto.customerId);
+                sale.updateEmployeeId(dto.employeeId);
+                sale.updateCashSessionId(cashSession.cashSessionId);
+                sale.updateSubTotalAmount(subTotal);
+                sale.updateDiscountAmount(discount);
+                sale.updateTaxAmount(taxAmount);
+                sale.updateTotalAmount(saleTotal);
+                sale.updateStatus(dto.status);
+                sale.updateNotes(dto.notes);
+                sale.updateInAmount(dto.inAmount);
+                sale.updateCreatedAt(new Date(formatDateTimeForInput(new Date())));
+                if(dto.status === SaleStatusEnum.CANCELLED){
+                    outAmount=0;
+                }
+                sale.updateOutAmount(outAmount);
+    
                 const saleResult = await this.saleRepository.save(sale);
-
+    
                 if (!saleResult) throw new SaleNotFoundException('No se pudo finalizar la venta.');
                 
                 if(dto.status === SaleStatusEnum.COMPLETED){
@@ -119,12 +115,9 @@ export class CalculateSaleUseCase {
                         await this.registerSalePaymentUseCase.execute(dto.salePayments);
                     }
                 }
-                await this.transactionDB.commit();
+                
                 return saleResult;
-            } catch (error) {
-                await this.transactionDB.rollback();
-                throw error;
-            }
+            });
         } catch (error) {
             throw error;
         }
