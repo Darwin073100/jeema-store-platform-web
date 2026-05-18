@@ -61,6 +61,35 @@ export class TypeormTransactionDBRepository implements TransactionDBRepository<E
     }
   }
 
+  /**
+   * NUEVO MÉTODO: Ejecuta todo dentro de un contexto seguro
+   */
+  async runInTransaction<T>(operation: () => Promise<T>): Promise<T> {
+    // Si ya estamos dentro de una transacción, simplemente ejecutamos la operación
+    if (asyncLocalStorage.getStore()) {
+      return await operation();
+    }
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    // Utilizamos .run() en lugar de .enterWith()
+    return asyncLocalStorage.run(queryRunner, async () => {
+      try {
+        const result = await operation();
+        await queryRunner.commitTransaction();
+        return result;
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+        throw error;
+      } finally {
+        // Garantía absoluta de que la conexión se libera
+        await queryRunner.release();
+      }
+    });
+  }
+
   // Implementación para que los repositorios obtengan el Manager
   getManager(): EntityManager {
     // Si hay un QueryRunner activo en el contexto, retornamos su EntityManager transaccional.
