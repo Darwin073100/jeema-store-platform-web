@@ -8,23 +8,23 @@ const asyncLocalStorage = new AsyncLocalStorage<QueryRunner>();
 
 // El servicio debe ser de alcance de solicitud (Scope.REQUEST) para ser un singleton por request.
 export class TypeormTransactionDBRepository implements TransactionDBRepository<EntityManager> {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(private readonly dataSource: DataSource) { }
 
   /**
    * Crea una instancia del repositorio (factory)
    * Uso: const repo = await TypeOrmAgregadoRepository.create();
    */
   static async create(): Promise<TypeormTransactionDBRepository> {
-      const dataSource = await getDataSource();
-      return new TypeormTransactionDBRepository(dataSource);
+    const dataSource = await getDataSource();
+    return new TypeormTransactionDBRepository(dataSource);
   }
   // Implementación del método que usa el Caso de Uso para iniciar
   async beginTransaction(): Promise<void> {
     // Si ya existe un QueryRunner activo (por ejemplo, en un servicio anidado), lo ignoramos.
     if (asyncLocalStorage.getStore()) {
-      return; 
+      return;
     }
-    
+
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -42,7 +42,7 @@ export class TypeormTransactionDBRepository implements TransactionDBRepository<E
       } finally {
         await queryRunner.release();
         // Limpiar el contexto es crucial
-        asyncLocalStorage.disable(); 
+        asyncLocalStorage.disable();
       }
     }
   }
@@ -61,10 +61,7 @@ export class TypeormTransactionDBRepository implements TransactionDBRepository<E
     }
   }
 
-  /**
-   * NUEVO MÉTODO: Ejecuta todo dentro de un contexto seguro
-   */
-  async runInTransaction<T>(operation: () => Promise<T>): Promise<T> {
+    async runInTransaction<T>(operation: () => Promise<T>): Promise<T> {
     // Si ya estamos dentro de una transacción, simplemente ejecutamos la operación
     if (asyncLocalStorage.getStore()) {
       return await operation();
@@ -74,7 +71,7 @@ export class TypeormTransactionDBRepository implements TransactionDBRepository<E
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
-    // Utilizamos .run() en lugar de .enterWith()
+    // Utilizamos .run() que limpia automáticamente al salir
     return asyncLocalStorage.run(queryRunner, async () => {
       try {
         const result = await operation();
@@ -84,12 +81,11 @@ export class TypeormTransactionDBRepository implements TransactionDBRepository<E
         await queryRunner.rollbackTransaction();
         throw error;
       } finally {
-        // Garantía absoluta de que la conexión se libera
+        // Garantía absoluta: la conexión SIEMPRE se libera, incluso con errores
         await queryRunner.release();
       }
     });
   }
-
   // Implementación para que los repositorios obtengan el Manager
   getManager(): EntityManager {
     // Si hay un QueryRunner activo en el contexto, retornamos su EntityManager transaccional.

@@ -21,8 +21,6 @@ export class RegisterSaleUseCase {
   ) { }
 
   public async execute(command: RegisterSaleDto): Promise<SaleEntity> {
-    try {
-      await this.transactionDB.beginTransaction();
       // Validar que la sucursal exista
       const branchOfficeExists = await this.branchOfficeRepository.existById(command.branchOfficeId);
       if (!branchOfficeExists) {
@@ -62,13 +60,11 @@ export class RegisterSaleUseCase {
         null,
       );
 
-      // Persistir el agregado de dominio a través del repositorio (Puerto de Salida).
-      const savedEntity = await this.repository.save(createdSale);
-      await this.transactionDB.commit();
-      return savedEntity;
-    } catch (error) {
-      await this.transactionDB.rollback();
-      throw error;
-    }
+      // Ejecutar las escrituras dentro del contexto seguro
+      return this.transactionDB.runInTransaction(async () => {
+        // Persistir el agregado de dominio a través del repositorio (Puerto de Salida).
+        const savedEntity = await this.repository.save(createdSale);
+        return savedEntity;
+      })
   }
 }
