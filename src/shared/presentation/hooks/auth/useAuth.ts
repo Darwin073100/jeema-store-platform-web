@@ -34,6 +34,9 @@ export function useAuth() {
 
   const logout = async () => {
     setLoading(true);
+    setCookie("establishmentCookie", safeJsonSerialize({}));
+    setCookie("branchOfficeCookie", safeJsonSerialize({}));
+    setCookie("employeeCookie", safeJsonSerialize({}));
     await signOut({ redirect: false });
   };
 
@@ -79,9 +82,12 @@ export function useWorkspace() {
         if (result.ok && result.value) {
           setWorkspace(result.value);
           // Cachear en cookies para disponibilidad rápida
-          setCookie("establishmentCookie", safeJsonSerialize(result.value.establishment ?? {}), {maxAge: 60*60});
-          setCookie("branchOfficeCookie", safeJsonSerialize(result.value.branchOffice ?? {}), {maxAge: 60*60});
-          setCookie("employeeCookie", safeJsonSerialize(result.value.employee ?? {}), {maxAge: 60*60});
+          // setCookie("establishmentCookie", safeJsonSerialize(result.value.establishment ?? {}), {maxAge: 60*60});
+          // setCookie("branchOfficeCookie", safeJsonSerialize(result.value.branchOffice ?? {}), {maxAge: 60*60});
+          // setCookie("employeeCookie", safeJsonSerialize(result.value.employee ?? {}), {maxAge: 60*60});
+          setCookie("establishmentCookie", safeJsonSerialize(result.value.establishment ?? {}));
+          setCookie("branchOfficeCookie", safeJsonSerialize(result.value.branchOffice ?? {}));
+          setCookie("employeeCookie", safeJsonSerialize(result.value.employee ?? {}));
         } else {
           setWorkspaceError(result.error?.message?.toString() || "Error cargando workspace");
         }
