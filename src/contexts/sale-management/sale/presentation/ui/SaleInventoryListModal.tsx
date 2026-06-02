@@ -14,7 +14,7 @@ import { Badge } from '@/shared/ui/components/badges/Badge';
 
 const SaleInventoryListModal = () => {
   const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,
-    setSearchProductValue, filterInventoryItems, itemSelected, saleModals, closeSaleModal, onSubmit,
+    setSearchProductValue, filterInventoryItems, itemSelected, saleModals, closeSaleModal, onSubmit, quantitySubmit,
   } = useInventoryListModal()
   return (
     <TemplateModal size='full' isOpen={saleModals==='inventoryListModal'} onClose={closeSaleModal} title='Catalogo de productos'>
@@ -79,13 +79,16 @@ const SaleInventoryListModal = () => {
                   { itemSelected?.inventoryItemId === item.inventoryItemId && <>
                     <tr className='bg-blue-100'>
                       <th className='p-1 flex items-center gap-2'>
-                        <TextInput
-                          min={0}
-                          value={ quantityInsert }
-                          onChange={(e)=>setQuantityInsert(Number(e.target.value))}
-                          className='font-medium'
-                          type='number'
-                          placeholder='Cantidad' />
+                        <form onSubmit={(e)=> quantitySubmit(e)}>
+                          <TextInput
+                          autoFocus={true}
+                            min={0}
+                            value={ quantityInsert }
+                            onChange={(e)=>setQuantityInsert(Number(e.target.value))}
+                            className='font-medium'
+                            type='number'
+                            placeholder='Cantidad' />
+                        </form>
                         <Button
                           disabled={loading==='addDetailToSaleLoading'}
                           onClick={()=> handleAddDetail()} 

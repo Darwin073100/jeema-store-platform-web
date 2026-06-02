@@ -30,11 +30,11 @@ const useInventoryListModal = () => {
     }, [saleModals]);
 
     useEffect(() => {
-        setQuantityInsert(0);
+        setQuantityInsert(1);
     }, [itemSelected]);
 
     useEffect(() => {
-        setQuantityInsert(0);
+        setQuantityInsert(1);
         setItemSelected(null);
     }, [saleModals]);
 
@@ -53,6 +53,11 @@ const useInventoryListModal = () => {
             LocationEnum.SALE
         );
         setFilterInventoryItems(result?.value?.items ?? []);
+    }
+
+    const quantitySubmit = async(e:React.SubmitEvent<HTMLFormElement>)=> {
+        e.preventDefault();
+        await handleAddDetail();
     }
 
     const handleAddDetail = async () => {
@@ -150,6 +155,7 @@ const useInventoryListModal = () => {
         filterInventoryItems,
         itemSelected,
         onSubmit,
+        quantitySubmit,
     }
 }
 
