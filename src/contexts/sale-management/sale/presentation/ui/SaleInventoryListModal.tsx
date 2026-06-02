@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import React from 'react'
 import { Button } from '@/shared/ui/components/buttons';
-import { IoClose } from 'react-icons/io5';
+import { IoClose, IoSearch } from 'react-icons/io5';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { TextInput } from '@/shared/ui/components/inputs';
 import { FcIdea } from 'react-icons/fc';
@@ -25,12 +25,13 @@ const SaleInventoryListModal = () => {
               <FcIdea className='w-9 h-9'/> 
               <span>Para agregar el producto a la venta, da click al producto que desees agregar y en el dialogo anota la cantidad y la unidad.</span>
             </span>
-            <form onSubmit={(e)=> onSubmit(e)} className='flex items-center gap-2'>
+            <form onSubmit={(e)=> onSubmit(e)} className='w-full flex items-center gap-2'>
               <TextInput
                 value={searchProductValue}
                 onChange={(e)=> setSearchProductValue(e.target.value)}
                 autoFocus={true}
                 placeholder='Filtrar por nombre o código de barras o categoria.'/>
+              <Button type='submit'><IoSearch/></Button>
             </form>
           </div>
           <div className='w-full overflow-auto'>
