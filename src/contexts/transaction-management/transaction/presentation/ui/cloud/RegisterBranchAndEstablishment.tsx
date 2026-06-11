@@ -8,13 +8,16 @@ import { BsShop } from "react-icons/bs";
 import { LabelInput } from "@/shared/ui/components/labels";
 import { useTransactionUIStore } from "../../stores/transaction-ui.store";
 import { Spinner } from "@/shared/ui/components/loadings/Spinner";
+import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 
 export function RegisterBranchAndEstablishment() {
+    const { establishment } = useWorkspace();
     const { onSubmit } = useRegisterBranchAndEstablishment();
     const {loading} = useTransactionUIStore();
     const { setEnrollmentKey, enrollmentKey, setEstablishmentName, establishmentName } = useTransactionCloudStore();
     return (
-        <section className="bg-white rounded-2xl p-4 flex flex-col gap-2">
+        <>{!establishment?.enrollmentKey? 
+            <section className="bg-white rounded-2xl p-4 flex flex-col gap-2">
             <h2 className="flex gap-2 items-center font-bold text-blue-600">
                 <span><BsShop /></span>
                 <span>Dar de alta establecimiento</span></h2>
@@ -42,6 +45,7 @@ export function RegisterBranchAndEstablishment() {
                     <Button><IoSave /> Completar registro</Button>
                 </div>
             </div>
-        </section>
+        </section>: null
+        }</>        
     )
 }

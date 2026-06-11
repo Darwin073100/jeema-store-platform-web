@@ -33,6 +33,8 @@ export class EstablishmentMapper {
   public static toIResponse(entity: EstablishmentEntity): IEstablishment {
     const establishment: IEstablishment = {
       establishmentId: entity.establishmentId, // Convertimos BigInt a string para la serialización JSON
+      enrollmentKey: entity.enrollmentKey,
+      cloudEstablishmentId: entity.cloudEstablishmentId,
       name: entity.name,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,

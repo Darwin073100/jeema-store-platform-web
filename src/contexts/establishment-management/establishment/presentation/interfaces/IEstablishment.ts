@@ -2,6 +2,8 @@ import { IBranchOffice } from "@/contexts/establishment-management/branch-office
 
 export interface IEstablishment {
   establishmentId: bigint,
+  cloudEstablishmentId: bigint | null,
+  enrollmentKey: string | null,
   name: string,
   createdAt: Date,
   updatedAt: Date | null,
