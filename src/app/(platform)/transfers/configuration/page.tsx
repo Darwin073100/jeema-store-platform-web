@@ -1,3 +1,4 @@
+import { RegisterBranchAndEstablishment } from "@/contexts/transaction-management/transaction/presentation/ui/cloud/RegisterBranchAndEstablishment";
 import { Badge } from "@/shared/ui/components/badges/Badge";
 import { Button } from "@/shared/ui/components/buttons";
 import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
@@ -45,27 +46,7 @@ export default async function () {
                     </div>
                 </article>
                 <article className="flex gap-4 text-gray-600 mt-4">
-                    <section className="bg-white rounded-2xl p-4 flex flex-col gap-2">
-                        <h2 className="flex gap-2 items-center font-bold text-blue-600">
-                            <span><BsShop/></span> 
-                            <span>Dar de alta establecimiento</span></h2>
-                        <span className="bg-blue-100 border-2 border-blue-600 rounded-2xl p-3 text-blue-800 text-sm">
-                            Si todavia no has dado de alta tu establecimiento en la nube, introduce el nombre y Genera
-                            la clave de inscripción y utilizala para todas tus sucursales y puedan enviar y recibir traspasos.
-                        </span>
-                        <div>
-                            <LabelInput value="Nombre del establecimiento"/>
-                            <TextInput placeholder="Ej. Abarrotes Los Tamarindos"/>
-                        </div>
-                        <div>
-                            <LabelInput value="Genera o ingresa la clave de inscripción"/>
-                            <div className="w-full flex gap-2 items-center">
-                                <div className="w-60"><TextInput placeholder="Ej. AUTO-GEN-2026"/></div>
-                                <Button><IoReload/></Button>
-                                <Button><IoSave/> Completar registro</Button>
-                            </div>
-                        </div>
-                    </section>
+                    <RegisterBranchAndEstablishment />
                     <section className="bg-white rounded-2xl p-4 flex flex-col gap-2">
                         <h2 className="flex gap-2 items-center font-bold text-amber-800">
                             <span><BsShop/></span> 

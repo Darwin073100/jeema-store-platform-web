@@ -1,5 +1,5 @@
 'use server'
-import { unstable_noStore as noStore } from 'next/cache';import { cookies } from 'next/headers';
+import { unstable_noStore as noStore } from 'next/cache';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 import { GenerateEnrollmentKeyUseCase } from '../../application/use-cases/generate-enrollment-key.use-case';
 import { FetchCloudEstablishmentRepository } from '../../infraestruture/persistence/http/fetch-cloud-establishment.repository';

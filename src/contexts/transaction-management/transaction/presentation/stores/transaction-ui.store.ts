@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-type TransactionLoadingsType = 'none' | 'downloadListTransaction' |  'filterTransaction';
+type TransactionLoadingsType = 'none' | 'downloadListTransaction' |  'filterTransaction' | 'generate-enrollment-key';
 type State = {
     //? Messages
     floatMessageState    : FloatMessageType;
