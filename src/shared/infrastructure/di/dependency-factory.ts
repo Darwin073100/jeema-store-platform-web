@@ -1,6 +1,7 @@
 import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { FetchHttpClient } from "@/shared/infrastructure/http/fetch-http-client.impl";
-import { ApiConfig, ApiConfigImpl } from "@/shared/infrastructure/config/api-config";
+import { ApiConfig } from "@/shared/domain/repositories/api-config";
+import { ApiCloudTransferConfigImpl } from "../config/api-cloud-transfer.config";
 
 /**
  * Factory para crear instancias de dependencias
@@ -26,7 +27,7 @@ export class DependencyFactory {
      */
     static getApiConfig(): ApiConfig {
         if (!this.apiConfigInstance) {
-            this.apiConfigInstance = new ApiConfigImpl();
+            this.apiConfigInstance = new ApiCloudTransferConfigImpl();
         }
         return this.apiConfigInstance;
     }

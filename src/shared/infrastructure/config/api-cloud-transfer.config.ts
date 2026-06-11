@@ -1,19 +1,9 @@
-/**
- * Interface para configuración de API
- */
-export interface ApiConfig {
-    baseUrl: string;
-    timeout?: number;
-    defaultHeaders?: Record<string, string>;
-    apiVersion?: string;
-    getEndpointUrl(path: string): string;
-    getAuthenticatedHeaders(token?: string): Record<string, string>;
-}
+import { ApiConfig } from "@/shared/domain/repositories/api-config";
 
 /**
  * Implementación de configuración de API
  */
-export class ApiConfigImpl implements ApiConfig {
+export class ApiCloudTransferConfigImpl implements ApiConfig {
     public readonly baseUrl: string;
     public readonly timeout: number;
     public readonly defaultHeaders: Record<string, string>;
@@ -21,8 +11,8 @@ export class ApiConfigImpl implements ApiConfig {
 
     constructor() {
         // Configuracion de las variables de entorno
-        const baseApiUrl = process.env.URL_EDYOF_PLATFORM_API || 'http://localhost:3001';
-        const apiPrefix = process.env.PREFIX_EDYOF_PLATFORM_API || '/api';
+        const baseApiUrl = process.env.URL_JEEMA_TRANSFER_PLATFORM_API || 'http://localhost:3001';
+        const apiPrefix = process.env.PREFIX_JEEMA_TRANSFER_PLATFORM_API || '/api';
         
         this.baseUrl = `${baseApiUrl}${apiPrefix}`;
         this.timeout = 30000; // 30 segundos
