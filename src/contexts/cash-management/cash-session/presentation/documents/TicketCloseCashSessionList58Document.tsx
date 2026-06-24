@@ -103,7 +103,9 @@ export const TicketCloseCashSessionList58Document: React.FC<Prop> = ({ cashSessi
             DIRECCION: {`${branchOffice?.address.city} ${branchOffice?.address.state}, ${branchOffice?.address.country}, ${branchOffice?.address.neighborhood}, ${branchOffice?.address.postalCode}, ${branchOffice?.address.municipality}, ${branchOffice?.address.street}`}
           </Text>
         </View>
-        {cashSessions.map(item => <ItemSession cashSesion={item} />)}
+        {/* {cashSessions.map(item => <ItemSession cashSesion={item} />)} */}
+        <Text style={{ fontSize: 8 }}>.......................................................................</Text>
+        <Text style={{ textAlign: 'center', fontSize: 13, width: '100%' }}>{formatDateShort(cashSessions[cashSessions.length -1].startTime)} -- {formatDateShort(cashSessions[0].startTime)}</Text>
         <Text style={{ fontSize: 8 }}>......................................................................</Text>
         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', fontSize: 12 }}>
           <Text>TOTAL</Text>
