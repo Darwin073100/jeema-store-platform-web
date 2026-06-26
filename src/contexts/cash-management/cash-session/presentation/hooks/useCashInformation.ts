@@ -22,7 +22,7 @@ const useCashInformation = () => {
                 total = total + item.amount;
             }
             if(item.transactionType?.name.trim().toLowerCase() === 'Apertura de Caja'.trim().toLowerCase()){
-                total = total + item.amount;
+                // total = total + item.amount;
             }
             if(item.transactionType?.name.trim().toLowerCase() === 'Retiro de efectivo/Corte de caja'.trim().toLowerCase()){
                 total = total - (item.amount);
