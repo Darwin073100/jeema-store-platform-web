@@ -1,4 +1,5 @@
 import { findAllManyFilterTransactionsAction } from "@/contexts/transaction-management/transaction/presentation/actions/find-cash-movements-by-branch-office-id.action";
+import { TransactionInformation } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionInformation";
 import { TransactionMovementsDesktopTable } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsDesktopTable";
 import { TransactionMovementsOptios } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsOptios";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
@@ -37,6 +38,7 @@ export default async function SaleInformationPage() {
             <TemplateHeader title='Movimientos Financieros' detail="Consulta los movimientos de tu establecimiento." breadcrumbItems={breadcrumbItems}>
                 <TransactionMovementsOptios
                     transactions={data} />
+                <TransactionInformation />
                 <div className="hidden md:block">
                     <TransactionMovementsDesktopTable />
                 </div>

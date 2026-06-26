@@ -1,5 +1,4 @@
 'use client'
-import { CashSessionEntity } from '@/features/cash/domain/entities/cash-session.entity';
 import { useCashStore } from '@/contexts/cash-management/cash-session/presentation/stores/cash.store';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
@@ -7,9 +6,10 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react'
 import { FcBearish, FcBullish, FcComboChart, FcDebt, FcLibrary, FcMultipleInputs } from 'react-icons/fc';
 import { useCashInformation } from '../../hooks/useCashInformation';
+import { ICashSession } from '../../interfaces/ICashSession';
 
 interface Props {
-    cashSession: CashSessionEntity
+    cashSession: ICashSession
 }
 
 const CashInfo = ({ cashSession }: Props) => {
