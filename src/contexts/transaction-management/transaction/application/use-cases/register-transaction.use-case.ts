@@ -49,7 +49,7 @@ export class RegisterTransactionUseCase {
             let totalAmount = 0;
             cashSessionExist.transactions
                 ?.filter(item => item.transactionType?.accountType === AccountTypeEnum.INCOME)
-                ?.filter(item => item.transactionType?.name !== 'Apertura de Caja')
+                // ?.filter(item => item.transactionType?.name !== 'Apertura de Caja')
                 .forEach(item => income = income + Number(item.amount));
             cashSessionExist.transactions
                 ?.filter(item => item.transactionType?.accountType === AccountTypeEnum.EXPENSE)
@@ -57,7 +57,7 @@ export class RegisterTransactionUseCase {
                 .forEach(item => expense = expense + Number(item.amount));
             
             totalAmount = income - expense;
-            
+            console.log({income, expense, totalAmount});
             if(typeExist.accountType === AccountTypeEnum.INCOME){
                 totalAmount = totalAmount + Number(dto.amount);
             } else {
@@ -65,7 +65,7 @@ export class RegisterTransactionUseCase {
             }
 
             if(totalAmount < 0){
-                throw new TransactionConflictException('La salida de efectivo no puede tomerse del fondo de caja.');
+                throw new TransactionConflictException('No tienes fondo suficiente en caja, solicita un aumento.');
             }           
             
         }

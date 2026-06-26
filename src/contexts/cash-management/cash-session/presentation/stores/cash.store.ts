@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { CashRegisterEntity } from "../../../../../features/cash/domain/entities/cash-register.entity";
-import { CashSessionEntity } from "../../../../../features/cash/domain/entities/cash-session.entity";
+import { ICashSession } from "../interfaces/ICashSession";
+import { ICashRegister } from "@/contexts/cash-management/cash-register/presentation/interfaces/ICashRegister";
 
 interface State {
-    cashSessions: CashSessionEntity[],
-    setCashSessions: (entities: CashSessionEntity[])=> void,
+    cashSessions: ICashSession[],
+    setCashSessions: (entities: ICashSession[])=> void,
     dateInit: Date | null,
     dateFinish: Date | null,
     setDateInit: (date: Date | null)=> void,
@@ -19,10 +19,10 @@ interface State {
     setTotalClose: (payload: number)=> void,
     diference: number,
     setDiference: (payload: number)=> void,
-    cashRegisterSelected    : CashRegisterEntity | null;
-    setCashRegisterSelected : (state: CashRegisterEntity | null) => void;
-    cashSessionSelected    : CashSessionEntity | null;
-    setCashSessionSelected : (state: CashSessionEntity | null) => void;
+    cashRegisterSelected    : ICashRegister | null;
+    setCashRegisterSelected : (state: ICashRegister | null) => void;
+    cashSessionSelected    : ICashSession | null;
+    setCashSessionSelected : (state: ICashSession | null) => void;
 }
 
 const initialState = {
@@ -52,12 +52,12 @@ export const useCashStore = create<State>()((set, get) => ({
     setTotalOut(payload) {
         set(()=> ({totalOut: payload}));
     },
-    setCashRegisterSelected: (state: CashRegisterEntity | null)=> {
+    setCashRegisterSelected: (state: ICashRegister | null)=> {
         set(()=>({
             cashRegisterSelected: state
         }));
     },
-    setCashSessionSelected: (state: CashSessionEntity | null)=> {
+    setCashSessionSelected: (state: ICashSession | null)=> {
         set(()=>({
             cashSessionSelected: state
         }));
