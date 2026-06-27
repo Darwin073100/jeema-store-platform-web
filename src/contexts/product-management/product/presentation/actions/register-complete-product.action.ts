@@ -1,8 +1,6 @@
 'use server'
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
-import { EstablishmentEntity } from '@/features/establishment/domain/entities/establishment.entity';
-import { BranchOfficeEntity } from '@/features/branch-office/domain/entities/branch-office.entity';
 import { handleError } from '@/shared/infrastructure/http/handlers/handleError';
 import { RegisterCompleteProductDto } from '../../application/dtos/register-complete-product.dto';
 import { TypeOrmProductRepository } from '../../infraestructure/persistence/typeorm/repositories/typeorm-product.repository';
@@ -13,6 +11,8 @@ import { TypeormSeasonRepository } from '@/contexts/product-management/season/in
 import { TypeOrmEstablishmentRepository } from '@/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/repositories/typeorm-establishment.repository';
 import { Result } from '@/shared/lib/utils/result';
 import { ProductMapper } from '../../application/mappers/product.mapper';
+import { IEstablishment } from '@/contexts/establishment-management/establishment/presentation/interfaces/IEstablishment';
+import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
 
 export async function registerCompleteProductAction(dto: RegisterCompleteProductDto) {
     try {
@@ -28,12 +28,12 @@ export async function registerCompleteProductAction(dto: RegisterCompleteProduct
         let establishment = cookieStore.get('establishmentCookie')?.value ?? null;
         let establishmentId = BigInt(0);
         if (establishment) {
-            establishmentId = (JSON.parse(establishment) as EstablishmentEntity).establishmentId;
+            establishmentId = (JSON.parse(establishment) as IEstablishment).establishmentId;
         }
         let branchOffice = cookieStore.get('branchOfficeCookie')?.value ?? null;
         let branchOfficeId = BigInt(0);
         if (branchOffice) {
-            branchOfficeId = (JSON.parse(branchOffice) as BranchOfficeEntity).branchOfficeId;
+            branchOfficeId = (JSON.parse(branchOffice) as IBranchOffice).branchOfficeId;
         }
 
         const currentDTO: RegisterCompleteProductDto = {

@@ -15,7 +15,7 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
 
   constructor(private readonly datasource: DataSource, private readonly transactionDB: TransactionDBRepository) {
     this.typeOrmRepository = this.datasource.getRepository(EstablishmentOrmEntity);
-    this.establishmentTransactionDB = this.transactionDB.getManager().getREpository(EstablishmentOrmEntity);
+    this.establishmentTransactionDB = this.transactionDB.getManager().getRepository(EstablishmentOrmEntity);
   }
 
   /**
