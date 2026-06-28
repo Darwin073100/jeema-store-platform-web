@@ -20,6 +20,7 @@ export class FindCashSessionAllByBranchOfficeUseCase {
             currentDateInit = dto.dateInit;
         }
         if (dto.dateFinish) {
+            dto.dateFinish.setDate(dto.dateFinish.getDate()+1)
             currentDateFinish = dto.dateFinish;
         }
 

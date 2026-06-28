@@ -57,6 +57,7 @@ export class TypeormTransactionRepository implements TransactionRepository{
         throw new Error("Method not implemented.");
     }
     async findAllByManyFilter(dto: ManyFilterTransactionsDTO): Promise<TransactionEntity[]> {
+        console.log({dateInit: dto.dateInit, dateEnd: dto.dateEnd});
         // Construir una consulta dinámica con QueryBuilder según los campos del DTO
         const qb = this.repository.createQueryBuilder('t')
             .leftJoinAndSelect('t.transactionType', 'tt')

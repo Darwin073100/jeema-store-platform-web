@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { useCashStore } from "../stores/cash.store";
-import { CashSessionEntity } from "../../../../../features/cash/domain/entities/cash-session.entity";
-import { getLocalDate } from "@/shared/lib/utils/date-formatter";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { findCashMovementsByBranchOfficeIdAction } from "../actions/find-cash-movements-by-branch-office-id.action";
 import { useCashUIStore } from "../stores/cash-ui.store";
+import { ICashSession } from "../interfaces/ICashSession";
 
 export const schema = yup.object().shape({
     dateInit: yup.date()
@@ -19,7 +18,7 @@ export const schema = yup.object().shape({
 
 type FormData = yup.InferType<typeof schema>;
 interface Props {
-    data: CashSessionEntity[]
+    data: ICashSession[]
 }
 const useCashMovementsOptions = ({ data }: Props) => {
     const { setCashSessions, cashSessions, setDateInit, setDateFinish,  } = useCashStore();

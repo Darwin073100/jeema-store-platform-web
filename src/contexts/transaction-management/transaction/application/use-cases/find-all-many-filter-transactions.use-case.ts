@@ -1,6 +1,7 @@
 import TimeMaster from "@/shared/lib/utils/TimeMaster";
 import { TransactionRepository } from "../../domain/repositories/transaction.repository";
 import { ManyFilterTransactionsDTO } from "../dtos/many-filter-transactions.dto";
+import { formatDateForInput } from "@/shared/lib/utils/date-formatter";
 
 export class FindAllManyFilterTransactionsUseCase {
     constructor(
@@ -8,20 +9,26 @@ export class FindAllManyFilterTransactionsUseCase {
     ){}
 
     async execute(dto: ManyFilterTransactionsDTO){
-        const timeMaster = new TimeMaster('America/Mexico_City');
-        let dateInit = dto.dateInit;
-        let dateEnd = dto.dateEnd;
-        if(!dateInit){
-            dateInit = timeMaster.getCurrentMonthRange().start;
+         // Utilizamos nuestra libreria local para fechas.
+        const date = new TimeMaster('America/Mexico_City');
+
+        // Generamos la fecha de inicio, desde el primer dia del mes actual.
+        let currentDateInit = date.getCurrentMonthRange().start;
+        // Generamos la fecha final, hasta el ultimo dia del mes actual.
+        let currentDateFinish = date.getCurrentMonthRange().end;
+        if (dto.dateInit) {
+            currentDateInit = dto.dateInit;
         }
-        if(dateEnd){
-            dateEnd = timeMaster.getCurrentMonthRange().end;
+        if (dto.dateEnd) {
+            dto.dateEnd.setDate(dto.dateEnd.getDate()+1)
+            currentDateFinish = dto.dateEnd;
         }
+        
         try {
             const result = await this.repository.findAllByManyFilter({
                 ...dto,
-                dateInit,
-                dateEnd
+                dateInit: currentDateInit,
+                dateEnd: currentDateFinish 
             });
             return result;
         } catch (error) {
