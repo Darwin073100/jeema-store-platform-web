@@ -14,7 +14,7 @@ interface Props {
 
 const CashInfo = ({ cashSession }: Props) => {
     const { setCashSessionSelected, totalIn, totalOut, totalClose } = useCashStore();
-    const { handleTotalIn, handleTotalOut, handleTotalClose } = useCashInformation();
+    const { handleTotalIn, handleTotalOut, handleTotalClose, handleBalanceFinaly } = useCashInformation();
     useEffect(()=>{
         setCashSessionSelected(cashSession)
     },[cashSession]);
@@ -22,12 +22,22 @@ const CashInfo = ({ cashSession }: Props) => {
     <section className="w-full flex gap-4 my-4">
         <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
             <div className="flex flex-col justify-center items-center">
-                <Badge type='purple'>Fondo</Badge>
+                <Badge type='purple'>Fondo Inicial</Badge>
                 <FcLibrary size={30}/>
             </div>
             <div className="flex justify-between gap-2 text-purple-700 items-center font-bold text-lg">
                 <span>Total:</span>
                 <span>{numberMoneyFormat(cashSession.startBalance)}</span>
+            </div>
+        </div>
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)} title='Este monto es por si hay mas egresos que ingresos'>
+            <div className="flex flex-col justify-center items-center">
+                <Badge type='red'>Fondo Final</Badge>
+                <FcLibrary size={30}/>
+            </div>
+            <div className="flex justify-between gap-2 text-red-700 items-center font-bold text-lg">
+                <span>Total:</span>
+                <span>{numberMoneyFormat(handleBalanceFinaly())}</span>
             </div>
         </div>
         <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>

@@ -15,6 +15,19 @@ const useCashInformation = () => {
         });
         return total;
     }
+
+    const handleTotalInWithClose = ()=> {
+        let total: number = 0;
+        cashSessionSelected?.transactions.forEach(item=> {
+            if(item.transactionType?.accountType===AccountTypeEnum.INCOME){
+                if(item.transactionType?.name.trim().toLowerCase() === 'Apertura de Caja'.trim().toLowerCase()){
+                    return;
+                }
+                total = total + item.amount;
+            }
+        });
+        return total;
+    }
     const handleTotalOut = ()=> {
         let total: number = 0;
         cashSessionSelected?.transactions.forEach(item=> {
@@ -32,13 +45,25 @@ const useCashInformation = () => {
     }
 
     const handleTotalClose = ()=> {
+        const total = handleTotalInWithClose() - handleTotalOut();
+        if(total <= 0){
+            return 0;
+        }
+        return total;
+    }
+
+    const handleBalanceFinaly = ()=> {
         const total = handleTotalIn() - handleTotalOut();
+        if(total >= (cashSessionSelected?.startBalance ?? 0)){
+            return cashSessionSelected?.startBalance ?? 0;
+        }
         return total;
     }
     return {
         handleTotalIn,
         handleTotalOut,
         handleTotalClose,
+        handleBalanceFinaly,
     }
 }
 
