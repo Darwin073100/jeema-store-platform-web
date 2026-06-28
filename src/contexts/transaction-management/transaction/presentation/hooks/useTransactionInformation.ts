@@ -26,7 +26,6 @@ export function useTransactionInformation() {
                     item.transactionType?.accountType === AccountTypeEnum.EXPENSE &&
                     item.transactionType?.name.toLowerCase() !== 'Retiro de efectivo/Corte de caja'.toLowerCase()
                 ){
-                    console.log(item.amount);
                     total = total + item.amount;
                 }
             });

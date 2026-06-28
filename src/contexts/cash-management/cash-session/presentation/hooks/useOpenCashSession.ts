@@ -2,13 +2,11 @@ import * as yup from 'yup';
 import { useCashUIStore } from '../stores/cash-ui.store';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { registerCashRegisterAction } from '../../../cash-register/presentation/actions/register-cash-register.action';
 import { useCashStore } from '../stores/cash.store';
-import { CashRegisterEntity } from '../../../../../features/cash/domain/entities/cash-register.entity';
 import { openCashSessionAction } from '../actions/open-cash-session.action';
-import { OpenCashSessionDTO } from '../../../../../features/cash/application/dtos/open-cash-session.dto';
 import { formatDateForInput, formatDateTimeForInput } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
+import { ICashRegister } from '@/contexts/cash-management/cash-register/presentation/interfaces/ICashRegister';
 
 const schema = yup.object().shape({
     startBalance: yup.number()
@@ -29,7 +27,7 @@ const useOpenCashSession = () => {
         }
     });
 
-    const handleOpenOpenCasSessionModal = (cashRegister: CashRegisterEntity)=>{
+    const handleOpenOpenCasSessionModal = (cashRegister: ICashRegister)=>{
         setCashRegisterSelected(cashRegister);
         openCashModal('openCashSession');
     }
