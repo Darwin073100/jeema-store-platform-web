@@ -35,7 +35,7 @@ const useCashSessionClose = () => {
         floatMessageState, setFloatMessageState, loading, runLoading, stopLoading, closeCashModal, openCashModal
     } = useCashUIStore();
     const { cashRegisterSelected, cashSessionSelected  } = useCashStore();
-    const { handleTotalClose } = useCashInformation();
+    const { handleTotalClose, handleBalanceFinaly } = useCashInformation();
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         mode: 'onChange',
@@ -49,6 +49,7 @@ const useCashSessionClose = () => {
         const cashSessionId = cashSessionSelected?.cashSessionId ?? BigInt(0);
 
         const dto = {
+            finallyCloseAmount: handleBalanceFinaly(),
             expectedBalance: handleTotalClose(),
             diference: data.diference ?? 0,
             actualBalance: (handleTotalClose() + (data.diference ?? 0)),

@@ -50,7 +50,7 @@ export class CloseCashSessionUseCase {
                 null,
                 dto.employeeId,
                 result.cashSessionId,
-                result.actualBalance ?? 0,
+                dto.finallyCloseAmount ?? 0,
                 'Retiro de efectivo de apertura de caja.'
             );
             await this.transactionRepository.save(transaction);

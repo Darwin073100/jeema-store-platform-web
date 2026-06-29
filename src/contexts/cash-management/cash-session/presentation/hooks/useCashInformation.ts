@@ -23,6 +23,9 @@ const useCashInformation = () => {
                 if(item.transactionType?.name.trim().toLowerCase() === 'Apertura de Caja'.trim().toLowerCase()){
                     return;
                 }
+                if(item.transactionType?.name.trim().toLowerCase() === 'Aumento de efectivo en caja'.trim().toLowerCase()){
+                    return;
+                }
                 total = total + item.amount;
             }
         });
@@ -53,10 +56,17 @@ const useCashInformation = () => {
     }
 
     const handleBalanceFinaly = ()=> {
-        const total = handleTotalIn() - handleTotalOut();
+        let total = handleTotalIn() - handleTotalOut();
         if(total >= (cashSessionSelected?.startBalance ?? 0)){
-            return cashSessionSelected?.startBalance ?? 0;
+            total = cashSessionSelected?.startBalance ?? 0;
         }
+        cashSessionSelected?.transactions.forEach(item=> {
+            if(item.transactionType?.accountType===AccountTypeEnum.INCOME){
+                if(item.transactionType?.name.trim().toLowerCase() === 'Aumento de efectivo en caja'.trim().toLowerCase()){
+                    total = total + item.amount;
+                }
+            }
+        });
         return total;
     }
     return {

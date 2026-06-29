@@ -22,7 +22,7 @@ const TransactionMovementsDesktopTable = ({ }: Props) => {
                     <PCol>{item.transactionId}</PCol>
                     <PCol>{numberMoneyFormat(item.amount ?? 0)}</PCol>
                     <PCol><Badge type={item.transactionType?.accountType==='Ingreso'? 'green': 'red'}>{item.transactionType?.accountType}</Badge></PCol>
-                    <PCol>{item.description}</PCol>
+                    <PCol>{item.transactionType?.name}</PCol>
                     <PCol>{item.employee?.firstName}</PCol>
                     <PCol>{item.branchOffice?.name}</PCol>
                     <PCol>{formatDateShort(item.createdAt)}</PCol>
