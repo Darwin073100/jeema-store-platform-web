@@ -5,15 +5,15 @@ import { Button } from '@/shared/ui/components/buttons';
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import { LiaCashRegisterSolid } from 'react-icons/lia';
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
-import { CashRegisterEntity } from '../../../../../features/cash/domain/entities/cash-register.entity';
 import { useCashUIStore } from '../stores/cash-ui.store';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { GrTransaction } from "react-icons/gr";
 import { useRouter } from 'next/navigation';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 import { RegisterCashRegisterModal } from './RegisterCashRegisterModal';
+import { ICashRegister } from '@/contexts/cash-management/cash-register/presentation/interfaces/ICashRegister';
 interface Props {
-    cashes: CashRegisterEntity[]
+    cashes: ICashRegister[]
 }
 const CashOptios = ({ cashes }: Props) => {
     const { openCashModal, floatMessageState  } = useCashUIStore();

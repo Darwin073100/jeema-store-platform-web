@@ -40,7 +40,7 @@ const CashInfo = ({ cashSession }: Props) => {
                 <span>{numberMoneyFormat(handleBalanceFinaly())}</span>
             </div>
         </div>
-        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
+        {/* <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
             <div className="flex flex-col justify-center items-center">
                 <Badge type='green'>Ingresos</Badge>
                 <FcBullish size={30}/>
@@ -59,7 +59,7 @@ const CashInfo = ({ cashSession }: Props) => {
                 <span>Total:</span>
                 <span>{`- ${numberMoneyFormat(handleTotalOut())}`}</span>
             </div>
-        </div>
+        </div> */}
         <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
             <div className="flex flex-col justify-center items-center">
                 <Badge type='blue'>Corte</Badge>
