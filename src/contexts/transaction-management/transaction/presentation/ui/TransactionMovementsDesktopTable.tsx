@@ -13,7 +13,7 @@ interface Props {
 const TransactionMovementsDesktopTable = ({ }: Props) => {
     const router = useRouter();
     const { transactionsFiltered} = useTransactionStore();
-    const headTable = ['Folio', 'Monto', 'Tipo', 'F. Corte', 'Empleado', 'Sucursal', 'Fecha'];
+    const headTable = ['Folio', 'Monto', 'Tipo', 'Clasificacion','Descripcion', 'Empleado', 'Sucursal', 'Fecha'];
 
     return (
         <PrimaryTable theadList={headTable}>
@@ -23,6 +23,7 @@ const TransactionMovementsDesktopTable = ({ }: Props) => {
                     <PCol>{numberMoneyFormat(item.amount ?? 0)}</PCol>
                     <PCol><Badge type={item.transactionType?.accountType==='Ingreso'? 'green': 'red'}>{item.transactionType?.accountType}</Badge></PCol>
                     <PCol>{item.transactionType?.name}</PCol>
+                    <PCol>{item.description}</PCol>
                     <PCol>{item.employee?.firstName}</PCol>
                     <PCol>{item.branchOffice?.name}</PCol>
                     <PCol>{formatDateShort(item.createdAt)}</PCol>

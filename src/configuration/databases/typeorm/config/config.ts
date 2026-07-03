@@ -52,7 +52,7 @@ export const dbOptions: DataSourceOptions = {
   ],
   synchronize: false,
   logging: process.env.DB_LOGGING === 'true',
-  migrations: [`${__dirname}/../../../migrations/*.{ts,js}`], // Ajusta la ruta a tus migraciones
+  migrations: [`${__dirname}/../migrations/*.{ts,js}`], // Ajusta la ruta a tus migraciones
   migrationsTableName: 'migrations',
   extra: {
     // Optimización para Vercel (Serverless)
