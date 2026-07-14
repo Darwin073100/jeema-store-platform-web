@@ -31,5 +31,4 @@ export class FetchCloudEstablishmentRepository implements CloudEstablishmentRepo
             return handleError(error, 'generateEnrollmentKey');
         }
     }
-
 }
