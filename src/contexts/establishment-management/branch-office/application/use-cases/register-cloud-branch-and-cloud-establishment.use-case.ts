@@ -16,6 +16,7 @@ export class RegisterCloudBranchAndCloudEstablishmentUseCase {
     private readonly transactionDB: TransactionDBRepository,
   ) { }
 
+  // TODO: Debemos eliminar los cambios en la nube por si hay un error en el sistema local
   async execute(dto: RegisterBranchAndEstablishmentDto): Promise<Result<ICloudBranchOffice, ErrorEntity>> {
     // Verificar la existencia de la sucursal
     const branchExist = await this.branchOfficeRepository.existById(dto.branchOfficeId);
@@ -38,14 +39,17 @@ export class RegisterCloudBranchAndCloudEstablishmentUseCase {
         enrollmentKey: dto.enrollmentKey
       });
 
-      if(result.ok && result.value){
+      if(result.ok && result.value && result.value.cloudEstablishment?.enrollmentKey && result.value.cloudEstablishment?.enrollmentKey.trim().length > 0){
+        establishmentExist.updateEnrollmentKey(result.value.cloudEstablishment?.enrollmentKey);
         branchExist.updateCloudBranchOfficeId(BigInt(result.value.cloudBranchOfficeId));
         establishmentExist.updateCloudEstablishmentId(BigInt(result.value.cloudEstablishmentId));
+        // Persistir los cambios en la db
+        await this.branchOfficeRepository.updateTransactional(branchExist);
+        await this.establishmentRepository.transactionUpdate(establishmentExist);
+      } else {
+        throw new Error('Ha ocurrrido un error al registrar la sucursal y el establecimiento en la nube.');
       }
 
-      // Persistir los cambios en la db
-      await this.branchOfficeRepository.updateTransactional(branchExist);
-      await this.establishmentRepository.transactionUpdate(establishmentExist);
 
       return result;
     });

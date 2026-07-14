@@ -8,8 +8,9 @@ import { Result } from "@/shared/lib/utils/result";
 import { UserMapper } from "../../application/mapper/user.mapper";
 import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 import { IUserWorkspace } from "../../application/dtos/IUserWorkspace";
+import { revalidatePath } from "next/cache";
 
-export async function userWorkspaceAction(): Promise<{
+export async function userWorkspaceAction(revalidate?: string): Promise<{
     ok: boolean;
     value?: IUserWorkspace;
     error?: ErrorEntity | undefined;
@@ -21,6 +22,9 @@ export async function userWorkspaceAction(): Promise<{
         const session = await getServerSession(authOptions);
 
         const result = await userWorkspaceUseCase.execute(BigInt(session?.user.id ?? 0));
+        if(revalidate){
+            revalidatePath(revalidate);
+        }
         return {
             ...Result.success(UserMapper.toIUserWorkspace(result))
         };

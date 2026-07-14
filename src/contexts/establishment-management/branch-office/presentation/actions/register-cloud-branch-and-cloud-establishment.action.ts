@@ -9,6 +9,7 @@ import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { RegisterBranchAndEstablishmentDto } from "../../application/dtos/register-branch-and-establishment.dto";
 import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 import { ICloudBranchOffice } from "../interfaces/ICloudBranchOffice";
+import { revalidatePath } from "next/cache";
 
 export async function registerCloudBranchOfficeAndCloudEstablishmentAction(dto: RegisterBranchAndEstablishmentDto): Promise<{
     ok: boolean;
@@ -29,6 +30,10 @@ export async function registerCloudBranchOfficeAndCloudEstablishmentAction(dto: 
         );
 
         const result = await useCase.execute(dto);
+
+        if(result.ok){
+            revalidatePath('transfers/configuration');
+        }
 
         return {
             ...result

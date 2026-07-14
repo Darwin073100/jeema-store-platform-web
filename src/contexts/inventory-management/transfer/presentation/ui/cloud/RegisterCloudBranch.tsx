@@ -5,9 +5,11 @@ import { TextInput } from "@/shared/ui/components/inputs";
 import { LabelInput } from "@/shared/ui/components/labels";
 import { BiLink } from "react-icons/bi";
 import { BsShop } from "react-icons/bs";
+import { useRegisterCloudBranchAndEstablishment } from "../../hooks/useRegisterCloudBranchAndEstablishment";
 
 function RegisterCloudBranch() {
     const { establishment } = useWorkspace();
+    const { errors, handleSubmit, onSubmit, register} = useRegisterCloudBranchAndEstablishment();
     return (
         <>{!establishment?.enrollmentKey ?
             <section className="bg-white rounded-2xl p-4 flex flex-col gap-2">
