@@ -62,13 +62,16 @@ export function useWorkspace() {
   const { isAuthenticated, isLoading } = useAuth();
   const [workspace, setWorkspace] = useState<IUserWorkspace | null>(null);
   const [workspaceLoading, setWorkspaceLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [workspaceError, setWorkspaceError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated || isLoading) return;
-
-    // Evitar cargar si ya tenemos datos
-    if (workspace) return;
+    if(!refresh){
+      if (!isAuthenticated || isLoading) return;
+  
+      // Evitar cargar si ya tenemos datos
+      if (workspace) return;
+    }
 
     let isMounted = true;
 
@@ -82,9 +85,6 @@ export function useWorkspace() {
         if (result.ok && result.value) {
           setWorkspace(result.value);
           // Cachear en cookies para disponibilidad rápida
-          // setCookie("establishmentCookie", safeJsonSerialize(result.value.establishment ?? {}), {maxAge: 60*60});
-          // setCookie("branchOfficeCookie", safeJsonSerialize(result.value.branchOffice ?? {}), {maxAge: 60*60});
-          // setCookie("employeeCookie", safeJsonSerialize(result.value.employee ?? {}), {maxAge: 60*60});
           setCookie("establishmentCookie", safeJsonSerialize(result.value.establishment ?? {}));
           setCookie("branchOfficeCookie", safeJsonSerialize(result.value.branchOffice ?? {}));
           setCookie("employeeCookie", safeJsonSerialize(result.value.employee ?? {}));
@@ -107,7 +107,7 @@ export function useWorkspace() {
     return () => {
       isMounted = false;
     };
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, isLoading, refresh]);
 
   return {
     // Información del establecimiento
@@ -126,6 +126,7 @@ export function useWorkspace() {
     isLoaded: isAuthenticated && !isLoading && !!workspace,
     isLoading: workspaceLoading,
     error: workspaceError,
+    setRefresh
   };
 }
 

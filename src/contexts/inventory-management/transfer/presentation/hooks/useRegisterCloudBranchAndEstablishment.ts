@@ -27,7 +27,7 @@ const registerFormData = yup.object().shape({
 type RegisterFormData = yup.InferType<typeof registerFormData>;
 
 export const useRegisterCloudBranchAndEstablishment = () => {
-    const { branchOffice, establishment} = useWorkspace();
+    const { branchOffice, establishment, setRefresh} = useWorkspace();
     const { initLoading, finishLoading} = useTransactionUIStore();
     const router = useRouter();
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm<RegisterFormData>({
@@ -58,9 +58,10 @@ export const useRegisterCloudBranchAndEstablishment = () => {
 
         const result = await registerCloudBranchOfficeAndCloudEstablishmentAction(dto);
         if(result.ok){
-            router.push('/transfers/configuration');
+            setRefresh(true);
         }
         finishLoading();
+        setRefresh(false);
     }
 
     return {

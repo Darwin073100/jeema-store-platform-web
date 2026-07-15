@@ -15,10 +15,10 @@ export default async function () {
     return (
         <ProtectedRoute requiredRoles={['global_admin', 'establishment_manager', 'branch_office_management']}>
             <TemplateHeader title="Configurar sucursal" detail="Realiza la configuración para que tu sucursal envíe y reciba traspasos de otras sucursale." breadcrumbItems={breadcrumbItems}>
-                <ConfigInformationCloud/>
+                <ConfigInformationCloud workspace={workspace.value ?? null}/>
                 <article className="flex gap-4 text-gray-600 mt-4">
                     <RegisterBranchAndEstablishment workspace={workspace.value ?? null}/>
-                    <RegisterCloudBranch />
+                    <RegisterCloudBranch workspace={workspace.value ?? null}/>
                 </article>
             </TemplateHeader>
         </ProtectedRoute>

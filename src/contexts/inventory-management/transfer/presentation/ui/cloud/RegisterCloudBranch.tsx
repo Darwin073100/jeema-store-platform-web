@@ -6,12 +6,15 @@ import { LabelInput } from "@/shared/ui/components/labels";
 import { BiLink } from "react-icons/bi";
 import { BsShop } from "react-icons/bs";
 import { useRegisterCloudBranchAndEstablishment } from "../../hooks/useRegisterCloudBranchAndEstablishment";
-
-function RegisterCloudBranch() {
-    const { establishment } = useWorkspace();
+import { IUserWorkspace } from "@/contexts/authentication-management/auth/application/dtos/IUserWorkspace";
+interface Props {
+    workspace: IUserWorkspace | null
+}
+function RegisterCloudBranch({ workspace }:Props) {
+    // const { establishment } = useWorkspace();
     const { errors, handleSubmit, onSubmit, register} = useRegisterCloudBranchAndEstablishment();
     return (
-        <>{!establishment?.enrollmentKey ?
+        <>{!workspace?.establishment?.enrollmentKey ?
             <section className="bg-white rounded-2xl p-4 flex flex-col gap-2">
                 <h2 className="flex gap-2 items-center font-bold text-amber-800">
                     <span><BsShop /></span>
