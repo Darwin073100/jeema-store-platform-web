@@ -31,4 +31,15 @@ export class FetchCloudEstablishmentRepository implements CloudEstablishmentRepo
             return handleError(error, 'generateEnrollmentKey');
         }
     }
+    async deletePhisical(entityId: bigint): Promise<Result<void, ErrorEntity>> {
+        try {
+            const response = await this.httpClient.delete<void>(
+                `${this.apiConfig.baseUrl}/cloud-establishments/${entityId}`
+            );
+
+            return Result.success(response.data);
+        } catch (error) {
+            return handleError(error, 'deletePhisical');
+        }
+    }
 }

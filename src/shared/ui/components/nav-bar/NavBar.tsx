@@ -65,7 +65,7 @@ export const NavBar = () => {
       {/* Actions Section */}
       <div className="flex items-center gap-6">
         {/* Notifications */}
-        <div className="relative">
+        {/* <div className="relative">
           <RoundedButton
             color='blue'
           >
@@ -74,11 +74,11 @@ export const NavBar = () => {
           <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center shadow-sm">
             3
           </span>
-        </div>
+        </div> */}
 
         {/* User Section */}
         <div className="flex items-center gap-4">
-          <span className='max-sm:hidden text-sm font-medium text-blue-800'>
+          <span className='max-sm:hidden text-sm text-blue-800 font-semibold'>
             {user?.email ?? '--'}
           </span>
 

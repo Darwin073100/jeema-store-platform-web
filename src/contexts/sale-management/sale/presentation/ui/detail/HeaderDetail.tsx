@@ -29,7 +29,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                 {/* Botones de acción */}
                 <div className='flex gap-4 items-center'>
                     {
-                        sale.status === SaleStatusEnum.COMPLETED &&
+                        (sale.status === SaleStatusEnum.COMPLETED || sale.status === SaleStatusEnum.PENDING) &&
                             <Button onClick={()=> openSaleModal('saleTicketReprintModal')}>
                                 <IoPrintSharp />
                                 Reimprimir ticket de la venta
@@ -42,14 +42,14 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                                 {loading==='saleContinue'? <Spinner/>: <IoBagHandle />}
                                 Reanudar venta
                             </Button>
-                            {
+                            {/* {
                                 sale.status === SaleStatusEnum.PENDING &&<>
                                     <Button color="yellow" onClick={()=> openSaleModal('paymentModal')}>
                                         <IoWalletSharp />
                                         Pagar venta
                                     </Button>
                                 </>
-                            }
+                            } */}
                         </>
                     }
                 </div>
