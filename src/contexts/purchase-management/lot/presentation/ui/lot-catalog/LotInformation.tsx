@@ -10,22 +10,22 @@ export const LotInformation = () => {
     return (
         <section className="w-full flex gap-4">
             <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col justify-center`)}>
-                <div className="flex justify-center items-center">
+                <div className="flex gap-2 justify-center items-center">
                     <FcDebt size={20} />
-                    <Badge type='green'>Inventario comprado</Badge>
+                    <Badge type='green'>Inventario</Badge>
                 </div>
                 <div className="flex gap-2 text-green-700 items-center font-bold text-xl">
-                    <span>Total:</span>
+                    <span className="max-sm:hidden">Total:</span>
                     <span>{numberBasicFormat(totalProductsStock())}</span>
                 </div>
             </div>
             <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col justify-center`)}>
-                <div className="flex justify-center items-center">
+                <div className="flex gap-2 justify-center items-center">
                     <FcDebt size={20} />
-                    <Badge type='blue'>Total de la inversión</Badge>
+                    <Badge type='blue'>Inversión</Badge>
                 </div>
                 <div className="flex gap-2 text-blue-700 items-center font-bold text-xl">
-                    <span>Total:</span>
+                    <span className="max-sm:hidden">Total:</span>
                     <span>{numberMoneyFormat(totalAmountPurchase())}</span>
                 </div>
             </div>

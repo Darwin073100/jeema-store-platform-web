@@ -32,7 +32,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                         (sale.status === SaleStatusEnum.COMPLETED || sale.status === SaleStatusEnum.PENDING) &&
                             <Button onClick={()=> openSaleModal('saleTicketReprintModal')}>
                                 <IoPrintSharp />
-                                Reimprimir ticket de la venta
+                                Reimprimir ticket
                             </Button>
                     }
                     {

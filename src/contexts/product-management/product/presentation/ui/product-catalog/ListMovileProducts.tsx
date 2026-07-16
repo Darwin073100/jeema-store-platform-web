@@ -33,7 +33,8 @@ export function ListMovileProducts({}: ListMovileProductsProps) {
                         <div className="flex gap-2 justify-center">
                             <FcSoundRecordingCopyright size={50} />
                         </div>
-                        <div className="flex w-full justify-center">
+                        <div className="flex flex-col w-full justify-center items-center">
+                            <span className="text-red-600 text-sm">{item.inventory?.internalBarCode}</span>
                             <span className="font-bold text-xl">
                                 {item.name}(<span className="text-white bg-blue-500 p-1 rounded-full">{totalStock(item?.inventory?.inventoryItems ?? [])}</span>)
                             </span>

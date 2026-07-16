@@ -78,7 +78,7 @@ export const NavBar = () => {
 
         {/* User Section */}
         <div className="flex items-center gap-4">
-          <span className='max-sm:hidden text-sm text-blue-800 font-semibold'>
+          <span className='text-sm text-blue-800 font-semibold'>
             {user?.email ?? '--'}
           </span>
 

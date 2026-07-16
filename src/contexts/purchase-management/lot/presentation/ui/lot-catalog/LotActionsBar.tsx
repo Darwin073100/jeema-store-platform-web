@@ -26,39 +26,9 @@ const LotActionsBar = ({ data }:Props) => {
     },[data]);
 
     return (
-        <div className="flex justify-between gap-2">
-            <div className='flex items-center gap-2'>
-                <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                    <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4'>
-                        <div>
-                            <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.'/>
-                            <TextInput
-                                {...register('dateInit')}
-                                error={!!errors.dateInit?.message}
-                                errorMessage={errors.dateInit?.message}
-                                name='dateInit'
-                                type='date' />
-                        </div>
-                        <div>
-                            <LabelInput value='Fecha de límite' description='Si borras la fécha límite tomará la del día en transcurso por default.'/>
-                            <TextInput
-                                {...register('dateFinish')}
-                                error={!!errors.dateFinish?.message}
-                                errorMessage={errors.dateFinish?.message}
-                                name='dateFinish'
-                                type='date' />
-                        </div>
-                        <div className='flex items-center'>
-                            <Button disabled={loading === 'find-report-lots'}>
-                                {loading === 'find-report-lots' ? <Spinner size={14} /> : <FaFilter size={14} />}
-                                <span className='max-lg:hidden'>Aplicar filtro</span>
-                            </Button>
-                        </div>
-                    </form>
-                </HideElement>
-            </div>
-            <div className="flex gap-4 items-center justify-between">
-                <div className='flex gap-4 items-center'>
+        <div>
+            <div className="flex gap-4 items-center justify-between sm:hidden">
+                <div className='w-full flex gap-4 items-center justify-between'>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
                         <ButtonOutLine disabled={loading==='find-report-lots'} color='green' onClick={()=> handleDownloadExcel()}>
                             <PiMicrosoftExcelLogoFill />
@@ -67,6 +37,51 @@ const LotActionsBar = ({ data }:Props) => {
                     </HideElement>
                     <div>
                         Compras<Badge>{lotsFiltered.length}</Badge>
+                    </div>
+                </div>
+            </div>
+            <div className="flex justify-between gap-2">
+                <div className='flex items-center gap-2'>
+                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                        <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4 items-end'>
+                            <div>
+                                <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.'/>
+                                <TextInput
+                                    {...register('dateInit')}
+                                    error={!!errors.dateInit?.message}
+                                    errorMessage={errors.dateInit?.message}
+                                    name='dateInit'
+                                    type='date' />
+                            </div>
+                            <div>
+                                <LabelInput value='Fecha de límite' description='Si borras la fécha límite tomará la del día en transcurso por default.'/>
+                                <TextInput
+                                    {...register('dateFinish')}
+                                    error={!!errors.dateFinish?.message}
+                                    errorMessage={errors.dateFinish?.message}
+                                    name='dateFinish'
+                                    type='date' />
+                            </div>
+                            <div className='flex items-center'>
+                                <Button disabled={loading === 'find-report-lots'} className=''>
+                                    {loading === 'find-report-lots' ? <Spinner size={14} /> : <FaFilter size={14} />}
+                                    <span className='max-lg:hidden'>Aplicar filtro</span>
+                                </Button>
+                            </div>
+                        </form>
+                    </HideElement>
+                </div>
+                <div className="flex gap-4 items-center justify-between max-sm:hidden">
+                    <div className='flex gap-4 items-center'>
+                        <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                            <ButtonOutLine disabled={loading==='find-report-lots'} color='green' onClick={()=> handleDownloadExcel()}>
+                                <PiMicrosoftExcelLogoFill />
+                                <span className='max-md:hidden'>Exportar a Excel</span>
+                            </ButtonOutLine>
+                        </HideElement>
+                        <div>
+                            Compras<Badge>{lotsFiltered.length}</Badge>
+                        </div>
                     </div>
                 </div>
             </div>

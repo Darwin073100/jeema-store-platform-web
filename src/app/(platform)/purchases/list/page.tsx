@@ -8,6 +8,7 @@ import { findReportsLotsAction } from "@/contexts/purchase-management/lot/presen
 import { TableLotsDesktop } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/TableLotDesktop";
 import { LotSearch } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/LotSearch";
 import { LotInformation } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/LotInformation";
+import { ListMovileLots } from "@/contexts/purchase-management/lot/presentation/ui/lot-catalog/ListMovileLots";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -36,8 +37,11 @@ export default async function ProductsPage() {
                             data={items} />
                         <LotSearch />
                         <LotInformation />
-                        <div className="max-lg:hidden block">
+                        <div className="max-sm:hidden">
                             <TableLotsDesktop />
+                        </div>
+                        <div className="sm:hidden">
+                            <ListMovileLots />
                         </div>
                     </main>
                 </TemplateHeader>
