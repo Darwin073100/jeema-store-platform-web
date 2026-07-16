@@ -23,7 +23,7 @@ export function ListMovileProducts({}: ListMovileProductsProps) {
         <div>
             <div className="flex flex-col gap-2">
                 {productsFiltered.map(item=> (
-                    <button onClick={() => handleViewProduct(item?.productId?.toString() || '')} className={clsx('bg-white rounded-2xl w-full p-2', handleColorRow(item))}>
+                    <button key={item.productId.toString()} onClick={() => handleViewProduct(item?.productId?.toString() || '')} className={clsx('bg-white rounded-2xl w-full p-2', handleColorRow(item))}>
                         <div className="flex justify-between gap-2">
                             <Badge type="purple" className="transition-all duration-300">{item.category?.name ?? 'No Disponible'}</Badge>
                             {productId===item.productId.toString()

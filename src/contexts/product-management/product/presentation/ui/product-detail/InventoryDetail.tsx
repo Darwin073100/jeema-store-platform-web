@@ -44,17 +44,17 @@ const InventoryDetail = ({ product }: Props) => {
             <div className="px-6 pt-4 flex justify-between items-center">
                 <div className="flex gap-2 items-center">
                     <TbBoxMultiple className="w-5 h-5 text-blue-600" />
-                    <h2 className="text-lg font-bold">Información del inventario</h2>
+                    <h2 className="text-lg font-bold">Inventario</h2>
                 </div>
                 <div className='flex gap-4'>
                     <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
                         <Button color='yellow' onClick={() => handleOpenModalInventory(product?.inventory ?? null, product)}>
                             <HiPencil className="w-4 h-4" />
-                            Editar inventario
+                            <span className='max-sm:hidden'>Editar inventario</span>
                         </Button>
                         <Button onClick={() => handleOpenRegisterLotModal(product.productId.toString())}>
                             <HiPlus className="w-4 h-4" />
-                            Agregar nuevo lote
+                            <span className='max-sm:hidden'>Agregar nuevo lote</span>
                         </Button>
                     </HideElement>
                 </div>
@@ -174,7 +174,7 @@ const InventoryDetail = ({ product }: Props) => {
                                             <UpdateInventoryItemModal />
                                             <DeleteInventoryItemModal />
                                             <LocalTransferInventoryItemModal />
-                                            <div key={item.inventoryItemId} className="w-60 bg-white rounded-lg p-4 border border-gray-200">
+                                            <div key={item.inventoryItemId} className="w-60 bg-white rounded-lg p-4 border border-gray-200 max-sm:w-full">
                                                 <div className="flex flex-col justify-center items-center mb-3">
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-3 h-3 bg-blue-500 rounded-full"></div>

@@ -50,7 +50,7 @@ const UpdateInventoryModal = () => {
                                 <div className="md:col-span-2">
                                     <div className='flex gap-4'>
                                         <LabelInput 
-                                            value="Código de barra interno"
+                                            value="C. barra interno"
                                             description={inventoryDescription.internalBarCode}
                                             required='yes' />
                                         <Button 
@@ -59,9 +59,12 @@ const UpdateInventoryModal = () => {
                                             type='button' 
                                             onClick={()=> handleUseUniversalBarCodeToLocal()}>
                                             <HiMiniSwatch/> 
-                                            Usar código del producto
+                                            <span className='max-sm:hidden'>Usar código del producto</span>
                                         </Button>
-                                        <Button color='purple' size='sm' type='button' onClick={()=> handleGenerateBarcode()}>{loading==='generateBarcode'? <Spinner size={12}/> : <BiBarcode/>}Generar</Button>
+                                        <Button color='purple' size='sm' type='button' onClick={()=> handleGenerateBarcode()}>
+                                            {loading==='generateBarcode'? <Spinner size={12}/> : <BiBarcode/>}
+                                            <span className='max-sm:hidden'>Generar</span>
+                                        </Button>
                                     </div>
                                     <TextInput
                                         placeholder="Codigo de barra interno"
