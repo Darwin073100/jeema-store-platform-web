@@ -13,6 +13,7 @@ import { findAllCategoriesByEstablishmentAction } from "@/contexts/product-manag
 import { findAllBrandsByEstablishmentAction } from "@/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action";
 import { findAllSeasonsByEstablishmentAction } from "@/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
+import { ListMovileProducts } from "@/contexts/product-management/product/presentation/ui/product-catalog/ListMovileProducts";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -45,7 +46,12 @@ export default async function ProductsPage() {
                             data={items} />
                         <ProductSearch />
                         <ProductAudit />
-                        <TableProduct />
+                        <div className="max-sm:hidden">
+                            <TableProduct />
+                        </div>
+                        <div className="sm:hidden">
+                            <ListMovileProducts />
+                        </div>
                         <CategoryModal
                             categoryList={categories}
                         />
