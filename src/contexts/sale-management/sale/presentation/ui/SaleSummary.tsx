@@ -10,6 +10,8 @@ import { SaleCustomerListModal } from "./SaleCustomerListModal";
 import { useCustomerSale } from "../hooks/useCustomerSale";
 import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
 import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
+import useKeyPress from "@/shared/presentation/hooks/useKeyPress";
+import { useEffect } from "react";
 
 interface Props {
     paymentMethods: IPaymentMethod[],
@@ -21,6 +23,23 @@ const SaleSummary = ({ paymentMethods, customers }: Props) => {
     const { productQuantity, total} = useSaleSummary();
     const { handleCheckerOpenModalFinishSale } = useSalePayment();
     const { customerSelected, openSaleModal } = useCustomerSale();
+
+    // Dispara el evento para abrir el modal para pagar al presionar F1
+    useEffect(() => {
+        const handleKeyDown = (event: any) => {
+        if (event.key === 'F1') {
+            event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
+            // tu función personalizada
+            handleCheckerOpenModalFinishSale();
+        }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     return (
         <section className="sticky top-4 max-xl:hidden">
@@ -63,9 +82,14 @@ const SaleSummary = ({ paymentMethods, customers }: Props) => {
                 </div>
 
                 <div className="pt-6">
-                    <Button onClick={()=> handleCheckerOpenModalFinishSale()} className="w-full justify-center py-4 shadow-md hover:shadow-lg transition-all text-lg">
-                        <IoIosCash className="text-2xl" />
-                        <span className="font-medium">Finalizar Venta</span>
+                    <Button onClick={()=> handleCheckerOpenModalFinishSale()} className="w-full flex justify-between h-16">
+                        <div className="flex items-center gap-2">
+                            <IoIosCash className="text-2xl" />
+                            <span className="font-medium text-xl">Finalizar Venta</span>
+                        </div>
+                        <div className="h-full flex items-start">
+                            <span className="text-sm p-1 rounded-sm bg-blue-200 text-blue-600">F1</span>
+                        </div>
                     </Button>
                 </div>
             </div>

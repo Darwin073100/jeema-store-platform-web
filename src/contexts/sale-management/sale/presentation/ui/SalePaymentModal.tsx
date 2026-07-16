@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSalePayment } from '../hooks/useSalePayment'
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
