@@ -187,6 +187,7 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
         <View style={styles.divider} />
 
         {/* Headers de tabla */}
+        <Text style={styles.tableDivider}>_________________________________________________________</Text>
         <View style={{ flexDirection: 'row', width: '100%', marginBottom: 2 }}>
           <Text style={{ ...styles.tableHeader, width: '15%' }}>CANT.</Text>
           <Text style={{ ...styles.tableHeader, width: '1%' }}></Text>
@@ -195,7 +196,7 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
           <Text style={{ ...styles.tableHeader, width: '24%' }}>S.TOTAL</Text>
           <Text style={{ ...styles.tableHeader, width: '20%' }}>TOTAL</Text>
         </View>
-
+        <Text style={styles.tableDivider}>_________________________________________________________</Text>
         {/* Productos */}
         {productRows}
 

@@ -21,6 +21,7 @@ export const CardLink = ({ title, description, image, to, Icon }:Props) => {
                 image && <Image
                     src={ image }
                     alt={ title }
+                    loading="eager"
                     width={100}
                     height={100} />
             }

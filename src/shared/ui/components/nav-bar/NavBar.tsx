@@ -38,6 +38,7 @@ export const NavBar = () => {
             alt="Logo de la empresa"
             width={50}
             height={50}
+            style={{width: 'auto'}}
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-700/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -8,7 +8,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body
         className={`antialiased bg-gradient-to-br from-blue-50 to-indigo-100`}
       >
