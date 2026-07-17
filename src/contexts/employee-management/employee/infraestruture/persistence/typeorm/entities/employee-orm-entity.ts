@@ -1,14 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany, JoinColumn, OneToOne } from 'typeorm';
-import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
-import { EmployeeRoleOrmEntity } from 'src/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/entities/employee-role-orm-entity';
+import type { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import type { EmployeeRoleOrmEntity } from 'src/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/entities/employee-role-orm-entity';
 import { GenderEnum } from 'src/contexts/employee-management/employee/domain/enums/gender.enum';
-import { SaleOrmEntity } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity';
-import { TransactionOrmEntity } from 'src/contexts/transaction-management/transaction/infraestructure/entities/transaction.orm-entity';
-import { UserOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user.orm-entity';
-import { TransferOrmEntity } from 'src/contexts/inventory-management/transfer/infraestructure/entities/transfer.orm-entity';
-import { CashSessionOrmEntity } from 'src/contexts/cash-management/cash-session/infraestructure/entities/cash-session.orm-entity';
-import { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestructure/entities/returns.orm-entity';
-import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
+import type { SaleOrmEntity } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity';
+import type { TransactionOrmEntity } from 'src/contexts/transaction-management/transaction/infraestructure/entities/transaction.orm-entity';
+import type { UserOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user.orm-entity';
+import type { TransferOrmEntity } from 'src/contexts/inventory-management/transfer/infraestructure/entities/transfer.orm-entity';
+import type { CashSessionOrmEntity } from 'src/contexts/cash-management/cash-session/infraestructure/entities/cash-session.orm-entity';
+import type { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestructure/entities/returns.orm-entity';
+import type { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
 
 @Entity('employee')
 export class EmployeeOrmEntity {
@@ -54,31 +54,31 @@ export class EmployeeOrmEntity {
   @DeleteDateColumn({ type: 'timestamptz', name: 'deleted_at', nullable: true })
   deletedAt: Date | null;
   
-  @ManyToOne(()=> BranchOfficeOrmEntity,(branch)=> branch.employees, { nullable: false })
+  @ManyToOne('BranchOfficeOrmEntity',(branch: BranchOfficeOrmEntity)=> branch.employees, { nullable: false })
   @JoinColumn({ name: 'branch_office_id' })
   branchOffice: BranchOfficeOrmEntity | null;
-  @ManyToOne(() => EmployeeRoleOrmEntity, (employeeRole)=> employeeRole.employees ,{ nullable: false })
+  @ManyToOne('EmployeeRoleOrmEntity', (employeeRole: EmployeeRoleOrmEntity)=> employeeRole.employees ,{ nullable: false })
   @JoinColumn({ name: 'employee_role_id' })
   employeeRole: EmployeeRoleOrmEntity | null;
-  @OneToMany(()=> SaleOrmEntity, item=> item.employee)
+  @OneToMany('SaleOrmEntity', (item: SaleOrmEntity)=> item.employee)
   sales: SaleOrmEntity[] | null;
-  @OneToOne(()=> AddressOrmEntity, (address)=> address.employee,{ nullable: true, onDelete: 'CASCADE' })
+  @OneToOne('AddressOrmEntity', (address: AddressOrmEntity)=> address.employee,{ nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'address_id' })
   address: AddressOrmEntity | null;
-  @OneToOne(()=> UserOrmEntity, (user)=> user.employee, {onDelete: 'CASCADE'})
+  @OneToOne('UserOrmEntity', (user: UserOrmEntity)=> user.employee, {onDelete: 'CASCADE'})
   user: UserOrmEntity | null;
-  @OneToMany(()=> TransactionOrmEntity, (item)=> item.employee)
+  @OneToMany('TransactionOrmEntity', (item: TransactionOrmEntity)=> item.employee)
   transactions: TransactionOrmEntity[] | null;
-  @OneToMany(()=> TransferOrmEntity, (item)=> item.requestedByEmployee)
+  @OneToMany('TransferOrmEntity', (item: TransferOrmEntity)=> item.requestedByEmployee)
   requestedTransfers: TransferOrmEntity[] | null;
-  @OneToMany(()=> TransferOrmEntity, (item)=> item.receivedByEmployee)
+  @OneToMany('TransferOrmEntity', (item: TransferOrmEntity)=> item.receivedByEmployee)
   receivedTransfers: TransferOrmEntity[] | null;
-  @OneToMany(()=> TransferOrmEntity, (item)=> item.approvedByEmployee)
+  @OneToMany('TransferOrmEntity', (item: TransferOrmEntity)=> item.approvedByEmployee)
   approvedTransfers: TransferOrmEntity[] | null;
-  @OneToMany(()=> TransferOrmEntity, (item)=> item.shippedByEmployee)
+  @OneToMany('TransferOrmEntity', (item: TransferOrmEntity)=> item.shippedByEmployee)
   shippedTransfers: TransferOrmEntity[] | null;
-  @OneToMany(() => CashSessionOrmEntity, (cashSession) => cashSession.employee) 
+  @OneToMany('CashSessionOrmEntity', (cashSession: CashSessionOrmEntity) => cashSession.employee) 
   cashSessions: CashSessionOrmEntity[] | null;
-  @OneToMany(()=> ReturnsOrmEntity, item=> item.employee)
+  @OneToMany('ReturnsOrmEntity', (item: ReturnsOrmEntity)=> item.employee)
   returns: ReturnsOrmEntity[] | null;
 }

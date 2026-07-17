@@ -1,6 +1,5 @@
-import { DomainEvent } from "src/shared/domain/events/domain-events";
 import { EmployeeFirstNameVO } from "../values-objects/employee-first-name.vo";
-import { EmployeeRoleEntity } from "src/contexts/employee-management/employee-role/domain/entities/employee-role.entity";
+import type { EmployeeRoleEntity } from "src/contexts/employee-management/employee-role/domain/entities/employee-role.entity";
 import { EmployeeLastNameVO } from "../values-objects/employee-last-name.vo";
 import { EmployeeEmailVO } from "../values-objects/employee-email.vo";
 import { EmployeePhoneNumberVO } from "../values-objects/employee-phone-number.vo";
@@ -8,14 +7,14 @@ import { EmployeeBirthDateVO } from "../values-objects/employee-birth-date.vo";
 import { GenderEnum } from "../enums/gender.enum";
 import { EmployeeHireDateVO } from "../values-objects/employee-hire-date.vo";
 import { EmployeeTerminationDateVO } from "../values-objects/employee-termination-date.vo";
-import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
+import type { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
 import { EmployeeCurrentSalaryVO } from "../values-objects/employee-current-salary.vo";
-import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
-import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
-import { UserEntity } from "src/contexts/authentication-management/auth/domain/entities/user.entity";
-import { CashSessionEntity } from "src/contexts/cash-management/cash-session/domain/entities/cash-session.entity";
-import { ReturnsEntity } from "src/contexts/sale-management/returns/domain/entities/returns.entity";
-import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
+import type { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
+import type { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
+import type { UserEntity } from "src/contexts/authentication-management/auth/domain/entities/user.entity";
+import type { CashSessionEntity } from "src/contexts/cash-management/cash-session/domain/entities/cash-session.entity";
+import type { ReturnsEntity } from "src/contexts/sale-management/returns/domain/entities/returns.entity";
+import type { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
 
 export class EmployeeEntity {
     private readonly _employeeId: bigint;

@@ -1,4 +1,4 @@
-import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
+import type { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 
 /**
@@ -15,7 +15,7 @@ export class EmployeeRoleOrmEntity {
   @Column({ type: 'varchar', length: 100, unique: true, nullable: false })
   name: string;
   
-  @OneToMany(() => EmployeeOrmEntity, employee => employee.employeeRole)
+  @OneToMany('EmployeeOrmEntity', (employee: EmployeeOrmEntity) => employee.employeeRole)
   employees?: EmployeeOrmEntity[];
   
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })

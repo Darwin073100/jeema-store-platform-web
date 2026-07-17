@@ -1,8 +1,7 @@
 import { DomainEvent } from "src/shared/domain/events/domain-events";
 import { EmployeeRoleNameVO } from "../values-objects/employee-role-name.vo";
 import { EmployeeRoleCreatedEvent } from "../events/employee-role-created.event";
-import { ProductEntity } from "src/contexts/product-management/product/domain/entities/product.entity";
-import { EmployeeEntity } from "src/contexts/employee-management/employee/domain/entities/employee.entity";
+import type { EmployeeEntity } from "src/contexts/employee-management/employee/domain/entities/employee.entity";
 
 export class EmployeeRoleEntity {
     private readonly _employeeRoleId: bigint;

@@ -1,6 +1,6 @@
-import { IEmployeeRole } from "@/contexts/employee-management/employee-role/presentation/interfaces/IEmployeeRole";
-import { IAddress } from "@/contexts/establishment-management/address/presentation/interfaces/IAddress";
-import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
+import type { IEmployeeRole } from "@/contexts/employee-management/employee-role/presentation/interfaces/IEmployeeRole";
+import type { IAddress } from "@/contexts/establishment-management/address/presentation/interfaces/IAddress";
+import type { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
 
 export interface IEmployee {
     employeeId: bigint,
