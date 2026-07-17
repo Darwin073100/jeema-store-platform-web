@@ -1,6 +1,6 @@
-import { UserRoleOrmEntity } from "src/contexts/authentication-management/auth/infraestructure/entities/user-role.orm-entity";
+import type { UserRoleOrmEntity } from "src/contexts/authentication-management/auth/infraestructure/entities/user-role.orm-entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { RolePermissionOrmEntity } from "./role-permission.orm-entity";
+import type { RolePermissionOrmEntity } from "./role-permission.orm-entity";
 
 @Entity({name: 'role'})
 export class RoleOrmEntity{
@@ -18,8 +18,8 @@ export class RoleOrmEntity{
     @DeleteDateColumn({ type: 'timestamp with time zone', name: 'deleted_at', nullable: true })
     deletedAt: Date | null;
 
-    @OneToMany(()=> UserRoleOrmEntity, (userRole)=>userRole.role)
+    @OneToMany('UserRoleOrmEntity', (userRole: UserRoleOrmEntity)=>userRole.role)
     userRoles?: UserRoleOrmEntity[] | [];
-    @OneToMany(()=> RolePermissionOrmEntity, (rolePermission)=>rolePermission.role)
+    @OneToMany('RolePermissionOrmEntity', (rolePermission: RolePermissionOrmEntity)=>rolePermission.role)
     rolePermissions?: RolePermissionOrmEntity[] | [];
 }

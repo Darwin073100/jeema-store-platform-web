@@ -1,4 +1,4 @@
-import { IRolePermission } from "@/contexts/authentication-management/role/presentation/interfaces/IRolePermission";
+import type { IRolePermission } from "@/contexts/authentication-management/role/presentation/interfaces/IRolePermission";
 
 export interface IPermission {
     permissionId: bigint,

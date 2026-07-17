@@ -1,5 +1,5 @@
-import { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
-import { IUser } from "./IUser";
+import type { IRole } from "@/contexts/authentication-management/role/presentation/interfaces/IRole";
+import type { IUser } from "./IUser";
 
 export interface IUserRole {
     userRoleId: bigint;

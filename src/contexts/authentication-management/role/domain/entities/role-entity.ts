@@ -2,8 +2,8 @@ import { DomainEvent } from 'src/shared/domain/events/domain-events';
 import { RoleNameVO } from '../value-objects/role-name.vo';
 import { RoleDescriptionVO } from '../value-objects/role-description.vo';
 import { RoleCreatedEvent } from '../events/role-created.event';
-import { UserRoleEntity } from 'src/contexts/authentication-management/auth/domain/entities/user-role.entity';
-import { RolePermissionEntity } from './role-permission.entity';
+import type { UserRoleEntity } from 'src/contexts/authentication-management/auth/domain/entities/user-role.entity';
+import type { RolePermissionEntity } from './role-permission.entity';
 
 export class RoleEntity {
   private readonly _roleId: bigint;

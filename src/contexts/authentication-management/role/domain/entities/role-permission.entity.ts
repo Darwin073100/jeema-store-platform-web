@@ -1,6 +1,6 @@
 import { DomainEvent } from 'src/shared/domain/events/domain-events';
-import { RoleEntity } from 'src/contexts/authentication-management/role/domain/entities/role-entity';
-import { PermissionEntity } from 'src/contexts/authentication-management/permission/domain/entities/permission-entity';
+import type { RoleEntity } from 'src/contexts/authentication-management/role/domain/entities/role-entity';
+import type { PermissionEntity } from 'src/contexts/authentication-management/permission/domain/entities/permission-entity';
 export class RolePermissionEntity {
   // Un error común es no tener un tipo explícito para los IDs,
   // especialmente cuando la base de datos usa `bigint`.

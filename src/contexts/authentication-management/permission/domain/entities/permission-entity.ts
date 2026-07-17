@@ -2,8 +2,7 @@ import { DomainEvent } from 'src/shared/domain/events/domain-events';
 import { PermissionNameVO } from '../value-objects/permission-name.vo';
 import { PermissionDescriptionVO } from '../value-objects/permission-description.vo';
 import { PermissionCreatedEvent } from '../events/permission-created.event';
-import { UserRoleEntity } from 'src/contexts/authentication-management/auth/domain/entities/user-role.entity';
-import { RolePermissionEntity } from 'src/contexts/authentication-management/role/domain/entities/role-permission.entity';
+import type { RolePermissionEntity } from 'src/contexts/authentication-management/role/domain/entities/role-permission.entity';
 
 export class PermissionEntity {
   private readonly _permissionId: bigint;

@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { RoleOrmEntity } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role.orm-entity";
-import { PermissionOrmEntity } from "src/contexts/authentication-management/permission/infraestructure/persistence/typeorm/entities/permission.orm-entity";
+import type { RoleOrmEntity } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role.orm-entity";
+import type { PermissionOrmEntity } from "src/contexts/authentication-management/permission/infraestructure/persistence/typeorm/entities/permission.orm-entity";
 
 @Entity({name: 'role_permission'})
 export class RolePermissionOrmEntity{
@@ -19,9 +19,9 @@ export class RolePermissionOrmEntity{
     deletedAt?: Date | null;
 
     @JoinColumn({name: 'role_id'})
-    @ManyToOne(()=> RoleOrmEntity, (role)=> role.rolePermissions,{ cascade: true, eager: true, onDelete: 'CASCADE' })
+    @ManyToOne('RoleOrmEntity', (role: RoleOrmEntity)=> role.rolePermissions,{ cascade: true, eager: true, onDelete: 'CASCADE' })
     role?: RoleOrmEntity | null;
     @JoinColumn({name: 'permission_id'})
-    @ManyToOne(()=>PermissionOrmEntity, (permission)=> permission.rolePermissions)
+    @ManyToOne('PermissionOrmEntity', (permission: PermissionOrmEntity)=> permission.rolePermissions)
     permission?: PermissionOrmEntity | null;
 }

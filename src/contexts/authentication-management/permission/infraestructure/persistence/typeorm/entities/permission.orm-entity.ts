@@ -1,4 +1,4 @@
-import { RolePermissionOrmEntity } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity";
+import type { RolePermissionOrmEntity } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'permission'})
@@ -17,6 +17,6 @@ export class PermissionOrmEntity{
     @DeleteDateColumn({ type: 'timestamp with time zone', name: 'deleted_at', nullable: true })
     deletedAt: Date | null;
     
-    @OneToMany(()=> RolePermissionOrmEntity, (rolePermission)=>rolePermission.role)
+    @OneToMany('RolePermissionOrmEntity', (rolePermission: RolePermissionOrmEntity)=>rolePermission.role)
     rolePermissions?: RolePermissionOrmEntity[] | [];
 }
