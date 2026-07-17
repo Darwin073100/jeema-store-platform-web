@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { UserRoleOrmEntity } from "./user-role.orm-entity";
-import { EmployeeOrmEntity } from "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity";
+import type { UserRoleOrmEntity } from "./user-role.orm-entity";
+import type { EmployeeOrmEntity } from "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity";
 
 @Entity({name: 'user'})
 export class UserOrmEntity{
@@ -26,9 +26,9 @@ export class UserOrmEntity{
     @DeleteDateColumn({ type: 'timestamp with time zone', nullable: true, name: 'deleted_at' })
     deletedAt?: Date | null;
 
-    @OneToMany(()=> UserRoleOrmEntity, (userRole)=> userRole.user)
+    @OneToMany('UserRoleOrmEntity', (userRole: UserRoleOrmEntity)=> userRole.user)
     userRoles?: UserRoleOrmEntity[];
-    @OneToOne(() => EmployeeOrmEntity,(employee)=> employee.user, { nullable: false, cascade: true })
+    @OneToOne('EmployeeOrmEntity',(employee: EmployeeOrmEntity)=> employee.user, { nullable: false, cascade: true })
     @JoinColumn({ name: 'employee_id' })
     employee?: EmployeeOrmEntity|null;
 }

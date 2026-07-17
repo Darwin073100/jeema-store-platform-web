@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { UserOrmEntity } from "./user.orm-entity";
-import { RoleOrmEntity } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role.orm-entity";
+import type { UserOrmEntity } from "./user.orm-entity";
+import type { RoleOrmEntity } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role.orm-entity";
 
 @Entity({name: 'user_role'})
 export class UserRoleOrmEntity{
@@ -19,9 +19,9 @@ export class UserRoleOrmEntity{
     deletedAt?: Date | null;
 
     @JoinColumn({name: 'user_id'})
-    @ManyToOne(()=> UserOrmEntity, (user)=> user.userRoles, { cascade: true,  onDelete: 'CASCADE' })
+    @ManyToOne('UserOrmEntity', (user: UserOrmEntity)=> user.userRoles, { cascade: true,  onDelete: 'CASCADE' })
     user?: UserOrmEntity | null;
     @JoinColumn({name: 'role_id'})
-    @ManyToOne(()=>RoleOrmEntity, (role)=> role.userRoles)
+    @ManyToOne('RoleOrmEntity', (role: RoleOrmEntity)=> role.userRoles)
     role?: RoleOrmEntity | null;
 }

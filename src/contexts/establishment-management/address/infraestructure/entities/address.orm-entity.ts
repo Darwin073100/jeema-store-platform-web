@@ -1,14 +1,14 @@
 import { TemplateOrmEntity } from 'src/shared/infrastructure/typeorm/template.orm-entity';
-import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
-import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
-import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
+import type { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
+import type { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import type { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
 import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
     OneToOne,
   } from 'typeorm';
-import { CustomerOrmEntity } from '@/contexts/sale-management/customer/infraestructure/persistence/typeorm/entities/customer.orm-entity';
+import type { CustomerOrmEntity } from '@/contexts/sale-management/customer/infraestructure/persistence/typeorm/entities/customer.orm-entity';
 
   @Entity('address')
   export class AddressOrmEntity extends TemplateOrmEntity {
@@ -35,12 +35,12 @@ import { CustomerOrmEntity } from '@/contexts/sale-management/customer/infraestr
     @Column({ type: 'text', nullable: true })
     reference: string|null;
 
-    @OneToOne(()=> BranchOfficeOrmEntity, (branch)=> branch.address)
+    @OneToOne('BranchOfficeOrmEntity', (branch: BranchOfficeOrmEntity)=> branch.address)
     branchOffice: BranchOfficeOrmEntity | null;
-    @OneToOne(()=> EmployeeOrmEntity, (employee)=>employee.address)
+    @OneToOne('EmployeeOrmEntity', (employee: EmployeeOrmEntity)=>employee.address)
     employee: EmployeeOrmEntity | null;
-    @OneToOne(()=> SuplierOrmEntity, (suplier)=> suplier.address)
+    @OneToOne('SuplierOrmEntity', (suplier: SuplierOrmEntity)=> suplier.address)
     suplier: SuplierOrmEntity | null;
-    @OneToOne(()=> CustomerOrmEntity, (customer)=> customer.address)
+    @OneToOne('CustomerOrmEntity', (customer: CustomerOrmEntity)=> customer.address)
     customer: CustomerOrmEntity | null;
   }

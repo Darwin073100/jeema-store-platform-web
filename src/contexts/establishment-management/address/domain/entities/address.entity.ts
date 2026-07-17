@@ -1,5 +1,5 @@
-import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
-import { EmployeeEntity } from "src/contexts/employee-management/employee/domain/entities/employee.entity";
+import type { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
+import type { EmployeeEntity } from "src/contexts/employee-management/employee/domain/entities/employee.entity";
 import { AddressStreetVO } from "../value-objects/address-street.vo";
 import { AddressExternalNumberVO } from "../value-objects/address-external-number.vo";
 import { AddressInternalNumberVO } from "../value-objects/address-internal-number.vo";
@@ -9,7 +9,7 @@ import { AddressCityVO } from "../value-objects/address-city.vo";
 import { AddressStateVO } from "../value-objects/address-state.vo";
 import { AddressPostalCodeVO } from "../value-objects/address-postal-code.vo";
 import { AddressCountryVO } from "../value-objects/address-country.vo";
-import { SuplierEntity } from "@/contexts/purchase-management/suplier/domain/entities/suplier.entity";
+import type { SuplierEntity } from "@/contexts/purchase-management/suplier/domain/entities/suplier.entity";
 
 export class AddressEntity  {
     private readonly _addressId: bigint;
