@@ -1,4 +1,4 @@
-import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
+import type { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
 
 export interface IEstablishment {
   establishmentId: bigint,

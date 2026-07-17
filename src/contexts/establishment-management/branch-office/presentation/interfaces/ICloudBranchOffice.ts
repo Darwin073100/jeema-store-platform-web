@@ -1,4 +1,4 @@
-import { ICloudEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/ICloudEstablishment";
+import type { ICloudEstablishment } from "@/contexts/establishment-management/establishment/presentation/interfaces/ICloudEstablishment";
 
 export interface ICloudBranchOffice {
     cloudBranchOfficeId: string,

@@ -1,12 +1,12 @@
 // src/contexts/educational-center-management/educational-center/infrastructure/persistence/typeorm/entities/educational-center.orm-entity.ts
 
-import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
-import { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
-import { CategoryOrmEntity } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/entities/category.orm-entity';
-import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
-import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
-import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
-import { CustomerOrmEntity } from 'src/contexts/sale-management/customer/infraestructure/persistence/typeorm/entities/customer.orm-entity';
+import type { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import type { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
+import type { CategoryOrmEntity } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/entities/category.orm-entity';
+import type { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
+import type { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
+import type { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
+import type { CustomerOrmEntity } from 'src/contexts/sale-management/customer/infraestructure/persistence/typeorm/entities/customer.orm-entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 
 /**
@@ -30,13 +30,13 @@ export class EstablishmentOrmEntity {
   @Column({ type: 'varchar', length: 250, unique: true, nullable: false })
   name: string;
 
-  @OneToMany(()=> BranchOfficeOrmEntity, branchOffice=> branchOffice.establishment)
+  @OneToMany('BranchOfficeOrmEntity', (branchOffice: BranchOfficeOrmEntity)=> branchOffice.establishment)
   branchOffices: BranchOfficeOrmEntity[]|null;
 
-  @OneToMany(() => ProductOrmEntity, (product) => product.establishment)
+  @OneToMany('ProductOrmEntity', (product: ProductOrmEntity) => product.establishment)
   products: ProductOrmEntity[] | null;
 
-  @OneToMany(()=> CustomerOrmEntity, (customer)=> customer.establishment)
+  @OneToMany('CustomerOrmEntity', (customer: CustomerOrmEntity)=> customer.establishment)
   customers: CustomerOrmEntity[] | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
@@ -47,12 +47,12 @@ export class EstablishmentOrmEntity {
 
   @DeleteDateColumn({ type: 'timestamp with time zone', name: 'deleted_at', nullable: true })
   deletedAt: Date | null;
-  @OneToMany(()=> SeasonOrmEntity, (item) => item.establishment)
+  @OneToMany('SeasonOrmEntity', (item: SeasonOrmEntity) => item.establishment)
   seasons: SeasonOrmEntity[] | null;
-  @OneToMany(()=> BrandOrmEntity, (item)=> item.establishment)
+  @OneToMany('BrandOrmEntity', (item: BrandOrmEntity)=> item.establishment)
   brands: BrandOrmEntity[] | null;
-  @OneToMany(()=> CategoryOrmEntity, (item)=> item.establishment)
+  @OneToMany('CategoryOrmEntity', (item: CategoryOrmEntity)=> item.establishment)
   categories: CategoryOrmEntity[] | null;
-  @OneToMany(()=> SuplierOrmEntity, (item)=> item.establishment)
+  @OneToMany('SuplierOrmEntity', (item: SuplierOrmEntity)=> item.establishment)
   supliers: SuplierOrmEntity[] | null;
 }

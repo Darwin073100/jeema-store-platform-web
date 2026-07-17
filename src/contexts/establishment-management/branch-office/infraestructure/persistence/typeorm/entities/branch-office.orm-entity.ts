@@ -1,11 +1,11 @@
-import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
-import { CashRegisterOrmEntity } from 'src/contexts/cash-management/cash-register/infraestructure/entities/cash-register.orm-entity';
-import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
-import { EstablishmentOrmEntity } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
-import { InventoryOrmEntity } from 'src/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/entities/inventory.orm-entity';
-import { TransferOrmEntity } from 'src/contexts/inventory-management/transfer/infraestructure/entities/transfer.orm-entity';
-import { SaleOrmEntity } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity';
-import { TransactionOrmEntity } from 'src/contexts/transaction-management/transaction/infraestructure/entities/transaction.orm-entity';
+import type { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
+import type { CashRegisterOrmEntity } from 'src/contexts/cash-management/cash-register/infraestructure/entities/cash-register.orm-entity';
+import type { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
+import type { EstablishmentOrmEntity } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
+import type { InventoryOrmEntity } from 'src/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/entities/inventory.orm-entity';
+import type { TransferOrmEntity } from 'src/contexts/inventory-management/transfer/infraestructure/entities/transfer.orm-entity';
+import type { SaleOrmEntity } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity';
+import type { TransactionOrmEntity } from 'src/contexts/transaction-management/transaction/infraestructure/entities/transaction.orm-entity';
 import {
   Entity,
   Column,
@@ -33,25 +33,25 @@ export class BranchOfficeOrmEntity {
   name: string;
 
   @JoinColumn({ name: 'address_id' })
-  @OneToOne(()=> AddressOrmEntity, (address)=> address.branchOffice, { cascade: true, eager: true, onDelete: 'CASCADE' })
+  @OneToOne('AddressOrmEntity', (address: AddressOrmEntity)=> address.branchOffice, { cascade: true, eager: true, onDelete: 'CASCADE' })
   address: AddressOrmEntity;
-  @ManyToOne(() => EstablishmentOrmEntity, { onDelete: 'CASCADE' })
+  @ManyToOne('EstablishmentOrmEntity', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'establishment_id' })
   establishment: EstablishmentOrmEntity | null;
   
-  @OneToMany(() => EmployeeOrmEntity, employee => employee.branchOffice)
+  @OneToMany('EmployeeOrmEntity', (employee: EmployeeOrmEntity) => employee.branchOffice)
   employees: EmployeeOrmEntity[] | null;
-  @OneToMany(()=> InventoryOrmEntity, (item)=> item.branchOffice)
+  @OneToMany('InventoryOrmEntity', (item: InventoryOrmEntity)=> item.branchOffice)
   inventoryItems: InventoryOrmEntity[] | null;
-  @OneToMany(()=> SaleOrmEntity, item=> item.branchOffice)
+  @OneToMany('SaleOrmEntity', (item: SaleOrmEntity)=> item.branchOffice)
   sales: SaleOrmEntity[] | null;  
-  @OneToMany(()=> TransactionOrmEntity, (item)=> item.branchOffice)
+  @OneToMany('TransactionOrmEntity', (item: TransactionOrmEntity)=> item.branchOffice)
   transactions: TransactionOrmEntity[] | null;
-  @OneToMany(()=> TransferOrmEntity, (item)=> item.fromBranchOffice)
+  @OneToMany('TransferOrmEntity', (item: TransferOrmEntity)=> item.fromBranchOffice)
   fromTransfers: TransferOrmEntity[] | null;
-  @OneToMany(()=> TransferOrmEntity, (item)=> item.toBranchOffice)
+  @OneToMany('TransferOrmEntity', (item: TransferOrmEntity)=> item.toBranchOffice)
   toTransfers: TransferOrmEntity[] | null;
-  @OneToMany(()=> CashRegisterOrmEntity, (item)=> item.branchOffice)
+  @OneToMany('CashRegisterOrmEntity', (item: CashRegisterOrmEntity)=> item.branchOffice)
   cashRegisters: CashRegisterOrmEntity[] | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })

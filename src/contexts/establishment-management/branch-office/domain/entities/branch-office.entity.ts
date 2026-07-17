@@ -1,11 +1,11 @@
 import { EstablishmentNameVO } from "src/contexts/establishment-management/establishment/domain/values-objects/establishment-name.vo";
 import { BranchOfficeNameVO } from "../value-objects/branch-office-name.vo";
-import { EmployeeEntity } from '../../../../employee-management/employee/domain/entities/employee.entity';
-import { EstablishmentEntity } from "src/contexts/establishment-management/establishment/domain/entities/establishment.entity";
-import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
-import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
-import { CashRegisterEntity } from "src/contexts/cash-management/cash-register/domain/entities/cash-register.entity";
-import { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
+import type { EmployeeEntity } from '../../../../employee-management/employee/domain/entities/employee.entity';
+import type { EstablishmentEntity } from "src/contexts/establishment-management/establishment/domain/entities/establishment.entity";
+import type { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sale.entity";
+import type { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
+import type { CashRegisterEntity } from "src/contexts/cash-management/cash-register/domain/entities/cash-register.entity";
+import type { AddressEntity } from "@/contexts/establishment-management/address/domain/entities/address.entity";
   
   /**
    * BranchOffice es una Entidad Raíz de Agregado.

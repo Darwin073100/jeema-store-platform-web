@@ -1,5 +1,5 @@
-import { IEmployee } from "@/contexts/employee-management/employee/presentation/interfaces/IEmployee";
-import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
+import type { IEmployee } from "@/contexts/employee-management/employee/presentation/interfaces/IEmployee";
+import type { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
 
 export interface IAddress {
     addressId: bigint;
