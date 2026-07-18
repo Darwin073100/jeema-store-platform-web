@@ -231,17 +231,17 @@ const useSalePayment = () => {
                         summary: '¡Exito!',
                         description: 'Se ha cobrado la venta'
                     });
+                    resetSaleStore();
+                    resetSaleProcessStore();
                     setTimeout(() => {
                         closeSaleModal();
-                        resetSaleStore();
-                        resetSaleProcessStore();
                         //! Ejecutar el ticket
                         handlePrint(result.value.saleId);
                     }, 1000);
                 }
             setTimeout(()=>{
                 setFloatMessageState({});
-            }, 3000);
+            }, 2000);
             finishLoading();
         } catch (error) {
             setFloatMessageState({

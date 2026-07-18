@@ -18,6 +18,7 @@ import { Result } from "@/shared/lib/utils/result";
 import { SaleMapper } from "../../application/mappers/sale-mapper";
 
 export async function finishSaleAction(dto: CalculateSaleDTO) {
+    console.log('SE ejecuto server action');
     try {
         const repository = await TypeormSaleRepository.create();
         const employeeRepository = await TypeOrmEmployeeRepository.create();

@@ -1,5 +1,5 @@
+'use client'
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
 import { useSalePayment } from '../hooks/useSalePayment'
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
@@ -12,14 +12,38 @@ import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 import { useSaleStore } from '../stores/sale.store';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useSaleProcessStore } from '../stores/sale.process.store';
+import { useEffect } from 'react';
+import { useSale } from '../hooks/useSale';
+import { SaleStatusEnum } from '../../domain/enums/sale-status.enum';
 
 const SalePaymentModal = () => {
-  const { total } = useSaleStore();
+  const { total, sale } = useSaleStore();
   const { 
     cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount,
     transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
   } = useSaleProcessStore();
   const { handleFinishSale, loading, handlePaidSale, paidAmountMessage, saleModals, closeSaleModal } = useSalePayment();
+
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if(saleModals==='paymentModal' && sale?.status !== SaleStatusEnum.COMPLETED){
+      if (event.key === 'F2') {
+          event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
+          // tu función personalizada
+          handlePaidSale();
+      } else if (event.key === 'F3') {
+          event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
+          // tu función personalizada
+          handleFinishSale();
+      }
+    }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [customerChange, saleModals, sale]);
 
   return (
     <TemplateModal isOpen={saleModals==='paymentModal'} size='xl' onClose={closeSaleModal} title='Cobro de la venta'>
@@ -38,7 +62,8 @@ const SalePaymentModal = () => {
             )}>
               <div className='flex justify-center'><FcMoneyTransfer className='w-20 max-sm:w-15 h-20 max-sm:h-15' /></div>
               <span className='text-gray-600 font-bold'>Efectivo</span>
-              <TextInput 
+              <TextInput
+                autoFocus
                 onChange={(e)=> setCashAmount(Number(e.target.value))}
                 value={cashAmount}
                 type='number'
@@ -95,8 +120,11 @@ const SalePaymentModal = () => {
           >
             { loading === 'finishSaleLoading'
               ? <><Spinner/></>
-              : <> <MdOutlinePaid className="w-4 h-4" /><span className='max-sm:hidden'>{`Posponer cobro`}</span></> 
-            }
+              : <MdOutlinePaid className="w-4 h-4" /> }
+              <span className='max-sm:hidden'>{`Posponer`}</span>
+              <div className="h-full flex items-start">
+                <span className="text-sm p-1 rounded-sm bg-yellow-200 text-yellow-600">F3</span>
+              </div>
           </Button>
           <Button
             onClick={()=> handlePaidSale()}
@@ -106,8 +134,11 @@ const SalePaymentModal = () => {
           >
             { loading === 'salePaymentLoading'
               ? <><Spinner/></>
-              : <> <MdOutlinePaid className="w-4 h-4" /><span className='max-sm:hidden'>{`Cobrar venta`}</span></> 
-            }
+              : <MdOutlinePaid className="w-4 h-4" /> }
+              <span className='max-sm:hidden'>{`Cobrar`}</span>
+              <div className="h-full flex items-start">
+                <span className="text-sm p-1 rounded-sm bg-blue-200 text-blue-600">F3</span>
+              </div>            
           </Button>
           <Button
             type="button"
@@ -117,6 +148,9 @@ const SalePaymentModal = () => {
           >
             <IoClose className="mr-2 w-4 h-4" />
             <span className='max-sm:hidden'>{`Cerrar`}</span>
+            <div className="h-full flex items-start">
+              <span className="text-sm p-1 rounded-sm bg-gray-200 text-gray-600">Esc</span>
+            </div>
           </Button>
         </div>
       </div>
