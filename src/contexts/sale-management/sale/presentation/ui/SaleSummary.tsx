@@ -10,7 +10,6 @@ import { SaleCustomerListModal } from "./SaleCustomerListModal";
 import { useCustomerSale } from "../hooks/useCustomerSale";
 import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
 import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
-import useKeyPress from "@/shared/presentation/hooks/useKeyPress";
 import { useEffect } from "react";
 
 interface Props {
@@ -39,7 +38,7 @@ const SaleSummary = ({ paymentMethods, customers }: Props) => {
         return () => {
         window.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
+    }, [total]);
 
     return (
         <section className="sticky top-4 max-xl:hidden">
