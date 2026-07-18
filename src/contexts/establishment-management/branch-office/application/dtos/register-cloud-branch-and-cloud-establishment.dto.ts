@@ -1,6 +1,7 @@
-export interface RegisterCloudBranchAndCloudEstablishmentDTO {
-    readonly localBranchOfficeId: bigint;
-    readonly branchOfficeName: string;
-    readonly establishmentName: string;
-    readonly enrollmentKey: string;
+export interface RegisterCloudBranchAndCloudEstablishmentDto {
+  readonly branchOfficeId: bigint;
+  readonly establishmentId: bigint;
+  readonly branchOfficeName: string;
+  readonly establishmentName: string;
+  readonly enrollmentKey: string;
 }

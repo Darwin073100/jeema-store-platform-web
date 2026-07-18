@@ -1,4 +1,3 @@
-import { RegisterCloudBranchAndCloudEstablishmentDTO } from "@/contexts/establishment-management/branch-office/application/dtos/register-cloud-branch-and-cloud-establishment.dto";
 import { CloudBranchOfficeRepository } from "@/contexts/establishment-management/branch-office/domain/repositories/cloud-branch-office.repository";
 import { ICloudBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/ICloudBranchOffice";
 import { ApiConfig } from "@/shared/domain/repositories/api-config";
@@ -9,6 +8,8 @@ import { HttpClient } from "@/shared/infrastructure/http/http-client.interface";
 import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 import { Result } from "@/shared/lib/utils/result";
 import { CloudBranchOfficeMapper } from "../mappers/cloud-branch-office.mapper";
+import { RegisterCloudBranchAndCloudEstablishmentDto } from "@/contexts/establishment-management/branch-office/application/dtos/register-cloud-branch-and-cloud-establishment.dto";
+import { RegisterCloudBranchDto } from "@/contexts/establishment-management/branch-office/application/dtos/register-cloud-branch.dto";
 
 export class FetchCloudBranchOffice implements CloudBranchOfficeRepository {
     private constructor(
@@ -23,9 +24,23 @@ export class FetchCloudBranchOffice implements CloudBranchOfficeRepository {
         return new FetchCloudBranchOffice(transfer, http);
     }
 
-    async registerCloudBranchAndCloudEstablishment(dto: RegisterCloudBranchAndCloudEstablishmentDTO): Promise<Result<ICloudBranchOffice, ErrorEntity>> {
+    async registerCloudBranchAndCloudEstablishment(dto: RegisterCloudBranchAndCloudEstablishmentDto): Promise<Result<ICloudBranchOffice, ErrorEntity>> {
         try {
             const httpBody = CloudBranchOfficeMapper.toRegisterCloudBranchAndCloudEstablishmentHttp(dto);
+            const response = await this.httpClient.post<ICloudBranchOffice>(
+                `${this.apiConfig.baseUrl}/cloud-branch-offices`,
+                httpBody
+            );
+
+            return Result.success(response.data);
+        } catch (error) {
+            return handleError(error, 'generateEnrollmentKey');
+        }
+    }
+
+    async registerCloudBranch(dto: RegisterCloudBranchDto): Promise<Result<ICloudBranchOffice, ErrorEntity>> {
+        try {
+            const httpBody = CloudBranchOfficeMapper.toRegisterCloudBranchHttp(dto);
             const response = await this.httpClient.post<ICloudBranchOffice>(
                 `${this.apiConfig.baseUrl}/cloud-branch-offices`,
                 httpBody

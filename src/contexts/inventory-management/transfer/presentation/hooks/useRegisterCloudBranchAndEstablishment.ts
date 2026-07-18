@@ -1,5 +1,5 @@
 'use client';
-import { RegisterBranchAndEstablishmentDto } from '@/contexts/establishment-management/branch-office/application/dtos/register-branch-and-establishment.dto';
+import { RegisterCloudBranchAndCloudEstablishmentDto } from '@/contexts/establishment-management/branch-office/application/dtos/register-cloud-branch-and-cloud-establishment.dto';
 import { registerCloudBranchOfficeAndCloudEstablishmentAction } from '@/contexts/establishment-management/branch-office/presentation/actions/register-cloud-branch-and-cloud-establishment.action';
 import { generateEnrollmentKeyAction } from '@/contexts/establishment-management/establishment/presentation/actions/generate-enrollment-key.action';
 import { useTransactionUIStore } from '@/contexts/transaction-management/transaction/presentation/stores/transaction-ui.store';
@@ -69,7 +69,7 @@ export const useRegisterCloudBranchAndEstablishment = () => {
 
     const onSubmit = async (data: RegisterFormData) => {
         initLoading('register-cloud-branch-and-establishment');
-        const dto: RegisterBranchAndEstablishmentDto = {
+        const dto: RegisterCloudBranchAndCloudEstablishmentDto = {
             branchOfficeId: branchOffice?.branchOfficeId ?? BigInt(0),
             branchOfficeName: branchOffice?.name ?? '',
             enrollmentKey: data.enrollmentKey,
