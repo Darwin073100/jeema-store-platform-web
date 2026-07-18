@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-type TransactionLoadingsType = 'none' | 'downloadListTransaction' |  'filterTransaction' | 'generate-enrollment-key' | 'register-cloud-branch-and-establishment';
+type TransactionLoadingsType = 'none' | 'downloadListTransaction' |  'filterTransaction' | 'generate-enrollment-key' | 
+    'register-cloud-branch-and-establishment' | 'register-cloud-branch';
 type State = {
     //? Messages
     floatMessageState    : FloatMessageType;

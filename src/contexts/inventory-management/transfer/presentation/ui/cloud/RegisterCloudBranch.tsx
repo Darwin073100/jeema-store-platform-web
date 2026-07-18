@@ -1,21 +1,23 @@
 'use client'
-import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
 import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
 import { TextInput } from "@/shared/ui/components/inputs";
 import { LabelInput } from "@/shared/ui/components/labels";
 import { BiLink } from "react-icons/bi";
 import { BsShop } from "react-icons/bs";
-import { useRegisterCloudBranchAndEstablishment } from "../../hooks/useRegisterCloudBranchAndEstablishment";
 import { IUserWorkspace } from "@/contexts/authentication-management/auth/application/dtos/IUserWorkspace";
+import { useRegisterCloudBranch } from "../../hooks/useRegisterCloudBranch";
+import { useTransactionUIStore } from "@/contexts/transaction-management/transaction/presentation/stores/transaction-ui.store";
+import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 interface Props {
     workspace: IUserWorkspace | null
 }
 function RegisterCloudBranch({ workspace }:Props) {
     // const { establishment } = useWorkspace();
-    const { errors, handleSubmit, onSubmit, register} = useRegisterCloudBranchAndEstablishment();
+    const { errors, handleSubmit, onSubmit, register, } = useRegisterCloudBranch();
+    const { loading } = useTransactionUIStore();
     return (
         <>{!workspace?.establishment?.enrollmentKey ?
-            <section className="bg-white rounded-2xl p-4 flex flex-col gap-2">
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl p-4 flex flex-col gap-2">
                 <h2 className="flex gap-2 items-center font-bold text-amber-800">
                     <span><BsShop /></span>
                     <span>Inscribirse a establecimiento</span></h2>
@@ -24,10 +26,16 @@ function RegisterCloudBranch({ workspace }:Props) {
                 </span>
                 <div>
                     <LabelInput value="Introduce la clave de inscripción" />
-                    <TextInput placeholder="Ej. XXXX-XXXX-XXXX" />
+                    <TextInput
+                        {...register('enrollmentKey')}
+                        error={!!errors.enrollmentKey}
+                        errorMessage={errors.enrollmentKey?.message}
+                        placeholder="Ej. XXXX-XXXX-XXXX" />
                 </div>
-                <ButtonOutLine color="green"><BiLink /> Vincular sucursal</ButtonOutLine>
-            </section> : null
+                <ButtonOutLine color="green">
+                    {loading==='register-cloud-branch'? <Spinner size={14}/>:<BiLink />} Vincular sucursal
+                </ButtonOutLine>
+            </form> : null
         }</>
     );
 }

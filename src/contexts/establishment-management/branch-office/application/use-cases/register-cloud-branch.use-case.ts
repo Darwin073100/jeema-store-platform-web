@@ -45,8 +45,6 @@ export class RegisterCloudBranchUseCase {
         // Persistir los cambios en la db
         await this.branchOfficeRepository.updateTransactional(branchExist);
         await this.establishmentRepository.transactionUpdate(establishmentExist);
-      } else {
-        throw new Error('Ha ocurrrido un error al registrar la sucursal y el establecimiento en la nube.');
       }
 
 
