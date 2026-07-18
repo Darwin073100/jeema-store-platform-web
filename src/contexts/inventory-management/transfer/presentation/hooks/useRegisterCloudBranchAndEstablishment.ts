@@ -4,6 +4,7 @@ import { registerCloudBranchOfficeAndCloudEstablishmentAction } from '@/contexts
 import { generateEnrollmentKeyAction } from '@/contexts/establishment-management/establishment/presentation/actions/generate-enrollment-key.action';
 import { useTransactionUIStore } from '@/contexts/transaction-management/transaction/presentation/stores/transaction-ui.store';
 import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
+import { useFloatMessageStore } from '@/shared/ui/components/messages/stores/useFloatMessageStore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -28,6 +29,7 @@ type RegisterFormData = yup.InferType<typeof registerFormData>;
 
 export const useRegisterCloudBranchAndEstablishment = () => {
     const { branchOffice, establishment, setRefresh} = useWorkspace();
+    const { setFloatMessageState } = useFloatMessageStore();
     const { initLoading, finishLoading} = useTransactionUIStore();
     const router = useRouter();
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm<RegisterFormData>({
@@ -41,6 +43,25 @@ export const useRegisterCloudBranchAndEstablishment = () => {
         finishLoading();
         if(response.ok){
             setValue('enrollmentKey',response.value?.enrollmentKey ?? '');
+            setFloatMessageState({
+                description: 'Se ha generado una clave de inscripción.',
+                isActive: true,
+                summary: 'Clave generada',
+                type: 'green'
+            });
+            setTimeout(()=> {
+                setFloatMessageState({});
+            }, 2000);
+        } else {
+            setFloatMessageState({
+                description: response.error?.message ?? 'Error al generar la clave de inscripción.',
+                isActive: true,
+                summary: response.error?.error ?? 'Ha ocurrido un error.',
+                type: 'red'
+            });
+            setTimeout(()=> {
+                setFloatMessageState({});
+            }, 4000);
         }
     }
 
@@ -58,7 +79,26 @@ export const useRegisterCloudBranchAndEstablishment = () => {
 
         const result = await registerCloudBranchOfficeAndCloudEstablishmentAction(dto);
         if(result.ok){
+            setFloatMessageState({
+                description: 'Se ha dado de alta en la nube correctamente.',
+                isActive: true,
+                summary: 'Exito',
+                type: 'green'
+            });
             setRefresh(true);
+            setTimeout(()=> {
+                setFloatMessageState({});
+            }, 2000);
+        } else {
+            setFloatMessageState({
+                description: result.error?.message ?? 'Error al dar de alta la sucursal y el establecimeinto.',
+                isActive: true,
+                summary: result.error?.error ?? 'Ha ocurrido un error.',
+                type: 'red'
+            });
+            setTimeout(()=> {
+                setFloatMessageState({});
+            }, 4000);
         }
         finishLoading();
         setRefresh(false);

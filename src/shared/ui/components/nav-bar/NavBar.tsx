@@ -1,9 +1,8 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Logo from "../../assets/images/logologo.png";
 import { IoChevronDownSharp, IoNotifications } from 'react-icons/io5'
-import { RoundedButton } from '../buttons/RoundedButton';
 import { LogoutModal } from '../modals/LogoutModal';
 import { useAuth, useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
 import { Button } from '../buttons';
@@ -12,10 +11,13 @@ import clsx from 'clsx';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 import { NavLink } from './NavLink';
 import { FcMindMap, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
+import { FloatMessage } from '../messages';
+import { useFloatMessageStore } from '../messages/stores/useFloatMessageStore';
 
 export const NavBar = () => {
   const { user } = useAuth();
   const { establishment, branchOffice } = useWorkspace();
+  const { floatMessageState } = useFloatMessageStore();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { onToggelSideBar, sideBar } = useSideStore();
 
@@ -97,6 +99,9 @@ export const NavBar = () => {
         isOpen={isLogoutModalOpen}
         onClose={handleCloseLogoutModal}
       />
+      <FloatMessage 
+        key='nav-bar'
+        {...floatMessageState} />
     </nav>
   )
 }
