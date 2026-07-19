@@ -82,10 +82,10 @@ const useCancelSale = () => {
                 });
                 finishLoading();
             }
+            closeSaleModal();
+            resetSaleStore();
             setTimeout(() => {
-                closeSaleModal();
                 setFloatMessageState({});
-                resetSaleStore();
             }, 2000);
         } catch (error) {
             setFloatMessageState({

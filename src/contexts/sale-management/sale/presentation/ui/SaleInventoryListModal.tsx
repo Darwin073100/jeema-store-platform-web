@@ -121,7 +121,10 @@ const SaleInventoryListModal = () => {
             className="flex items-center"
           >
             <IoClose className="mr-2 w-4 h-4" />
-            Cerrar ventana
+            Cerrar
+            <div className="h-full flex items-start">
+              <span className="text-sm p-1 rounded-sm bg-gray-200 text-gray-600">Esc</span>
+            </div>
           </Button>
         </div>
       </div>
