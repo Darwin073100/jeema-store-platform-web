@@ -7,6 +7,7 @@ import { SaleProductList } from "@/contexts/sale-management/sale/presentation/ui
 import { SaleProductSearch } from "@/contexts/sale-management/sale/presentation/ui/SaleProductSearch";
 import { SaleSummary } from "@/contexts/sale-management/sale/presentation/ui/SaleSummary";
 import { SaleSummaryMovile } from "@/contexts/sale-management/sale/presentation/ui/SaleSummaryMovile";
+import { SalePaymentModal } from "@/contexts/sale-management/sale/presentation/ui/SalePaymentModal";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
 
@@ -51,6 +52,7 @@ export default async function() {
                     customers={currentCustomers}
                     paymentMethods={currentPaymentMethods} />
 
+                <SalePaymentModal />
                 <SaleMessages />
             </TemplateHeader>
         </ProtectedRoute>

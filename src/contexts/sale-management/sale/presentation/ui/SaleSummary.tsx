@@ -3,7 +3,6 @@ import { Button } from "@/shared/ui/components/buttons";
 import { IoIosCash, IoIosPerson } from "react-icons/io";
 import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { useSaleSummary } from "../hooks/useSaleSummary";
-import { SalePaymentModal } from "./SalePaymentModal";
 import { useSalePayment } from "../hooks/useSalePayment";
 import useTransferDataToClientNewSale from "../hooks/useTransferDataToClient";
 import { SaleCustomerListModal } from "./SaleCustomerListModal";
@@ -92,7 +91,6 @@ const SaleSummary = ({ paymentMethods, customers }: Props) => {
                     </Button>
                 </div>
             </div>
-            <SalePaymentModal />
         </section>
     )
 }
