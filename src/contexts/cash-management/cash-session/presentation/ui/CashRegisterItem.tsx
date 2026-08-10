@@ -7,7 +7,11 @@ import { TbCashRegister } from 'react-icons/tb'
 import clsx from 'clsx'
 import { BiPencil } from 'react-icons/bi'
 import { OpenCashSessionModal } from './OpenCashSessionModal'
+import { EditCashRegisterModal } from './EditCashRegisterModal'
+import { DeactivateCashRegisterConfirmModal } from './DeactivateCashRegisterConfirmModal'
 import { useOpenCashSession } from '../hooks/useOpenCashSession'
+import { useUpdateCashRegister } from '../hooks/useUpdateCashRegister'
+import { useUpdateCashRegisterStatus } from '../hooks/useUpdateCashRegisterStatus'
 import { useRouter } from 'next/navigation'
 import { Spinner } from '@/shared/ui/components/loadings/Spinner'
 import { ICashRegister } from '@/contexts/cash-management/cash-register/presentation/interfaces/ICashRegister'
@@ -19,6 +23,8 @@ interface Props {
 
 const CashRegisterItem = ({ cashRegister }: Props) => {
     const { handleOpenOpenCasSessionModal } = useOpenCashSession();
+    const { handleOpenEditCashRegisterModal } = useUpdateCashRegister();
+    const { handleActivate, handleOpenDeactivateConfirm, loading: statusLoading } = useUpdateCashRegisterStatus();
     const [redirectCloseCash, setRedirectCloseCash] = useState(false);
     const router = useRouter();
     const handleRouter = (route: string) => {
@@ -34,10 +40,24 @@ const CashRegisterItem = ({ cashRegister }: Props) => {
                 <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
                     <div className=' flex gap-2'>
                         {cashRegister.isActive
-                            ? <Button color='red' size='sm'><MdClosedCaptionDisabled />Desactivar</Button>
-                            : <Button color='green' size='sm'><MdClosedCaption />Activar</Button>
+                            ? <Button
+                                color='red'
+                                size='sm'
+                                onClick={() => handleOpenDeactivateConfirm(cashRegister)}
+                                disabled={cashRegister.cashSessions.length > 0}
+                              >
+                                <MdClosedCaptionDisabled />Desactivar
+                              </Button>
+                            : <Button
+                                color='green'
+                                size='sm'
+                                onClick={() => handleActivate(cashRegister)}
+                                disabled={statusLoading === 'activateCashRegister'}
+                              >
+                                {statusLoading === 'activateCashRegister' ? <Spinner /> : <MdClosedCaption />}Activar
+                              </Button>
                         }
-                        <Button color='yellow' size='sm'><BiPencil />Editar</Button>
+                        <Button color='yellow' size='sm' onClick={() => handleOpenEditCashRegisterModal(cashRegister)}><BiPencil />Editar</Button>
                     </div>
                 </HideElement>
             </div>
@@ -60,6 +80,8 @@ const CashRegisterItem = ({ cashRegister }: Props) => {
                 </div>
             }
             <OpenCashSessionModal />
+            <EditCashRegisterModal />
+            <DeactivateCashRegisterConfirmModal />
         </div>
     )
 }
