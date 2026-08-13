@@ -9,8 +9,8 @@ import clsx from "clsx";
 import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
 import { Badge } from "@/shared/ui/components/badges/Badge";
 import { numberMoneyFormat } from "@/shared/lib/utils/number-formatter";
-import { FcSoundRecordingCopyright } from "react-icons/fc";
 import Link from "next/link";
+import { ImageThumbnail } from "@/contexts/image-management/image/presentation/ui";
 
 interface ListMovileProductsProps {
 }
@@ -31,7 +31,7 @@ export function ListMovileProducts({}: ListMovileProductsProps) {
                                 : '' }
                         </div>
                         <div className="flex gap-2 justify-center">
-                            <FcSoundRecordingCopyright size={50} />
+                            <ImageThumbnail src={item.imageUrl} alt={item.name} size={80} rounded="lg" />
                         </div>
                         <div className="flex flex-col w-full justify-center items-center">
                             <span className="text-red-600 text-sm">{item.inventory?.internalBarCode}</span>

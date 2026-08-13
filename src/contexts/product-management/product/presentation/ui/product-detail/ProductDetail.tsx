@@ -16,7 +16,10 @@ import { useInventoryItemUIStore } from '@/contexts/inventory-management/invento
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 import { useProductStore } from '../../stores/product.store'
 import { BiSolidPurchaseTag } from 'react-icons/bi'
+import { HiOutlinePhotograph } from 'react-icons/hi'
 import { CardGrid } from '@/shared/ui/components/grids/CardGrid'
+import { ImageUploader } from '@/contexts/image-management/image/presentation/ui'
+import { ImageOwnerType } from '@/contexts/image-management/image/domain/enums/image-owner-type.enum'
 interface Props {
     product: IProduct;
 }
@@ -56,6 +59,17 @@ const ProductDetail = ({ product }: Props) => {
                 <div className="my-4 flex gap-2 items-center">
                     <BiSolidPurchaseTag />
                     <h2 className="text-lg font-bold">Producto</h2>
+                </div>
+                <div className="mb-4">
+                    <CardGrid title="Imágenes del producto" icon={<HiOutlinePhotograph className="w-4 h-4" />}>
+                        <ImageUploader
+                            ownerType={ImageOwnerType.PRODUCT}
+                            ownerId={product.productId}
+                            maxSlots={3}
+                            entityLabel="producto"
+                            className="mt-2"
+                        />
+                    </CardGrid>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <CardGrid

@@ -30,6 +30,9 @@ export class EstablishmentOrmEntity {
   @Column({ type: 'varchar', length: 250, unique: true, nullable: false })
   name: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'logo_url' })
+  logoUrl: string | null;
+
   @OneToMany('BranchOfficeOrmEntity', (branchOffice: BranchOfficeOrmEntity)=> branchOffice.establishment)
   branchOffices: BranchOfficeOrmEntity[]|null;
 

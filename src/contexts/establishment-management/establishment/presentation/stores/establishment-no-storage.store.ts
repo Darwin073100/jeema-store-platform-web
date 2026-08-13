@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import { EstablishmentEntity } from '../../../../../features/establishment/domain/entities/establishment.entity';
+import { IEstablishment } from '../interfaces/IEstablishment';
 
 interface State{
-    establishment: EstablishmentEntity | null
-    setEstablishment: (data: EstablishmentEntity | null) => void;
+    establishment: IEstablishment | null
+    setEstablishment: (data: IEstablishment | null) => void;
     restore:()=> void;
 }
 

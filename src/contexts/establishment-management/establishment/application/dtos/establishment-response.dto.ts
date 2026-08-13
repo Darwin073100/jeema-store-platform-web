@@ -11,6 +11,7 @@ import { BranchOfficeResponseDto } from "src/contexts/establishment-management/b
 export class EstablishmentResponseDto {
   readonly establishmentId: string; // El ID del establesimiento (como string para compatibilidad JSON)
   readonly name: string; // El nombre del establesimiento
+  readonly logoUrl: string | null; // El logotipo del establecimiento
   readonly createdAt: Date; // La fecha de creación
   readonly updatedAt: Date | null; // La fecha de la última actualización
   readonly deletedAt: Date | null; // La fecha de borrado lógico
@@ -19,6 +20,7 @@ export class EstablishmentResponseDto {
   constructor(
     establishmentId: string,
     name: string,
+    logoUrl: string | null,
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
@@ -26,6 +28,7 @@ export class EstablishmentResponseDto {
   ) {
     this.establishmentId = establishmentId;
     this.name = name;
+    this.logoUrl = logoUrl;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;

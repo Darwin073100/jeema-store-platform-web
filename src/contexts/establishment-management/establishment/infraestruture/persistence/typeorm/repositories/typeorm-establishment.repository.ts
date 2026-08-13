@@ -84,6 +84,7 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
         ormEntity.name = establishment.name;
         ormEntity.cloudEstablishmentId = establishment.cloudEstablishmentId;
         ormEntity.enrollmentKey = establishment.enrollmentKey;
+        ormEntity.logoUrl = establishment.logoUrl;
         ormEntity.updatedAt = establishment.updatedAt;
         ormEntity.deletedAt = establishment.deletedAt;
       } else {

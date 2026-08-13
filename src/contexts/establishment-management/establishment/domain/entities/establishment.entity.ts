@@ -6,6 +6,7 @@ export class EstablishmentEntity {
     private _cloudEstablishmentId: bigint | null;
     private _enrollmentKey: CloudEstablishmentEnrollmentVO;
     private _name: EstablishmentNameVO;
+    private _logoUrl: string | null;
     private readonly _createdAt: Date;
     private _updatedAt: Date | null;
     private _deletedAt: Date | null;
@@ -19,6 +20,7 @@ export class EstablishmentEntity {
     cloudEstablishmentId: bigint | null,
     enrollmentKey: CloudEstablishmentEnrollmentVO,
     name: EstablishmentNameVO,
+    logoUrl: string | null,
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
@@ -31,6 +33,7 @@ export class EstablishmentEntity {
         this._cloudEstablishmentId = cloudEstablishmentId;
         this._enrollmentKey = enrollmentKey;
         this._name = name;
+        this._logoUrl = logoUrl;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
         this._deletedAt = deletedAt;
@@ -54,6 +57,7 @@ export class EstablishmentEntity {
       null,
       CloudEstablishmentEnrollmentVO.create(null),
       EstablishmentNameVO.create(name),
+      null, // logoUrl
       new Date(), // createdAt
       null, // updatedAt
       null, // deletedAt
@@ -81,6 +85,7 @@ export class EstablishmentEntity {
     cloudEstablishmentId: bigint | null,
     enrollmentKey: string | null,
     name: string,
+    logoUrl: string | null,
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
@@ -90,15 +95,16 @@ export class EstablishmentEntity {
     supliers: any[] | null,
   ): EstablishmentEntity {
     return new EstablishmentEntity(
-      establishmentId, 
+      establishmentId,
       cloudEstablishmentId,
       CloudEstablishmentEnrollmentVO.create(enrollmentKey),
-      EstablishmentNameVO.create(name), 
-      createdAt, 
-      updatedAt, 
-      deletedAt, 
-      branchOffices, 
-      products, 
+      EstablishmentNameVO.create(name),
+      logoUrl,
+      createdAt,
+      updatedAt,
+      deletedAt,
+      branchOffices,
+      products,
       customers,
       supliers,
     );
@@ -109,6 +115,7 @@ export class EstablishmentEntity {
   get cloudEstablishmentId(): bigint | null { return this._cloudEstablishmentId; }
   get enrollmentKey(): string | null { return this._enrollmentKey.value; }
   get name(): string { return this._name.value; }
+  get logoUrl(): string | null { return this._logoUrl; }
   get createdAt(): Date { return this._createdAt; }
   get updatedAt(): Date | null { return this._updatedAt; }
   get deletedAt(): Date | null { return this._deletedAt; }
@@ -123,6 +130,11 @@ export class EstablishmentEntity {
   }
   public updateCloudEstablishmentId(id: bigint | null){
     this._cloudEstablishmentId = id;
+    this._updatedAt = new Date();
+  }
+  public updateLogoUrl(newUrl: string | null): void {
+    if (this._logoUrl === newUrl) return;
+    this._logoUrl = newUrl;
     this._updatedAt = new Date();
   }
   public updateEnrollmentKey(key: string | null){

@@ -263,6 +263,7 @@ export class TypeOrmProductRepository implements ProductRepository {
         productExisting.universalBarCode = product.universalBarCode?.value;
         productExisting.unitOfMeasure = product.unitOfMeasure;
         productExisting.minStockGlobal = product.minStockGlobal.toString();
+        productExisting.imageUrl = product.imageUrl;
 
         const result = await this.productRepository.save(productExisting);
         return ProductTypeOrmMapper.toDomain(result);

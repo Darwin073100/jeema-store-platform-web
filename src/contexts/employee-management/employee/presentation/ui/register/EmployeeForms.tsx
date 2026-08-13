@@ -12,6 +12,8 @@ import { FloatMessage } from '@/shared/ui/components/messages';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { IoSave } from 'react-icons/io5';
 import { GenderEnum } from '../../../domain/enums/gender.enum';
+import { ImageUploader } from '@/contexts/image-management/image/presentation/ui';
+import { ImageOwnerType } from '@/contexts/image-management/image/domain/enums/image-owner-type.enum';
 
 interface Props {
     optionsRoles: SelectMenuOption[],
@@ -30,6 +32,15 @@ const EmployeeForms = ({ optionsRoles, userRoles }: Props) => {
                     <h1 className="text-blue-600 font-semibold bg-blue-100 rounded-t-2xl p-2 text-lg uppercase text-center">Información del empleado</h1>
                     <div className="bg-white p-4 rounded-b-2xl">
                         {/* <input type="checkbox" {...register('userCheck')} name="userCheck" id="userCheck" /> */}
+                        <div>
+                            <LabelInput value="Foto de perfil" required="no" description='Podrás subir la foto del empleado una vez que guardes este formulario.' />
+                            <ImageUploader
+                                ownerType={ImageOwnerType.EMPLOYEE}
+                                ownerId={null}
+                                maxSlots={1}
+                                entityLabel="empleado"
+                            />
+                        </div>
                         <div>
                             <LabelInput value="Nombre" required="yes" />
                             <TextInput

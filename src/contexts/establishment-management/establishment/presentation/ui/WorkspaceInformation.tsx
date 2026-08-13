@@ -4,12 +4,13 @@ import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter'
 import { Badge } from '@/shared/ui/components/badges/Badge'
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine'
 import { BiAddToQueue, BiCalendar, BiPencil } from 'react-icons/bi'
-import { EstablishmentEntity } from '../../../../../features/establishment/domain/entities/establishment.entity'
+import { IEstablishment } from '../interfaces/IEstablishment'
 import { useEstablishmentUIStore } from '../stores/establishment-ui.store'
 import { EstablishmentUpdateModal } from './EstablishmentUpdateModal'
+import { ImageThumbnail } from '@/contexts/image-management/image/presentation/ui'
 
 interface Props {
-    establishment: EstablishmentEntity
+    establishment: IEstablishment
 }
 
 const WorkspaceInformation = ({ establishment }: Props) => {
@@ -17,6 +18,7 @@ const WorkspaceInformation = ({ establishment }: Props) => {
     return (
         <div className="bg-white rounded-lg shadow-md w-full p-6 flex flex-col justify-center gap-4">
             <div className="flex items-center gap-4">
+                <ImageThumbnail src={establishment?.logoUrl ?? null} alt={establishment?.name ?? 'Establecimiento'} size={56} />
                 <Badge>FOLIO {establishment?.establishmentId}</Badge>
             </div>
             <div>

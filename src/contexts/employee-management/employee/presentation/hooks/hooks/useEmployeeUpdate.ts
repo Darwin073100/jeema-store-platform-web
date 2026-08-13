@@ -97,7 +97,6 @@ const useEmployeeUpdate = () => {
             hireDate: data.hireDate,
             lastName: data.lastName,
             phoneNumber: data.phoneNumber,
-            photoUrl: data.phoneNumber,
             terminationDate: null,
         }
         const result = await updateEmployeeAction(employee?.employeeId ?? BigInt(0), dto)

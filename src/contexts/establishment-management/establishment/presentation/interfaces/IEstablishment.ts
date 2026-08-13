@@ -5,6 +5,7 @@ export interface IEstablishment {
   cloudEstablishmentId: bigint | null,
   enrollmentKey: string | null,
   name: string,
+  logoUrl: string | null,
   createdAt: Date,
   updatedAt: Date | null,
   deletedAt: Date | null,

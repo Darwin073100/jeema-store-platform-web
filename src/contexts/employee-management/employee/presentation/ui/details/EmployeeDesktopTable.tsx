@@ -7,11 +7,12 @@ import { useRouter } from 'next/navigation';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
 import { IEmployee } from '../../interfaces/IEmployee';
+import { ImageThumbnail } from '@/contexts/image-management/image/presentation/ui';
 interface Props {
     employees: IEmployee[]
 }
 const EmployeeDesktopTable = ({ employees }: Props) => {
-    const heads = ['Folio', 'Empleado', 'Telefono', 'Correo', 'Rol', 'H. Entrada', 'H. Salida']
+    const heads = ['Foto', 'Folio', 'Empleado', 'Telefono', 'Correo', 'Rol', 'H. Entrada', 'H. Salida']
     const [employeeId, setEmployeeId] = useState(BigInt(0));
     const router = useRouter();
     const handleRouter = (id: bigint) => {
@@ -20,8 +21,11 @@ const EmployeeDesktopTable = ({ employees }: Props) => {
     }
     return (
         <PrimaryTable theadList={heads} isActions={true}>
-            {employees.map(item => (<>
+            {employees.map(item => (<React.Fragment key={item.employeeId.toString()}>
                 <PRow>
+                    <PCol>
+                        <ImageThumbnail src={item.photoUrl} alt={`${item.firstName} ${item.lastName}`} size={36} rounded="full" />
+                    </PCol>
                     <PCol>{item.employeeId}</PCol>
                     <PCol>{`${item.firstName} ${item.lastName}`}</PCol>
                     <PCol>{item.phoneNumber}</PCol>
@@ -35,7 +39,7 @@ const EmployeeDesktopTable = ({ employees }: Props) => {
                         </Button>
                     </PCol>
                 </PRow>
-            </>))}
+            </React.Fragment>))}
         </PrimaryTable>
     )
 }

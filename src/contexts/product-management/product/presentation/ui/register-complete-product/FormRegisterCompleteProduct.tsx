@@ -23,6 +23,8 @@ import { IBrand } from '@/contexts/product-management/brand/presentation/interfa
 import { ISeason } from '@/contexts/product-management/season/presentation/interfaces/ISeason';
 import { forSaleObject } from '../../../domain/enums/for-sale.object';
 import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
+import { ImageUploader } from '@/contexts/image-management/image/presentation/ui';
+import { ImageOwnerType } from '@/contexts/image-management/image/domain/enums/image-owner-type.enum';
 
 interface Props {
     categoryList: ICategory[],
@@ -85,10 +87,22 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                             </h2>
                         </div>
                         <div className="p-4 lg:p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+                            <div className="mb-4 lg:mb-6">
+                                <LabelInput
+                                    value="Imágenes del producto"
+                                    required='no'
+                                    description='Puedes subir hasta 3 imágenes una vez que el producto haya sido guardado. La primera que subas se marcará como principal y es la que se muestra en el catálogo y en ventas.' />
+                                <ImageUploader
+                                    ownerType={ImageOwnerType.PRODUCT}
+                                    ownerId={null}
+                                    maxSlots={3}
+                                    entityLabel="producto"
+                                />
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                                 <div className="md:col-span-2 lg:col-span-3 xl:col-span-4">
-                                    <LabelInput 
-                                        required='yes' 
+                                    <LabelInput
+                                        required='yes'
                                         value="Nombre del producto"
                                         description='Ingresa el nombre comercial completo del producto, incluyendo marca y características principales. Ej: Lápiz Bocetto Neón Color Azul.' />
                                     <TextInput

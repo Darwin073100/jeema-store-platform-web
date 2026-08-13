@@ -22,7 +22,7 @@ const UserTableDesktop = ({ data }: Props) => {
     const heads = ['Folio', 'Empleado', 'Nom. de Usuario', 'Correo', 'Estado']
     return (
         <PrimaryTable theadList={heads} isActions={true}>
-            {data.map(user => (<>
+            {data.map(user => (<React.Fragment key={user.userId}>
                 <PRow>
                     <PCol>{user.userId}</PCol>
                     <PCol>{`${user.employee?.firstName} ${user.employee?.lastName}`}</PCol>
@@ -39,7 +39,7 @@ const UserTableDesktop = ({ data }: Props) => {
                         </Button>
                     </PCol>
                 </PRow>
-            </>))}
+            </React.Fragment>))}
         </PrimaryTable>
     )
 }

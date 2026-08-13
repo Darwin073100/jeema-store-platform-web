@@ -1,7 +1,6 @@
 'use client'
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import React, { useEffect } from 'react'
-import { FcBusinessman, FcBusinesswoman, FcDecision } from 'react-icons/fc';
 import { formatDateWithOutTime } from '@/shared/lib/utils/date-formatter';
 import { Button } from '@/shared/ui/components/buttons';
 import { HiPencil } from 'react-icons/hi';
@@ -11,7 +10,8 @@ import { useEmployeeStore } from '../../stores/employee-store';
 import { EmployeeAddressCard } from './EmployeeAddressCard';
 import { IEmployee } from '../../interfaces/IEmployee';
 import { IEmployeeRole } from '@/contexts/employee-management/employee-role/presentation/interfaces/IEmployeeRole';
-import { GenderEnum } from '../../../domain/enums/gender.enum';
+import { ImageUploader } from '@/contexts/image-management/image/presentation/ui';
+import { ImageOwnerType } from '@/contexts/image-management/image/domain/enums/image-owner-type.enum';
 interface Props {
     data        : IEmployee,
     employeeRoles: IEmployeeRole[],
@@ -27,16 +27,15 @@ const EmployeeProfileCard = ({ data, employeeRoles }: Props) => {
 
             <div className="bg-white p-6 rounded-xl shadow-lg border-t-4 border-blue-500 text-center">
 
-                {/* Foto de Perfil (similar al diseño de referencia) */}
-                <div className="mx-auto w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-gray-200 shadow-md flex justify-center items-center">
-                    {
-                        data.gender === GenderEnum.MALE
-                            ? <FcBusinessman size={100} />
-                            : data.gender === GenderEnum.FEMALE
-                                ? <FcBusinesswoman size={100} />
-                                : data.gender === GenderEnum.OTHER || (!data.gender)
-                                    ? <FcDecision size={100} /> : <FcDecision size={100} />
-                    }
+                {/* Foto de Perfil. ImageUploader ya resuelve el estado real (con/sin foto)
+                    consultando al servidor, por lo que no depende de `data.photoUrl`. */}
+                <div className="mb-4 flex justify-center">
+                    <ImageUploader
+                        ownerType={ImageOwnerType.EMPLOYEE}
+                        ownerId={data.employeeId}
+                        maxSlots={1}
+                        entityLabel="empleado"
+                    />
                 </div>
 
                 <h2 className="text-2xl font-bold text-gray-900">{data.firstName} {data.lastName}</h2>

@@ -11,6 +11,7 @@ import { IoMdAdd } from 'react-icons/io';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
+import { ImageThumbnail } from '@/contexts/image-management/image/presentation/ui';
 
 const SaleInventoryListModal = () => {
   const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,
@@ -38,6 +39,8 @@ const SaleInventoryListModal = () => {
             <table className="w-full text-left rtl:text-right">
               <thead>
                 <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
+                  <th scope="col" className="px-2 py-4 font-semibold">
+                  </th>
                   <th scope="col" className="px-6 py-4 font-semibold">
                     Producto
                   </th>
@@ -60,6 +63,9 @@ const SaleInventoryListModal = () => {
                   <tr key={item.inventory?.product?.productId} 
                     onClick={()=> handleSetItemSelected(item)} 
                     className={clsx(`text-sm ${itemSelected?.inventoryItemId === item.inventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
+                    <td className="px-2 py-1">
+                      <ImageThumbnail src={item.inventory?.product?.imageUrl ?? null} alt={item.inventory?.product?.name ?? 'Producto'} size={36} />
+                    </td>
                     <th scope="row" className="flex gap-2 px-5 py-1 whitespace-nowrap font-semibold min-w-[200px]">
                       <Badge type='green'>{item.inventory?.internalBarCode}</Badge>
                       <span>{item.inventory?.product?.name}</span>
@@ -101,6 +107,7 @@ const SaleInventoryListModal = () => {
                             Agregar
                           </Button>
                       </th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>

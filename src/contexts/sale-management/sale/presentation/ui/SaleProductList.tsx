@@ -65,6 +65,9 @@ const SaleProductList = () => {
                             <th scope="col" className="px-2 py-4 font-semibold">
                                 #
                             </th>
+                            <th scope="col" className="px-1 py-4 font-semibold">
+                                Img.
+                            </th>
                             <th scope="col" className="px-2 py-4 font-semibold">
                                 Código
                             </th>

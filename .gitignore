@@ -38,6 +38,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# subidas de imágenes en modo local (gestión de imágenes)
+/public/uploads/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

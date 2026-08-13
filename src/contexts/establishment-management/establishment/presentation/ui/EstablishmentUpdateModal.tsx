@@ -7,13 +7,15 @@ import { Button } from '@/shared/ui/components/buttons';
 import { HiUserAdd } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
-import { EstablishmentEntity } from '../../../../../features/establishment/domain/entities/establishment.entity';
+import { IEstablishment } from '../interfaces/IEstablishment';
 import { useEstablishmentUIStore } from '../stores/establishment-ui.store';
 import { useEstablishmentUpdate } from '../hooks/useEstablishmentUpdate';
 import { useEstablishmentNoStorageStore } from '../stores/establishment-no-storage.store';
+import { ImageUploader } from '@/contexts/image-management/image/presentation/ui';
+import { ImageOwnerType } from '@/contexts/image-management/image/domain/enums/image-owner-type.enum';
 
 interface Props {
-  establishment: EstablishmentEntity,
+  establishment: IEstablishment,
 }
 
 const EstablishmentUpdateModal = ({ establishment }: Props) => {
@@ -26,6 +28,15 @@ const EstablishmentUpdateModal = ({ establishment }: Props) => {
   return (
     <TemplateModal isOpen={establishmentModal === 'update-establishment'} onClose={closeEstablishmentModal} title='Editar información'>
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-4 rounded-b-2xl">
+        <div>
+          <LabelInput value="Logotipo" required="no" description="Este logotipo se usará como imagen de identidad del establecimiento." />
+          <ImageUploader
+            ownerType={ImageOwnerType.ESTABLISHMENT}
+            ownerId={establishment.establishmentId}
+            maxSlots={1}
+            entityLabel="establecimiento"
+          />
+        </div>
         <div>
           <LabelInput value="Nombre" required="yes" />
           <TextInput

@@ -24,6 +24,7 @@ export class EstablishmentMapper {
     return new EstablishmentResponseDto(
       entity.establishmentId.toString(), // Convertimos BigInt a string para la serialización JSON
       entity.name,
+      entity.logoUrl,
       entity.createdAt,
       entity.updatedAt,
       entity.deletedAt,
@@ -36,6 +37,7 @@ export class EstablishmentMapper {
       enrollmentKey: entity.enrollmentKey,
       cloudEstablishmentId: entity.cloudEstablishmentId,
       name: entity.name,
+      logoUrl: entity.logoUrl,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt,

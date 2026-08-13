@@ -8,6 +8,7 @@ import { Badge } from "@/shared/ui/components/badges/Badge";
 import { SaleForEnum } from "../../domain/enums/sale-for.enum";
 import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
 import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
+import { ImageThumbnail } from "@/contexts/image-management/image/presentation/ui";
 // import { useSale } from "../hooks/useSale";
 
 interface Props {
@@ -22,6 +23,9 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
         <tr className="text-sm bg-white border-b dark:border-white border-gray-200 text-black">
             <td className="px-2 py-1 bg-blue-200 font-bold">
                 {saleDetail?.quantity ?? '0.00'}
+            </td>
+            <td className="px-1 py-1">
+                <ImageThumbnail src={saleDetail?.product?.imageUrl ?? null} alt={saleDetail?.productNameAtSale ?? 'Producto'} size={32} />
             </td>
             <th className="px-1 py-1 font-medium text-[12px]">
                 {saleDetail?.productBarCodeAtSale ?? 'S/C'}

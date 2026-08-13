@@ -7,6 +7,7 @@ import { PCol, PrimaryTable, PRow, PTableEmpty } from "@/shared/ui/components/ta
 import { useProductActionsBar } from "@/contexts/product-management/product/presentation/hooks/useProductActionsBar";
 import clsx from "clsx";
 import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
+import { ImageThumbnail } from "@/contexts/image-management/image/presentation/ui";
 
 interface TableProductProps {
 }
@@ -14,13 +15,16 @@ interface TableProductProps {
 export function TableProduct({}: TableProductProps) {
     const { productsFiltered } = useProductStore();
     const { totalStock, handleViewProduct, productId, handleColorRow} = useProductActionsBar();
-    const head = ['Cod. Bar. Uni.', 'Nombre', 'Stock', 'P. Uni.', 'P. May.', 'Categ.'];
+    const head = ['Img.', 'Cod. Bar. Uni.', 'Nombre', 'Stock', 'P. Uni.', 'P. May.', 'Categ.'];
 
     return (
         <div>
             <PrimaryTable theadList={head} isActions={true}>
                 {productsFiltered.map(item => (
                     <PRow key={item?.productId || Math.random()} className={clsx(`${handleColorRow(item)}`)} >
+                        <PCol>
+                            <ImageThumbnail src={item?.imageUrl ?? null} alt={item?.name ?? 'Producto'} size={36} />
+                        </PCol>
                         <PCol>{item?.universalBarCode || '-'}</PCol>
                         <PCol>{item?.name || '-'}</PCol>
                         <PCol>{totalStock(item?.inventory?.inventoryItems ?? [])}</PCol>

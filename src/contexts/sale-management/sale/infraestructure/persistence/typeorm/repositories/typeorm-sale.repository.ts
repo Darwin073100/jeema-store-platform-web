@@ -36,7 +36,9 @@ export class TypeormSaleRepository implements SaleRepository{
                 saleId: saleId
             },
             relations:{
-                saleDetails: true,
+                saleDetails:{
+                    product: true
+                },
             },
         });
         if (!ormEntity) {

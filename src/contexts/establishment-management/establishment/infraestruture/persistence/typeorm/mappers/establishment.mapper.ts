@@ -9,6 +9,7 @@ export class EstablishmentMapper{
     static toOrmEntity(domainEntity: EstablishmentEntity){
         const ormEntity = new EstablishmentOrmEntity();
         ormEntity.name = domainEntity.name;
+        ormEntity.logoUrl = domainEntity.logoUrl;
         ormEntity.cloudEstablishmentId = domainEntity.cloudEstablishmentId;
         ormEntity.enrollmentKey = domainEntity.enrollmentKey;
         ormEntity.createdAt = domainEntity.createdAt;
@@ -27,6 +28,7 @@ export class EstablishmentMapper{
             ormEntity.cloudEstablishmentId,
             ormEntity.enrollmentKey,
             ormEntity.name,
+            ormEntity.logoUrl,
             ormEntity.createdAt,
             ormEntity.updatedAt,
             ormEntity.deletedAt,

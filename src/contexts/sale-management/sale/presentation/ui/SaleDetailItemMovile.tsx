@@ -10,6 +10,7 @@ import { Button } from '@/shared/ui/components/buttons';
 import { useDeleteDetail } from '../hooks/useDeleteDetail';
 import { useUpdateDetailModal } from '../hooks/useUpdateDetailModal';
 import { ISaleDetail } from '@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail';
+import { ImageThumbnail } from '@/contexts/image-management/image/presentation/ui';
 interface Props {
     saleDetail: ISaleDetail
 }
@@ -19,7 +20,8 @@ const SaleDetailItemMovile = ({saleDetail}:Props) => {
     return (
         <div className="bg-white p-4 rounded-2xl w-full text-gray-700">
             <div className="flex items-center justify-between">
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
+                    <ImageThumbnail src={saleDetail.product?.imageUrl ?? null} alt={saleDetail.productNameAtSale} size={36} />
                     <Badge type="green">{saleDetail.quantity}</Badge>
                     <div>{saleDetail.productNameAtSale}</div>
                 </div>
