@@ -1,4 +1,4 @@
-import { Between, DataSource, QueryFailedError, Repository } from 'typeorm';
+import { Between, DataSource, FindOptionsWhere, QueryFailedError, Repository } from 'typeorm';
 import { LotRepository } from 'src/contexts/purchase-management/lot/domain/repositories/lot.repository';
 import { LotEntity } from 'src/contexts/purchase-management/lot/domain/entities/lot.entity';
 import { LotOrmEntity } from '../entities/lot.orm-entity';
@@ -168,6 +168,22 @@ export class TypeOrmLotRepository implements LotRepository {
       },
       
       order:{
+        receivedDate: 'DESC'
+      }
+    });
+
+    return lotOrmEntity.map(item => LotMapper.toDomain(item));
+  }
+
+  async findAllByProductId(productId: bigint, dateInit?: Date, dateFinish?: Date): Promise<LotEntity[]> {
+    const where: FindOptionsWhere<LotOrmEntity> = { productId };
+    if (dateInit && dateFinish) {
+      where.receivedDate = Between(dateInit, dateFinish);
+    }
+
+    const lotOrmEntity = await this.ormLotRepository.find({
+      where,
+      order: {
         receivedDate: 'DESC'
       }
     });

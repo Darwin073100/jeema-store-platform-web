@@ -7,4 +7,12 @@ export interface LotRepository extends TemplateRepository<LotEntity>{
     saveWithItems(entity: LotEntity): Promise<LotEntity>;
     findReport(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<LotEntity[]>;
     existById(id: bigint): Promise<LotEntity | null>;
+    /**
+     * Lotes comprados de un producto, opcionalmente acotado por fecha de recepción
+     * @param {bigint} productId
+     * @param {Date} [dateInit]
+     * @param {Date} [dateFinish]
+     * @returns {Promise<LotEntity[]>}
+     */
+    findAllByProductId(productId: bigint, dateInit?: Date, dateFinish?: Date): Promise<LotEntity[]>;
 }

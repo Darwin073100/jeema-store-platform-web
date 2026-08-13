@@ -1,9 +1,11 @@
 import { SaleDetailEntity } from "src/contexts/sale-management/sale-detail/domain/entities/sale-detail.entity";
 import { SaleDetailRepository } from "src/contexts/sale-management/sale-detail/domain/repositories/sale-detail.repository";
-import { DataSource, Repository } from "typeorm";
+import { Between, DataSource, FindOptionsWhere, Repository } from "typeorm";
 import { SaleDetailOrmEntity } from "../entities/sale-detail.orm-entity";
 import { SaleDetailMapper } from "../mappers/sale-detail.mapper";
 import { SaleNotFoundException } from "src/contexts/sale-management/sale/domain/exceptions/sale-not-found.exception";
+import { SaleOrmEntity } from "src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity";
+import { SaleStatusEnum } from "src/contexts/sale-management/sale/domain/enums/sale-status.enum";
 import { getDataSource } from "@/configuration/databases/typeorm/config";
 
 export class TypeormSaleDetailRepository implements SaleDetailRepository {
@@ -102,6 +104,20 @@ export class TypeormSaleDetailRepository implements SaleDetailRepository {
         } catch (error) {
             throw error;
         }
+    }
+
+    async findAllByProductId(productId: bigint, dateInit?: Date, dateFinish?: Date): Promise<SaleDetailEntity[]> {
+        const saleWhere: FindOptionsWhere<SaleOrmEntity> = { status: SaleStatusEnum.COMPLETED };
+        if (dateInit && dateFinish) {
+            saleWhere.createdAt = Between(dateInit, dateFinish);
+        }
+
+        const result = await this.repository.find({
+            where: { productId, sale: saleWhere },
+            relations: { sale: true, returns: true },
+        });
+
+        return result.map(item => SaleDetailMapper.toDomainEntity(item));
     }
 
     async findById(entityId: bigint): Promise<SaleDetailEntity | null> {

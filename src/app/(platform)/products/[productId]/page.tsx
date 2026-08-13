@@ -5,8 +5,10 @@ import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates
 import ProductDetail from "@/contexts/product-management/product/presentation/ui/product-detail/ProductDetail";
 import InventoryDetail from "@/contexts/product-management/product/presentation/ui/product-detail/InventoryDetail";
 import LotDetail from "@/contexts/product-management/product/presentation/ui/product-detail/LotDetail";
+import ProductPerformance from "@/contexts/product-management/product/presentation/ui/product-detail/ProductPerformance";
 import { findAllSuplierByEstablishmentId } from "@/contexts/purchase-management/suplier/presentation/actions/find-all-suplier-by-establishment.action";
 import { findAllProductByIdAction } from "@/contexts/product-management/product/presentation/actions/find-product-by-id.action";
+import { getProductPerformanceAction } from "@/contexts/product-management/product/presentation/actions/get-product-performance.action";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -30,6 +32,7 @@ export default async function ProductDetailsPage({ params }: Props) {
         const productResult = await findAllProductByIdAction(BigInt(productId));
         const suplierResponse = await findAllSuplierByEstablishmentId();
         const supliers = suplierResponse.value?.supliers?? [];
+        const performanceResult = await getProductPerformanceAction(BigInt(productId));
 
         if (!productResult) {
             return (
@@ -58,9 +61,12 @@ export default async function ProductDetailsPage({ params }: Props) {
                     <div>
                         <InventoryDetail product={product} />
                     </div>
-                    <LotDetail 
-                        product={product} 
+                    <LotDetail
+                        product={product}
                         supliers={supliers}/>
+                    <ProductPerformance
+                        productId={product.productId}
+                        initialPerformance={performanceResult} />
                 </TemplateHeader>
             </ProtectedRoute>
         );

@@ -14,4 +14,12 @@ export interface SaleDetailRepository extends TemplateRepository<SaleDetailEntit
      */
     modifyQuantity(detailId: bigint, quantity: number):Promise<SaleDetailEntity | null>;
     existById(entityId: bigint): Promise<boolean>;
+    /**
+     * Detalles de venta de un producto, solo de ventas completadas, opcionalmente acotado por fecha
+     * @param {bigint} productId
+     * @param {Date} [dateInit]
+     * @param {Date} [dateFinish]
+     * @returns {Promise<SaleDetailEntity[]>}
+     */
+    findAllByProductId(productId: bigint, dateInit?: Date, dateFinish?: Date): Promise<SaleDetailEntity[]>;
 }
