@@ -64,7 +64,7 @@ const SaleInventoryListModal = () => {
                     onClick={()=> handleSetItemSelected(item)} 
                     className={clsx(`text-sm ${itemSelected?.inventoryItemId === item.inventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
                     <td className="px-2 py-1">
-                      <ImageThumbnail src={item.inventory?.product?.imageUrl ?? null} alt={item.inventory?.product?.name ?? 'Producto'} size={36} />
+                      <ImageThumbnail src={item.inventory?.product?.imageUrl ?? null} alt={item.inventory?.product?.name ?? 'Producto'} size={36} zoomable />
                     </td>
                     <th scope="row" className="flex gap-2 px-5 py-1 whitespace-nowrap font-semibold min-w-[200px]">
                       <Badge type='green'>{item.inventory?.internalBarCode}</Badge>

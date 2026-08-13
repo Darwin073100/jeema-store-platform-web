@@ -18,7 +18,7 @@ const WorkspaceInformation = ({ establishment }: Props) => {
     return (
         <div className="bg-white rounded-lg shadow-md w-full p-6 flex flex-col justify-center gap-4">
             <div className="flex items-center gap-4">
-                <ImageThumbnail src={establishment?.logoUrl ?? null} alt={establishment?.name ?? 'Establecimiento'} size={56} />
+                <ImageThumbnail src={establishment?.logoUrl ?? null} alt={establishment?.name ?? 'Establecimiento'} size={56} zoomable />
                 <Badge>FOLIO {establishment?.establishmentId}</Badge>
             </div>
             <div>

@@ -21,7 +21,7 @@ const SaleDetailItemMovile = ({saleDetail}:Props) => {
         <div className="bg-white p-4 rounded-2xl w-full text-gray-700">
             <div className="flex items-center justify-between">
                 <div className="flex gap-2 items-center">
-                    <ImageThumbnail src={saleDetail.product?.imageUrl ?? null} alt={saleDetail.productNameAtSale} size={36} />
+                    <ImageThumbnail src={saleDetail.product?.imageUrl ?? null} alt={saleDetail.productNameAtSale} size={36} zoomable />
                     <Badge type="green">{saleDetail.quantity}</Badge>
                     <div>{saleDetail.productNameAtSale}</div>
                 </div>

@@ -23,7 +23,7 @@ export function TableProduct({}: TableProductProps) {
                 {productsFiltered.map(item => (
                     <PRow key={item?.productId || Math.random()} className={clsx(`${handleColorRow(item)}`)} >
                         <PCol>
-                            <ImageThumbnail src={item?.imageUrl ?? null} alt={item?.name ?? 'Producto'} size={36} />
+                            <ImageThumbnail src={item?.imageUrl ?? null} alt={item?.name ?? 'Producto'} size={36} zoomable />
                         </PCol>
                         <PCol>{item?.universalBarCode || '-'}</PCol>
                         <PCol>{item?.name || '-'}</PCol>

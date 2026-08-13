@@ -25,7 +25,7 @@ const SaleDetailItem = ({ saleDetail }: Props) => {
                 {saleDetail?.quantity ?? '0.00'}
             </td>
             <td className="px-1 py-1">
-                <ImageThumbnail src={saleDetail?.product?.imageUrl ?? null} alt={saleDetail?.productNameAtSale ?? 'Producto'} size={32} />
+                <ImageThumbnail src={saleDetail?.product?.imageUrl ?? null} alt={saleDetail?.productNameAtSale ?? 'Producto'} size={32} zoomable />
             </td>
             <th className="px-1 py-1 font-medium text-[12px]">
                 {saleDetail?.productBarCodeAtSale ?? 'S/C'}

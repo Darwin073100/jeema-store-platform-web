@@ -24,7 +24,7 @@ const EmployeeDesktopTable = ({ employees }: Props) => {
             {employees.map(item => (<React.Fragment key={item.employeeId.toString()}>
                 <PRow>
                     <PCol>
-                        <ImageThumbnail src={item.photoUrl} alt={`${item.firstName} ${item.lastName}`} size={36} rounded="full" />
+                        <ImageThumbnail src={item.photoUrl} alt={`${item.firstName} ${item.lastName}`} size={36} rounded="full" zoomable />
                     </PCol>
                     <PCol>{item.employeeId}</PCol>
                     <PCol>{`${item.firstName} ${item.lastName}`}</PCol>

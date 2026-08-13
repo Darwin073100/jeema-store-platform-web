@@ -23,7 +23,24 @@ export function ListMovileProducts({}: ListMovileProductsProps) {
         <div>
             <div className="flex flex-col gap-2">
                 {productsFiltered.map(item=> (
-                    <button key={item.productId.toString()} onClick={() => handleViewProduct(item?.productId?.toString() || '')} className={clsx('bg-white rounded-2xl w-full p-2', handleColorRow(item))}>
+                    // Nota: antes era un <button>, pero ImageThumbnail zoomable renderiza su
+                    // propio <button> interno para abrir el zoom, y un <button> no puede
+                    // contener otro <button> (contenido interactivo anidado, inválido en HTML).
+                    // Se reemplaza por un div con role="button" + soporte de teclado para
+                    // conservar la semántica y accesibilidad de "tarjeta clicable".
+                    <div
+                        key={item.productId.toString()}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleViewProduct(item?.productId?.toString() || '')}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                                event.preventDefault();
+                                handleViewProduct(item?.productId?.toString() || '');
+                            }
+                        }}
+                        className={clsx('cursor-pointer bg-white rounded-2xl w-full p-2', handleColorRow(item))}
+                    >
                         <div className="flex justify-between gap-2">
                             <Badge type="purple" className="transition-all duration-300">{item.category?.name ?? 'No Disponible'}</Badge>
                             {productId===item.productId.toString()
@@ -31,7 +48,7 @@ export function ListMovileProducts({}: ListMovileProductsProps) {
                                 : '' }
                         </div>
                         <div className="flex gap-2 justify-center">
-                            <ImageThumbnail src={item.imageUrl} alt={item.name} size={80} rounded="lg" />
+                            <ImageThumbnail src={item.imageUrl} alt={item.name} size={80} rounded="lg" zoomable />
                         </div>
                         <div className="flex flex-col w-full justify-center items-center">
                             <span className="text-red-600 text-sm">{item.inventory?.internalBarCode}</span>
@@ -49,7 +66,7 @@ export function ListMovileProducts({}: ListMovileProductsProps) {
                                 <span className="text-3xl">{numberMoneyFormat(item.inventory?.salePriceMany ?? 0)}</span>
                             </div>
                         </div>
-                    </button>
+                    </div>
                 ))}
             </div>
         </div>
