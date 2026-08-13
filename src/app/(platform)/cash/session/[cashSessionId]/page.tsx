@@ -1,5 +1,7 @@
 import { findCashSessionWithTransactionsAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-session-with-transactions.action";
+import { getCashSessionSalesSummaryAction } from "@/contexts/cash-management/cash-session/presentation/actions/get-cash-session-sales-summary.action";
 import { CashInfo } from "@/contexts/cash-management/cash-session/presentation/ui/close/CashInfo";
+import { CashSalesSummary } from "@/contexts/cash-management/cash-session/presentation/ui/close/CashSalesSummary";
 import { CashCloseOptios } from "@/contexts/cash-management/cash-session/presentation/ui/close/CashOptios";
 import { findAllTransactionsTypeAction } from "@/contexts/transaction-management/transaction-type/presentation/actions/find-all-transactions-type.action";
 import { formatDateShort, formatTimeByDate } from "@/shared/lib/utils/date-formatter";
@@ -36,6 +38,7 @@ export default async function SaleInformationPage({ params }: Props) {
         const currentExpenseAcounts = resultExpenseAcounts.value?.transactionsType ?? [];
         const resultIncomeAcounts = await findAllTransactionsTypeAction(AccountTypeEnum.INCOME);
         const currentIncomeAcounts = resultIncomeAcounts.value?.transactionsType ?? [];
+        const salesSummary = await getCashSessionSalesSummaryAction(BigInt(cashSessionId));
 
         const breadcrumbItems: BreadcrumbItem[] = [
             {
@@ -64,6 +67,8 @@ export default async function SaleInformationPage({ params }: Props) {
                         expenses={currentExpenseAcounts} />
                     <CashInfo
                         cashSession={data} />
+                    <CashSalesSummary
+                        summary={salesSummary} />
                     <article>
                         <PrimaryTable theadList={headTable} isActions={false}>
                             {data.transactions.map(item => (

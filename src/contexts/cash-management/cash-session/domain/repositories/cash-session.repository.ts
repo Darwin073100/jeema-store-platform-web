@@ -18,4 +18,10 @@ export interface CashSessionRepository extends TemplateRepository<CashSessionEnt
     existById(entityId: bigint): Promise<CashSessionEntity | null>;
     findCashSessionTicket(cashSessionId: bigint): Promise<CashSessionEntity|null>;
     findAllByBranchOffice(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<CashSessionEntity[]>;
+    /**
+     * Caja con sus ventas y el detalle de cada venta, para calcular totales de ventas/costo/ganancia de la sesión.
+     * @param { bigint } cashSessionId
+     * @returns { Promise<CashSessionEntity|null> }
+     */
+    findCashSessionWithSalesDetails(cashSessionId: bigint): Promise<CashSessionEntity|null>;
 }

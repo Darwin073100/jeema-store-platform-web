@@ -117,6 +117,25 @@ export class TypeormCashSessionRepository implements CashSessionRepository {
         return CashSessionMapper.toDomain(result);
     }
 
+    async findCashSessionWithSalesDetails(cashSessionId: bigint): Promise<CashSessionEntity|null>{
+        const result = await this.repository.findOne({
+            where: {
+                cashSessionId,
+            },
+            relations: {
+                employee: true,
+                cashRegister: true,
+                sales: {
+                    saleDetails: true
+                },
+            }
+        });
+        if(!result){
+            return null;
+        }
+        return CashSessionMapper.toDomain(result);
+    }
+
     async isClosedCashSession(cashRegisterId: bigint): Promise<CashSessionEntity|null>{
         const result = await this.repository.findOneBy({
             cashRegisterId,
