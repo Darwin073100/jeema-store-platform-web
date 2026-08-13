@@ -85,6 +85,7 @@ const SaleInventoryListModal = () => {
                   </tr>
                   { itemSelected?.inventoryItemId === item.inventoryItemId && <>
                     <tr className='bg-blue-100'>
+                      <th></th>
                       <th className='p-1 flex items-center gap-2'>
                         <form onSubmit={(e)=> quantitySubmit(e)}>
                           <TextInput
@@ -107,7 +108,6 @@ const SaleInventoryListModal = () => {
                             Agregar
                           </Button>
                       </th>
-                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
