@@ -17,6 +17,10 @@ const MIME_TO_EXTENSION: Record<string, string> = {
   'image/webp': '.webp',
 };
 
+const EXTENSION_TO_MIME: Record<string, string> = Object.fromEntries(
+  Object.entries(MIME_TO_EXTENSION).map(([mimeType, extension]) => [extension, mimeType]),
+);
+
 /**
  * Sanitiza un segmento de ruta calculado (ownerType/ownerId) para que nunca
  * pueda escribir fuera del árbol de subidas local: sólo se permiten
@@ -31,15 +35,39 @@ function sanitizePathSegment(segment: string): string {
 }
 
 /**
- * LocalFilesystemImageStorageAdapter escribe el archivo en un directorio
- * dentro de `public/`, para que Next.js lo sirva directamente sin necesidad
- * de una ruta API dedicada — válido porque el modo local corre como proceso
- * persistente (on-premise), no serverless.
+ * LocalFilesystemImageStorageAdapter escribe el archivo en `storage/uploads/`
+ * en la raíz del proyecto — deliberadamente FUERA de `public/`. `next start`
+ * (modo producción) sólo escanea `public/` una vez al arrancar para resolver
+ * qué rutas son archivos estáticos (`setupFsCheck` en
+ * `next/dist/server/lib/router-utils/filesystem.js`); un archivo escrito ahí
+ * después de ese escaneo no se sirve hasta reiniciar el proceso. Al vivir
+ * fuera de `public/`, el archivo se sirve siempre vía el route handler
+ * dinámico `src/app/uploads/[...path]/route.ts`, que lee del disco en cada
+ * request — válido porque el modo local corre como proceso persistente
+ * (on-premise), no serverless.
  */
 export class LocalFilesystemImageStorageAdapter implements ImageStoragePort {
-  constructor(
-    private readonly basePathWithinPublic: string = process.env.LOCAL_IMAGE_STORAGE_PATH ?? 'uploads',
-  ) {}
+  private readonly storageRoot: string;
+
+  constructor(basePath: string = process.env.LOCAL_IMAGE_STORAGE_PATH ?? 'uploads') {
+    this.storageRoot = path.join(process.cwd(), 'storage', basePath);
+  }
+
+  /**
+   * Resuelve un storageKey a una ruta absoluta, verificando que el destino
+   * siga contenido dentro de `storageRoot` (defensa en profundidad contra
+   * path traversal).
+   */
+  private resolveAbsolutePath(storageKey: string): string {
+    const absolutePath = path.join(this.storageRoot, ...storageKey.split('/'));
+
+    const relativeCheck = path.relative(this.storageRoot, absolutePath);
+    if (relativeCheck.startsWith('..') || path.isAbsolute(relativeCheck)) {
+      throw new Error('Ruta de almacenamiento local resuelta fuera del directorio de almacenamiento permitido.');
+    }
+
+    return absolutePath;
+  }
 
   async upload(input: UploadImageInput): Promise<UploadImageResult> {
     const extension = MIME_TO_EXTENSION[input.mimeType];
@@ -51,36 +79,22 @@ export class LocalFilesystemImageStorageAdapter implements ImageStoragePort {
     const ownerIdSegment = sanitizePathSegment(input.ownerId);
     const fileName = `${uuid()}${extension}`;
 
-    // storageKey es siempre relativo a /public, con separadores '/' (también en Windows),
-    // para que pueda usarse tal cual como URL pública.
-    const storageKey = [this.basePathWithinPublic, ownerTypeSegment, ownerIdSegment, fileName].join('/');
-
-    const publicDir = path.join(process.cwd(), 'public');
-    const absoluteDestination = path.join(publicDir, ...storageKey.split('/'));
-
-    // Defensa en profundidad: el destino resuelto debe seguir contenido dentro de /public.
-    const relativeCheck = path.relative(publicDir, absoluteDestination);
-    if (relativeCheck.startsWith('..') || path.isAbsolute(relativeCheck)) {
-      throw new Error('Ruta de almacenamiento local resuelta fuera del directorio público permitido.');
-    }
+    // storageKey es relativo a storageRoot, con separadores '/' (también en Windows).
+    const storageKey = [ownerTypeSegment, ownerIdSegment, fileName].join('/');
+    const absoluteDestination = this.resolveAbsolutePath(storageKey);
 
     await fs.mkdir(path.dirname(absoluteDestination), { recursive: true });
     await fs.writeFile(absoluteDestination, input.buffer);
 
     return {
       storageKey,
-      url: `/${storageKey}`,
+      // Servida por el route handler dinámico, no por el árbol estático de /public.
+      url: `/uploads/${storageKey}`,
     };
   }
 
   async delete(storageKey: string): Promise<void> {
-    const publicDir = path.join(process.cwd(), 'public');
-    const absolutePath = path.join(publicDir, ...storageKey.split('/'));
-
-    const relativeCheck = path.relative(publicDir, absolutePath);
-    if (relativeCheck.startsWith('..') || path.isAbsolute(relativeCheck)) {
-      throw new Error('Ruta de almacenamiento local resuelta fuera del directorio público permitido.');
-    }
+    const absolutePath = this.resolveAbsolutePath(storageKey);
 
     try {
       await fs.unlink(absolutePath);
@@ -90,6 +104,30 @@ export class LocalFilesystemImageStorageAdapter implements ImageStoragePort {
       if (err.code !== 'ENOENT') {
         throw error;
       }
+    }
+  }
+
+  /**
+   * Lee un archivo del storage local para el route handler de subidas.
+   * Devuelve `null` si no existe o su extensión no está en la whitelist,
+   * en vez de lanzar, para que el caller responda 404 sin distinguir casos.
+   */
+  async read(storageKey: string): Promise<{ buffer: Buffer; mimeType: string } | null> {
+    const absolutePath = this.resolveAbsolutePath(storageKey);
+    const mimeType = EXTENSION_TO_MIME[path.extname(absolutePath).toLowerCase()];
+    if (!mimeType) {
+      return null;
+    }
+
+    try {
+      const buffer = await fs.readFile(absolutePath);
+      return { buffer, mimeType };
+    } catch (error) {
+      const err = error as NodeJS.ErrnoException;
+      if (err.code === 'ENOENT') {
+        return null;
+      }
+      throw error;
     }
   }
 }

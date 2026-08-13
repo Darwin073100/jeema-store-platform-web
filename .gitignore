@@ -38,8 +38,9 @@ yarn-error.log*
 # vercel
 .vercel
 
-# subidas de imágenes en modo local (gestión de imágenes)
-/public/uploads/
+# subidas de imágenes en modo local (gestión de imágenes) — servidas vía
+# src/app/uploads/[...path]/route.ts, deliberadamente fuera de /public
+/storage/uploads/
 
 # typescript
 *.tsbuildinfo
