@@ -35,6 +35,8 @@ const EmployeeProfileCard = ({ data, employeeRoles }: Props) => {
                         ownerId={data.employeeId}
                         maxSlots={1}
                         entityLabel="empleado"
+                        size={140}
+                        rounded="full"
                     />
                 </div>
 

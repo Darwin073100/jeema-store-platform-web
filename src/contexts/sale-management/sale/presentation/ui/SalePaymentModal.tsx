@@ -137,7 +137,7 @@ const SalePaymentModal = () => {
               : <MdOutlinePaid className="w-4 h-4" /> }
               <span className='max-sm:hidden'>{`Cobrar`}</span>
               <div className="h-full flex items-start">
-                <span className="text-sm p-1 rounded-sm bg-blue-200 text-blue-600">F3</span>
+                <span className="text-sm p-1 rounded-sm bg-blue-200 text-blue-600">F2</span>
               </div>            
           </Button>
           <Button

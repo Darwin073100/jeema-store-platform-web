@@ -27,6 +27,10 @@ interface Props {
     maxSlots: number;
     /** Nombre descriptivo del dueño, usado en textos de accesibilidad. Ej: "producto", "empleado". */
     entityLabel?: string;
+    /** Tamaño (ancho = alto) en píxeles, compartido por miniaturas, preview, spinner y botón "+". Default 88. */
+    size?: number;
+    /** Forma de las miniaturas, el preview, el spinner y el botón "+". Default 'lg'. */
+    rounded?: 'full' | 'lg' | 'md' | 'none';
     className?: string;
 }
 
@@ -37,7 +41,7 @@ interface Props {
  * configurable por prop (`maxSlots`) — el backend permite hasta 3 imágenes
  * para cualquier dueño, la UI decide cuántas exponer.
  */
-const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento', className }: Props) => {
+const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento', size = 88, rounded = 'lg', className }: Props) => {
     const { images, loading, error: listError, refresh } = useOwnerImages(ownerType, ownerId);
     const {
         upload, uploading, uploadError,
@@ -58,6 +62,15 @@ const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento',
 
     const slotsAvailable = Math.max(0, maxSlots - images.length - (pendingPreviewUrl ? 1 : 0));
     const canAddMore = ownerId !== null && slotsAvailable > 0 && !uploading;
+
+    // Todos los elementos del grid (miniaturas, preview, spinner, botón "+")
+    // comparten el mismo tamaño/forma para verse consistentes entre sí.
+    const roundedClass = rounded === 'full' ? 'rounded-full' : rounded === 'lg' ? 'rounded-lg' : rounded === 'md' ? 'rounded-md' : 'rounded-none';
+    const scale = size / 88;
+    const spinnerSize = Math.round(20 * scale);
+    const uploadIconSize = Math.round(22 * scale);
+    const actionIconSize = Math.round(16 * scale);
+    const primaryBadgeIconSize = Math.round(14 * scale);
 
     const handlePickFile = () => {
         setLocalError(null);
@@ -127,22 +140,23 @@ const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento',
                             <ImageThumbnail
                                 src={image.url}
                                 alt={`Imagen de ${entityLabel}${image.isPrimary ? ' (principal)' : ''}`}
-                                size={88}
+                                size={size}
+                                rounded={rounded}
                             />
                             {image.isPrimary && (
                                 <span
                                     className="absolute -top-2 -left-2 bg-yellow-400 text-white rounded-full p-1 shadow"
                                     title="Imagen principal"
                                 >
-                                    <HiStar size={14} />
+                                    <HiStar size={primaryBadgeIconSize} />
                                 </span>
                             )}
                             {isBusy ? (
-                                <div className="absolute inset-0 flex items-center justify-center bg-white/70 rounded-lg">
-                                    <Spinner color="blue" size={20} />
+                                <div className={clsx('absolute inset-0 flex items-center justify-center bg-white/70', roundedClass)}>
+                                    <Spinner color="blue" size={spinnerSize} />
                                 </div>
                             ) : (
-                                <div className="absolute inset-0 rounded-lg bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100">
+                                <div className={clsx('absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100', roundedClass)}>
                                     {!image.isPrimary && (
                                         <button
                                             type="button"
@@ -151,7 +165,7 @@ const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento',
                                             onClick={() => handleSetPrimary(image.imageId)}
                                             className="cursor-pointer bg-white/90 hover:bg-white text-yellow-500 rounded-full p-1.5"
                                         >
-                                            <HiOutlineStar size={16} />
+                                            <HiOutlineStar size={actionIconSize} />
                                         </button>
                                     )}
                                     <button
@@ -161,7 +175,7 @@ const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento',
                                         onClick={() => handleRemove(image.imageId)}
                                         className="cursor-pointer bg-white/90 hover:bg-white text-red-600 rounded-full p-1.5"
                                     >
-                                        <HiOutlineTrash size={16} />
+                                        <HiOutlineTrash size={actionIconSize} />
                                     </button>
                                 </div>
                             )}
@@ -171,9 +185,9 @@ const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento',
 
                 {pendingPreviewUrl && (
                     <div className="relative">
-                        <ImageThumbnail src={pendingPreviewUrl} alt="Vista previa de la imagen a subir" size={88} />
-                        <div className="absolute inset-0 flex items-center justify-center bg-white/70 rounded-lg">
-                            <Spinner color="blue" size={20} />
+                        <ImageThumbnail src={pendingPreviewUrl} alt="Vista previa de la imagen a subir" size={size} rounded={rounded} />
+                        <div className={clsx('absolute inset-0 flex items-center justify-center bg-white/70', roundedClass)}>
+                            <Spinner color="blue" size={spinnerSize} />
                         </div>
                     </div>
                 )}
@@ -184,9 +198,10 @@ const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento',
                         onClick={handlePickFile}
                         aria-label="Subir imagen"
                         title="Subir imagen"
-                        className="cursor-pointer w-[88px] h-[88px] rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-blue-500 hover:border-blue-400 transition-all"
+                        style={{ width: size, height: size }}
+                        className={clsx('cursor-pointer border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-blue-500 hover:border-blue-400 transition-all', roundedClass)}
                     >
-                        <HiOutlineCloudUpload size={22} />
+                        <HiOutlineCloudUpload size={uploadIconSize} />
                         <span className="text-xs">Subir</span>
                     </button>
                 )}
