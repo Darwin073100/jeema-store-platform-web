@@ -2,7 +2,7 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { formatDate } from "@/shared/lib/utils/date-formatter";
 import { ISale } from '../interfaces/ISale';
-import logo from 'src/shared/ui/assets/images/la_bonita_1.png';
+import logo from 'src/shared/ui/assets/images/logologo.png';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
@@ -157,7 +157,7 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
       <Page size={[mmToPt(58), mmToPt((120+sizeAdd()))]} style={styles.page}>
         {/* Logo */}
         <Image
-          src={logo.src}
+          src={sale.branchOffice?.establishment?.logoUrl ?? logo.src}
           style={styles.logo}
         />
 
