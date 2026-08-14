@@ -9,9 +9,11 @@ import { useImageUpload } from '../hooks/useImageUpload';
 import { ImageThumbnail } from './ImageThumbnail';
 
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-// Espejo de MAX_IMAGE_SIZE_MB (default backend 2MB, ver .env.template) — sólo para dar
+// Espejo de MAX_RAW_UPLOAD_SIZE_MB (default backend 15MB, ver .env.template) — sólo para dar
 // feedback inmediato en el cliente; la validación real y autoritativa ocurre en el servidor.
-const MAX_SIZE_BYTES = 2 * 1024 * 1024;
+// Por debajo de este límite, el backend acepta la imagen tal cual viene de la cámara/galería
+// y la comprime/redimensiona automáticamente si hace falta (no hace falta comprimir antes de subir).
+const MAX_SIZE_BYTES = 15 * 1024 * 1024;
 
 interface Props {
     ownerType: ImageOwnerType;
@@ -72,7 +74,7 @@ const ImageUploader = ({ ownerType, ownerId, maxSlots, entityLabel = 'elemento',
             return;
         }
         if (file.size > MAX_SIZE_BYTES) {
-            setLocalError('La imagen supera el tamaño máximo permitido (2MB).');
+            setLocalError('La imagen supera el tamaño máximo permitido (15MB).');
             return;
         }
 

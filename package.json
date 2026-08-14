@@ -58,6 +58,7 @@
     "react-hook-form": "^7.81.0",
     "react-icons": "^5.7.0",
     "reflect-metadata": "^0.2.2",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3",
     "tsyringe": "^4.10.0",
@@ -92,7 +93,7 @@
     "typescript": "^5.9.3"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": [
+    "onlyBuiltDependencies": [
       "sharp"
     ]
   }

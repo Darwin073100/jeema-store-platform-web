@@ -45,12 +45,41 @@ export function detectImageMimeTypeFromBuffer(buffer: Buffer): AllowedImageMimeT
 }
 
 /**
- * Límite de tamaño por imagen, en bytes, leído de `MAX_IMAGE_SIZE_MB`
- * (default 2MB si no está definida o no es un número válido).
+ * Límite duro de subida cruda, en bytes, leído de `MAX_RAW_UPLOAD_SIZE_MB`
+ * (default 15MB si no está definida o no es un número válido). Se aplica
+ * ANTES de invocar `ImageProcessorPort`, para no gastar CPU procesando
+ * archivos disparatadamente grandes — ver spect/01_gestion_imagenes_spect.md,
+ * sección 4.
  */
-export function getMaxImageSizeBytes(): number {
-  const raw = process.env.MAX_IMAGE_SIZE_MB;
+export function getMaxRawUploadSizeBytes(): number {
+  const raw = process.env.MAX_RAW_UPLOAD_SIZE_MB;
   const mb = raw ? Number(raw) : NaN;
-  const safeMb = Number.isFinite(mb) && mb > 0 ? mb : 2;
+  const safeMb = Number.isFinite(mb) && mb > 0 ? mb : 15;
+  return safeMb * 1024 * 1024;
+}
+
+/**
+ * Umbral de tamaño crudo, en bytes, leído de `IMAGE_COMPRESSION_THRESHOLD_KB`
+ * (default 1024KB = 1MB). Por debajo (o igual) de este umbral, el archivo se
+ * guarda tal cual, sin invocar `ImageProcessorPort`.
+ */
+export function getCompressionThresholdBytes(): number {
+  const raw = process.env.IMAGE_COMPRESSION_THRESHOLD_KB;
+  const kb = raw ? Number(raw) : NaN;
+  const safeKb = Number.isFinite(kb) && kb > 0 ? kb : 1024;
+  return safeKb * 1024;
+}
+
+/**
+ * Cota de seguridad post-procesamiento, en bytes, leída de
+ * `MAX_PROCESSED_IMAGE_SIZE_MB` (default 3MB). Si el archivo procesado (o el
+ * original, cuando no superó el umbral de compresión) sigue excediendo esta
+ * cota, se rechaza — red de seguridad para el caso anómalo en que ni
+ * redimensionar ni comprimir alcanza.
+ */
+export function getMaxProcessedImageSizeBytes(): number {
+  const raw = process.env.MAX_PROCESSED_IMAGE_SIZE_MB;
+  const mb = raw ? Number(raw) : NaN;
+  const safeMb = Number.isFinite(mb) && mb > 0 ? mb : 3;
   return safeMb * 1024 * 1024;
 }

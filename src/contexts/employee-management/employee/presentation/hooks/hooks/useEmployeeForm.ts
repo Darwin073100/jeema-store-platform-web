@@ -293,7 +293,7 @@ const useEmployeeForm = () => {
             hireDate: data.hireDate?.toDateString() ?? new Date().toDateString(),
             lastName: data.lastName,
             phoneNumber: data.phoneNumber,
-            photoUrl: data.phoneNumber,
+            photoUrl: null,
             terminationDate: null,
             address: addressDTO,
         }

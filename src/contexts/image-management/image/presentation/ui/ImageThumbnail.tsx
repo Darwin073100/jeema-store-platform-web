@@ -28,8 +28,28 @@ interface Props {
  * (producto, empleado, establecimiento). Muestra un placeholder accesible
  * cuando `src` es `null`, sin disparar ninguna petición de red.
  */
-const ImageThumbnail = ({ src, alt, size = 48, rounded = 'lg', zoomable = false, className }: Props) => {
+/**
+ * `next/image` construye un `URL` a partir de `src` y lanza en vez de
+ * fallar con gracia si el valor no es una URL absoluta ni una ruta que
+ * empieza con `/` — puede pasar con datos ya persistidos que no son una URL
+ * válida (p. ej. un valor corrupto guardado antes de una corrección). Se
+ * trata como "sin imagen" en vez de tumbar toda la pantalla que renderiza
+ * la miniatura.
+ */
+const isDisplayableSrc = (value: string | null): value is string => {
+    if (!value) return false;
+    if (value.startsWith('/')) return true;
+    try {
+        new URL(value);
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+const ImageThumbnail = ({ src: rawSrc, alt, size = 48, rounded = 'lg', zoomable = false, className }: Props) => {
     const [isZoomOpen, setIsZoomOpen] = useState(false);
+    const src = isDisplayableSrc(rawSrc) ? rawSrc : null;
     const roundedClass = rounded === 'full' ? 'rounded-full' : rounded === 'lg' ? 'rounded-lg' : rounded === 'md' ? 'rounded-md' : 'rounded-none';
     const canZoom = zoomable && src !== null;
 

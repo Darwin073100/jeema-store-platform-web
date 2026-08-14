@@ -3,8 +3,10 @@ import { FetchHttpClient } from "@/shared/infrastructure/http/fetch-http-client.
 import { ApiConfig } from "@/shared/domain/repositories/api-config";
 import { ApiCloudTransferConfigImpl } from "../config/api-cloud-transfer.config";
 import { ImageStoragePort } from "@/shared/domain/ports/image-storage.port";
+import { ImageProcessorPort } from "@/shared/domain/ports/image-processor.port";
 import { LocalFilesystemImageStorageAdapter } from "@/shared/infrastructure/storage/local-filesystem-image-storage.adapter";
 import { CloudImageStorageAdapter } from "@/shared/infrastructure/storage/cloud-image-storage.adapter";
+import { SharpImageProcessorAdapter } from "@/shared/infrastructure/image-processing/sharp-image-processor.adapter";
 import { ImageOwnerType } from "@/contexts/image-management/image/domain/enums/image-owner-type.enum";
 import { ImageOwnerGatewayPort } from "@/contexts/image-management/image/domain/ports/out/image-owner-gateway.port";
 import { ProductImageOwnerGatewayAdapter } from "@/contexts/image-management/image/infraestructura/adapters/product-image-owner-gateway.adapter";
@@ -22,6 +24,7 @@ export class DependencyFactory {
     private static httpClientInstance: HttpClient | null = null;
     private static apiConfigInstance: ApiConfig | null = null;
     private static imageStorageInstance: ImageStoragePort | null = null;
+    private static imageProcessorInstance: ImageProcessorPort | null = null;
 
     /**
      * Singleton para HttpClient
@@ -60,6 +63,20 @@ export class DependencyFactory {
                 : new LocalFilesystemImageStorageAdapter();
         }
         return this.imageStorageInstance;
+    }
+
+    /**
+     * Singleton para ImageProcessorPort.
+     * A diferencia de `getImageStorage()`, no tiene lógica de autodetección de
+     * modo: el procesamiento con `sharp` corre siempre en el mismo proceso Node
+     * que atiende la Server Action (local o función serverless de Vercel), sin
+     * variante "cloud".
+     */
+    static getImageProcessor(): ImageProcessorPort {
+        if (!this.imageProcessorInstance) {
+            this.imageProcessorInstance = new SharpImageProcessorAdapter();
+        }
+        return this.imageProcessorInstance;
     }
 
     /**
@@ -114,11 +131,19 @@ export class DependencyFactory {
     }
 
     /**
+     * Para testing - permite inyectar un processor mock
+     */
+    static setImageProcessor(imageProcessor: ImageProcessorPort): void {
+        this.imageProcessorInstance = imageProcessor;
+    }
+
+    /**
      * Resetear las instancias (útil para testing)
      */
     static reset(): void {
         this.httpClientInstance = null;
         this.apiConfigInstance = null;
         this.imageStorageInstance = null;
+        this.imageProcessorInstance = null;
     }
 }
