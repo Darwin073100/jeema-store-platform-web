@@ -1,4 +1,5 @@
 import { BranchOfficeResponseDto } from "src/contexts/establishment-management/branch-office/application/dtos/branch-office-response.dto";
+import { EstablishmentDetailResponseDto } from "src/contexts/establishment-management/establishment-detail/application/dtos/establishment-detail-response.dto";
 
 /**
  * Establishment ResponseDto es un Data Transfer Object (DTO)
@@ -16,6 +17,7 @@ export class EstablishmentResponseDto {
   readonly updatedAt: Date | null; // La fecha de la última actualización
   readonly deletedAt: Date | null; // La fecha de borrado lógico
   readonly branchOffices: BranchOfficeResponseDto[];
+  readonly details: EstablishmentDetailResponseDto[];
 
   constructor(
     establishmentId: string,
@@ -25,6 +27,7 @@ export class EstablishmentResponseDto {
     updatedAt: Date | null,
     deletedAt: Date | null,
     branchOffices: BranchOfficeResponseDto[],
+    details: EstablishmentDetailResponseDto[],
   ) {
     this.establishmentId = establishmentId;
     this.name = name;
@@ -33,6 +36,7 @@ export class EstablishmentResponseDto {
     this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
     this.branchOffices = branchOffices;
+    this.details = details;
     Object.freeze(this);
   }
 }

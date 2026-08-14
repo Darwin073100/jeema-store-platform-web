@@ -1,6 +1,7 @@
 import { findEstablishmentByIdAction } from "@/contexts/establishment-management/establishment/presentation/actions/find-establishment-by-id.action";
 import { BranchesInEstablishment } from "@/contexts/establishment-management/establishment/presentation/ui/BranchesInEstablishment";
 import { WorkspaceInformation } from "@/contexts/establishment-management/establishment/presentation/ui/WorkspaceInformation";
+import { EstablishmentContactInfo } from "@/contexts/establishment-management/establishment-detail/presentation/ui/EstablishmentContactInfo";
 import { formatDate, formatDateShort } from "@/shared/lib/utils/date-formatter";
 import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 import { Badge } from "@/shared/ui/components/badges/Badge";
@@ -39,7 +40,14 @@ export default async function Dashboard() {
                 <span className="font-bold text-2xl">{numberBasicFormat(establishment?.branchOffices.length ?? 0)}</span>
               </div>
             </div>
-            <BranchesInEstablishment 
+            {establishment && (
+              <div className="mb-6">
+                <EstablishmentContactInfo
+                  establishmentId={establishment.establishmentId}
+                  details={establishment?.details ?? []} />
+              </div>
+            )}
+            <BranchesInEstablishment
               branchOffices={establishment?.branchOffices ?? []}/>
       </TemplateHeader>
     </ProtectedRoute>

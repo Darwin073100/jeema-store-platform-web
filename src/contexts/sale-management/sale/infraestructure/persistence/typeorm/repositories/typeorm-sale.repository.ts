@@ -83,7 +83,9 @@ export class TypeormSaleRepository implements SaleRepository{
                 },
                 branchOffice:{
                     address: true,
-                    establishment: true
+                    establishment: {
+                        details: true
+                    }
                 }
             },
         });

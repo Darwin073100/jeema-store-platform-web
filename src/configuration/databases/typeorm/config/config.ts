@@ -32,6 +32,7 @@ import { CashSessionOrmEntity } from 'src/contexts/cash-management/cash-session/
 import { ReturnsOrmEntity } from 'src/contexts/sale-management/returns/infraestructure/entities/returns.orm-entity';
 import { AddressOrmEntity } from 'src/contexts/establishment-management/address/infraestructure/entities/address.orm-entity';
 import { ImageOrmEntity } from 'src/contexts/image-management/image/infraestructura/persistence/typeorm/entities/image.orm-entity';
+import { EstablishmentDetailOrmEntity } from 'src/contexts/establishment-management/establishment-detail/infraestructure/persistence/typeorm/entities/establishment-detail.orm-entity';
 
 
 // Cargar variables de entorno
@@ -49,7 +50,7 @@ export const dbOptions: DataSourceOptions = {
     ProductOrmEntity, SuplierOrmEntity, LotOrmEntity, EmployeeRoleOrmEntity, EmployeeOrmEntity, InventoryOrmEntity,
     InventoryItemOrmEntity, CustomerOrmEntity, LotUnitPurchaseOrmEntity, PaymentMethodOrmEntity, SaleOrmEntity, 
     SaleDetailOrmEntity, SalePaymentOrmEntity, TransactionTypeOrmEntity, TransactionOrmEntity, TransferOrmEntity,
-    CashRegisterOrmEntity, CashSessionOrmEntity, ReturnsOrmEntity, ImageOrmEntity
+    CashRegisterOrmEntity, CashSessionOrmEntity, ReturnsOrmEntity, ImageOrmEntity, EstablishmentDetailOrmEntity
   ],
   synchronize: false,
   logging: process.env.DB_LOGGING === 'true',

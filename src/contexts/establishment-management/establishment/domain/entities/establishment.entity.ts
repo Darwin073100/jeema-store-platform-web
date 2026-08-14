@@ -1,5 +1,6 @@
 import { CloudEstablishmentEnrollmentVO } from "../values-objects/cloud-establishment-enrollment-key.vo";
 import { EstablishmentNameVO } from "../values-objects/establishment-name.vo";
+import { EstablishmentDetailEntity } from "src/contexts/establishment-management/establishment-detail/domain/entities/establishment-detail.entity";
 
 export class EstablishmentEntity {
     private readonly _establishmentId: bigint;
@@ -14,6 +15,7 @@ export class EstablishmentEntity {
     private _products: any[] | null;
     private _customers: any[] | null;
     private _supliers: any[] | null;
+    private _details: EstablishmentDetailEntity[] | null;
 
     private constructor(
     establishmentId: bigint,
@@ -28,6 +30,7 @@ export class EstablishmentEntity {
     products: any[] | null,
     customers: any[] | null,
     supliers: any[] | null,
+    details: EstablishmentDetailEntity[] | null,
     ) {
         this._establishmentId = establishmentId;
         this._cloudEstablishmentId = cloudEstablishmentId;
@@ -41,6 +44,7 @@ export class EstablishmentEntity {
         this._products = products;
         this._customers = customers;
         this._supliers = supliers;
+        this._details = details;
     }
 
     /**
@@ -65,6 +69,7 @@ export class EstablishmentEntity {
       null,
       null,
       null,
+      null, // details
     );
     return establishment;
   }
@@ -93,6 +98,7 @@ export class EstablishmentEntity {
     products: any[] | null,
     customers: any[] | null,
     supliers: any[] | null,
+    details: EstablishmentDetailEntity[] | null,
   ): EstablishmentEntity {
     return new EstablishmentEntity(
       establishmentId,
@@ -107,6 +113,7 @@ export class EstablishmentEntity {
       products,
       customers,
       supliers,
+      details,
     );
   }
 
@@ -123,6 +130,7 @@ export class EstablishmentEntity {
   get customers(): any[] | null { return this._customers; }
   get branchOffices(){ return this._branchOffices; }
   get supliers(){ return this._supliers; }
+  get details(): EstablishmentDetailEntity[] | null { return this._details; }
 
   public updateName(name: string){
     this._name = EstablishmentNameVO.create(name);

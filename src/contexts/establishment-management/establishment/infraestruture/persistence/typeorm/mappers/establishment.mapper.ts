@@ -4,6 +4,7 @@ import { ProductTypeOrmMapper } from 'src/contexts/product-management/product/in
 import { CustomerMapper } from "src/contexts/sale-management/customer/infraestructure/persistence/typeorm/mappers/customer.mapper";
 import { BranchOfficeMapper } from "src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/mappers/branch-office.mapper";
 import { SuplierMapper } from "src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/mappers/suplier.mapper";
+import { EstablishmentDetailMapper } from "src/contexts/establishment-management/establishment-detail/infraestructure/persistence/typeorm/mappers/establishment-detail.mapper";
 
 export class EstablishmentMapper{
     static toOrmEntity(domainEntity: EstablishmentEntity){
@@ -36,6 +37,7 @@ export class EstablishmentMapper{
             ormEntity.products ? ormEntity.products.map(productOrm => ProductTypeOrmMapper.toDomain(productOrm)) : null,
             ormEntity.customers ? ormEntity.customers.map(item => CustomerMapper.toDomainEntity(item)): null,
             ormEntity.supliers? ormEntity.supliers.map(item => SuplierMapper.toDomainEntity(item)): null,
+            ormEntity.details? ormEntity.details.map(item => EstablishmentDetailMapper.toDomainEntity(item)): null,
         );
     }
 }

@@ -7,6 +7,7 @@ import type { ProductOrmEntity } from 'src/contexts/product-management/product/i
 import type { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
 import type { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
 import type { CustomerOrmEntity } from 'src/contexts/sale-management/customer/infraestructure/persistence/typeorm/entities/customer.orm-entity';
+import type { EstablishmentDetailOrmEntity } from 'src/contexts/establishment-management/establishment-detail/infraestructure/persistence/typeorm/entities/establishment-detail.orm-entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 
 /**
@@ -58,4 +59,6 @@ export class EstablishmentOrmEntity {
   categories: CategoryOrmEntity[] | null;
   @OneToMany('SuplierOrmEntity', (item: SuplierOrmEntity)=> item.establishment)
   supliers: SuplierOrmEntity[] | null;
+  @OneToMany('EstablishmentDetailOrmEntity', (item: EstablishmentDetailOrmEntity) => item.establishment)
+  details: EstablishmentDetailOrmEntity[] | null;
 }

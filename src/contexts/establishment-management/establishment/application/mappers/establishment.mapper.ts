@@ -4,6 +4,7 @@ import { BranchOfficeMapper } from 'src/contexts/establishment-management/branch
 import { EstablishmentEntity } from '../../domain/entities/establishment.entity';
 import { EstablishmentResponseDto } from '../dtos/establishment-response.dto';
 import { IEstablishment } from '../../presentation/interfaces/IEstablishment';
+import { EstablishmentDetailMapper } from 'src/contexts/establishment-management/establishment-detail/application/mappers/establishment-detail.mapper';
 
 /**
  * EstablishmentMapper es una clase que se encarga de transformar
@@ -28,7 +29,8 @@ export class EstablishmentMapper {
       entity.createdAt,
       entity.updatedAt,
       entity.deletedAt,
-      entity.branchOffices? entity.branchOffices.map(item => BranchOfficeMapper.toResponseDto(item)): []
+      entity.branchOffices? entity.branchOffices.map(item => BranchOfficeMapper.toResponseDto(item)): [],
+      entity.details? entity.details.map(item => EstablishmentDetailMapper.toResponseDto(item)): []
     );
   }
   public static toIResponse(entity: EstablishmentEntity): IEstablishment {
@@ -41,7 +43,8 @@ export class EstablishmentMapper {
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt,
-      branchOffices: entity.branchOffices? entity.branchOffices.map(item => BranchOfficeMapper.toIResponse(item)): []
+      branchOffices: entity.branchOffices? entity.branchOffices.map(item => BranchOfficeMapper.toIResponse(item)): [],
+      details: entity.details? entity.details.map(item => EstablishmentDetailMapper.toIResponse(item)): []
     };
     return establishment;
   }

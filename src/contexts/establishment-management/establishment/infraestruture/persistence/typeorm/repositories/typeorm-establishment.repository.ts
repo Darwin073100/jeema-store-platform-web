@@ -120,7 +120,8 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
     const ormEntity = await this.typeOrmRepository.findOne({
       where: { establishmentId: id as any },
       relations: {
-        branchOffices: true
+        branchOffices: true,
+        details: true
       }
     });
 

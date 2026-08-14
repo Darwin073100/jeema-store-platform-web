@@ -4,6 +4,8 @@ import { formatDate } from "@/shared/lib/utils/date-formatter";
 import { ISale } from '../interfaces/ISale';
 import logo from 'src/shared/ui/assets/images/logologo.png';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
+import { EstablishmentDetailTypeEnum } from '@/contexts/establishment-management/establishment-detail/domain/enums/establishment-detail-type.enum';
+import { getDetailsByType, getFirstDetailByType } from '@/contexts/establishment-management/establishment-detail/presentation/lib/get-details-by-type';
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
 const mmToPt = (mm: number) => mm * 2.83465;
@@ -134,8 +136,32 @@ interface Prop {
 
 export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
   const address = `${sale.branchOffice?.address.city ?? ''} ${sale.branchOffice?.address.state ?? ''}, ${sale.branchOffice?.address.country ?? ''}, ${sale.branchOffice?.address.neighborhood ?? ''}, ${sale.branchOffice?.address.postalCode ?? ''}, ${sale.branchOffice?.address.street ?? ''}`;
+
+  const establishmentDetails = sale.branchOffice?.establishment?.details;
+  const slogan = getFirstDetailByType(establishmentDetails, EstablishmentDetailTypeEnum.SLOGAN);
+  const phoneAndWhatsappValues = [
+    ...getDetailsByType(establishmentDetails, EstablishmentDetailTypeEnum.PHONE_NUMBER),
+    ...getDetailsByType(establishmentDetails, EstablishmentDetailTypeEnum.WHATSAPP),
+  ].map((detail) => detail.value);
+  // Cada tipo singleton presente imprime, a lo sumo, una línea corta con su
+  // propia etiqueta; si el establecimiento no cargó dato de ese tipo, la
+  // línea simplemente no se renderiza (layout de ticket 58mm).
+  const singleLineDetailTypes: { label: string; type: EstablishmentDetailTypeEnum }[] = [
+    { label: 'FACEBOOK', type: EstablishmentDetailTypeEnum.FACEBOOK },
+    { label: 'INSTAGRAM', type: EstablishmentDetailTypeEnum.INSTAGRAM },
+    { label: 'TIKTOK', type: EstablishmentDetailTypeEnum.TIKTOK },
+    { label: 'WEB', type: EstablishmentDetailTypeEnum.WEBSITE },
+    { label: 'CORREO', type: EstablishmentDetailTypeEnum.EMAIL },
+  ];
+  const singleLineDetails = singleLineDetailTypes.reduce<{ label: string; value: string }[]>((acc, { label, type }) => {
+    const detail = getFirstDetailByType(establishmentDetails, type);
+    if (detail) acc.push({ label, value: detail.value });
+    return acc;
+  }, []);
+
   const sizeAdd = ()=> {
-    return mmToPt(3) * sale.saleDetails.length;
+    const contactLinesCount = (phoneAndWhatsappValues.length > 0 ? 1 : 0) + singleLineDetails.length + (slogan ? 1 : 0);
+    return (mmToPt(3) * sale.saleDetails.length) + (mmToPt(3) * contactLinesCount);
   }
   const productRows = sale.saleDetails ? sale.saleDetails.map((item) => (
     <View key={item.saleDetailId}>
@@ -165,7 +191,7 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
         <Text style={styles.header}>
           {sale.branchOffice?.establishment?.name.toUpperCase() ?? 'ESTABLECIMIENTO'}
         </Text>
-        {/* <Text style={styles.subheader}>MAYOREO Y MENUDEO</Text> */}
+        {slogan && <Text style={styles.subheader}>{slogan.value}</Text>}
 
         {/* Folio y Fecha */}
         <Text style={styles.folio}>FOLIO: {sale.saleId}</Text>
@@ -232,8 +258,12 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
         <View style={styles.divider} />
 
         {/* Contacto */}
-        <Text style={styles.contacto}>TEL-1: 741-150-6224, TEL-2: 741-107-3337</Text>
-        <Text style={styles.facebook}>FACEBOOK: Papelería y Novedades "La Bonita"</Text>
+        {phoneAndWhatsappValues.length > 0 && (
+          <Text style={styles.contacto}>TEL: {phoneAndWhatsappValues.join(', ')}</Text>
+        )}
+        {singleLineDetails.map(({ label, value }) => (
+          <Text key={label} style={styles.facebook}>{label}: {value}</Text>
+        ))}
 
         {/* Mensaje final */}
         <Text style={styles.mensaje}>
