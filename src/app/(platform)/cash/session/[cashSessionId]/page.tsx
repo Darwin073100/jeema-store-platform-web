@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { Metadata } from "next";
 import { AccountTypeEnum } from "@/contexts/transaction-management/transaction-type/domain/enums/account-type.enum";
 import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
+import { CashSessionTransactionsTable } from "@/contexts/cash-management/cash-session/presentation/ui/CashSessionTransactionsTable";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -57,7 +58,6 @@ export default async function SaleInformationPage({ params }: Props) {
             );
         }
         
-        const headTable = ['Folio', 'Típo', 'Movimiento', 'Descripción', 'Monto', 'Hora', 'Cajero']
         return (
             <ProtectedRoute requiredRoles={['global_admin', 'establishment_manager', 'branch_office_management', 'cajero']}>
                 <TemplateHeader title={`${data?.cashRegister?.name ?? ''}`} detail="Información del perfil del cliente." breadcrumbItems={breadcrumbItems}>
@@ -69,26 +69,8 @@ export default async function SaleInformationPage({ params }: Props) {
                         cashSession={data} />
                     <CashSalesSummary
                         summary={salesSummary} />
-                    <article>
-                        <PrimaryTable theadList={headTable} isActions={false}>
-                            {data.transactions.map(item => (
-                                <PRow key={item.transactionId}>
-                                    <PCol>{item.transactionId}</PCol>
-                                    <PCol className={clsx(`font-bold ${item.transactionType?.accountType === AccountTypeEnum.INCOME? 'text-green-500':'text-red-500'}`)}>
-                                        {item.transactionType?.accountType}
-                                        </PCol>
-                                    <PCol>{item.transactionType?.name}</PCol>
-                                    <PCol>{item.description}</PCol>
-                                    <PCol className={clsx(`font-bold ${item.transactionType?.accountType === AccountTypeEnum.INCOME? 'text-green-500':'text-red-500'}`)}>
-                                        {item.transactionType?.accountType === AccountTypeEnum.INCOME?'+':'-'}
-                                        {numberMoneyFormat(Number(item.amount ?? 0))}
-                                    </PCol>
-                                    <PCol>{formatTimeByDate(item.createdAt)}</PCol>
-                                    <PCol>{`${data.employee?.firstName ?? 'N/A'}`}</PCol>
-                                </PRow>
-                            ))}
-                        </PrimaryTable>
-                    </article>
+                    <CashSessionTransactionsTable 
+                        data={data}/>
                 </TemplateHeader>
             </ProtectedRoute>
         )
