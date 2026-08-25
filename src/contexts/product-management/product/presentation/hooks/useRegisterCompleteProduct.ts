@@ -23,9 +23,7 @@ export const schema = yup.object().shape({
     brandId: yup.string()
         .required('Debes elegir la marca del producto.')
         .test('not-empty', 'Debes elegir la marca del producto.', value => value !== undefined && value !== null && value !== ''),
-    seasonId: yup.string()
-        .required('Debes elegir la temporada en la que se vende el producto.')
-        .test('not-empty', 'Debes elegir la temporada en la que se vende el producto.', value => value !== undefined && value !== null && value !== ''),
+    seasonId: yup.string().nullable(),
     universalBarCode: yup.string().required('El codigo de barra universal es obligatorio.').max(13, 'El código de barra no puede ser mayor a 13 caracteres.'),
     unitOfMeasure: yup.string().required('La unidad de medida por defecto para venta es obligatoria'),
     minStockGlobal: yup.number().required('El stock minimo por establecimeinto es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
@@ -488,7 +486,7 @@ const useRegisterCompleteProduct = () => {
             establishmentId: BigInt(0),
             categoryId: BigInt(data.categoryId),
             brandId: BigInt(data.brandId),
-            seasonId: BigInt(data.seasonId),
+            seasonId: data.seasonId? BigInt(data.seasonId): null,
             name: data.name,
             description: data.description,
             minStockGlobal: data.minStockGlobal,

@@ -16,7 +16,6 @@ import { useRegisterCompleteProduct } from '../../hooks/useRegisterCompleteProdu
 import { AiFillProduct } from 'react-icons/ai';
 import { BiBarcode, BiSolidPurchaseTag } from "react-icons/bi";
 import { MdInventory2 } from 'react-icons/md';
-import { SuplierEntity } from '@/features/suplier/domain/entities/suplier.entity';
 import { useProductUIStore } from '../../stores/product-ui.store';
 import { ICategory } from '@/contexts/product-management/category/presentation/interfaces/ICategory';
 import { IBrand } from '@/contexts/product-management/brand/presentation/interfaces/Ibrand';
@@ -25,12 +24,13 @@ import { forSaleObject } from '../../../domain/enums/for-sale.object';
 import { LocationEnum } from '@/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 import { ImageUploader } from '@/contexts/image-management/image/presentation/ui';
 import { ImageOwnerType } from '@/contexts/image-management/image/domain/enums/image-owner-type.enum';
+import { ISuplier } from '@/contexts/purchase-management/suplier/presentation/interfaces/ISuplier';
 
 interface Props {
     categoryList: ICategory[],
     brandList: IBrand[],
     seasonList: ISeason[],
-    suplierList: SuplierEntity[],
+    suplierList: ISuplier[],
 }
 
 const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, suplierList }: Props) => {
@@ -179,7 +179,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                 
                                 <div>
                                     <LabelInput 
-                                        required='yes' 
+                                        required='no' 
                                         value="Temporada" 
                                         htmlFor='season'
                                         description='Indica la temporada o período del año en que este producto tiene mayor demanda. Esto ayuda a planificar el inventario. Ej: Todo el año, Escolar, Navidad, Verano.' />

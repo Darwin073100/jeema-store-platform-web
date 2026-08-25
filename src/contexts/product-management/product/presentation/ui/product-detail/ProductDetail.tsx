@@ -98,17 +98,17 @@ const ProductDetail = ({ product }: Props) => {
                     />
                     <CardGrid
                         title="Categoría"
-                        children={product.category?.name || 'Sin categoría'}
+                        children={product.category?.name || 'N/A'}
                         icon={<HiOutlineTag className="w-4 h-4" />}
                     />
                     <CardGrid
                         title="Marca"
-                        children={product.brand?.name || 'Sin marca'}
+                        children={product.brand?.name || 'N/A'}
                         icon={<HiOutlineTag className="w-4 h-4" />}
                     />
                     <CardGrid
                         title="Temporada"
-                        children={product.season?.name || 'Todo el año'}
+                        children={product.season?.name || 'N/A'}
                         icon={<HiOutlineCalendar className="w-4 h-4" />}
                     />
                     <CardGrid
