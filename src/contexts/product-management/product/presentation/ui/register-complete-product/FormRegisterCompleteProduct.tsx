@@ -164,9 +164,9 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                 </div>
                                 
                                 <div>
-                                    <LabelInput 
-                                        required='yes' 
-                                        value="Marca" 
+                                    <LabelInput
+                                        required='no'
+                                        value="Marca"
                                         htmlFor='brand'
                                         description='Selecciona la marca del fabricante del producto. Esto permite agrupar productos del mismo fabricante y facilita el control de inventario. Ej: Bocetto, Faber-Castell.' />
                                     <SelectMenu id='brand'

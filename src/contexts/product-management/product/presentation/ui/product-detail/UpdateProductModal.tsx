@@ -128,9 +128,9 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div>
-                                <LabelInput 
-                                    required='yes'
-                                    value="Selecciona la marca" 
+                                <LabelInput
+                                    required='no'
+                                    value="Selecciona la marca"
                                     htmlFor='brand'
                                     description={productDescription.brandId} />
                                 <SelectMenu 
@@ -143,9 +143,9 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div>
-                                <LabelInput 
-                                    required='yes'
-                                    value="Selecciona la temporada" 
+                                <LabelInput
+                                    required='no'
+                                    value="Selecciona la temporada"
                                     htmlFor='season'
                                     description={productDescription.seasonId} />
                                 <SelectMenu 

@@ -21,12 +21,8 @@ const schema = yup.object({
     categoryId: yup.string()
         .required('Debes elegir la categoría del producto.')
         .test('not-empty', 'Debes elegir la categoría del producto.', value => value !== undefined && value !== null && value !== ''),
-    brandId: yup.string()
-        .required('Debes elegir la marca del producto.')
-        .test('not-empty', 'Debes elegir la marca del producto.', value => value !== undefined && value !== null && value !== ''),
-    seasonId: yup.string()
-        .required('Debes elegir la temporada en la que se vende el producto.')
-        .test('not-empty', 'Debes elegir la temporada en la que se vende el producto.', value => value !== undefined && value !== null && value !== ''),
+    brandId: yup.string().nullable(),
+    seasonId: yup.string().nullable(),
     universalBarCode: yup.string().required('El codigo de barra universal es obligatorio.'),
     unitOfMeasure: yup.string()
         .required('La unidad de medida por defecto para venta es obligatoria')
@@ -151,8 +147,8 @@ const useUpdateProductModal = () => {
                 name: data.name,
                 description: data.description,
                 categoryId: BigInt(data.categoryId),
-                brandId: BigInt(data.brandId),
-                seasonId: BigInt(data.seasonId),
+                brandId: data.brandId? BigInt(data.brandId): null,
+                seasonId: data.seasonId? BigInt(data.seasonId): null,
                 universalBarCode: data.universalBarCode,
                 unitOfMeasure: data.unitOfMeasure,
                 minStockGlobal: data.minStockGlobal,
