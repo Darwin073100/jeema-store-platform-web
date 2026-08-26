@@ -40,4 +40,9 @@ export interface InventoryItemRepository extends TemplateRepository<InventoryIte
      * @param location 
      */
     searchInventoryItemInformation(inventoryId: bigint, barcode: string, location: LocationEnum): Promise<InventoryItemEntity | null>;
+    /**
+     * Verifica si un Inventory tiene al menos un InventoryItem registrado, en cualquier ubicación.
+     * @param inventoryId
+     */
+    existsAnyForInventory(inventoryId: bigint): Promise<boolean>;
 }

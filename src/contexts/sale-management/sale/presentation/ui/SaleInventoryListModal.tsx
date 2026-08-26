@@ -16,6 +16,7 @@ import { ImageThumbnail } from '@/contexts/image-management/image/presentation/u
 const SaleInventoryListModal = () => {
   const { handleSetItemSelected, quantityInsert, setQuantityInsert, handleAddDetail, loading, searchProductValue,
     setSearchProductValue, filterInventoryItems, itemSelected, saleModals, closeSaleModal, onSubmit, quantitySubmit,
+    filterUntrackedInventories, handleSetUntrackedInventorySelected,
   } = useInventoryListModal()
   return (
     <TemplateModal size='full' isOpen={saleModals==='inventoryListModal'} onClose={closeSaleModal} title='Catalogo de productos'>
@@ -118,6 +119,94 @@ const SaleInventoryListModal = () => {
               </tbody>
             </table>
           </div>
+          { filterUntrackedInventories.length > 0 && (
+            <div className='w-full overflow-auto mt-4'>
+              <h3 className='font-semibold text-blue-600 mb-2'>Productos sin inventario numérico</h3>
+              <table className="w-full text-left rtl:text-right">
+                <thead>
+                  <tr className="bg-gradient-to-r from-blue-300 to-blue-400 text-white uppercase text-sm">
+                    <th scope="col" className="px-2 py-4 font-semibold">
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold">
+                      Producto
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold">
+                      P. unitario
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold">
+                      P. mayoreo
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold">
+                      C. mayoreo
+                    </th>
+                    <th scope="col" className="px-6 py-4 font-semibold">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  { filterUntrackedInventories.map(inv => {
+                    const syntheticInventoryItemId = BigInt(inv.inventoryId) * BigInt(-1);
+                    return (<>
+                    <tr key={inv.product?.productId}
+                      onClick={()=> handleSetUntrackedInventorySelected(inv)}
+                      className={clsx(`text-sm ${itemSelected?.inventoryItemId === syntheticInventoryItemId? 'bg-blue-200': 'bg-white'} border-b dark:border-gray-700 border-gray-200 text-black cursor-pointer transition-all duration-300 hover:bg-blue-200`)}>
+                      <td className="px-2 py-1">
+                        <ImageThumbnail src={inv.product?.imageUrl ?? null} alt={inv.product?.name ?? 'Producto'} size={36} zoomable />
+                      </td>
+                      <th scope="row" className="flex gap-2 px-5 py-1 whitespace-nowrap font-semibold min-w-[200px]">
+                        <Badge type='green'>{inv.internalBarCode}</Badge>
+                        <span>{inv.product?.name}</span>
+                      </th>
+                      <td className="px-5 py-1">
+                        ${inv.salePriceOne}
+                      </td>
+                      <td className="px-5 py-1">
+                        {inv.salePriceMany? numberMoneyFormat(inv.salePriceMany): 'N/A'}
+                      </td>
+                      <td className="px-5 py-1">
+                        {inv.saleQuantityMany ?? 'N/A'}
+                      </td>
+                      <td className="px-5 py-1">
+                        <Badge type='yellow'>Sin control</Badge>
+                      </td>
+                    </tr>
+                    { itemSelected?.inventoryItemId === syntheticInventoryItemId && <>
+                      <tr className='bg-blue-100'>
+                        <th></th>
+                        <th className='p-1 flex items-center gap-2'>
+                          <form onSubmit={(e)=> quantitySubmit(e)}>
+                            <TextInput
+                            autoFocus={true}
+                              min={0}
+                              value={ quantityInsert }
+                              onChange={(e)=>setQuantityInsert(Number(e.target.value))}
+                              className='font-medium'
+                              type='number'
+                              placeholder='Cantidad' />
+                          </form>
+                          <Button
+                            disabled={loading==='addDetailToSaleLoading'}
+                            onClick={()=> handleAddDetail()}
+                            className='font-medium'>
+                              { loading==='addDetailToSaleLoading'
+                                ? <Spinner size={15}/>
+                                : <IoMdAdd />
+                              }
+                              Agregar
+                            </Button>
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </>}
+                    </>);
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
         {/* Botones del formulario */}
         <div className="flex justify-end gap-3 flex-wrap pt-4">

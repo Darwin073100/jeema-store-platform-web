@@ -99,6 +99,12 @@ export class CalculateSaleUseCase {
                             //* ✅ OPTIMIZACIÓN: Cargar items de inventario ANTES de la transacción si es posible
                             //* Pero como estamos dentro de transacción, al menos reducimos queries
                             for (let i = 0; i < (saleResult.saleDetails?.length ?? 0); i++) {
+                                //* saleDetails[i].inventoryItemId contiene en realidad el Inventory.inventoryId (nombre heredado, ver sale-detail.entity.ts)
+                                const hasStockControl = await this.inventoryItemRepository.existsAnyForInventory(saleResult.saleDetails[i].inventoryItemId);
+                                if (!hasStockControl) {
+                                    //* Producto vendible sin control de stock: no hay InventoryItem que descontar.
+                                    continue;
+                                }
                                 const item = await this.inventoryItemRepository.findByLocation(saleResult.saleDetails[i].inventoryItemId, LocationEnum.SALE);
                                 if (!item?.inventoryItemId) {
                                     throw new SaleConflictException('No pudimos finalizar la venta.');

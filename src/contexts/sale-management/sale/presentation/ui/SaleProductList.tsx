@@ -104,10 +104,9 @@ const SaleProductList = () => {
                 </table>
             </div>
             <div className="flex flex-col items-center gap-4 w-full xl:hidden">
-                {sale?.saleDetails?.map(item => <>
-                    <SaleDetailItemMovile key={item.saleDetailId}
-                        saleDetail={item} />
-                </>)}
+                {sale?.saleDetails?.map(item => (
+                    <SaleDetailItemMovile key={item.saleDetailId} saleDetail={item} />
+                ))}
             </div>
             <UpdateDetailModal />
             <DeleteDetailConfirmModal />

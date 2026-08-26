@@ -9,10 +9,12 @@ import { CreateSaleAndAddDetailAction } from "../actions/create-sale-and-add-det
 import { ISale } from "../interfaces/ISale";
 import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/contexts/inventory-management/inventory-item/presentation/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { LocationEnum } from "@/contexts/inventory-management/inventory-item/domain/enums/location.enum";
+import { findSellableInventoriesWithoutItemsAction } from "@/contexts/inventory-management/inventory/presentation/actions/find-sellable-inventories-without-items.action";
 
 const useInventoryListModal = () => {
     const { inventoryItems, itemSelected, setItemSelected,
-        setFilterInventoryItems, filterInventoryItems, customers
+        setFilterInventoryItems, filterInventoryItems, customers,
+        filterUntrackedInventories, setFilterUntrackedInventories,
     } = useSaleProcessStore();
     const { saleId, setSale, setSaleId, sale, cashSessionActive } = useSaleStore();
     const { hancleCalculateDetailPrice } = useSale();
@@ -26,6 +28,7 @@ const useInventoryListModal = () => {
 
     useEffect(() => {
         setFilterInventoryItems([]);
+        setFilterUntrackedInventories([]);
         setSearchProductValue('');
     }, [saleModals]);
 
@@ -48,11 +51,15 @@ const useInventoryListModal = () => {
 
     const onSubmit = async(e:React.SubmitEvent<HTMLFormElement>)=> {
         e.preventDefault();
-        const result = await findAllInventoryItemsByLocationAndBranchOfficeAction(
-            {product:searchProductValue}, 
-            LocationEnum.SALE
-        );
+        const [result, untrackedResult] = await Promise.all([
+            findAllInventoryItemsByLocationAndBranchOfficeAction(
+                {product:searchProductValue},
+                LocationEnum.SALE
+            ),
+            findSellableInventoriesWithoutItemsAction({product:searchProductValue}),
+        ]);
         setFilterInventoryItems(result?.value?.items ?? []);
+        setFilterUntrackedInventories(untrackedResult?.value?.items ?? []);
     }
 
     const quantitySubmit = async(e:React.SubmitEvent<HTMLFormElement>)=> {
@@ -141,6 +148,22 @@ const useInventoryListModal = () => {
         setItemSelected(item);
     }
 
+    const handleSetUntrackedInventorySelected = (inv: IInventory) => {
+        handleSetItemSelected({
+            inventoryItemId: BigInt(inv.inventoryId) * BigInt(-1), // clave sintética negativa, nunca choca con IDs reales (positivos, autoincrement)
+            inventoryId: inv.inventoryId,
+            location: LocationEnum.SALE,
+            quantityOnHan: 0,
+            lastStockedAt: new Date(),
+            purchasePriceAtStock: 0,
+            internalBarCode: inv.internalBarCode,
+            createdAt: new Date(),
+            updatedAt: null,
+            deletedAt: null,
+            inventory: inv,
+        });
+    };
+
     return {
         loading,
         handleSetItemSelected,
@@ -156,6 +179,8 @@ const useInventoryListModal = () => {
         itemSelected,
         onSubmit,
         quantitySubmit,
+        filterUntrackedInventories,
+        handleSetUntrackedInventorySelected,
     }
 }
 

@@ -4,6 +4,7 @@ import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presen
 import { ISaleDetail } from "@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail";
 import { IInventoryItem } from "@/contexts/inventory-management/inventory-item/presentation/interfaces/IInventoryItem";
 import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
+import { IInventory } from "@/contexts/inventory-management/inventory/presentation/interfaces/IInventory";
 
 interface State {
     //? Payments
@@ -43,6 +44,8 @@ interface State {
     filterInventoryItems: IInventoryItem[],
     setFilterInventoryItems: (items: IInventoryItem[])=> void,
     setInventoryItems: (items: IInventoryItem[])=> void,
+    filterUntrackedInventories: IInventory[],
+    setFilterUntrackedInventories: (items: IInventory[])=> void,
     //? Product Quantity
     productQuantity: number,
     setProductQuantity: (total: number)=> void,
@@ -68,6 +71,7 @@ const initialValues = {
     //? Inventory List
     filterInventoryItems: [],
     itemSelected: null,
+    filterUntrackedInventories: [],
     //? Product Quantity
     productQuantity: 0,
 }
@@ -175,6 +179,11 @@ export const useSaleProcessStore = create<State>()((set, get) => ({
     setInventoryItems: (items: IInventoryItem[])=>{
         set(()=>({
             inventoryItems: items
+        }));
+    },
+    setFilterUntrackedInventories: (items: IInventory[])=>{
+        set(()=>({
+            filterUntrackedInventories: items
         }));
     },
     //? Product Quantity

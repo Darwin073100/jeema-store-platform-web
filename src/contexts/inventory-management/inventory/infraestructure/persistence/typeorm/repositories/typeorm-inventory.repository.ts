@@ -1,10 +1,11 @@
 import { InventoryEntity } from "src/contexts/inventory-management/inventory/domain/entities/inventory.entity";
 import { InventoryRepository } from "src/contexts/inventory-management/inventory/domain/repositories/inventory.repository";
-import { DataSource, Repository } from "typeorm";
+import { Brackets, DataSource, Repository } from "typeorm";
 import { InventoryOrmEntity } from "../entities/inventory.orm-entity";
 import { InventoryMapper } from "../mapper/inventory.mapper";
 import { InventoryNotFoundException } from "src/contexts/inventory-management/inventory/domain/exceptions/inventory-not-found.exception";
 import { getDataSource } from "@/configuration/databases/typeorm/config";
+import { FilterProductListDTO } from "@/contexts/product-management/product/application/dtos/filter-product-list.dto";
 
 export class TypeormInventoryRepository implements InventoryRepository{
     private readonly inventoryRepository: Repository<InventoryOrmEntity>;
@@ -141,5 +142,26 @@ export class TypeormInventoryRepository implements InventoryRepository{
         });
         return Promise.resolve(result);
     }
-    
+
+    async findSellableWithoutItemsByBranchOffice(branchOfficeId: bigint, dto: FilterProductListDTO): Promise<InventoryEntity[]> {
+        const searchTerm = dto.product;
+        const query = this.inventoryRepository.createQueryBuilder('inventory')
+            .leftJoinAndSelect('inventory.product', 'product')
+            .leftJoinAndSelect('product.brand', 'brand')
+            .leftJoinAndSelect('product.category', 'category')
+            .leftJoin('inventory.inventoryItems', 'inventoryItems')
+            .where('inventory.branchOfficeId = :branchOfficeId', { branchOfficeId })
+            .andWhere('inventory.isSellable = true')
+            .andWhere('inventoryItems.inventoryItemId IS NULL');
+        if (searchTerm) {
+            query.andWhere(new Brackets((qb) => {
+                qb.where('product.name ILIKE :term', { term: `%${searchTerm}%` })
+                    .orWhere('product.universalBarCode ILIKE :term', { term: `%${searchTerm}%` })
+                    .orWhere('inventory.internalBarCode ILIKE :term', { term: `%${searchTerm}%` });
+            }));
+        }
+        const result = await query.getMany();
+        return result.map(item => InventoryMapper.toDomain(item));
+    }
+
 }

@@ -114,6 +114,10 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
         return await this.inventoryItemRepository.existsBy({ inventoryItemId: entityId });
     }
 
+    async existsAnyForInventory(inventoryId: bigint): Promise<boolean> {
+        return await this.inventoryItemRepository.existsBy({ inventoryId });
+    }
+
     async findByLocation(inventoryId: bigint, location: LocationEnum): Promise<InventoryItemEntity | null> {
         const result = await this.inventoryItemRepository.findOne({
             where: {
