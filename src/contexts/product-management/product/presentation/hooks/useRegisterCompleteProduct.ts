@@ -208,20 +208,22 @@ const useRegisterCompleteProduct = () => {
         defaultValues: {
             // expirationDate: new Date(),
             // manufacturingDate: new Date(),
+            inventoryCheck: true,
             lotUnitPurchases: [],
             inventoryItems: [
-                { location: '', quantityOnHand: 0 }
+                { location: LocationEnum.SALE, quantityOnHand: 0 }
             ]
         }
     });
 
     useEffect(() => {
         const defaultInventoryItems = [
-            { lastStockedAt: new Date(), location: '', purchasePriceAtStock: 0, quantityOnHand: 0 }
+            { lastStockedAt: new Date(), location: LocationEnum.SALE as string, purchasePriceAtStock: 0, quantityOnHand: 0 }
         ];
         const defaultLotUnitPurchases: LotUnitPurchaseType[] = [];
-        
+
         reset({
+            inventoryCheck: true,
             inventoryItems: defaultInventoryItems,
             lotUnitPurchases: [],
             brandId: '',
@@ -235,7 +237,7 @@ const useRegisterCompleteProduct = () => {
             universalBarCode: '',
             manufacturingDate: undefined,
             maxStockBranch: 100,
-            minStockBranch: 0,
+            minStockBranch: 1,
             name: '',
             purchasePrice: 0.0,
             purchaseUnit: '',
@@ -254,7 +256,7 @@ const useRegisterCompleteProduct = () => {
     const [lotUnitPurchases, setLotUnitPurchases] = useState<LotUnitPurchaseType[]>([]);
 
     const [inventoryItems, setInventoryItems] = useState([
-        { location: "", quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0 },
+        { location: LocationEnum.SALE as string, quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0 },
     ]);
 
     const addLotUnitPurchase = () => {
@@ -380,15 +382,16 @@ const useRegisterCompleteProduct = () => {
     const resetFormProduct = () => {
         setProduct(null);
         const defaultLotUnitPurchases = [{ purchasePrice: 0, purchaseQuantity: 0, unit: "", unitsInPurchaseUnit: 0 }];
-        const defaultInventoryItems = [{ location: "", quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0, internalBarCode: "" }];
-        
+        const defaultInventoryItems = [{ location: LocationEnum.SALE as string, quantityOnHand: 0, lastStockedAt: new Date(), purchasePriceAtStock: 0, internalBarCode: "" }];
+
         setLotUnitPurchases([]);
         setInventoryItems(defaultInventoryItems);
-        
+
         reset({
+            inventoryCheck: true,
             inventoryItems: defaultInventoryItems, lotUnitPurchases: [], suplierId: '',
             brandId: '', categoryId: '',description: '', expirationDate: undefined, imageUrl: null, initialQuantity: 0,
-            internalBarCode: '', universalBarCode: '', manufacturingDate: undefined, maxStockBranch: 100, minStockBranch: 0,
+            internalBarCode: '', universalBarCode: '', manufacturingDate: undefined, maxStockBranch: 100, minStockBranch: 1,
             name: '', purchasePrice: 0, purchaseUnit: '', receivedDate: new Date(), salePriceMany: '0', salePriceOne: 0,
             saleQuantityMany: '0', seasonId: '', unitOfMeasure: ''
         });

@@ -87,7 +87,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                             </h2>
                         </div>
                         <div className="p-4 lg:p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
-                            <div className="mb-4 lg:mb-6">
+                            {/* <div className="mb-4 lg:mb-6">
                                 <LabelInput
                                     value="Imágenes del producto"
                                     required='no'
@@ -98,7 +98,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                     maxSlots={3}
                                     entityLabel="producto"
                                 />
-                            </div>
+                            </div> */}
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                                 <div className="md:col-span-2 lg:col-span-3 xl:col-span-4">
                                     <LabelInput
@@ -131,6 +131,20 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                         error={!!errors.universalBarCode}
                                         errorMessage={errors.universalBarCode?.message}
                                         placeholder="Ej: 123456789012"
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <LabelInput 
+                                        required='yes' 
+                                        value="Unidad de medida para ventas" 
+                                        htmlFor='unitOfMeasure'
+                                        description='Selecciona cómo se venderá el producto: por pieza (PC), kilogramo (KG), litro (L), metro (M), docena (DOC), paquete (PAQ), caja (CAJA) o set (SET). Esta será la unidad base para las ventas.' />
+                                    <SelectMenu id='unitOfMeasure'
+                                        {...register('unitOfMeasure')}
+                                        error={!!errors.unitOfMeasure}
+                                        errorMessage={errors.unitOfMeasure?.message}
+                                        items={forSaleObject}
                                     />
                                 </div>
                                 
@@ -176,19 +190,6 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                     />
                                 </div>
                                 
-                                <div>
-                                    <LabelInput 
-                                        required='yes' 
-                                        value="Unidad de medida para ventas" 
-                                        htmlFor='unitOfMeasure'
-                                        description='Selecciona cómo se venderá el producto: por pieza (PC), kilogramo (KG), litro (L), metro (M), docena (DOC), paquete (PAQ), caja (CAJA) o set (SET). Esta será la unidad base para las ventas.' />
-                                    <SelectMenu id='unitOfMeasure'
-                                        {...register('unitOfMeasure')}
-                                        error={!!errors.unitOfMeasure}
-                                        errorMessage={errors.unitOfMeasure?.message}
-                                        items={forSaleObject}
-                                    />
-                                </div>
                                 
                                 <div className="md:col-span-2 xl:col-span-2">
                                     <LabelInput 
@@ -476,18 +477,16 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                                 <span className="text-sm font-medium text-gray-500">
                                                     Ubicación #{index + 1}
                                                 </span>
-                                                {inventoryItems.length > 1 && (
-                                                    <RoundedButton
-                                                        color='red'
-                                                        type="button"
-                                                        onClick={() => removeInventoryItem(index)}
-                                                        title="Eliminar ubicación"
-                                                    >
-                                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </RoundedButton>
-                                                )}
+                                                <RoundedButton
+                                                    color='red'
+                                                    type="button"
+                                                    onClick={() => removeInventoryItem(index)}
+                                                    title="Cerrar ubicación (vender sin inventario numérico)"
+                                                >
+                                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                    </svg>
+                                                </RoundedButton>
                                             </div>
                                             
                                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
