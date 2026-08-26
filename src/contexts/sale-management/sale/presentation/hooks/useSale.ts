@@ -62,14 +62,19 @@ const useSale = () => {
         let finalPrice: number | undefined;
         let saleFor: SaleForEnum;
 
-        if(
-            (!inventory.salePriceMany || (inventory.salePriceMany && inventory.salePriceMany <= 0)) ||
-            (!inventory.saleQuantityMany || (inventory.saleQuantityMany && inventory.saleQuantityMany <= 0))
-        ){
+        //* Las columnas decimal (sale_price_many, sale_quantity_many) llegan como string desde TypeORM/Postgres
+        //* (ej. "0.00"), por lo que hay que normalizarlas a number antes de comparar: un "0.00" en string es
+        //* truthy en JS y se colaba por el guard, terminando en precio especial en vez de menudeo. Postgres
+        //* también permite guardar 'NaN' en columnas numeric (dato corrupto de registros antiguos), y
+        //* `NaN <= 0` es false en JS, así que se valida explícitamente con Number.isFinite.
+        const salePriceMany = Number(inventory.salePriceMany ?? 0);
+        const saleQuantityMany = Number(inventory.saleQuantityMany ?? 0);
+
+        if(!Number.isFinite(salePriceMany) || salePriceMany <= 0 || !Number.isFinite(saleQuantityMany) || saleQuantityMany <= 0){
             saleFor = SaleForEnum.ONE;
-        } else if (quantity >= Number(inventory.saleQuantityMany)) {
+        } else if (quantity >= saleQuantityMany) {
             saleFor = SaleForEnum.MANY;
-        } else if (quantity < Number(inventory.saleQuantityMany ?? 0)) {
+        } else if (quantity < saleQuantityMany) {
             saleFor = SaleForEnum.ONE;
         } else {
             saleFor = SaleForEnum.SPECIAL;
