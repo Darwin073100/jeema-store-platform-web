@@ -7,6 +7,5 @@ export const useProductDescriptionInput = {
     universalBarCode: `Ingresa el código de barras EAN/UPC que viene impreso en el producto. Este código es único para cada producto. Ej: 7501234567890.`,
     unitOfMeasure: `Selecciona cómo se venderá el producto: por pieza (PC), kilogramo (KG), litro (L), metro (M), docena (DOC), paquete (PAQ), caja (CAJA) o set (SET). Esta será la unidad base para las ventas.`,
     description: `Añade detalles específicos como color, tamaño, material, especificaciones técnicas u otras características que ayuden a identificar y diferenciar el producto.`,
-    minStockGlobal: 'Cantidad mínima que debe mantener el establecimiento para abastecer a todas las sucursales. Cuando el stock baje de este número, se generará una alerta. Ej: 50',
     imageUrl: '',
 }

@@ -29,7 +29,7 @@ export class ProductTypeOrmMapper {
       new ProductUniversalBarCodeVO(entity.universalBarCode),
       new ProductDescriptionVO(entity.description),
       entity.unitOfMeasure as ForSaleEnum,
-      Number(entity.minStockGlobal),
+      entity.minStockGlobal !== null ? Number(entity.minStockGlobal) : null,
       entity.imageUrl,
       entity.createdAt,
       entity.updatedAt,
@@ -56,7 +56,7 @@ export class ProductTypeOrmMapper {
     orm.universalBarCode = entity.universalBarCode.value;
     orm.description = entity.description.value;
     orm.unitOfMeasure = entity.unitOfMeasure;
-    orm.minStockGlobal = entity.minStockGlobal.toString();
+    orm.minStockGlobal = entity.minStockGlobal !== null ? entity.minStockGlobal.toString() : null;
     orm.imageUrl = entity.imageUrl;
     orm.createdAt = entity.createdAt;
     orm.updatedAt = entity.updatedAt;

@@ -36,7 +36,7 @@ interface Props {
 const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, suplierList }: Props) => {
     const {
         errors, floatMessageState, handleSubmit, isLoading, addLotUnitPurchase, removeLotUnitPurchase,
-        onSubmit, register, handleBarCodeMatch, handleStockGlobalToBranch, updateLotUnitPurchase, lotUnitPurchases,
+        onSubmit, register, handleBarCodeMatch, updateLotUnitPurchase, lotUnitPurchases,
         addInventoryItem, removeInventoryItem, updateInventoryItem, inventoryItems, handleInitialQuantityToquantityOnHand,
         inventoryCheck, lotCheck, handleGenerateBarcode,
     } = useRegisterCompleteProduct();
@@ -135,24 +135,9 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                 </div>
                                 
                                 <div>
-                                    <LabelInput 
-                                        required='yes' 
-                                        value="Stock Mínimo Global"
-                                        description='Cantidad mínima que debe mantener el establecimiento para abastecer a todas las sucursales. Cuando el stock baje de este número, se generará una alerta. Ej: 50' />
-                                    <TextInput
-                                        {...register('minStockGlobal',{ valueAsNumber: true })}
-                                        step='0.001'
-                                        error={!!errors.minStockGlobal}
-                                        errorMessage={errors.minStockGlobal?.message}
-                                        type='number'
-                                        placeholder="Ej: 10"
-                                    />
-                                </div>
-                                
-                                <div>
-                                    <LabelInput 
-                                        required='yes' 
-                                        value="Categoría" 
+                                    <LabelInput
+                                        required='yes'
+                                        value="Categoría"
                                         htmlFor='category'
                                         description='Selecciona la categoría que mejor describe el tipo de producto. Esto ayuda a organizar el inventario y facilita las búsquedas. Ej: Papelería, Electrónicos, Alimentos.' />
                                     <SelectMenu id='category'
@@ -610,22 +595,10 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
                                 <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
                                     <h4 className="font-medium text-orange-800 mb-3">📉 Stock Mínimo en Sucursal</h4>
-                                    <div className='flex gap-4'>
-                                        <LabelInput 
-                                            value="Stock mínimo en sucursal" 
-                                            required='yes'
-                                            description='Cantidad mínima que debe mantener cada sucursal. Cuando el stock baje de este número, se generará una alerta para reabastecimiento.' />
-                                        <Button 
-                                            type='button' 
-                                            size="sm" 
-                                            color="yellow" 
-                                            onClick={() => handleStockGlobalToBranch()}
-                                            className="whitespace-nowrap"
-                                        >
-                                            <TbExchange className="w-4 h-4" />
-                                            Usar stock global
-                                        </Button>
-                                    </div>
+                                    <LabelInput
+                                        value="Stock mínimo en sucursal"
+                                        required='yes'
+                                        description='Cantidad mínima que debe mantener cada sucursal. Cuando el stock baje de este número, se generará una alerta para reabastecimiento.' />
                                     <TextInput
                                         {...register('minStockBranch')}
                                         error={!!errors.minStockBranch}

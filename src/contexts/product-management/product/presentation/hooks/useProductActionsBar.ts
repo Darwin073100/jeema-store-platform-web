@@ -75,7 +75,6 @@ const useProductActionsBar = () => {
             'VENTA MENUDEO': item.inventory?.salePriceOne ?? 0,
             'CANTIDAD MAYOREO': item.inventory?.saleQuantityMany ?? 0,
             'VENTA MAYOREO': item.inventory?.salePriceMany ?? 0,
-            'STOCK MIN GLOBAL': item.minStockGlobal ?? 0,
             VENTA: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.SALE)[0]?.quantityOnHan ?? 0,
             ALMACEN: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.STOCK)[0]?.quantityOnHan ?? 0,
             VIAJANDO: item.inventory?.inventoryItems?.filter(it => it.location === LocationEnum.TRAVELING)[0]?.quantityOnHan ?? 0,
@@ -94,17 +93,13 @@ const useProductActionsBar = () => {
 
     const handleColorRow = (product: IProduct) => {
         const currentStock = totalStock(product.inventory?.inventoryItems ?? []);
-        const stockMinGlobal = product.minStockGlobal;
         const stockMinBranch = product.inventory?.minStockBranch ?? 0;
 
-        if (currentStock <= stockMinGlobal && currentStock > stockMinBranch) {
-            return 'text-green-600 bg-green-100';
-        }
-        if (currentStock <= stockMinBranch && currentStock > 0) {
-            return 'text-blue-600 bg-blue-100';
-        }
         if (currentStock <= 0) {
             return 'text-red-600 bg-red-100';
+        }
+        if (currentStock <= stockMinBranch) {
+            return 'text-blue-600 bg-blue-100';
         }
     }
     const handleDownloadExcel = () => {

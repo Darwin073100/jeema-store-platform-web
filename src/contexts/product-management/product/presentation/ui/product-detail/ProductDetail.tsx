@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { HiOutlineCalendar, HiOutlineCube, HiOutlineQrcode, HiOutlineTag, HiOutlineTicket, HiPencil, HiTrash } from 'react-icons/hi'
 import { UpdateProductModal } from './UpdateProductModal'
 import { DeleteProductModal } from './DeleteProductModal'
-import { TbBoxMultiple, TbPackage } from 'react-icons/tb'
+import { TbPackage } from 'react-icons/tb'
 import Barcode from 'react-barcode'
 import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { useDeleteProductModal } from '../../hooks/useDeleteProductModal'
@@ -90,11 +90,6 @@ const ProductDetail = ({ product }: Props) => {
                         title="Unidad de medida para ventas"
                         children={product.unitOfMeasure.toUpperCase()}
                         icon={<HiOutlineCube className="w-4 h-4" />}
-                    />
-                    <CardGrid
-                        title="Stock mínimo global"
-                        children={product.minStockGlobal.toString()}
-                        icon={<TbBoxMultiple className="w-4 h-4" />}
                     />
                     <CardGrid
                         title="Categoría"

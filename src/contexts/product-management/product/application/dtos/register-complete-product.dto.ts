@@ -38,7 +38,7 @@ export interface RegisterCompleteProductDto {
     universalBarCode? : string | null;
     description?      : string | null;
     unitOfMeasure     : ForSaleEnum;
-    minStockGlobal    : number;
+    minStockGlobal?   : number | null;
     imageUrl?         : string | null;
 
     inventory: RCPInventory | null;

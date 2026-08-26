@@ -262,7 +262,7 @@ export class TypeOrmProductRepository implements ProductRepository {
         productExisting.sku = product.sku.value;
         productExisting.universalBarCode = product.universalBarCode?.value;
         productExisting.unitOfMeasure = product.unitOfMeasure;
-        productExisting.minStockGlobal = product.minStockGlobal.toString();
+        productExisting.minStockGlobal = product.minStockGlobal !== null ? product.minStockGlobal.toString() : null;
         productExisting.imageUrl = product.imageUrl;
 
         const result = await this.productRepository.save(productExisting);

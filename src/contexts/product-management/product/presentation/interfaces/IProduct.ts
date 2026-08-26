@@ -16,7 +16,7 @@ export interface IProduct {
   universalBarCode: string | null;
   description: string | null;
   unitOfMeasure: string;
-  minStockGlobal: number;
+  minStockGlobal: number | null;
   imageUrl: string | null;
   season: ISeason | null;
   brand: IBrand | null;

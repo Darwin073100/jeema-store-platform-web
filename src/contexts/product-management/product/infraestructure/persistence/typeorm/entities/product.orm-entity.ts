@@ -33,8 +33,8 @@ export class ProductOrmEntity {
     description: string | null;
     @Column({ type: 'enum', enum: ForSaleEnum, name: 'unit_of_measure' })
     unitOfMeasure: ForSaleEnum;
-    @Column({ type: 'decimal', precision: 18, scale: 3, name: 'min_stock_global', default: 0 })
-    minStockGlobal: string;
+    @Column({ type: 'decimal', precision: 18, scale: 3, name: 'min_stock_global', nullable: true })
+    minStockGlobal: string | null;
     @Column({ type: 'varchar', length: 255, name: 'image_url', nullable: true })
     imageUrl: string | null;
 

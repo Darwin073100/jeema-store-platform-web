@@ -86,7 +86,7 @@ export class UpdateProductUseCase {
             new ProductUniversalBarCodeVO(dto.universalBarCode ?? null),
             new ProductDescriptionVO(dto.description ?? null),
             dto.unitOfMeasure as ForSaleEnum,
-            dto.minStockGlobal,
+            dto.minStockGlobal ?? null,
             dto.imageUrl ?? null
         );
         return this.productRepository.save(product);

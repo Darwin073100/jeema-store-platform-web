@@ -27,7 +27,6 @@ const schema = yup.object({
     unitOfMeasure: yup.string()
         .required('La unidad de medida por defecto para venta es obligatoria')
         .oneOf(Object.values(ForSaleEnum), 'Selecciona una unidad de medida válida'),
-    minStockGlobal: yup.number().required('El stock minimo por establecimeinto es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
     imageUrl: yup.string().notRequired().optional().nullable(),
 }).required();
 
@@ -70,7 +69,6 @@ const useUpdateProductModal = () => {
                 seasonId: product.seasonId?.toString() || '',
                 universalBarCode: product.universalBarCode || '',
                 unitOfMeasure: product.unitOfMeasure as ForSaleEnum,
-                minStockGlobal: product.minStockGlobal,
                 imageUrl: product.imageUrl || ''
             });
         }
@@ -126,10 +124,9 @@ const useUpdateProductModal = () => {
             seasonId: '',
             universalBarCode: '',
             unitOfMeasure: ForSaleEnum.PC, // Valor por defecto
-            minStockGlobal: 0,
             imageUrl: ''
         });
-        clearErrors(['brandId', 'categoryId', 'seasonId', 'unitOfMeasure', 'minStockGlobal',
+        clearErrors(['brandId', 'categoryId', 'seasonId', 'unitOfMeasure',
             'universalBarCode', 'imageUrl', 'name', 'description']);
         setFloatMessageState({});
     }
@@ -151,7 +148,6 @@ const useUpdateProductModal = () => {
                 seasonId: data.seasonId? BigInt(data.seasonId): null,
                 universalBarCode: data.universalBarCode,
                 unitOfMeasure: data.unitOfMeasure,
-                minStockGlobal: data.minStockGlobal,
             };
 
             const result = await updateProductAction(updateData);

@@ -23,7 +23,7 @@ export class ProductEntity {
   private _universalBarCode: ProductUniversalBarCodeVO;
   private _description: ProductDescriptionVO;
   private _unitOfMeasure: ForSaleEnum;
-  private _minStockGlobal: number;
+  private _minStockGlobal: number | null;
   private _imageUrl: string | null;
   private readonly _createdAt: Date;
   private _updatedAt: Date | null;
@@ -49,7 +49,7 @@ export class ProductEntity {
     universalBarCode: ProductUniversalBarCodeVO,
     description: ProductDescriptionVO,
     unitOfMeasure: ForSaleEnum,
-    minStockGlobal: number,
+    minStockGlobal: number | null,
     imageUrl: string | null,
     createdAt: Date,
     updatedAt: Date | null,
@@ -97,7 +97,7 @@ export class ProductEntity {
     universalBarCode: ProductUniversalBarCodeVO,
     description: ProductDescriptionVO,
     unitOfMeasure: ForSaleEnum,
-    minStockGlobal: number,
+    minStockGlobal: number | null,
     imageUrl: string | null,
   ): ProductEntity {
     const now = new Date();
@@ -138,7 +138,7 @@ export class ProductEntity {
     universalBarCode: ProductUniversalBarCodeVO,
     description: ProductDescriptionVO,
     unitOfMeasure: ForSaleEnum,
-    minStockGlobal: number,
+    minStockGlobal: number | null,
     imageUrl: string | null,
     createdAt: Date,
     updatedAt: Date | null,
@@ -208,7 +208,7 @@ export class ProductEntity {
   get unitOfMeasure(): ForSaleEnum {
     return this._unitOfMeasure;
   }
-  get minStockGlobal(): number {
+  get minStockGlobal(): number | null {
     return this._minStockGlobal;
   }
   get imageUrl(): string | null {
@@ -278,7 +278,7 @@ export class ProductEntity {
     this._updatedAt = new Date();
   }
 
-  public updateMinStockGlobal(newMinStock: number): void {
+  public updateMinStockGlobal(newMinStock: number | null): void {
     if (this._minStockGlobal === newMinStock) return;
     this._minStockGlobal = newMinStock;
     this._updatedAt = new Date();

@@ -99,23 +99,9 @@ const UpdateProductModal = () => {
                             </div>
                             
                             <div>
-                                <LabelInput 
-                                    required='yes'
-                                    value="Stock Mínimo Global"
-                                    description={productDescription.minStockGlobal} />
-                                <TextInput
-                                    type='number'
-                                    step='0.001'
-                                    placeholder="Stock mínimo"
-                                    {...register('minStockGlobal', { valueAsNumber: true })}
-                                />
-                                {errors.minStockGlobal && <p className="text-red-500 text-sm mt-1">{errors.minStockGlobal.message}</p>}
-                            </div>
-                            
-                            <div>
-                                <LabelInput 
+                                <LabelInput
                                 required='yes'
-                                    value="Selecciona la categoría" 
+                                    value="Selecciona la categoría"
                                     htmlFor='category'
                                     description={productDescription.categoryId} />
                                 <SelectMenu 

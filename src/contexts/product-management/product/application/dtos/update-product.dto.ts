@@ -9,6 +9,6 @@ export interface UpdateProductDto {
   universalBarCode?: string | null;
   description?: string | null;
   unitOfMeasure: string;
-  minStockGlobal: number;
+  minStockGlobal?: number | null;
   imageUrl?: string | null;
 }

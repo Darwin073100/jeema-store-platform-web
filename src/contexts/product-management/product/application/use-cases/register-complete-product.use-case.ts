@@ -162,7 +162,7 @@ export class RegisterCompleteProductUseCase {
             new ProductUniversalBarCodeVO(dto.universalBarCode ?? null),
             new ProductDescriptionVO(dto.description ?? null),
             dto.unitOfMeasure,
-            dto.minStockGlobal,
+            dto.minStockGlobal ?? null,
             dto.imageUrl ?? null,
             new Date(),
             null,

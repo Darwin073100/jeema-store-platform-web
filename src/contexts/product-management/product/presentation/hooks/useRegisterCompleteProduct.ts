@@ -24,7 +24,6 @@ export const schema = yup.object().shape({
     seasonId: yup.string().nullable(),
     universalBarCode: yup.string().required('El codigo de barra universal es obligatorio.').max(13, 'El código de barra no puede ser mayor a 13 caracteres.'),
     unitOfMeasure: yup.string().required('La unidad de medida por defecto para venta es obligatoria'),
-    minStockGlobal: yup.number().required('El stock minimo por establecimeinto es obligatorio.').typeError('Asegurate de ingresar la información correcta.'),
     imageUrl: yup.string().notRequired().optional().nullable(),
     
     //? VALIDACION PARA EL LOTE
@@ -237,7 +236,6 @@ const useRegisterCompleteProduct = () => {
             manufacturingDate: undefined,
             maxStockBranch: 100,
             minStockBranch: 0,
-            minStockGlobal: 1,
             name: '',
             purchasePrice: 0.0,
             purchaseUnit: '',
@@ -379,12 +377,6 @@ const useRegisterCompleteProduct = () => {
         // Set internal bar code in the specified inventory item (default to first one)
         setValue(`internalBarCode`, universalBarCode || '');
     }
-    const minStockGlobal = watch('minStockGlobal');
-    const handleStockGlobalToBranch = () => {
-        // Set internal bar code in the specified inventory item (default to first one)
-        setValue(`minStockBranch`, minStockGlobal || 0);
-    }
-
     const resetFormProduct = () => {
         setProduct(null);
         const defaultLotUnitPurchases = [{ purchasePrice: 0, purchaseQuantity: 0, unit: "", unitsInPurchaseUnit: 0 }];
@@ -397,10 +389,10 @@ const useRegisterCompleteProduct = () => {
             inventoryItems: defaultInventoryItems, lotUnitPurchases: [], suplierId: '',
             brandId: '', categoryId: '',description: '', expirationDate: undefined, imageUrl: null, initialQuantity: 0,
             internalBarCode: '', universalBarCode: '', manufacturingDate: undefined, maxStockBranch: 100, minStockBranch: 0,
-            minStockGlobal: 1, name: '', purchasePrice: 0, purchaseUnit: '', receivedDate: new Date(), salePriceMany: '0', salePriceOne: 0,
-            saleQuantityMany: '0', seasonId: '', unitOfMeasure: ''          
+            name: '', purchasePrice: 0, purchaseUnit: '', receivedDate: new Date(), salePriceMany: '0', salePriceOne: 0,
+            saleQuantityMany: '0', seasonId: '', unitOfMeasure: ''
         });
-        clearErrors(['brandId', 'categoryId', 'seasonId', 'brandId', 'unitOfMeasure', 'minStockGlobal', 'suplierId',
+        clearErrors(['brandId', 'categoryId', 'seasonId', 'brandId', 'unitOfMeasure', 'suplierId',
             'universalBarCode', 'imageUrl', 'name', 'description', 'purchasePrice', 'receivedDate',
             'salePriceOne', 'salePriceMany','saleQuantityMany', 'minStockBranch', 'maxStockBranch', 'lotUnitPurchases', 
             'inventoryItems']);
@@ -487,7 +479,6 @@ const useRegisterCompleteProduct = () => {
             seasonId: data.seasonId? BigInt(data.seasonId): null,
             name: data.name,
             description: data.description,
-            minStockGlobal: data.minStockGlobal,
             unitOfMeasure: data.unitOfMeasure as ForSaleEnum,
             imageUrl: data.imageUrl,
             universalBarCode: data.universalBarCode,
@@ -535,7 +526,6 @@ const useRegisterCompleteProduct = () => {
         register,
         errors,
         handleBarCodeMatch,
-        handleStockGlobalToBranch,
         handleInitialQuantityToquantityOnHand,
         updateLotUnitPurchase,
         removeLotUnitPurchase,
