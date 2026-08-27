@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
-import { FcCollaboration, FcComboChart, FcConferenceCall, FcDepartment, FcReadingEbook, FcSerialTasks, FcSettings} from 'react-icons/fc';
+import { FcCollaboration, FcComboChart, FcConferenceCall, FcDepartment, FcPrint, FcReadingEbook, FcSerialTasks, FcSettings} from 'react-icons/fc';
 import { ContainerConfig } from './ContainerConfig';
 import { ItemConfig } from './ItemConfig';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
@@ -48,6 +48,20 @@ const ConfigurationOptions = () => {
                         <ItemConfig link='/configurations/transactions'>
                             <FcComboChart className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
                             <span>Movimientos Generales</span>
+                        </ItemConfig>
+                    </HideElement>
+                </ContainerConfig>
+            </div>
+            <div className="w-full mt-8">
+                <div className="flex gap-4 items-center mb-4">
+                    <FcPrint className="text-xl" />
+                    <h2 className="text-lg">Impresiones</h2>
+                </div>
+                <ContainerConfig>
+                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                        <ItemConfig link='/configurations/printer'>
+                            <FcPrint className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
+                            <span>Impresora térmica</span>
                         </ItemConfig>
                     </HideElement>
                 </ContainerConfig>

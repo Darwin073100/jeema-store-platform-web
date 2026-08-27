@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['typeorm', '@react-pdf/renderer'],
   /* config options here */
   reactStrictMode: true,
+  // Permite acceder al dev server (HMR/recursos internos de Next) desde otras
+  // computadoras de la red local (ej. la caja donde corre QZ Tray), no solo localhost.
+  allowedDevOrigins: ['192.168.1.128'],
   typescript: {
     ignoreBuildErrors: true,
   },
