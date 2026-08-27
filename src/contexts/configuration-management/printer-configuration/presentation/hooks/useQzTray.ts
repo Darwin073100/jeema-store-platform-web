@@ -70,15 +70,31 @@ function parseNetworkTarget(target: string): { host: string; port?: string } {
  * solo envía el PDF ya renderizado (`type: 'pixel', format: 'pdf'`) y no comandos ESC/POS crudos por
  * USB. Distinguir USB de verdad (direccionamiento por vendor/product) queda para fase 2.
  */
+/**
+ * `size.width` debe coincidir EXACTO con el ancho de página que ya usa el PDF (`mmToPt(58)` /
+ * `mmToPt(80)` en `Ticket58Document` y variantes) — no con el ancho "realmente imprimible" del
+ * cabezal térmico. La zona no imprimible del hardware ya se resuelve dentro del propio PDF
+ * (padding asimétrico, ver esos archivos: el corte ocurre en una posición fija desde el borde
+ * izquierdo de la página, no está centrado, así que NO se puede compensar reescalando/recentrando
+ * a otro tamaño de página aquí). Si `size` no coincide con el PDF, QZ puede reescalar el contenido
+ * al tamaño declarado y reintroducir el mismo corte de otra forma. Solo fijamos `margins: 0` para
+ * evitar que el driver de impresión del SO le sume OTRO margen encima del que ya trae el PDF.
+ */
 function buildPrinterConfig(printerConfig: IPrinterConfiguration): qz.PrintConfig {
   const copies = printerConfig.copies && printerConfig.copies > 0 ? printerConfig.copies : 1;
+  const options: qz.PrintConfig = {
+    copies,
+    units: 'mm',
+    size: { width: printerConfig.paperWidthMm, height: null },
+    margins: 0,
+  };
 
   if (printerConfig.connectionType === 'QZ_NETWORK') {
     const { host, port } = parseNetworkTarget(printerConfig.target);
-    return qz.configs.create({ host, port }, { copies });
+    return qz.configs.create({ host, port }, options);
   }
 
-  return qz.configs.create(printerConfig.target, { copies });
+  return qz.configs.create(printerConfig.target, options);
 }
 
 /** Convierte un Blob (el PDF ya generado con `@react-pdf/renderer`) a base64, para `qz.print`. */

@@ -11,9 +11,16 @@ const mmToPt = (mm: number) => mm * 2.83465;
 
 const styles = StyleSheet.create({
   page: {
+    // El rollo mide 58mm pero el cabezal térmico solo imprime ~44-48mm reales, EMPEZANDO en el
+    // borde izquierdo de la página (x=0) — el corte ocurre en una posición fija, no está centrado.
+    // Por eso el margen de seguridad va casi todo del lado derecho, no repartido simétrico:
+    // paddingLeft grande solo empuja el contenido hacia la línea de corte y lo empeora.
     width: mmToPt(58),
-    height: '100%',                // 51mm de ancho             // 25mm de alto
-    padding: mmToPt(1),                // Márgenes de 4mm
+    height: '100%',
+    paddingLeft: mmToPt(2),
+    paddingRight: mmToPt(12),
+    paddingTop: mmToPt(1),
+    paddingBottom: mmToPt(1),
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
