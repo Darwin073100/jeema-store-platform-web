@@ -1,4 +1,4 @@
-import { Brackets, DataSource, Like, QueryFailedError, Repository } from 'typeorm';
+import { Between, Brackets, DataSource, Like, QueryFailedError, Repository } from 'typeorm';
 import { ProductOrmEntity } from '../entities/product.orm-entity';
 import { ProductTypeOrmMapper } from '../mappers/product.mapper';
 import { ProductRepository } from 'src/contexts/product-management/product/domain/repositories/product.repository';
@@ -379,7 +379,7 @@ async findAllByEstablishmentAndName(
   return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
 }
 
-  async findAllByBranchOffice(branchOfficeId: bigint): Promise<ProductEntity[]> {
+  async findAllByBranchOffice(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<ProductEntity[]> {
     const result = await this.productRepository.find({
       where: {
         establishment: {
@@ -390,6 +390,7 @@ async findAllByEstablishmentAndName(
         saleDetails: {
           sale: {
             status: SaleStatusEnum.COMPLETED,
+            createdAt: Between(dateInit, dateFinish),
           },
         },
       },

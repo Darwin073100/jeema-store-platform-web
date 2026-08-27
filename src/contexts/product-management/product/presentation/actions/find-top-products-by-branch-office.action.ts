@@ -19,7 +19,7 @@ export async function findTopProductsByBranchOfficeAction(filter: FilterTopReque
                 branchOfficeId = (JSON.parse(branchOffice) as IBranchOffice).branchOfficeId;
             }
     
-            const result = await useCase.execute(branchOfficeId, filter.filterBy, filter.limit);
+            const result = await useCase.execute(branchOfficeId, filter);
             return result;
         } catch (error) {
             console.log('findTopProductsByBranchOfficeAction');

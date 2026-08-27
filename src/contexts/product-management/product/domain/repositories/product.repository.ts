@@ -13,7 +13,7 @@ export interface ProductRepository extends TemplateRepository<ProductEntity>{
   findByIdCategoryBrandSeason(entityId: bigint): Promise<ProductEntity | null>;
   saveCompleteProduct(product: ProductEntity): Promise<ProductEntity>;
   findAllByEstablishment(establishmentId: bigint, dto: PaginationDTO): Promise<ProductEntity[]>;
-  findAllByBranchOffice(branchOfficeId: bigint): Promise<ProductEntity[]>;
+  findAllByBranchOffice(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<ProductEntity[]>;
   existById(productId: bigint):Promise<ProductEntity | null>;
   findAllByEstablishmentAndName(establishmentId: bigint, dto: FilterProductListDTO): Promise<ProductEntity[]>;
 }
