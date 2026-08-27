@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCashUIStore } from "../stores/cash-ui.store";
 import { findTicketCashSessionAction } from "../actions/find-ticket-cash-session.action";
 import { pdf } from "@react-pdf/renderer";
 import { TicketCloseCashSession58Document } from "../documents/TicketCloseCashSession58Document";
+import { usePrintTicket } from "@/contexts/configuration-management/printer-configuration/presentation/hooks/usePrintTicket";
 
 interface Props {
     cashSessionId: bigint,
@@ -10,8 +11,10 @@ interface Props {
 const useCashClosedTicketModal = ({ cashSessionId }: Props) => {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const blobRef = useRef<Blob | null>(null);
 
     const { cashModal, runLoading, stopLoading } = useCashUIStore();
+    const { printing, printError, printTicket: printTicketBlob } = usePrintTicket();
 
     const handlePrint = async () => {
         runLoading('cashClosedTicket')
@@ -33,6 +36,7 @@ const useCashClosedTicketModal = ({ cashSessionId }: Props) => {
                 />
             );
             const blob = await pdf(doc).toBlob();
+            blobRef.current = blob;
 
             // Crear nueva URL
             setPdfUrl(URL.createObjectURL(blob));
@@ -43,6 +47,15 @@ const useCashClosedTicketModal = ({ cashSessionId }: Props) => {
         }
     };
 
+    // Este modal NO imprime automáticamente — el usuario dispara la impresión con el botón
+    // "Imprimir" del modal. Solo el modal de venta al finalizar (useTicketSale) auto-imprime.
+    const printTicket = async () => {
+        if (!blobRef.current) {
+            return;
+        }
+        await printTicketBlob(blobRef.current);
+    };
+
     useEffect(() => {
         if (cashModal === 'cashClosedTicket') {
             handlePrint();
@@ -51,7 +64,10 @@ const useCashClosedTicketModal = ({ cashSessionId }: Props) => {
 
     return {
         pdfUrl,
-        error
+        error,
+        printTicket,
+        printing,
+        printError,
     }
 }
 

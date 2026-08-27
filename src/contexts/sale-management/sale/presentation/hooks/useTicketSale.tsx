@@ -3,41 +3,24 @@ import { findTicketBySaleIdAction } from "../actions/find-ticket-by-sale-id.acti
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { pdf } from "@react-pdf/renderer";
 import { Ticket58Document } from "../documents/Ticket58Document";
-import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
-import { useQzTray, blobToBase64 } from "@/contexts/configuration-management/printer-configuration/presentation/hooks/useQzTray";
-import { findPrinterConfigurationByBranchAction } from "@/contexts/configuration-management/printer-configuration/presentation/actions/find-printer-configuration-by-branch.action";
-import { IPrinterConfiguration } from "@/contexts/configuration-management/printer-configuration/presentation/interfaces/IPrinterConfiguration";
+import { usePrintTicket } from "@/contexts/configuration-management/printer-configuration/presentation/hooks/usePrintTicket";
 interface Props {
 }
 const useTicketSale = ({}: Props) => {
     const [error, setError] = useState<string | null>(null);
 
     const { openSaleModal, setPdfUrl, pdfUrl, initLoading, loading, finishLoading, setFloatMessageState } = useSaleUIStore();
-    const { branchOffice } = useWorkspace();
-    const { printPdf } = useQzTray();
+    const { printTicket } = usePrintTicket();
 
     // Impresión silenciosa en la impresora térmica configurada para la sucursal, disparada en
-    // paralelo tras generar el ticket. La venta ya está persistida en backend en este punto — un
-    // fallo aquí (QZ Tray apagado, impresora desconectada) nunca debe afectar el modal ni el estado
-    // de la venta, solo mostrar un aviso no bloqueante.
+    // paralelo tras generar el ticket — SOLO en este modal (al finalizar una venta). La venta ya
+    // está persistida en backend en este punto — un fallo aquí (QZ Tray apagado, impresora
+    // desconectada) nunca debe afectar el modal ni el estado de la venta, solo mostrar un aviso no
+    // bloqueante. Los demás modales de ticket (reimpresión, cierre de caja) NO auto-imprimen — ahí
+    // el usuario dispara la impresión con el botón "Imprimir".
     const printSilently = async (blob: Blob) => {
         try {
-            if (!branchOffice) {
-                return;
-            }
-            const result = await findPrinterConfigurationByBranchAction(branchOffice.branchOfficeId);
-            if (!result.ok || !result.value) {
-                return;
-            }
-            const printerConfig = result.value.printerConfigurations.find(
-                (config: IPrinterConfiguration) => config.isActive && config.autoPrintOnSale
-            );
-            if (!printerConfig) {
-                return;
-            }
-
-            const base64Pdf = await blobToBase64(blob);
-            await printPdf(base64Pdf, printerConfig);
+            await printTicket(blob, { requireAutoPrintOnSale: true });
         } catch (printError) {
             setFloatMessageState({
                 summary: 'Impresión no disponible',

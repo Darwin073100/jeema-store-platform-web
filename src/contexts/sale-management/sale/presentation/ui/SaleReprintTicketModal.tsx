@@ -3,20 +3,23 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { useSaleUIStore } from '../stores/sale.ui.store';
 import { Button } from '@/shared/ui/components/buttons';
-import { IoClose } from 'react-icons/io5';
+import { IoClose, IoPrint } from 'react-icons/io5';
 import useReprintTicketSale from '../hooks/useReprintTicketSale';
 interface Props {
     saleId: bigint,
 }
 const SaleReprintTicketModal = ({ saleId }: Props) => {
     const { saleModals, closeSaleModal } = useSaleUIStore();
-    const { error, loading, pdfUrl } = useReprintTicketSale({ saleId });
+    const { error, loading, pdfUrl, printTicket, printing, printError } = useReprintTicketSale({ saleId });
 
     return (
         <TemplateModal isOpen={saleModals === 'saleTicketReprintModal'} size='xl' onClose={closeSaleModal} title='Vista previa del ticket'>
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
+                }
+                {
+                    printError && <div style={{ color: 'red' }}>{printError}</div>
                 }
                 {
                     loading && <div className='flex gap-2 w-full h-full justify-center items-center'><Spinner color='black' size={14} /> Esperando datos...</div>
@@ -42,6 +45,16 @@ const SaleReprintTicketModal = ({ saleId }: Props) => {
                 >
                     <IoClose className="mr-2 w-4 h-4" />
                     Cerrar
+                </Button>
+                <Button
+                    type="button"
+                    color="blue"
+                    className="flex items-center"
+                    disabled={!pdfUrl || printing}
+                    onClick={printTicket}
+                >
+                    <IoPrint className="mr-2 w-4 h-4" />
+                    {printing ? 'Imprimiendo...' : 'Imprimir'}
                 </Button>
             </div>
         </TemplateModal>

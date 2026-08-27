@@ -2,7 +2,7 @@ import React from 'react'
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
-import { IoClose } from 'react-icons/io5';
+import { IoClose, IoPrint } from 'react-icons/io5';
 import { useCashUIStore } from '@/contexts/cash-management/cash-session/presentation/stores/cash-ui.store';
 import { useCashClosedTicketListModal } from '../../hooks/useCashClosedTicketListModal';
 import { ICashSession } from '../../interfaces/ICashSession';
@@ -11,7 +11,7 @@ interface Props {
 }
 const CashClosedTicketListModal = ({cashSessions}:Props) => {
     const { cashModal, closeCashModal } = useCashUIStore();
-    const { error, pdfUrl } = useCashClosedTicketListModal({cashSessions});
+    const { error, pdfUrl, printTicket, printing, printError } = useCashClosedTicketListModal({cashSessions});
 
     if (!pdfUrl) {
         return;
@@ -21,6 +21,9 @@ const CashClosedTicketListModal = ({cashSessions}:Props) => {
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
+                }
+                {
+                    printError && <div style={{ color: 'red' }}>{printError}</div>
                 }
                 {
                     !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
@@ -44,6 +47,16 @@ const CashClosedTicketListModal = ({cashSessions}:Props) => {
                 >
                     <IoClose className="mr-2 w-4 h-4" />
                     Cerrar
+                </Button>
+                <Button
+                    type="button"
+                    color="blue"
+                    className="flex items-center"
+                    disabled={!pdfUrl || printing}
+                    onClick={printTicket}
+                >
+                    <IoPrint className="mr-2 w-4 h-4" />
+                    {printing ? 'Imprimiendo...' : 'Imprimir'}
                 </Button>
             </div>
         </TemplateModal>

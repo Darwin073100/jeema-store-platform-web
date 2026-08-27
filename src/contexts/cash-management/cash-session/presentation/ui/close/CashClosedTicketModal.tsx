@@ -2,7 +2,7 @@ import React from 'react'
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
-import { IoClose } from 'react-icons/io5';
+import { IoClose, IoPrint } from 'react-icons/io5';
 import { useCashClosedTicketModal } from '../../hooks/useCashClosedTicketModal';
 import { useCashUIStore } from '@/contexts/cash-management/cash-session/presentation/stores/cash-ui.store';
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 const CashClosedTicketModal = ({ cashSessionId }: Props) => {
     const { cashModal, closeCashModal } = useCashUIStore();
-    const { error, pdfUrl } = useCashClosedTicketModal({ cashSessionId });
+    const { error, pdfUrl, printTicket, printing, printError } = useCashClosedTicketModal({ cashSessionId });
 
     if (!pdfUrl) {
         return;
@@ -20,6 +20,9 @@ const CashClosedTicketModal = ({ cashSessionId }: Props) => {
             <div className='h-[500px]'>
                 {
                     error && <div style={{ color: 'red' }}>{error}</div>
+                }
+                {
+                    printError && <div style={{ color: 'red' }}>{printError}</div>
                 }
                 {
                     !pdfUrl &&  <div className='flex gap-2'><Spinner className='text-black' /> Esperando datos...</div>
@@ -43,6 +46,16 @@ const CashClosedTicketModal = ({ cashSessionId }: Props) => {
                 >
                     <IoClose className="mr-2 w-4 h-4" />
                     Cerrar
+                </Button>
+                <Button
+                    type="button"
+                    color="blue"
+                    className="flex items-center"
+                    disabled={!pdfUrl || printing}
+                    onClick={printTicket}
+                >
+                    <IoPrint className="mr-2 w-4 h-4" />
+                    {printing ? 'Imprimiendo...' : 'Imprimir'}
                 </Button>
             </div>
         </TemplateModal>
