@@ -2,6 +2,10 @@ import TimeMaster from "@/shared/lib/utils/TimeMaster";
 import { TransactionRepository } from "../../domain/repositories/transaction.repository";
 import { ManyFilterTransactionsDTO } from "../dtos/many-filter-transactions.dto";
 import { formatDateForInput } from "@/shared/lib/utils/date-formatter";
+import {
+    EXCLUDED_INCOME_TRANSACTION_TYPE_NAMES,
+    EXCLUDED_EXPENSE_TRANSACTION_TYPE_NAMES
+} from "src/contexts/transaction-management/transaction-type/domain/constants/excluded-transaction-type-names.constant";
 
 export class FindAllManyFilterTransactionsUseCase {
     constructor(
@@ -28,9 +32,17 @@ export class FindAllManyFilterTransactionsUseCase {
             const result = await this.repository.findAllByManyFilter({
                 ...dto,
                 dateInit: currentDateInit,
-                dateEnd: currentDateFinish 
+                dateEnd: currentDateFinish
             });
-            return result;
+
+            // Excluimos movimientos de efectivo internos de caja (no son ingresos/egresos reales del negocio).
+            const filteredResult = result.filter(t => {
+                const typeName = (t.transactionType?.name ?? '').toLowerCase();
+                return !EXCLUDED_INCOME_TRANSACTION_TYPE_NAMES.includes(typeName) &&
+                    !EXCLUDED_EXPENSE_TRANSACTION_TYPE_NAMES.includes(typeName);
+            });
+
+            return filteredResult;
         } catch (error) {
             throw error;
         }
