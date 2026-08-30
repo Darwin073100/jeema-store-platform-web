@@ -7,6 +7,9 @@ import { IEstablishment } from '@/contexts/establishment-management/establishmen
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';
 import { Result } from '@/shared/lib/utils/result';
 import { TransactionMapper } from '../../application/mappers/transaction.mapper';
+import { TypeormSaleRepository } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/repositories/typeorm-sale.repository';
+import { TypeOrmLotRepository } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/repositories/typeorm-lot.repository';
+import { GetTransactionsFinancialSummaryUseCase } from '../../application/use-cases/get-transactions-financial-summary.use-case';
 
 export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTransactionsDTO, 'establishmentId'|'branchOfficeId'>){
     noStore(); // Evitar que se cachée este server action
@@ -37,13 +40,22 @@ export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTr
 
         const result = await useCase.execute(currentDTO);
 
+        // Inyeccion de las dependencias del resumen financiero usando Factory
+        const saleRepository = await TypeormSaleRepository.create();
+        const lotRepository = await TypeOrmLotRepository.create();
+        const financialSummaryUseCase = new GetTransactionsFinancialSummaryUseCase(saleRepository, lotRepository);
+        const financialSummary = await financialSummaryUseCase.execute(result);
+
         return {
-            ...Result.success({transactions: result.map(item => TransactionMapper.toIResponse(item))})
+            ...Result.success({
+                transactions: result.map(item => TransactionMapper.toIResponse(item)),
+                financialSummary
+            })
         }
     } catch (error) {
         console.error('findAllManyFilterTransactionsAction:', error);
         return {
-            ...Result.success({transactions: []})
+            ...Result.success({transactions: [], financialSummary: null})
         }
     }
 }

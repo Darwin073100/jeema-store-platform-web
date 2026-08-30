@@ -16,7 +16,7 @@ export class TransactionMapper {
             ormEntity.saleId,
             ormEntity.employeeId,
             ormEntity.cashSessionId,
-            ormEntity.amount,
+            Number(ormEntity.amount),
             ormEntity.description,
             ormEntity.createdAt,
             ormEntity.updatedAt,

@@ -27,6 +27,7 @@ export default async function SaleInformationPage() {
     }
     const customer = await findAllManyFilterTransactionsAction(dto);
     const data = customer?.value?.transactions ?? [];
+    const financialSummary = customer?.value?.financialSummary ?? null;
 
     const breadcrumbItems: BreadcrumbItem[] = [
         {
@@ -38,7 +39,8 @@ export default async function SaleInformationPage() {
         <ProtectedRoute requiredRoles={['global_admin','establishment_manager', 'branch_office_management']}>
             <TemplateHeader title='Movimientos Financieros' detail="Consulta los movimientos de tu establecimiento." breadcrumbItems={breadcrumbItems}>
                 <TransactionMovementsOptios
-                    transactions={data} />
+                    transactions={data}
+                    financialSummary={financialSummary} />
                 <TransactionInformation />
                 <div className="hidden md:block overflow-x-auto">
                     <TransactionMovementsDesktopTable />

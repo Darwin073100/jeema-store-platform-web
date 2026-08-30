@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { ITransaction } from "../interfaces/ITransaction";
+import { ITransactionsFinancialSummary } from "../interfaces/ITransactionsFinancialSummary";
 
 type State = {
     searchCharacter: string,
@@ -11,7 +12,9 @@ type State = {
     transaction: ITransaction|null,
     setTransaction: (payload: ITransaction|null)=> void,
     openModal: boolean,
-    setOpenModal: (value:boolean)=> void
+    setOpenModal: (value:boolean)=> void,
+    financialSummary: ITransactionsFinancialSummary|null,
+    setFinancialSummary: (payload: ITransactionsFinancialSummary|null)=> void,
 };
 
 export const useTransactionStore = create<State>()((set, get)=>({
@@ -33,4 +36,6 @@ export const useTransactionStore = create<State>()((set, get)=>({
     setOpenModal(value) {
         set(()=> ({openModal: value}))
     },
+    financialSummary: null,
+    setFinancialSummary: (payload)=> set(()=> ({financialSummary: payload})),
 }));

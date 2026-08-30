@@ -1,4 +1,4 @@
-import { Brackets, DataSource, Repository } from "typeorm";
+import { Brackets, DataSource, In, Repository } from "typeorm";
 import { SaleOrmEntity } from "../entities/sale.orm-entity";
 import { SaleMapper } from "../mappers/sale.mapper";
 import { PaymentMethodNotFoundException } from "src/contexts/sale-management/payment-method/domain/exceptions/payment-method-not-found.exception";
@@ -155,6 +155,21 @@ export class TypeormSaleRepository implements SaleRepository{
         const result = await query.orderBy('sale.createdAt', 'DESC').getMany();
 
         return result.map(item => SaleMapper.toDomainEntity(item));
+    }
+
+    async findManyWithDetailsByIds(saleIds: bigint[]): Promise<SaleEntity[]> {
+        if (saleIds.length === 0) {
+            return [];
+        }
+        const results = await this.repository.find({
+            where: {
+                saleId: In(saleIds)
+            },
+            relations: {
+                saleDetails: true
+            },
+        });
+        return results.map(item => SaleMapper.toDomainEntity(item));
     }
 
     // Metodo para guardar un metodo de pago y para actualizarla

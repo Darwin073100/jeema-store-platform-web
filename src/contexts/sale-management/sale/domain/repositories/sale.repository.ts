@@ -9,4 +9,9 @@ export interface SaleRepository extends TemplateRepository<SaleEntity>{
     existById(saleId: bigint): Promise<boolean>;
     findSaleTicketById(saleId: bigint): Promise<SaleEntity | null>;
     findAllByBranchOfficeAndFilter(branchOfficeId: bigint, dateStart?: Date, dateEnd?: Date, search?:string): Promise<SaleEntity[]>;
+    /**
+     * Ventas por lote de IDs, con sus saleDetails, para cálculo de costo/invertido.
+     * Debe devolver [] si saleIds está vacío (no ejecutar IN () vacío).
+     */
+    findManyWithDetailsByIds(saleIds: bigint[]): Promise<SaleEntity[]>;
 }

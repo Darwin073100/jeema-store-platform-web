@@ -13,19 +13,22 @@ import { LabelInput } from '@/shared/ui/components/labels';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { ITransaction } from '../interfaces/ITransaction';
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
+import { ITransactionsFinancialSummary } from '../interfaces/ITransactionsFinancialSummary';
 
 interface Props {
     transactions: ITransaction[]
+    financialSummary: ITransactionsFinancialSummary | null
 }
 
-const TransactionMovementsOptios = ({ transactions }: Props) => {
+const TransactionMovementsOptios = ({ transactions, financialSummary }: Props) => {
     const { handleExport, errors, handleSubmit, onSubmit, register } = useTransactionMovementsOptios();
-    const { setTransactions, transactionsFiltered } = useTransactionStore();
+    const { setTransactions, setFinancialSummary, transactionsFiltered } = useTransactionStore();
     const { loading, floatMessageState } = useTransactionUIStore();
 
     useEffect(() => {
         setTransactions(transactions);
-    }, [transactions]);
+        setFinancialSummary(financialSummary);
+    }, [transactions, financialSummary]);
 
     return (
         <>
