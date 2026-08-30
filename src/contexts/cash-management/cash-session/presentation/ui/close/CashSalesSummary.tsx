@@ -16,7 +16,7 @@ const CashSalesSummary = ({ summary }: Props) => {
     const isProfit = profit >= 0;
 
     return (
-        <section className="w-full flex gap-4 my-4 flex-wrap">
+        <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
             <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)} title="Suma de las ventas completadas registradas en esta caja">
                 <div className="flex flex-col justify-center items-center">
                     <Badge type="blue">Ventas del día</Badge>

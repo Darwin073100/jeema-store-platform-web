@@ -28,8 +28,8 @@ const CashCloseOptios = ({ cashSession, incomes, expenses }: Props) => {
 
     return (
         <>
-            <div className="flex gap-4 items-center justify-between">
-                <div className='flex gap-4 items-center'>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className='flex flex-wrap gap-4 items-center'>
                     <Button onClick={()=> openCashModal('closeCashSession')} 
                         disabled={!!cashSessionSelected?.isClosed} 
                         className={clsx(`${!!cashSessionSelected?.isClosed?'bg-white text-gray-800 hover:bg-white': ''}`)}>
@@ -51,7 +51,7 @@ const CashCloseOptios = ({ cashSession, incomes, expenses }: Props) => {
                         <span className="max-sm:hidden">Imprimir corte</span>
                     </Button>} 
                 </div>
-                <div className='flex gap-4 items-center'>
+                <div className='flex flex-wrap gap-4 items-center justify-between sm:justify-end'>
                     <Button color='green'>
                         <PiMicrosoftExcelLogoFill />
                         <span className='max-sm:hidden'>Exportar a excel</span>

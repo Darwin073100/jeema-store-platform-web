@@ -2,7 +2,7 @@
 import { AccountTypeEnum } from '@/contexts/transaction-management/transaction-type/domain/enums/account-type.enum'
 import { formatTimeByDate } from '@/shared/lib/utils/date-formatter'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
-import { PCol, PRow, PrimaryTable } from '@/shared/ui/components/tables/PrimaryTable'
+import { PCol, PRow, PrimaryTable, PTableEmpty } from '@/shared/ui/components/tables/PrimaryTable'
 import clsx from 'clsx'
 import { ICashSession } from '../interfaces/ICashSession'
 import { useState } from 'react'
@@ -20,7 +20,7 @@ export const CashSessionTransactionsTable = ({ data }:Props) => {
     const [saleSelectId, setSaleSelectId] = useState(BigInt(0));
 
     return (
-        <article>
+        <article className="overflow-x-auto">
             <PrimaryTable theadList={headTable} isActions={true}>
                 {data.transactions.map(item => (
                     <PRow key={item.transactionId}>
@@ -44,6 +44,9 @@ export const CashSessionTransactionsTable = ({ data }:Props) => {
                             : <PCol></PCol>}
                     </PRow>
                 ))}
+                {(!data.transactions || data.transactions.length === 0) && (
+                    <PTableEmpty colsNumber={headTable.length + 1} />
+                )}
             </PrimaryTable>
         </article>
     )

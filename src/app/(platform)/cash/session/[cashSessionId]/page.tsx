@@ -15,6 +15,7 @@ import { Metadata } from "next";
 import { AccountTypeEnum } from "@/contexts/transaction-management/transaction-type/domain/enums/account-type.enum";
 import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
 import { CashSessionTransactionsTable } from "@/contexts/cash-management/cash-session/presentation/ui/CashSessionTransactionsTable";
+import { CashSessionTransactionsCardList } from "@/contexts/cash-management/cash-session/presentation/ui/CashSessionTransactionsCardList";
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -69,8 +70,14 @@ export default async function SaleInformationPage({ params }: Props) {
                         cashSession={data} />
                     <CashSalesSummary
                         summary={salesSummary} />
-                    <CashSessionTransactionsTable 
-                        data={data}/>
+                    <div className="hidden md:block">
+                        <CashSessionTransactionsTable
+                            data={data}/>
+                    </div>
+                    <div className="md:hidden flex flex-col gap-3 w-full">
+                        <CashSessionTransactionsCardList
+                            data={data}/>
+                    </div>
                 </TemplateHeader>
             </ProtectedRoute>
         )
