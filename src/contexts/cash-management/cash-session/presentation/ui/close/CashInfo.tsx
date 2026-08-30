@@ -20,54 +20,54 @@ const CashInfo = ({ cashSession }: Props) => {
     },[cashSession]);
   return (
     <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
-        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
-            <div className="flex flex-col justify-center items-center">
-                <Badge type='purple'>Fondo Inicial</Badge>
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)}>
+            <Badge type='purple'>Fondo Inicial</Badge>
+            <div className="flex justify-between items-center gap-2">
                 <FcLibrary size={30}/>
-            </div>
-            <div className="flex justify-between gap-2 text-purple-700 items-center font-bold text-lg">
-                <span>Total:</span>
-                <span>{numberMoneyFormat(cashSession.startBalance)}</span>
+                <div className="flex justify-between gap-2 text-purple-700 items-center font-bold text-lg">
+                    <span>Total:</span>
+                    <span>{numberMoneyFormat(cashSession.startBalance)}</span>
+                </div>
             </div>
         </div>
-        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)} title='Este monto es por si hay mas egresos que ingresos'>
-            <div className="flex flex-col justify-center items-center">
-                <Badge type='red'>Fondo Final</Badge>
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)} title='Este monto es por si hay mas egresos que ingresos'>
+            <Badge type='red'>Fondo Final</Badge>
+            <div className="flex justify-between items-center gap-2">
                 <FcLibrary size={30}/>
-            </div>
-            <div className="flex justify-between gap-2 text-red-700 items-center font-bold text-lg">
-                <span>Total:</span>
-                <span>{numberMoneyFormat(handleBalanceFinaly())}</span>
+                <div className="flex justify-between gap-2 text-red-700 items-center font-bold text-lg">
+                    <span>Total:</span>
+                    <span>{numberMoneyFormat(handleBalanceFinaly())}</span>
+                </div>
             </div>
         </div>
-        {/* <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
-            <div className="flex flex-col justify-center items-center">
-                <Badge type='green'>Ingresos</Badge>
+        {/* <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)}>
+            <Badge type='green'>Ingresos</Badge>
+            <div className="flex justify-between items-center gap-2">
                 <FcBullish size={30}/>
-            </div>
-            <div className="flex justify-between gap-2 text-green-700 items-center font-bold text-lg">
-                <span>Total:</span>
-                <span>{numberMoneyFormat(handleTotalIn())}</span>
+                <div className="flex justify-between gap-2 text-green-700 items-center font-bold text-lg">
+                    <span>Total:</span>
+                    <span>{numberMoneyFormat(handleTotalIn())}</span>
+                </div>
             </div>
         </div>
-        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
-            <div className="flex flex-col justify-center items-center">
-                <Badge type='red'>Egresos</Badge>
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)}>
+            <Badge type='red'>Egresos</Badge>
+            <div className="flex justify-between items-center gap-2">
                 <FcBearish size={30}/>
-            </div>
-            <div className="flex justify-between gap-2 text-red-700 items-center font-bold text-lg">
-                <span>Total:</span>
-                <span>{`- ${numberMoneyFormat(handleTotalOut())}`}</span>
+                <div className="flex justify-between gap-2 text-red-700 items-center font-bold text-lg">
+                    <span>Total:</span>
+                    <span>{`- ${numberMoneyFormat(handleTotalOut())}`}</span>
+                </div>
             </div>
         </div> */}
-        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex justify-between`)}>
-            <div className="flex flex-col justify-center items-center">
-                <Badge type='blue'>Corte</Badge>
+        <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)}>
+            <Badge type='blue'>Corte</Badge>
+            <div className="flex justify-between items-center gap-2">
                 <FcDebt size={30}/>
-            </div>
-            <div className="flex justify-between gap-2 text-blue-700 items-center font-bold text-2xl">
-                <span>Total:</span>
-                <span>{numberMoneyFormat(handleTotalClose())}</span>
+                <div className="flex justify-between gap-2 text-blue-700 items-center font-bold text-2xl">
+                    <span>Total:</span>
+                    <span>{numberMoneyFormat(handleTotalClose())}</span>
+                </div>
             </div>
         </div>
     </section>
