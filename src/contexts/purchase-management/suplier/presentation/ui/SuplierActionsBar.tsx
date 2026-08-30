@@ -21,24 +21,22 @@ const SuplierActionsBar = ({ data }:Props) => {
     },[data]);
 
     return (
-        <div className="flex justify-between gap-2">
-            <div className='flex items-center gap-2'>
-                    <ButtonOutLine color="blue" size="md" onClick={()=> newSuplierPage()}>
-                        {loading? <Spinner/>: <IoMdAdd size={14}/>}
-                        <span className='max-sm:hidden'>Nuevo Proveedor</span>
-                    </ButtonOutLine>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className='flex flex-wrap gap-4 items-center'>
+                <ButtonOutLine color="blue" size="md" onClick={()=> newSuplierPage()}>
+                    {loading? <Spinner/>: <IoMdAdd size={14}/>}
+                    <span className='max-sm:hidden'>Nuevo Proveedor</span>
+                </ButtonOutLine>
             </div>
-            <div className="flex gap-4 items-center justify-between">
-                <div className='flex gap-4 items-center'>
-                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <ButtonOutLine disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
-                            <PiMicrosoftExcelLogoFill />
-                            <span className='max-md:hidden'>Exportar a Excel</span>
-                        </ButtonOutLine>
-                    </HideElement>
-                    <div>
-                        Proveedores<Badge>{supliersFiltered.length}</Badge>
-                    </div>
+            <div className='flex flex-wrap gap-4 items-center justify-between sm:justify-end'>
+                <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
+                    <ButtonOutLine disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
+                        <PiMicrosoftExcelLogoFill />
+                        <span className='max-md:hidden'>Exportar a Excel</span>
+                    </ButtonOutLine>
+                </HideElement>
+                <div>
+                    Proveedores<Badge>{supliersFiltered.length}</Badge>
                 </div>
             </div>
         </div>

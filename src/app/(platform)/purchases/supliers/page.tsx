@@ -1,5 +1,6 @@
 import { findAllSuplierByEstablishmentId } from "@/contexts/purchase-management/suplier/presentation/actions/find-all-suplier-by-establishment.action";
 import { SuplierActionsBar } from "@/contexts/purchase-management/suplier/presentation/ui/SuplierActionsBar";
+import { SuplierCardList } from "@/contexts/purchase-management/suplier/presentation/ui/SuplierCardList";
 import { SuplierDesktopTable } from "@/contexts/purchase-management/suplier/presentation/ui/SuplierDesktopTable";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute"
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader"
@@ -19,9 +20,14 @@ export default async function(){
         <ProtectedRoute>
             <TemplateHeader title="Catalogo de proveedores" detail="Lista proveedores" breadcrumbItems={breadcrumbItems}>
                 <main className="flex flex-col gap-4 w-full">
-                    <SuplierActionsBar 
+                    <SuplierActionsBar
                         data={ supliers }/>
-                    <SuplierDesktopTable />
+                    <div className="hidden md:block overflow-x-auto">
+                        <SuplierDesktopTable />
+                    </div>
+                    <div className="md:hidden flex flex-col gap-3 w-full">
+                        <SuplierCardList />
+                    </div>
                 </main>
             </TemplateHeader>
         </ProtectedRoute>

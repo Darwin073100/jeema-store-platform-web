@@ -37,18 +37,20 @@ const CustomerOptios = ({ customersList }: Props) => {
 
     return (
         <>
-            <div className="flex gap-4 items-center justify-between">
-                <ButtonOutLine onClick={() => handleNewEmployee()} disabled={loading}>
-                    {loading ? <Spinner color='blue'/> : <IoPersonAdd />}
-                    Cliente nuevo
-                </ButtonOutLine>
-                <div className='flex gap-4 items-center'>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className='flex flex-wrap gap-4 items-center'>
+                    <ButtonOutLine onClick={() => handleNewEmployee()} disabled={loading}>
+                        {loading ? <Spinner color='blue'/> : <IoPersonAdd />}
+                        Cliente nuevo
+                    </ButtonOutLine>
+                </div>
+                <div className='flex flex-wrap gap-4 items-center justify-between sm:justify-end'>
                     <ButtonOutLine disabled={loading} color='green'>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
                     </ButtonOutLine>
                     <div>
-                        Empleados<Badge>{customersFilter.length}</Badge>
+                        Clientes<Badge>{customersFilter.length}</Badge>
                     </div>
                 </div>
             </div>

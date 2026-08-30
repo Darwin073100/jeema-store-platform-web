@@ -12,8 +12,11 @@ const CustomerDesktopTable = () => {
     const headTable = ['Folio', 'Nombre', 'Téfono', 'Correo', 'Ciudad']
     return (
         <PrimaryTable theadList={headTable}>
+            {(!customersFilter || customersFilter.length === 0) && (
+                <PTableEmpty colsNumber={headTable.length + 1} />
+            )}
             {customersFilter.map(item => (
-                <PRow>
+                <PRow key={item.customerId.toString()}>
                     <PCol>{item.customerId}</PCol>
                     <PCol>{`${item.firstName} ${item.lastName ?? ''}`}</PCol>
                     <PCol>{item.phoneNumber}</PCol>
@@ -24,9 +27,6 @@ const CustomerDesktopTable = () => {
                             <AiFillProfile size={14} /><span>Perfil</span>
                         </Button>
                     </PCol>
-                    {(!customersFilter || customersFilter.length === 0) && (
-                        <PTableEmpty colsNumber={headTable.length + 1} />
-                    )}
                 </PRow>
             ))}
         </PrimaryTable>

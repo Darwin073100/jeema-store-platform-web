@@ -5,6 +5,7 @@ import { BreadcrumbItem, TemplateHeader } from '@/shared/ui/components/templates
 import { findAllCustomerByEstablishmentAction } from '@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action'
 import CustomerDesktopTable from '@/contexts/sale-management/customer/presentation/ui/CustomerDesktopTable';
 import { CustomerOptios } from '@/contexts/sale-management/customer/presentation/ui/CustomerOptios';
+import { CustomerCardList } from '@/contexts/sale-management/customer/presentation/ui/CustomerCardList';
 
 // Configurar la página para que no se cachée y siempre obtenga datos frescos
 export const revalidate = 0; // Revalidar en cada request
@@ -27,14 +28,13 @@ export default async function CustomerPage() {
   return (
     <ProtectedRoute>
         <TemplateHeader breadcrumbItems={breadCrumbItems} title='Clientes' detail='Vista general de los clientes en todo el establecimeinto.'>
-            <CustomerOptios 
+            <CustomerOptios
                 customersList={currentCustomers}/>
-            <div className="hidden md:block">
+            <div className="hidden md:block overflow-x-auto">
                 <CustomerDesktopTable />
             </div>
-            <div className="md:hidden">
-                {/* <SaleCardList
-                    sales={currentSales} /> */}
+            <div className="md:hidden flex flex-col gap-3 w-full">
+                <CustomerCardList />
             </div>
         </TemplateHeader>
     </ProtectedRoute>
