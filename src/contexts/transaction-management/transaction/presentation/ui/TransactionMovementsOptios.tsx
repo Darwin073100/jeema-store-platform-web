@@ -29,8 +29,8 @@ const TransactionMovementsOptios = ({ transactions }: Props) => {
 
     return (
         <>
-            <div className="flex gap-4 items-center justify-between mb-2">
-                <form onSubmit={handleSubmit(onSubmit)} className='flex gap-4'>
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-2">
+                <form onSubmit={handleSubmit(onSubmit)} className='flex flex-wrap gap-4'>
                     <div>
                         <LabelInput value='Fecha de inicio' description='Si borras la fécha de inicio tomará la del día en transcurso por default.' />
                         <TextInput
@@ -56,7 +56,7 @@ const TransactionMovementsOptios = ({ transactions }: Props) => {
                         </Button>
                     </div>
                 </form>
-                <div className='flex gap-4 items-center'>
+                <div className='flex flex-wrap gap-4 items-center justify-between lg:justify-end'>
                     <ButtonOutLine color='green' onClick={() => handleExport()}>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel

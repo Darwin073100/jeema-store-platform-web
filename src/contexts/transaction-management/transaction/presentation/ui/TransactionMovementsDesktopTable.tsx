@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
-import { PCol, PrimaryTable, PRow } from '@/shared/ui/components/tables/PrimaryTable';
+import { PCol, PrimaryTable, PRow, PTableEmpty } from '@/shared/ui/components/tables/PrimaryTable';
 import { useTransactionStore } from '../stores/transaction.store';
 interface Props {
 }
@@ -17,6 +17,9 @@ const TransactionMovementsDesktopTable = ({ }: Props) => {
 
     return (
         <PrimaryTable theadList={headTable}>
+            {(!transactionsFiltered || transactionsFiltered.length === 0) && (
+                <PTableEmpty colsNumber={headTable.length + 1} />
+            )}
             {transactionsFiltered.map(item => (
                 <PRow key={item.transactionId}>
                     <PCol>{item.transactionId}</PCol>

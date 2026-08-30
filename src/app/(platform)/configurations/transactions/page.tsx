@@ -2,6 +2,7 @@ import { findAllManyFilterTransactionsAction } from "@/contexts/transaction-mana
 import { TransactionInformation } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionInformation";
 import { TransactionMovementsDesktopTable } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsDesktopTable";
 import { TransactionMovementsOptios } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsOptios";
+import { TransactionMovementsCardList } from "@/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsCardList";
 import { ProtectedRoute } from "@/shared/ui/components/routes/ProtectedRoute";
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
 import { Metadata } from "next";
@@ -39,12 +40,11 @@ export default async function SaleInformationPage() {
                 <TransactionMovementsOptios
                     transactions={data} />
                 <TransactionInformation />
-                <div className="hidden md:block">
+                <div className="hidden md:block overflow-x-auto">
                     <TransactionMovementsDesktopTable />
                 </div>
-                <div className="md:hidden">
-                    {/* <SaleCardList
-                    sales={currentSales} /> */}
+                <div className="md:hidden flex flex-col gap-3 w-full">
+                    <TransactionMovementsCardList />
                 </div>
 
             </TemplateHeader>
