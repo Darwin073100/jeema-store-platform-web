@@ -21,8 +21,8 @@ const CashOptios = ({ cashes }: Props) => {
 
     return (
         <>
-            <div className="flex gap-4 items-center justify-between">
-                <div className='flex gap-4 items-center'>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className='flex flex-wrap gap-4 items-center'>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
                         <ButtonOutLine onClick={()=> openCashModal('registerCashRegister')}>
                             <LiaCashRegisterSolid />
@@ -34,7 +34,7 @@ const CashOptios = ({ cashes }: Props) => {
                         </ButtonOutLine>
                     </HideElement>
                 </div>
-                <div className='flex gap-4 items-center'>
+                <div className='flex flex-wrap gap-4 items-center justify-between sm:justify-end'>
                     <Button color='green'>
                         <PiMicrosoftExcelLogoFill />
                         Exportar a Excel
