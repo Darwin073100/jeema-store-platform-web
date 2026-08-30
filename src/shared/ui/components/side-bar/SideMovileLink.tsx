@@ -13,9 +13,10 @@ interface Props{
     Icon: IconType;
     href: string;
     value: string;
+    onNavigate?: () => void;
 }
 
-export const SideMovileLink = ({Icon, href, value}:Props) => {
+export const SideMovileLink = ({Icon, href, value, onNavigate}:Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
 
@@ -28,25 +29,27 @@ export const SideMovileLink = ({Icon, href, value}:Props) => {
   }, [pathname]);
 
   return (
-    <Link 
-        href={href} 
-        onClick={(e) => {
+    <Link
+        href={href}
+        onClick={() => {
             // Solo activamos el estado de carga si NO estamos ya en esa página
             if (!isActive) {
                 setIsLoading(true);
             }
+            // Cierra el panel móvil al navegar, para no dejarlo abierto sobre la página destino
+            onNavigate?.();
         }}
         className={clsx(
-            // Clases base que se aplican siempre
-            "flex py-2 px-4 items-center justify-start rounded-lg gap-2 transition-all duration-200 cursor-pointer shadow-md",
-            // Estilos si está ACTIVO
-            isActive 
-                ? "bg-blue-100 text-blue-700 font-semibold shadow-inner" 
-            // Estilos si está INACTIVO
-                : "bg-white text-gray-700 hover:bg-gray-50 hover:shadow-xl"
+            // Clases base: fila de lista plana, sin card ni sombra propia
+            "flex py-3 px-3 items-center justify-start rounded-xl gap-3 transition-colors duration-150 cursor-pointer",
+            // Estilos si está ACTIVO: pill de selección, sin sombra
+            isActive
+                ? "bg-blue-50 text-blue-700 font-semibold"
+            // Estilos si está INACTIVO: sin fondo, solo hover sutil
+                : "text-gray-700 hover:bg-gray-50"
         )}
     >
-        <span>
+        <span className="flex w-7 items-center justify-center shrink-0">
             {/* Renderizado condicional del Spinner o el Icono */}
             {isLoading ? (
                 <Spinner color='blue' /> // Reemplaza esto con tu componente real
@@ -54,11 +57,7 @@ export const SideMovileLink = ({Icon, href, value}:Props) => {
                 <Icon className="text-2xl"/>
             )}
         </span>
-        <span
-            className={clsx(
-                "transition-all duration-1000 text-sm",
-                // Si quieres que el texto haga algún cambio extra al estar activo, puedes agregarlo aquí
-            )}>
+        <span className="text-sm">
                 {value}
         </span>
     </Link>
