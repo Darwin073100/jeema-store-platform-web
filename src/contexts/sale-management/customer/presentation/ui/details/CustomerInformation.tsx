@@ -10,12 +10,35 @@ import { useCustomerStore } from '../../stores/customer.store';
 import { useCustomerUIStore } from '../../stores/customer-ui.store';
 import { CustomerUpdateModal } from './CustomerUpdateModal';
 import { FloatMessage } from '@/shared/ui/components/messages';
+import { ISale } from '@/contexts/sale-management/sale/presentation/interfaces/ISale';
+import { SaleStatusEnum } from '@/contexts/sale-management/sale/domain/enums/sale-status.enum';
+import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 interface Props {
     customer: ICustomer
 }
 const CustomerInformation = ({ customer }:Props) => {
     const { setCustomer } = useCustomerStore();
     const { openCustomerModal, floatMessageState } = useCustomerUIStore();
+    
+    const totalSalesAmount = (sales: ISale[])=> {
+        let completeSales = 0;
+        let pendingSales = 0;
+
+        sales.forEach(item => {
+            if(item.status === SaleStatusEnum.COMPLETED){
+                completeSales = completeSales + item.totalAmount;
+            } else if(item.status === SaleStatusEnum.PENDING){
+                pendingSales = pendingSales + item.totalAmount;
+            }
+        });
+
+        return {
+            completeSales,
+            pendingSales
+        }
+
+    }
+    
     useEffect(()=>{
         setCustomer(customer);
     }, [customer]);
@@ -69,14 +92,18 @@ const CustomerInformation = ({ customer }:Props) => {
                 <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4">
                     <FcComboChart /> <span>Estadísticas</span>
                 </h2>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                     <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                        <p className="text-xs text-blue-700 font-semibold">Total Compras</p>
+                        <p className="text-xs text-blue-700 font-semibold">No. Compras</p>
                         <p className="text-2xl font-extrabold text-blue-900">{customer?.sales?.length ?? 0}</p>
                     </div>
+                    <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                        <p className="text-xs text-green-700 font-semibold">Completado</p>
+                        <p className="text-lg font-extrabold text-green-900">{numberMoneyFormat(totalSalesAmount(customer.sales?? []).completeSales)}</p>
+                    </div>
                     <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                        <p className="text-xs text-orange-700 font-semibold">Monto Acumulado</p>
-                        <p className="text-lg font-extrabold text-orange-900">0</p>
+                        <p className="text-xs text-orange-700 font-semibold">Pendiente</p>
+                        <p className="text-lg font-extrabold text-orange-900">{numberMoneyFormat(totalSalesAmount(customer.sales?? []).pendingSales)}</p>
                     </div>
                 </div>
             </Card>
