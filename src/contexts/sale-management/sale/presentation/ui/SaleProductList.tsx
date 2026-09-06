@@ -103,7 +103,10 @@ const SaleProductList = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="flex flex-col items-center gap-4 w-full xl:hidden">
+            <div
+                className="flex flex-col items-center gap-4 w-full xl:hidden"
+                style={{ paddingBottom: 'var(--jeema-mobile-sale-summary-h, 180px)' }}
+            >
                 {sale?.saleDetails?.map(item => (
                     <SaleDetailItemMovile key={item.saleDetailId} saleDetail={item} />
                 ))}

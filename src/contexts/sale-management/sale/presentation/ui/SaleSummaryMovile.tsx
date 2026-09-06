@@ -9,21 +9,46 @@ import { SaleCustomerListModal } from "./SaleCustomerListModal";
 import { useCustomerSale } from "../hooks/useCustomerSale";
 import { ICustomer } from "@/contexts/sale-management/customer/presentation/interfaces/ICustomer";
 import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
+import { useEffect, useRef } from "react";
 
 interface Props {
     paymentMethods: IPaymentMethod[],
     customers: ICustomer[],
 }
 
+const MOBILE_SUMMARY_HEIGHT_VAR = '--jeema-mobile-sale-summary-h';
+
 const SaleSummaryMovile = ({ paymentMethods, customers,}: Props) => {
     const { } = useTransferDataToClientNewSale({ methods: paymentMethods, customers});
     const { productQuantity, total } = useSaleSummary();
     const { handleCheckerOpenModalFinishSale } = useSalePayment();
     const { customerSelected, openSaleModal } = useCustomerSale();
+    const barRef = useRef<HTMLDivElement>(null);
+
+    // La barra tiene altura variable (la dirección del cliente puede ocupar varias líneas),
+    // así que medimos su altura real para que SaleProductList pueda reservar ese espacio
+    // y sus últimos items no queden tapados por esta barra `fixed`.
+    useEffect(() => {
+        const el = barRef.current;
+        if (!el) return;
+
+        const updateHeight = () => {
+            document.documentElement.style.setProperty(MOBILE_SUMMARY_HEIGHT_VAR, `${el.offsetHeight}px`);
+        };
+
+        const resizeObserver = new ResizeObserver(updateHeight);
+        resizeObserver.observe(el);
+        updateHeight();
+
+        return () => {
+            resizeObserver.disconnect();
+            document.documentElement.style.removeProperty(MOBILE_SUMMARY_HEIGHT_VAR);
+        };
+    }, [customerSelected]);
 
     return (
-        <section className="xl:hidden absolute w-screen">
-            <div className="w-full fixed z-10 bottom-0 left-0 right-0 bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-2">
+        <section className="xl:hidden">
+            <div ref={barRef} className="w-full fixed z-10 bottom-0 left-0 right-0 bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-2">
                 <div className="bg-blue-50 rounded-lg p-4">
                     <h3 className="font-medium text-blue-800 flex justify-between">
                         {`${customerSelected?.firstName ?? 'Seleccina un cliente'} ${customerSelected?.lastName ?? ''}`}
