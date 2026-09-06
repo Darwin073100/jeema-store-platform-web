@@ -27,6 +27,7 @@ const SaleProductSearch = ({ cashSession }: Props) => {
                 <TextInput
                     ref={inputRef}
                     autoFocus
+                    inputMode="none"
                     value={searchValue}
                     onChange={handleChangeSearch}
                     placeholder="Escanea o escribe el código de barras" />
