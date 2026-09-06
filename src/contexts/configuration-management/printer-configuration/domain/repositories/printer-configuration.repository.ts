@@ -10,10 +10,10 @@ export interface PrinterConfigurationRepository {
     findById(printerConfigurationId: bigint): Promise<PrinterConfigurationEntity | null>;
 
     /**
-     * Devuelve todas las configuraciones de impresora registradas para una sucursal (una sucursal
-     * puede tener más de una impresora configurada, distinguidas por `label`).
+     * Devuelve la configuración de impresora registrada para una caja registradora (relación 1:1
+     * — cada caja tiene a lo sumo una impresora configurada).
      */
-    findByBranchOffice(branchOfficeId: bigint): Promise<PrinterConfigurationEntity[]>;
+    findByCashRegister(cashRegisterId: bigint): Promise<PrinterConfigurationEntity | null>;
 
     /** Inserta una nueva configuración de impresora. */
     save(entity: PrinterConfigurationEntity): Promise<PrinterConfigurationEntity>;

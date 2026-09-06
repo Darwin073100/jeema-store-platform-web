@@ -45,11 +45,22 @@ const useCashClosedTicketListModal = ({ cashSessions }: Props) => {
 
     // Este modal NO imprime automáticamente — el usuario dispara la impresión con el botón
     // "Imprimir" del modal. Solo el modal de venta al finalizar (useTicketSale) auto-imprime.
+    //
+    // Decisión de diseño: este listado agrupa cortes de caja de TODA la sucursal en un rango de
+    // fechas (findCashMovementsByBranchOfficeIdAction no filtra por caja), así que puede incluir
+    // sesiones de más de una CashRegister. El spec de impresora por caja no cubre este caso de
+    // "lista mixta" en detalle — se resuelve la impresora con la caja de la PRIMERA sesión del
+    // listado (mismo tratamiento que useCashClosedTicketModal: tomar el cashRegisterId de "la"
+    // CashSession, aquí la más representativa del listado). Si en el futuro se necesita imprimir
+    // este resumen en varias impresoras a la vez, hay que revisitar este hook. Igual que en los
+    // demás casos manuales, si no hay ninguna sesión (o no trae cashRegisterId) se pasa BigInt(0)
+    // a propósito para reusar el mensaje de error existente de "sin impresora configurada".
     const printTicket = async () => {
         if (!blobRef.current) {
             return;
         }
-        await printTicketBlob(blobRef.current);
+        const cashRegisterId = cashSessions[0]?.cashRegisterId ?? BigInt(0);
+        await printTicketBlob(blobRef.current, cashRegisterId);
     };
 
     useEffect(() => {

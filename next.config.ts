@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Permite acceder al dev server (HMR/recursos internos de Next) desde otras
   // computadoras de la red local (ej. la caja donde corre QZ Tray), no solo localhost.
-  allowedDevOrigins: ['192.168.1.101'],
+  // allowedDevOrigins: ['192.168.1.83'],
+  allowedDevOrigins: ['192.168.1.127'],
   typescript: {
     ignoreBuildErrors: true,
   },

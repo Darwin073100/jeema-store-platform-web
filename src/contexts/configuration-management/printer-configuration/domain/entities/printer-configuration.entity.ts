@@ -11,7 +11,7 @@ const NETWORK_TARGET_REGEX = /^[^\s:]+:\d{1,5}$|^\[[^\s\]]+\]:\d{1,5}$/;
 
 export class PrinterConfigurationEntity {
   private readonly _printerConfigurationId: bigint;
-  private readonly _branchOfficeId: bigint;
+  private readonly _cashRegisterId: bigint;
   private _label: string;
   private _connectionType: PrinterConnectionTypeVO;
   private _target: string;
@@ -25,7 +25,7 @@ export class PrinterConfigurationEntity {
 
   private constructor(
     printerConfigurationId: bigint,
-    branchOfficeId: bigint,
+    cashRegisterId: bigint,
     label: string,
     connectionType: PrinterConnectionTypeVO,
     target: string,
@@ -38,7 +38,7 @@ export class PrinterConfigurationEntity {
     updatedAt: Date | null,
   ) {
     this._printerConfigurationId = printerConfigurationId;
-    this._branchOfficeId = branchOfficeId;
+    this._cashRegisterId = cashRegisterId;
     this._label = label;
     this._connectionType = connectionType;
     this._target = target;
@@ -52,10 +52,10 @@ export class PrinterConfigurationEntity {
   }
 
   /**
-   * Crea una nueva PrinterConfiguration para una sucursal. Nace activa.
+   * Crea una nueva PrinterConfiguration para una caja registradora. Nace activa.
    */
   static create(
-    branchOfficeId: bigint,
+    cashRegisterId: bigint,
     label: string,
     connectionType: PrinterConnectionTypeVO,
     target: string,
@@ -70,7 +70,7 @@ export class PrinterConfigurationEntity {
 
     return new PrinterConfigurationEntity(
       BigInt(new Date().getTime()),
-      branchOfficeId,
+      cashRegisterId,
       validLabel,
       connectionType,
       validTarget,
@@ -86,7 +86,7 @@ export class PrinterConfigurationEntity {
 
   static reconstitute(
     printerConfigurationId: bigint,
-    branchOfficeId: bigint,
+    cashRegisterId: bigint,
     label: string,
     connectionType: PrinterConnectionTypeVO,
     target: string,
@@ -100,7 +100,7 @@ export class PrinterConfigurationEntity {
   ): PrinterConfigurationEntity {
     return new PrinterConfigurationEntity(
       printerConfigurationId,
-      branchOfficeId,
+      cashRegisterId,
       label,
       connectionType,
       target,
@@ -119,8 +119,8 @@ export class PrinterConfigurationEntity {
     return this._printerConfigurationId;
   }
 
-  get branchOfficeId(): bigint {
-    return this._branchOfficeId;
+  get cashRegisterId(): bigint {
+    return this._cashRegisterId;
   }
 
   get label(): string {

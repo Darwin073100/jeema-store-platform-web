@@ -8,7 +8,7 @@ export class PrinterConfigurationMapper {
     static toTypeOrmEntity(domainEntity: PrinterConfigurationEntity): PrinterConfigurationOrmEntity {
         const typeOrmEntity = new PrinterConfigurationOrmEntity();
         typeOrmEntity.printerConfigurationId = domainEntity.printerConfigurationId;
-        typeOrmEntity.branchOfficeId = domainEntity.branchOfficeId;
+        typeOrmEntity.cashRegisterId = domainEntity.cashRegisterId;
         typeOrmEntity.label = domainEntity.label;
         typeOrmEntity.connectionType = domainEntity.connectionType.value as unknown as PrinterConnectionTypeOrmEnum;
         typeOrmEntity.target = domainEntity.target;
@@ -26,7 +26,7 @@ export class PrinterConfigurationMapper {
     static toDomainEntity(typeOrmEntity: PrinterConfigurationOrmEntity): PrinterConfigurationEntity {
         return PrinterConfigurationEntity.reconstitute(
             typeOrmEntity.printerConfigurationId,
-            typeOrmEntity.branchOfficeId,
+            typeOrmEntity.cashRegisterId,
             typeOrmEntity.label,
             PrinterConnectionTypeVO.create(typeOrmEntity.connectionType),
             typeOrmEntity.target,

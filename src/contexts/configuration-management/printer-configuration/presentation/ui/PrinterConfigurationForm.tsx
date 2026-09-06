@@ -22,7 +22,9 @@ import { useQzTray, blobToBase64 } from '../hooks/useQzTray';
 import { IPrinterConfiguration, PrinterConnectionTypeView } from '../interfaces/IPrinterConfiguration';
 import { registerPrinterConfigurationAction } from '../actions/register-printer-configuration.action';
 import { updatePrinterConfigurationAction } from '../actions/update-printer-configuration.action';
-import { findPrinterConfigurationByBranchAction } from '../actions/find-printer-configuration-by-branch.action';
+import { findPrinterConfigurationByCashRegisterAction } from '../actions/find-printer-configuration-by-cash-register.action';
+import { findAllCashRegisterByBranchOfficeIdAction } from '@/contexts/cash-management/cash-register/presentation/actions/find-all-cash-register-by-branch-office-id.action';
+import { ICashRegister } from '@/contexts/cash-management/cash-register/presentation/interfaces/ICashRegister';
 
 const CONNECTION_TYPE_ITEMS = [
   { value: 'QZ_OS_PRINTER', text: 'Impresora del sistema (USB o red ya instalada)' },
@@ -143,6 +145,14 @@ export const PrinterConfigurationForm = () => {
   const { branchOffice, isLoading: workspaceLoading } = useWorkspace();
   const { connected, connecting, error: qzError, printers, findingPrinters, connect, findPrinters, printPdf } = useQzTray();
 
+  const [cashRegisters, setCashRegisters] = useState<ICashRegister[]>([]);
+  const [loadingCashRegisters, setLoadingCashRegisters] = useState(true);
+  const [selectedCashRegisterId, setSelectedCashRegisterId] = useState<bigint | null>(null);
+  // Indicador "configurada / sin configurar" por caja, mostrado en el selector. La acción de
+  // listado (findAllCashRegisterByBranchOfficeIdAction) no hidrata la relación printerConfiguration
+  // hoy, así que se resuelve con una consulta por caja aparte en vez de tocar el backend.
+  const [configuredCashRegisterIds, setConfiguredCashRegisterIds] = useState<Set<string>>(new Set());
+
   const [existingConfig, setExistingConfig] = useState<IPrinterConfiguration | null>(null);
   const [loadingConfig, setLoadingConfig] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -164,18 +174,69 @@ export const PrinterConfigurationForm = () => {
 
   const connectionType = watch('connectionType');
 
+  const emptyFormDefaults: FormData = {
+    label: '',
+    connectionType: 'QZ_OS_PRINTER',
+    paperWidthMm: '58',
+    copies: 1,
+    autoPrintOnSale: false,
+    isActive: true,
+  };
+
+  // Carga la lista de cajas de la sucursal actual y selecciona la primera por defecto.
+  useEffect(() => {
+    const loadCashRegisters = async () => {
+      if (!branchOffice) {
+        return;
+      }
+      setLoadingCashRegisters(true);
+      try {
+        const result = await findAllCashRegisterByBranchOfficeIdAction();
+        if (result.ok && result.value) {
+          const registers = result.value.cashRegisters;
+          setCashRegisters(registers);
+          if (registers.length > 0) {
+            setSelectedCashRegisterId((current) => current ?? registers[0].cashRegisterId);
+          }
+
+          // Resuelve el indicador "configurada / sin configurar" de cada caja por separado, ya
+          // que el listado no trae la relación printerConfiguration hidratada.
+          const entries = await Promise.all(
+            registers.map(async (cr) => {
+              const configResult = await findPrinterConfigurationByCashRegisterAction(cr.cashRegisterId);
+              const hasConfig = !!(configResult.ok && configResult.value?.printerConfiguration);
+              return [cr.cashRegisterId.toString(), hasConfig] as const;
+            })
+          );
+          setConfiguredCashRegisterIds(new Set(entries.filter(([, has]) => has).map(([id]) => id)));
+        }
+      } finally {
+        setLoadingCashRegisters(false);
+      }
+    };
+    loadCashRegisters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [branchOffice?.branchOfficeId]);
+
+  // Al cambiar la caja seleccionada, carga su configuración de impresora (o deja el formulario
+  // vacío en modo "registrar" si esa caja todavía no tiene una).
   useEffect(() => {
     const loadExistingConfig = async () => {
-      if (!branchOffice) {
+      if (!selectedCashRegisterId) {
+        setExistingConfig(null);
+        setLoadingConfig(false);
         return;
       }
       setLoadingConfig(true);
       try {
-        const result = await findPrinterConfigurationByBranchAction(branchOffice.branchOfficeId);
-        if (result.ok && result.value && result.value.printerConfigurations.length > 0) {
-          const current = result.value.printerConfigurations[0];
+        const result = await findPrinterConfigurationByCashRegisterAction(selectedCashRegisterId);
+        if (result.ok && result.value?.printerConfiguration) {
+          const current = result.value.printerConfiguration;
           setExistingConfig(current);
           reset(formFromExisting(current));
+        } else {
+          setExistingConfig(null);
+          reset(emptyFormDefaults);
         }
       } finally {
         setLoadingConfig(false);
@@ -183,7 +244,7 @@ export const PrinterConfigurationForm = () => {
     };
     loadExistingConfig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branchOffice?.branchOfficeId]);
+  }, [selectedCashRegisterId]);
 
   const notify = (payload: FloatMessageType, autoHideMs = 5000) => {
     setFloatMessageState({ ...payload, isActive: true });
@@ -192,7 +253,7 @@ export const PrinterConfigurationForm = () => {
 
   const buildPrinterConfigView = (data: FormData): IPrinterConfiguration => ({
     printerConfigurationId: existingConfig?.printerConfigurationId ?? BigInt(0),
-    branchOfficeId: branchOffice?.branchOfficeId ?? BigInt(0),
+    cashRegisterId: selectedCashRegisterId ?? BigInt(0),
     label: data.label,
     connectionType: data.connectionType,
     target: targetFromForm(data),
@@ -206,8 +267,8 @@ export const PrinterConfigurationForm = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!branchOffice) {
-      notify({ summary: '¡Error!', description: 'No se encontró la sucursal actual.', type: 'red' });
+    if (!selectedCashRegisterId) {
+      notify({ summary: '¡Error!', description: 'Selecciona una caja registradora.', type: 'red' });
       return;
     }
 
@@ -229,7 +290,7 @@ export const PrinterConfigurationForm = () => {
         });
       } else {
         result = await registerPrinterConfigurationAction({
-          branchOfficeId: branchOffice.branchOfficeId,
+          cashRegisterId: selectedCashRegisterId,
           label: data.label,
           connectionType: data.connectionType,
           target,
@@ -243,6 +304,7 @@ export const PrinterConfigurationForm = () => {
       if (result.ok && result.value) {
         setExistingConfig(result.value);
         reset(formFromExisting(result.value));
+        setConfiguredCashRegisterIds((prev) => new Set(prev).add(selectedCashRegisterId.toString()));
         notify({ summary: '¡Correcto!', description: 'Configuración de impresora guardada.', type: 'green' });
       } else {
         notify({ summary: '¡Error!', description: result.error?.message?.toString() ?? 'No se pudo guardar la configuración.', type: 'red' });
@@ -285,11 +347,19 @@ export const PrinterConfigurationForm = () => {
     }
   });
 
-  if (workspaceLoading || loadingConfig) {
+  if (workspaceLoading || loadingCashRegisters || loadingConfig) {
     return (
       <div className="flex items-center gap-2 justify-center p-8 bg-white rounded-2xl shadow-md">
         <Spinner color="black" />
         <span>Cargando configuración de impresora...</span>
+      </div>
+    );
+  }
+
+  if (cashRegisters.length === 0) {
+    return (
+      <div className="bg-white w-full rounded-2xl shadow-md p-8 text-center text-gray-600">
+        Esta sucursal no tiene cajas registradoras. Crea una caja primero para poder configurarle una impresora.
       </div>
     );
   }
@@ -318,6 +388,19 @@ export const PrinterConfigurationForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white w-full rounded-2xl shadow-md p-4 flex flex-col gap-4">
         <h1 className="text-2xl mb-2 text-gray-700">Configuración de impresora térmica</h1>
+
+        <div>
+          <LabelInput htmlFor="cashRegisterId" value="Caja registradora" required="yes" description="Cada caja tiene su propia impresora. Selecciona cuál vas a configurar." />
+          <SelectMenu
+            name="cashRegisterId"
+            value={selectedCashRegisterId?.toString() ?? ''}
+            onChange={(e) => setSelectedCashRegisterId(e.target.value ? BigInt(e.target.value) : null)}
+            items={cashRegisters.map((cr) => ({
+              value: cr.cashRegisterId.toString(),
+              text: `${cr.name} — ${configuredCashRegisterIds.has(cr.cashRegisterId.toString()) ? '● configurada' : '○ sin configurar'}`,
+            }))}
+          />
+        </div>
 
         <div>
           <LabelInput htmlFor="label" value="Etiqueta" required="yes" description="Nombre para identificar esta impresora, ej. 'Caja 1'." />

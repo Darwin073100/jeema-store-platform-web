@@ -1,6 +1,7 @@
 import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
 import { CashRegisterNameVO } from "../value-objets/cash-register-name.vo";
 import { CashSessionEntity } from "src/contexts/cash-management/cash-session/domain/entities/cash-session.entity";
+import { PrinterConfigurationEntity } from "src/contexts/configuration-management/printer-configuration/domain/entities/printer-configuration.entity";
 
 export class CashRegisterEntity {
     private readonly _cashRegisterId: bigint;
@@ -12,6 +13,7 @@ export class CashRegisterEntity {
     private _deletedAt: Date | null;
     private _branchOffice: BranchOfficeEntity | null;
     private _cashSessions: CashSessionEntity[] | null;
+    private _printerConfiguration: PrinterConfigurationEntity | null;
 
     private constructor(
         cashRegisterId: bigint,
@@ -23,6 +25,7 @@ export class CashRegisterEntity {
         deletedAt: Date | null,
         branchOffice: BranchOfficeEntity | null,
         cashSessions: CashSessionEntity[] | null,
+        printerConfiguration: PrinterConfigurationEntity | null = null,
     ){
         this._cashRegisterId = cashRegisterId;
         this._branchOfficeId = branchOfficeId;
@@ -33,6 +36,7 @@ export class CashRegisterEntity {
         this._deletedAt = deletedAt;
         this._branchOffice = branchOffice;
         this._cashSessions = cashSessions;
+        this._printerConfiguration = printerConfiguration;
     }
 
     public static create(
@@ -48,7 +52,8 @@ export class CashRegisterEntity {
             null,
             null,
             null,
-            null
+            null,
+            null,
         );
     }
     public static reconstitute(
@@ -61,6 +66,7 @@ export class CashRegisterEntity {
         deletedAt: Date | null,
         branchOffice: BranchOfficeEntity | null,
         cashSessions: CashSessionEntity[] | null,
+        printerConfiguration: PrinterConfigurationEntity | null = null,
     ){
         return new CashRegisterEntity(
             cashRegisterId,
@@ -72,6 +78,7 @@ export class CashRegisterEntity {
             deletedAt,
             branchOffice,
             cashSessions,
+            printerConfiguration,
         );
     }
 
@@ -101,6 +108,9 @@ export class CashRegisterEntity {
     }
     get cashSessions(){
         return this._cashSessions;
+    }
+    get printerConfiguration(){
+        return this._printerConfiguration;
     }
 
     public updateName(name: string){

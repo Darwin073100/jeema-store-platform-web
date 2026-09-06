@@ -9,7 +9,7 @@ export class PrinterConfigurationMapper {
   public static toResponseDto(entity: PrinterConfigurationEntity): PrinterConfigurationResponseDto {
     return new PrinterConfigurationResponseDto(
       entity.printerConfigurationId.toString(),
-      entity.branchOfficeId.toString(),
+      entity.cashRegisterId.toString(),
       entity.label,
       entity.connectionType.value,
       entity.target,
@@ -26,7 +26,7 @@ export class PrinterConfigurationMapper {
   public static toIResponse(entity: PrinterConfigurationEntity): IPrinterConfiguration {
     return {
       printerConfigurationId: entity.printerConfigurationId,
-      branchOfficeId: entity.branchOfficeId,
+      cashRegisterId: entity.cashRegisterId,
       label: entity.label,
       connectionType: entity.connectionType.value as PrinterConnectionTypeView,
       target: entity.target,

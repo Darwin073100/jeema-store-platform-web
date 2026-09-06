@@ -1,6 +1,6 @@
 export class PrinterConfigurationResponseDto {
   readonly printerConfigurationId: string;
-  readonly branchOfficeId: string;
+  readonly cashRegisterId: string;
   readonly label: string;
   readonly connectionType: string;
   readonly target: string;
@@ -14,7 +14,7 @@ export class PrinterConfigurationResponseDto {
 
   constructor(
     printerConfigurationId: string,
-    branchOfficeId: string,
+    cashRegisterId: string,
     label: string,
     connectionType: string,
     target: string,
@@ -27,7 +27,7 @@ export class PrinterConfigurationResponseDto {
     updatedAt: Date | null,
   ) {
     this.printerConfigurationId = printerConfigurationId;
-    this.branchOfficeId = branchOfficeId;
+    this.cashRegisterId = cashRegisterId;
     this.label = label;
     this.connectionType = connectionType;
     this.target = target;

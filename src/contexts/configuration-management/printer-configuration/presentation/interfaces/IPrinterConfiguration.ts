@@ -4,7 +4,7 @@ export type PaperWidthMmView = 58 | 80;
 /** Vista cliente de una configuración de impresora (formas primitivas, serializable a JSON). */
 export interface IPrinterConfiguration {
     printerConfigurationId: bigint;
-    branchOfficeId: bigint;
+    cashRegisterId: bigint;
     label: string;
     connectionType: PrinterConnectionTypeView;
     target: string;

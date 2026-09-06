@@ -28,7 +28,7 @@ export class FetchCloudBranchOffice implements CloudBranchOfficeRepository {
         try {
             const httpBody = CloudBranchOfficeMapper.toRegisterCloudBranchAndCloudEstablishmentHttp(dto);
             const response = await this.httpClient.post<ICloudBranchOffice>(
-                `${this.apiConfig.baseUrl}/cloud-branch-offices`,
+                `${this.apiConfig.baseUrl}/cloud-branch-offices/all`,
                 httpBody
             );
 

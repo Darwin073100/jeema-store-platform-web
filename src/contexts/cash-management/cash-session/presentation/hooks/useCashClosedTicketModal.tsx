@@ -12,6 +12,7 @@ const useCashClosedTicketModal = ({ cashSessionId }: Props) => {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const blobRef = useRef<Blob | null>(null);
+    const cashRegisterIdRef = useRef<bigint | null>(null);
 
     const { cashModal, runLoading, stopLoading } = useCashUIStore();
     const { printing, printError, printTicket: printTicketBlob } = usePrintTicket();
@@ -37,6 +38,11 @@ const useCashClosedTicketModal = ({ cashSessionId }: Props) => {
             );
             const blob = await pdf(doc).toBlob();
             blobRef.current = blob;
+            // Caja registradora que se está cerrando, tomada directamente de la CashSession que
+            // se está imprimiendo (no de useCashStore().cashRegisterSelected — ver spec de
+            // impresora por caja, es estado efímero de UI de administración, no fuente de verdad
+            // para imprimir).
+            cashRegisterIdRef.current = result.value.cashRegisterId ?? null;
 
             // Crear nueva URL
             setPdfUrl(URL.createObjectURL(blob));
@@ -48,12 +54,15 @@ const useCashClosedTicketModal = ({ cashSessionId }: Props) => {
     };
 
     // Este modal NO imprime automáticamente — el usuario dispara la impresión con el botón
-    // "Imprimir" del modal. Solo el modal de venta al finalizar (useTicketSale) auto-imprime.
+    // "Imprimir" del modal. Solo el modal de venta al finalizar (useTicketSale) auto-imprime. Si
+    // no se pudo resolver la caja, se pasa BigInt(0) a propósito: usePrintTicket ya trata una caja
+    // inválida como "sin impresora configurada" y muestra el mismo mensaje de error que el resto
+    // de casos manuales.
     const printTicket = async () => {
         if (!blobRef.current) {
             return;
         }
-        await printTicketBlob(blobRef.current);
+        await printTicketBlob(blobRef.current, cashRegisterIdRef.current ?? BigInt(0));
     };
 
     useEffect(() => {

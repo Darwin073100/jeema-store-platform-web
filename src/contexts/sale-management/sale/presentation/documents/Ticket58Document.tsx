@@ -1,11 +1,12 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { formatDate } from "@/shared/lib/utils/date-formatter";
+import { formatDate, formatDateShort, formatTimeByDate } from "@/shared/lib/utils/date-formatter";
 import { ISale } from '../interfaces/ISale';
 import logo from 'src/shared/ui/assets/images/logologo.png';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { EstablishmentDetailTypeEnum } from '@/contexts/establishment-management/establishment-detail/domain/enums/establishment-detail-type.enum';
 import { getDetailsByType, getFirstDetailByType } from '@/contexts/establishment-management/establishment-detail/presentation/lib/get-details-by-type';
+import { useGenerateBarcode } from '@/shared/presentation/hooks/useGenerateBarcode';
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
 const mmToPt = (mm: number) => mm * 2.83465;
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     // borde izquierdo de la página (x=0) — el corte ocurre en una posición fija, no está centrado.
     // Por eso el margen de seguridad va casi todo del lado derecho, no repartido simétrico:
     // paddingLeft grande solo empuja el contenido hacia la línea de corte y lo empeora.
-    width: mmToPt(58),
+    width: mmToPt(59),
     paddingLeft: mmToPt(2),
     paddingRight: mmToPt(12),
     paddingTop: mmToPt(2),
@@ -129,7 +130,18 @@ const styles = StyleSheet.create({
   footer: {
     fontSize: 6,
     textAlign: 'center',
-    marginTop: 5,
+    marginTop: 2,
+  },
+  barcodeImage: {
+    width: mmToPt(50),                 // Ancho del código de barras
+    height: mmToPt(4),                // Alto del código de barras
+    marginBottom: 5,
+  },
+  barcodeValue: {
+    fontSize: 10,
+    fontWeight: 400,
+    color: '#000000',
+    textAlign: 'center',
   },
 });
 
@@ -166,6 +178,15 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
     const contactLinesCount = (phoneAndWhatsappValues.length > 0 ? 1 : 0) + singleLineDetails.length + (slogan ? 1 : 0);
     return (mmToPt(3) * sale.saleDetails.length) + (mmToPt(3) * contactLinesCount);
   }
+
+  const { generateBarcode } = useGenerateBarcode();
+  const barcodeUrl = generateBarcode({
+    barcode: sale.saleId.toString(),
+    scale: 2,             // Escala de ampliación
+    height: 8,           // Altura en mm
+    includetext: false,
+    textxalign: 'center'
+  });
   const productRows = sale.saleDetails ? sale.saleDetails.map((item) => (
     <View key={item.saleDetailId}>
       <Text style={styles.productName}>{item.productNameAtSale}</Text>
@@ -198,7 +219,7 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
 
         {/* Folio y Fecha */}
         <Text style={styles.folio}>FOLIO: {sale.saleId}</Text>
-        <Text style={styles.fecha}>FECHA: {formatDate(sale.updatedAt)}</Text>
+        <Text style={styles.fecha}>FECHA: {formatDateShort(sale.updatedAt)}: {formatTimeByDate(sale.updatedAt)}</Text>
 
         {/* Sucursal y Dirección */}
         <Text style={styles.sucursal}>SUCURSAL: {sale.branchOffice?.name}</Text>
@@ -219,10 +240,10 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
         <Text style={styles.tableDivider}>_________________________________________________________</Text>
         <View style={{ flexDirection: 'row', width: '100%', marginBottom: 2 }}>
           <Text style={{ ...styles.tableHeader, width: '15%' }}>CANT.</Text>
-          <Text style={{ ...styles.tableHeader, width: '1%' }}></Text>
-          <Text style={{ ...styles.tableHeader, width: '20%' }}>PRECIO</Text>
+          <Text style={{ ...styles.tableHeader, width: '1%' }}> </Text>
+          <Text style={{ ...styles.tableHeader, width: '20%' }}>PRE.</Text>
           <Text style={{ ...styles.tableHeader, width: '20%' }}>DES.</Text>
-          <Text style={{ ...styles.tableHeader, width: '24%' }}>S.TOTAL</Text>
+          <Text style={{ ...styles.tableHeader, width: '24%' }}>S.TOT.</Text>
           <Text style={{ ...styles.tableHeader, width: '20%' }}>TOTAL</Text>
         </View>
         <Text style={styles.tableDivider}>_________________________________________________________</Text>
@@ -239,7 +260,7 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
 
         <View style={styles.totalColumn}>
           <Text style={{ width: '60%', textAlign: 'right' }}>DESCUENTO:</Text>
-          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(sale.discountAmount)}</Text>
+          <Text style={{ width: '40%', textAlign: 'right' }}>-{numberMoneyFormat(sale.discountAmount)}</Text>
         </View>
 
         <View style={styles.totalBold}>
@@ -274,12 +295,16 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
         </Text>
 
         {/* Divider final */}
-        <View style={{ borderTop: '1 solid #000', marginTop: 5, marginBottom: 5 }} />
+        <View style={{ borderTop: '1 solid #000', marginTop: 3, marginBottom: 3 }} />
 
         {/* Footer */}
         <Text style={styles.footer}>
-          Sy JEEMA por: Edwin García Quiterio, Tel: 741-107-3337
+          JEEMA Store by Edwin Garcia Quiterio{'\n'}TEL: 741-107-3337{'\n'}FACEBOOK: JEEMA Software
         </Text>
+        <Image
+          src={barcodeUrl ?? ''}
+          style={styles.barcodeImage}
+        />
       </Page>
     </Document>
   );

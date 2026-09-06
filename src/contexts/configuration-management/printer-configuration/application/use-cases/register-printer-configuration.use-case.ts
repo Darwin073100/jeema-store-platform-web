@@ -1,4 +1,5 @@
 import { PrinterConfigurationEntity } from "../../domain/entities/printer-configuration.entity";
+import { PrinterConfigurationAlreadyExistsException } from "../../domain/exceptions/printer-configuration-already-exists.exception";
 import { PrinterConfigurationRepository } from "../../domain/repositories/printer-configuration.repository";
 import { PaperWidthVO } from "../../domain/value-objects/paper-width.vo";
 import { PrinterConnectionTypeVO } from "../../domain/value-objects/printer-connection-type.vo";
@@ -6,7 +7,7 @@ import { PrinterConnectionTypeVO } from "../../domain/value-objects/printer-conn
 /** Comando de entrada del caso de uso de registro. No hay archivo DTO dedicado en el plan del
  * módulo (ver "Archivos a crear" del spec) — se declara el contrato de entrada aquí mismo. */
 export interface RegisterPrinterConfigurationCommand {
-  readonly branchOfficeId: bigint;
+  readonly cashRegisterId: bigint;
   readonly label: string;
   readonly connectionType: string;
   readonly target: string;
@@ -22,11 +23,16 @@ export class RegisterPrinterConfigurationUseCase {
   ) {}
 
   public async execute(command: RegisterPrinterConfigurationCommand): Promise<PrinterConfigurationEntity> {
+    const existing = await this.repository.findByCashRegister(command.cashRegisterId);
+    if (existing) {
+      throw new PrinterConfigurationAlreadyExistsException(command.cashRegisterId);
+    }
+
     const connectionType = PrinterConnectionTypeVO.create(command.connectionType);
     const paperWidth = PaperWidthVO.create(command.paperWidthMm);
 
     const printerConfiguration = PrinterConfigurationEntity.create(
-      command.branchOfficeId,
+      command.cashRegisterId,
       command.label,
       connectionType,
       command.target,

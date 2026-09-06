@@ -12,6 +12,7 @@ const useReprintTicketSale = ({ saleId }: Props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const blobRef = useRef<Blob | null>(null);
+    const cashRegisterIdRef = useRef<bigint | null>(null);
 
     const { saleModals } = useSaleUIStore();
     const { printing, printError, printTicket: printTicketBlob } = usePrintTicket();
@@ -37,6 +38,10 @@ const useReprintTicketSale = ({ saleId }: Props) => {
             );
             const blob = await pdf(doc).toBlob();
             blobRef.current = blob;
+            // Caja registradora donde se hizo la venta original, tomada de la propia venta
+            // (sale.cashSession.cashRegisterId) — nunca de un store de UI, ver spec de impresora
+            // por caja.
+            cashRegisterIdRef.current = result.value.cashSession?.cashRegisterId ?? null;
 
             // Crear nueva URL
             setPdfUrl(URL.createObjectURL(blob));
@@ -50,12 +55,15 @@ const useReprintTicketSale = ({ saleId }: Props) => {
 
     // Este modal (reimpresión manual) NO imprime automáticamente — solo el modal de venta al
     // finalizar (useTicketSale) lo hace. Aquí el usuario dispara la impresión con el botón
-    // "Imprimir" del modal.
+    // "Imprimir" del modal. Si la venta no tiene cashRegisterId resuelto, se pasa BigInt(0) a
+    // propósito: usePrintTicket ya sabe tratar una caja inválida como "sin impresora configurada"
+    // y muestra el mismo mensaje de error que el resto de casos manuales — no hace falta duplicar
+    // ese mensaje aquí, ya que esta es una acción manual del usuario (no debe fallar en silencio).
     const printTicket = async () => {
         if (!blobRef.current) {
             return;
         }
-        await printTicketBlob(blobRef.current);
+        await printTicketBlob(blobRef.current, cashRegisterIdRef.current ?? BigInt(0));
     };
 
     useEffect(() => {

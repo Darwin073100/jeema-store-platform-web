@@ -1,5 +1,5 @@
-import type { BranchOfficeOrmEntity } from "src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import type { CashRegisterOrmEntity } from "src/contexts/cash-management/cash-register/infraestructure/entities/cash-register.orm-entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 /**
  * Debe reflejar exactamente los valores de PrinterConnectionTypeEnum
@@ -17,8 +17,8 @@ export class PrinterConfigurationOrmEntity {
     @PrimaryGeneratedColumn('increment', { type: 'bigint', name: 'printer_configuration_id' })
     printerConfigurationId: bigint;
 
-    @Column({ type: 'bigint', name: 'branch_office_id', nullable: false })
-    branchOfficeId: bigint;
+    @Column({ type: 'bigint', name: 'cash_register_id', nullable: false, unique: true })
+    cashRegisterId: bigint;
 
     @Column({ type: 'varchar', length: 100, nullable: false })
     label: string;
@@ -44,9 +44,9 @@ export class PrinterConfigurationOrmEntity {
     @Column({ type: 'boolean', name: 'is_active', nullable: false, default: true })
     isActive: boolean;
 
-    @ManyToOne('BranchOfficeOrmEntity', { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'branch_office_id' })
-    branchOffice: BranchOfficeOrmEntity | null;
+    @OneToOne('CashRegisterOrmEntity', (cashRegister: CashRegisterOrmEntity) => cashRegister.printerConfiguration, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'cash_register_id' })
+    cashRegister: CashRegisterOrmEntity | null;
 
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;

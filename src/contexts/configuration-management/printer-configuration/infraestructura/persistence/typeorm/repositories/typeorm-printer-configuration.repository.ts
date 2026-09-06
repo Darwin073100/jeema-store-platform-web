@@ -31,12 +31,14 @@ export class TypeormPrinterConfigurationRepository implements PrinterConfigurati
         return PrinterConfigurationMapper.toDomainEntity(ormEntity);
     }
 
-    async findByBranchOffice(branchOfficeId: bigint): Promise<PrinterConfigurationEntity[]> {
-        const result = await this.typeormRepository.find({
-            where: { branchOfficeId },
-            order: { createdAt: 'ASC' },
+    async findByCashRegister(cashRegisterId: bigint): Promise<PrinterConfigurationEntity | null> {
+        const ormEntity = await this.typeormRepository.findOne({
+            where: { cashRegisterId },
         });
-        return result.map(item => PrinterConfigurationMapper.toDomainEntity(item));
+        if (!ormEntity) {
+            return null;
+        }
+        return PrinterConfigurationMapper.toDomainEntity(ormEntity);
     }
 
     async save(entity: PrinterConfigurationEntity): Promise<PrinterConfigurationEntity> {

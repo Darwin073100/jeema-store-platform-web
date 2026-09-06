@@ -2,6 +2,7 @@ import { BranchOfficeMapper } from "src/contexts/establishment-management/branch
 import { CashRegisterEntity } from "../../domain/entities/cash-register.entity";
 import { CashRegisterOrmEntity } from "../entities/cash-register.orm-entity";
 import { CashSessionMapper } from "src/contexts/cash-management/cash-session/infraestructure/mappers/cash-session.mapper";
+import { PrinterConfigurationMapper } from "src/contexts/configuration-management/printer-configuration/infraestructura/persistence/typeorm/mappers/printer-configuration.mapper";
 
 export class CashRegisterMapper {
     public static toDomain(ormEntity: CashRegisterOrmEntity){
@@ -15,6 +16,7 @@ export class CashRegisterMapper {
             ormEntity.deletedAt,
             ormEntity.branchOffice ? BranchOfficeMapper.toDomainEntity(ormEntity.branchOffice): null,
             ormEntity.cashSessions ? ormEntity.cashSessions.map(item => CashSessionMapper.toDomain(item)): null,
+            ormEntity.printerConfiguration ? PrinterConfigurationMapper.toDomainEntity(ormEntity.printerConfiguration): null,
         );
         return domainEntity;
     }
@@ -30,6 +32,7 @@ export class CashRegisterMapper {
             deletedAt: domainEntity.deletedAt,
             branchOffice: domainEntity.branchOffice? BranchOfficeMapper.toOrmEntity(domainEntity.branchOffice): null,
             cashSessions: domainEntity.cashSessions? domainEntity.cashSessions.map(item => CashSessionMapper.toOrm(item)): null,
+            printerConfiguration: domainEntity.printerConfiguration? PrinterConfigurationMapper.toTypeOrmEntity(domainEntity.printerConfiguration): null,
         }
         return ormEntity;
     }

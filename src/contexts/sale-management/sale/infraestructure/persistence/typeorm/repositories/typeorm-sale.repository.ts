@@ -86,7 +86,11 @@ export class TypeormSaleRepository implements SaleRepository{
                     establishment: {
                         details: true
                     }
-                }
+                },
+                // Necesario para que ISale.cashSession.cashRegisterId llegue poblado al cliente:
+                // el frontend lo usa para resolver la impresora de la caja que hizo la venta
+                // (ver spect/06_impresora_por_caja_spect.md).
+                cashSession: true,
             },
         });
         if (!ormEntity) {

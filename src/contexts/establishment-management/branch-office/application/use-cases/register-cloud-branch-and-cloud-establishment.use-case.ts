@@ -35,8 +35,9 @@ export class RegisterCloudBranchAndCloudEstablishmentUseCase {
       const result = await this.cloudBranchOfficeRepository.registerCloudBranchAndCloudEstablishment({
         branchOfficeName: dto.branchOfficeName,
         establishmentName: dto.establishmentName,
-        localBranchOfficeId: dto.branchOfficeId,
-        enrollmentKey: dto.enrollmentKey
+        enrollmentKey: dto.enrollmentKey,
+        branchOfficeId: dto.branchOfficeId,
+        establishmentId: dto.establishmentId,
       });
 
       if(result.ok && result.value && result.value.cloudEstablishment?.enrollmentKey && result.value.cloudEstablishment?.enrollmentKey.trim().length > 0){
