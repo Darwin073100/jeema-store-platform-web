@@ -26,15 +26,6 @@ export default async function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
               {establishment && <WorkspaceInformation 
                 establishment={establishment}/>}
-
-              <div className="flex flex-col justify-center items-center bg-blue-400 text-white rounded-lg shadow-md p-6">
-                <span className="text-center">CANTIDAD DE PRODUCTOS</span>
-                <span className="font-bold text-2xl">{numberBasicFormat(2000)}</span>
-              </div>
-              <div className="flex flex-col justify-center items-center bg-green-400 text-white rounded-lg shadow-md p-6">
-                <span className="text-center">{`VENTAS ${new Date().getFullYear()}`}</span>
-                <span className="font-bold text-2xl">{numberBasicFormat(2000)}</span>
-              </div>
               <div className="flex flex-col justify-center items-center bg-purple-400 text-white rounded-lg shadow-md p-6">
                 <span className="text-center">SUCURSALES</span>
                 <span className="font-bold text-2xl">{numberBasicFormat(establishment?.branchOffices.length ?? 0)}</span>
