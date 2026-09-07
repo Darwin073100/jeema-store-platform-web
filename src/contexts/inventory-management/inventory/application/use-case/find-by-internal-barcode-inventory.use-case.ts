@@ -7,6 +7,7 @@ export class FindByInternalBarCodeInventoryUseCase {
     ){}
 
     async execute(internalBarCode: string):Promise<InventoryEntity | null>{
-        return this.inventoryRepository.findByInternalBarCode(internalBarCode);
+        const currentBarCode = internalBarCode.trim();
+        return this.inventoryRepository.findByInternalBarCode(currentBarCode);
     }
 }

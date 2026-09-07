@@ -53,6 +53,25 @@ export class RegisterSaleDetailUseCase{
         return { finalPrice, quantity, unitPriceAtSale, regularPriceAtSale, subTotal, discountTotal };
     }
 
+    /**
+     * Valida que el area de venta tenga stock suficiente para la cantidad total solicitada.
+     * No combina el stock de almacen con el de venta (son ubicaciones separadas a proposito):
+     * si falta stock en venta, informa si se puede reabastecer desde almacen o si no hay stock en absoluto.
+     */
+    private ensureSufficientSaleStock(quantitySale: number, quantityStock: number, requestedQuantity: number): void {
+        if ((quantitySale - requestedQuantity) >= 0) return;
+
+        if (quantitySale > 0) {
+            throw new InventoryInsufficientStockException('No tienes suficiente stock para la venta.');
+        }
+
+        if (quantityStock >= requestedQuantity) {
+            throw new InventoryInsufficientStockException('Reabastece tu area de ventas con tu almacen.');
+        }
+
+        throw new InventoryInsufficientStockException('No hay stock disponible.');
+    }
+
     // TODO: Cuando encuentre un registro ya existente, debe hacer algo para que recalcule sin inconsistencias el inventario de ventas.
     async execute(command: AddDetailToSaleDto){
         //* Verificar que la venta a la que se va signar exista
@@ -81,92 +100,47 @@ export class RegisterSaleDetailUseCase{
         let quantityStock = Number(locationStock?.quantityOnHand.value ?? 0);
 
         if(saleDetailExist){
-            if(!hasStockControl){
-                const { quantity, unitPriceAtSale, regularPriceAtSale, subTotal, discountTotal } = this.calculatePricing(inventory, command);
-
-                saleDetailExist.updateQuantity(quantity);
-                saleDetailExist.updateUnitPriceAtSale(unitPriceAtSale);
-                saleDetailExist.updateRegularPriceAtSale(regularPriceAtSale);
-                saleDetailExist.updateSaleDetailSubTotal(subTotal);
-                saleDetailExist.updateSaleDetailDiscount(discountTotal);
-                saleDetailExist.updateSaleFor(command.saleFor);
-                saleDetailExist.updateProductUnitAtSale(command.productUnitAtSale);
-                saleDetailExist.updateNotes(command.notes ?? null);
-                return await this.saleDetailRepository.save(saleDetailExist);
+            if(hasStockControl){
+                this.ensureSufficientSaleStock(quantitySale, quantityStock, command.quantity);
             }
-            if((quantitySale - command.quantity) < 0){
-                throw new InventoryInsufficientStockException('No tienes suficiente stock para la venta.');
-            } else if(((quantitySale - command.quantity) >= 0)) {
-                const { quantity, unitPriceAtSale, regularPriceAtSale, subTotal, discountTotal } = this.calculatePricing(inventory, command);
 
-                saleDetailExist.updateQuantity(quantity);
-                saleDetailExist.updateUnitPriceAtSale(unitPriceAtSale);
-                saleDetailExist.updateRegularPriceAtSale(regularPriceAtSale);
-                saleDetailExist.updateSaleDetailSubTotal(subTotal);
-                saleDetailExist.updateSaleDetailDiscount(discountTotal);
-                saleDetailExist.updateSaleFor(command.saleFor);
-                saleDetailExist.updateProductUnitAtSale(command.productUnitAtSale);
-                saleDetailExist.updateNotes(command.notes ?? null);
-                return await this.saleDetailRepository.save(saleDetailExist);
-            }
-        }
-
-        let saleDetail: SaleDetailEntity;
-        if(!hasStockControl){
             const { quantity, unitPriceAtSale, regularPriceAtSale, subTotal, discountTotal } = this.calculatePricing(inventory, command);
 
-            saleDetail = SaleDetailEntity.create(
-                command.saleId,
-                product.productId,
-                inventory.inventoryId,
-                product.name.value,
-                command.productBarCodeAtSale,
-                command.productUnitAtSale,
-                quantity,
-                unitPriceAtSale,
-                regularPriceAtSale,
-                subTotal,
-                discountTotal,
-                command.saleFor,
-                product.description.value,
-                product.brand?.name ?? null,
-                product.category?.name ?? null,
-                command.notes ?? null
-            );
-            return await this.saleDetailRepository.save(saleDetail);
+            saleDetailExist.updateQuantity(quantity);
+            saleDetailExist.updateUnitPriceAtSale(unitPriceAtSale);
+            saleDetailExist.updateRegularPriceAtSale(regularPriceAtSale);
+            saleDetailExist.updateSaleDetailSubTotal(subTotal);
+            saleDetailExist.updateSaleDetailDiscount(discountTotal);
+            saleDetailExist.updateSaleFor(command.saleFor);
+            saleDetailExist.updateProductUnitAtSale(command.productUnitAtSale);
+            saleDetailExist.updateNotes(command.notes ?? null);
+            return await this.saleDetailRepository.save(saleDetailExist);
         }
 
-        if(quantitySale > 0){
-            if(((quantitySale - command.quantity) < 0)){
-                throw new InventoryInsufficientStockException('No tienes suficiente stock para la venta.');
-            } else if(((quantitySale - command.quantity) >= 0)){
-                const { quantity, unitPriceAtSale, regularPriceAtSale, subTotal, discountTotal } = this.calculatePricing(inventory, command);
-
-                saleDetail = SaleDetailEntity.create(
-                    command.saleId,
-                    product.productId,
-                    inventory.inventoryId,
-                    product.name.value,
-                    command.productBarCodeAtSale,
-                    command.productUnitAtSale,
-                    quantity,
-                    unitPriceAtSale,
-                    regularPriceAtSale,
-                    subTotal,
-                    discountTotal,
-                    command.saleFor,
-                    product.description.value,
-                    product.brand?.name ?? null,
-                    product.category?.name ?? null,
-                    command.notes ?? null
-                );
-                return await this.saleDetailRepository.save(saleDetail);
-            }
-        } else {
-            if(quantityStock >= command.quantity){
-                throw new InventoryInsufficientStockException('Reabastece tu area de ventas con tu almacen.');
-            }
-            throw new InventoryInsufficientStockException('No hay stock disponible.');
+        if(hasStockControl){
+            this.ensureSufficientSaleStock(quantitySale, quantityStock, command.quantity);
         }
+
+        const { quantity, unitPriceAtSale, regularPriceAtSale, subTotal, discountTotal } = this.calculatePricing(inventory, command);
+
+        const saleDetail = SaleDetailEntity.create(
+            command.saleId,
+            product.productId,
+            inventory.inventoryId,
+            product.name.value,
+            command.productBarCodeAtSale,
+            command.productUnitAtSale,
+            quantity,
+            unitPriceAtSale,
+            regularPriceAtSale,
+            subTotal,
+            discountTotal,
+            command.saleFor,
+            product.description.value,
+            product.brand?.name ?? null,
+            product.category?.name ?? null,
+            command.notes ?? null
+        );
+        return await this.saleDetailRepository.save(saleDetail);
     }
 }
