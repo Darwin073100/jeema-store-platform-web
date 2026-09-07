@@ -191,6 +191,7 @@ const useSale = () => {
         handleUpdateSaleDetails,
         hancleCalculateDetailPrice,
         handleChangeSearch,
+        handleSearchInventory,
         searchValue,
         handleSubmit,
         inputRef,
