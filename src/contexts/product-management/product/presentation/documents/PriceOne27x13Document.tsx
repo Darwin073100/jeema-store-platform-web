@@ -31,8 +31,20 @@ const styles = StyleSheet.create({
   },
   priceText: {
     width: '100%',
-    fontSize: 9,
-    fontWeight: 500,
+    fontSize: 15,
+    fontWeight: 400,
+    color: '#000000',
+    lineHeight: 1.1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center'
+  },
+
+  priceText2: {
+    width: '100%',
+    fontSize: 10,
+    fontWeight: 400,
     color: '#000000',
     lineHeight: 1.1,
     flexDirection: 'row',
@@ -44,37 +56,33 @@ const styles = StyleSheet.create({
 
 interface BarcodeProp {
   priceOne: number;
-  priceMany: number;
 }
 
-const PriceLabel: React.FC<{ priceOne: number; priceMany: number }> = ({ priceOne, priceMany }) => (
+const PriceLabel: React.FC<{ priceOne: number}> = ({ priceOne}) => (
   <View style={styles.labelContainer}>
-    <Text style={styles.priceText}>
-      {numberMoneyFormat(Number(priceOne ?? 0))} Men.
-    </Text>
-    <Text style={styles.priceText}>
-      {numberMoneyFormat(Number(priceMany ?? 0))} May.
+    <Text style={styles.priceText2}>
+      {numberMoneyFormat(Number(priceOne ?? 0))}
     </Text>
   </View>
 );
 
-export const Price27x13Document: React.FC<BarcodeProp> = ({ priceOne, priceMany }) => (
+export const PriceOne27x13Document: React.FC<BarcodeProp> = ({ priceOne }) => (
   <Document>
     <Page size={[mmToPt(90), mmToPt(13)]} style={styles.page}>
       {/* Etiqueta 1 */}
-      <PriceLabel priceOne={priceOne} priceMany={priceMany} />
+      <PriceLabel priceOne={priceOne}/>
       
       {/* Gap */}
       <View style={styles.gap} />
       
       {/* Etiqueta 2 */}
-      <PriceLabel priceOne={priceOne} priceMany={priceMany} />
+      <PriceLabel priceOne={priceOne}/>
       
       {/* Gap */}
       <View style={styles.gap} />
       
       {/* Etiqueta 3 */}
-      <PriceLabel priceOne={priceOne} priceMany={priceMany} />
+      <PriceLabel priceOne={priceOne}/>
     </Page>
   </Document>
 );

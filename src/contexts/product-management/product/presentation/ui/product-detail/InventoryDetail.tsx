@@ -26,6 +26,7 @@ import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 import { IProduct } from '@/contexts/product-management/product/presentation/interfaces/IProduct'
 import { useRegisterLotModal } from '@/contexts/purchase-management/lot/presentation/hooks'
 import { CardGrid } from '@/shared/ui/components/grids/CardGrid'
+import { ProductPriceOne27x13Modal } from './ProductPriceOne27x13Modal'
 
 interface Props {
     product: IProduct
@@ -106,13 +107,22 @@ const InventoryDetail = ({ product }: Props) => {
                                         size='sm'
                                         title='Imprimir precios de mayoreo y menudeo'
                                         onClick={() => openProductModal('print-labels-prices-27x13')}>
-                                        Precios
+                                        Precios 1:N
+                                        <ImPrinter />
+                                    </Button>
+                                    <Button
+                                        color='green'
+                                        size='sm'
+                                        title='Imprimir precios de mayoreo y menudeo'
+                                        onClick={() => openProductModal('print-labels-price-one-27x13')}>
+                                        Menudeo
                                         <ImPrinter />
                                     </Button>
                                 </div>
                                 <ProductBarCodeModal product={product} />
                                 <ProductBarCode51x25Modal product={product} />
                                 <ProductPrice27x13Modal inventoryId={product.inventory.inventoryId} />
+                                <ProductPriceOne27x13Modal inventoryId={product.inventory.inventoryId}/>
                                 <div className="text-gray-900 font-semibold">
                                     <div className='printable-content'>
                                         <Barcode
