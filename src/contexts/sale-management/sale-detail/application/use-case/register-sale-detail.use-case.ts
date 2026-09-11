@@ -99,6 +99,10 @@ export class RegisterSaleDetailUseCase{
         let quantitySale = Number(locationSale?.quantityOnHand.value ?? 0);
         let quantityStock = Number(locationStock?.quantityOnHand.value ?? 0);
 
+        //* Congela el costo promedio móvil del producto en el momento de la venta (snapshot).
+        //* El promedio en sí no cambia al vender, solo se congela ese valor en el detalle.
+        const unitCostAtSale = product.averageCost;
+
         if(saleDetailExist){
             if(hasStockControl){
                 this.ensureSufficientSaleStock(quantitySale, quantityStock, command.quantity);
@@ -114,6 +118,7 @@ export class RegisterSaleDetailUseCase{
             saleDetailExist.updateSaleFor(command.saleFor);
             saleDetailExist.updateProductUnitAtSale(command.productUnitAtSale);
             saleDetailExist.updateNotes(command.notes ?? null);
+            saleDetailExist.updateUnitCostAtSale(unitCostAtSale);
             return await this.saleDetailRepository.save(saleDetailExist);
         }
 
@@ -139,7 +144,8 @@ export class RegisterSaleDetailUseCase{
             product.description.value,
             product.brand?.name ?? null,
             product.category?.name ?? null,
-            command.notes ?? null
+            command.notes ?? null,
+            unitCostAtSale
         );
         return await this.saleDetailRepository.save(saleDetail);
     }

@@ -1,5 +1,4 @@
 import { SaleRepository } from "src/contexts/sale-management/sale/domain/repositories/sale.repository";
-import { LotRepository } from "src/contexts/purchase-management/lot/domain/repositories/lot.repository";
 import { TransactionEntity } from "../../domain/entities/transaction.entity";
 import { AccountTypeEnum } from "src/contexts/transaction-management/transaction-type/domain/enums/account-type.enum";
 import { SaleStatusEnum } from "src/contexts/sale-management/sale/domain/enums/sale-status.enum";
@@ -12,7 +11,6 @@ import { TransactionsFinancialSummaryResponseDTO } from "../dtos/transactions-fi
 export class GetTransactionsFinancialSummaryUseCase {
     constructor(
         private readonly saleRepository: SaleRepository,
-        private readonly lotRepository: LotRepository,
     ) {}
 
     async execute(transactions: TransactionEntity[]): Promise<TransactionsFinancialSummaryResponseDTO> {
@@ -43,21 +41,11 @@ export class GetTransactionsFinancialSummaryUseCase {
         // aquí a totalInvested, ya que no tienen costo atribuible (misma asimetría que en cash).
         const saleDetails = completedSales.flatMap(sale => sale.saleDetails ?? []);
 
-        // 7. Costo unitario promedio ponderado por producto (mismo algoritmo que GetCashSessionSalesSummaryUseCase)
-        const productIds = Array.from(new Set(saleDetails.map(detail => detail.productId)));
-        const avgUnitCostByProduct = new Map<bigint, number>();
-        await Promise.all(productIds.map(async productId => {
-            const lots = await this.lotRepository.findAllByProductId(productId);
-            const unitsPurchased = lots.reduce((acc, lot) => acc + lot.initialQuantity, 0);
-            const totalCost = lots.reduce((acc, lot) => acc + lot.purchasePrice * lot.initialQuantity, 0);
-            avgUnitCostByProduct.set(productId, unitsPurchased > 0 ? totalCost / unitsPurchased : 0);
-        }));
-
-        // 8. Total invertido
-        const totalInvested = saleDetails.reduce((acc, detail) => {
-            const avgUnitCost = avgUnitCostByProduct.get(detail.productId) ?? 0;
-            return acc + detail.quantity * avgUnitCost;
-        }, 0);
+        // 7-8. Total invertido: se suma quantity * unitCostAtSale, congelado en cada detalle de
+        // venta al momento de vender (mismo criterio que GetCashSessionSalesSummaryUseCase). Ya no
+        // se recalcula un promedio en vivo sobre los lotes actuales — el resumen financiero de
+        // transacciones ya cerradas no debe moverse con el tiempo.
+        const totalInvested = saleDetails.reduce((acc, detail) => acc + detail.quantity * (detail.unitCostAtSale ?? 0), 0);
 
         // 9. Ganancia antes de egresos
         const profitBeforeExpenses = totalIncomes - totalInvested;

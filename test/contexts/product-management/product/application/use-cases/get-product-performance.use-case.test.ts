@@ -22,7 +22,7 @@ import { ReturnsEntity } from '@/contexts/sale-management/returns/domain/entitie
 
 const PRODUCT_ID = BigInt(876);
 
-function buildProduct(inventoryItemsQty: number[], salePriceOne: number | null) {
+function buildProduct(inventoryItemsQty: number[], salePriceOne: number | null, averageCost: number = 0) {
     const inventory = InventoryEntity.reconstitute(
         BigInt(1),
         PRODUCT_ID,
@@ -70,6 +70,7 @@ function buildProduct(inventoryItemsQty: number[], salePriceOne: number | null) 
         null,
         inventory,
         null,
+        averageCost,
     );
 }
 
@@ -100,6 +101,7 @@ function buildSaleDetail(params: {
     quantity: number;
     subtotalItem: number;
     saleCreatedAt: Date;
+    unitCostAtSale?: number | null;
     returns?: { quantityReturn: number; amountReturn: number }[];
 }) {
     const returns = params.returns?.map((item, index) => ReturnsEntity.reconstitute(
@@ -143,6 +145,7 @@ function buildSaleDetail(params: {
         null,
         null,
         returns,
+        params.unitCostAtSale ?? null,
     );
 }
 
@@ -180,14 +183,17 @@ describe('GetProductPerformanceUseCase', () => {
         useCase = new GetProductPerformanceUseCase(productRepository, saleDetailRepository, lotRepository);
     });
 
-    test('calcula ventas netas, costo promedio ponderado, ganancia y valorización de stock', async () => {
-        productRepository.findById.mockResolvedValue(buildProduct([5, 3], 150));
+    test('calcula ventas netas, costo de lo vendido (congelado por venta), ganancia y valorización de stock', async () => {
+        // averageCost=55 simula el costo promedio móvil ACTUAL del producto (independiente del
+        // rango de fechas filtrado, y de los lotes de compra usados solo en el panel "Compras").
+        productRepository.findById.mockResolvedValue(buildProduct([5, 3], 150, 55));
         saleDetailRepository.findAllByProductId.mockResolvedValue([
-            buildSaleDetail({ quantity: 10, subtotalItem: 1000, saleCreatedAt: new Date('2026-01-10') }),
+            buildSaleDetail({ quantity: 10, subtotalItem: 1000, saleCreatedAt: new Date('2026-01-10'), unitCostAtSale: 50 }),
             buildSaleDetail({
                 quantity: 5,
                 subtotalItem: 500,
                 saleCreatedAt: new Date('2026-02-15'),
+                unitCostAtSale: 60,
                 returns: [{ quantityReturn: 1, amountReturn: 100 }],
             }),
         ]);
@@ -206,17 +212,21 @@ describe('GetProductPerformanceUseCase', () => {
         expect(result.sales.netRevenue).toBe(1400);
         expect(result.sales.lastSaleDate).toEqual(new Date('2026-02-15'));
 
+        // Panel "Compras": sigue siendo informativo sobre lo comprado en el rango (no alimenta el costo de venta).
         expect(result.purchases.unitsPurchased).toBe(20);
         expect(result.purchases.totalCost).toBe(1100); // 50*10 + 60*10
         expect(result.purchases.avgUnitCost).toBe(55); // 1100 / 20
         expect(result.purchases.lastPurchaseDate).toEqual(new Date('2026-02-01'));
 
-        expect(result.profit.estimatedCOGS).toBe(770); // 55 * 14
-        expect(result.profit.grossProfit).toBe(630); // 1400 - 770
-        expect(result.profit.marginPercent).toBeCloseTo(45, 5); // 630 / 1400 * 100
+        // Costo de lo vendido: se suma quantity * unitCostAtSale (congelado por venta), no se
+        // recalcula desde los lotes actuales. 10*50 + 5*60 = 800; 800 / 15 unidades vendidas ≈ 53.333
+        expect(result.profit.estimatedCOGS).toBeCloseTo((800 / 15) * 14, 5); // avgSaleUnitCost * netUnitsSold
+        expect(result.profit.grossProfit).toBeCloseTo(1400 - (800 / 15) * 14, 5);
+        expect(result.profit.marginPercent).toBeCloseTo(((1400 - (800 / 15) * 14) / 1400) * 100, 5);
 
         expect(result.inventory.currentStockTotal).toBe(8); // 5 + 3
         expect(result.inventory.currentStockSaleValue).toBe(1200); // 8 * 150
+        // Valorizado con Product.averageCost (costo promedio móvil actual), no con el promedio de compras del rango.
         expect(result.inventory.currentStockCostValue).toBe(440); // 8 * 55
     });
 
@@ -232,6 +242,7 @@ describe('GetProductPerformanceUseCase', () => {
         expect(result.profit.grossProfit).toBe(0);
         expect(result.inventory.currentStockTotal).toBe(0);
         expect(result.inventory.currentStockSaleValue).toBe(0);
+        expect(result.inventory.currentStockCostValue).toBe(0);
         expect(result.sales.lastSaleDate).toBeNull();
         expect(result.purchases.lastPurchaseDate).toBeNull();
     });

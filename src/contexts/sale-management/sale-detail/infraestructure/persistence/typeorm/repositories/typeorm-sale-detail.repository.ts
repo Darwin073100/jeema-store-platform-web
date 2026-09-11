@@ -44,6 +44,7 @@ export class TypeormSaleDetailRepository implements SaleDetailRepository {
                     discountItem: entity.discountItem,
                     saleFor: entity.saleFor,
                     subtotalItem: entity.subtotalItem,
+                    unitCostAtSale: entity.unitCostAtSale,
                     notes: entity.notes,
                     productBrandAtSale: entity.productBrandAtSale,
                     productCategoryAtSale: entity.productCategoryAtSale,

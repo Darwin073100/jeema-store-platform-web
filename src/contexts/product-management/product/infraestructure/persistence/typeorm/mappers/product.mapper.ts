@@ -41,6 +41,7 @@ export class ProductTypeOrmMapper {
       lots,
       entity.inventory ? InventoryMapper.toDomain(entity.inventory): null,
       entity.saleDetails ? entity.saleDetails.map(saleDetail => SaleDetailMapper.toDomainEntity(saleDetail)): null,
+      entity.averageCost !== null && entity.averageCost !== undefined ? Number(entity.averageCost) : 0,
     );
   }
 
@@ -58,6 +59,7 @@ export class ProductTypeOrmMapper {
     orm.unitOfMeasure = entity.unitOfMeasure;
     orm.minStockGlobal = entity.minStockGlobal !== null ? entity.minStockGlobal.toString() : null;
     orm.imageUrl = entity.imageUrl;
+    orm.averageCost = entity.averageCost.toString();
     orm.createdAt = entity.createdAt;
     orm.updatedAt = entity.updatedAt;
     orm.deletedAt = entity.deletedAt;

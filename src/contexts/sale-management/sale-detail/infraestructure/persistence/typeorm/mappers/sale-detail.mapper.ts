@@ -24,6 +24,7 @@ export class SaleDetailMapper {
     ormEntity.discountItem = domainEntity.discountItem;
     ormEntity.saleFor = domainEntity.saleFor;
     ormEntity.subtotalItem = domainEntity.subtotalItem;
+    ormEntity.unitCostAtSale = domainEntity.unitCostAtSale;
     ormEntity.notes = domainEntity.notes;
     ormEntity.createdAt = domainEntity.createdAt;
     ormEntity.updatedAt = domainEntity.updatedAt;
@@ -61,6 +62,7 @@ export class SaleDetailMapper {
       ormEntity.product ? ProductTypeOrmMapper.toDomain(ormEntity.product) : null,
       ormEntity.inventory ? InventoryMapper.toDomain(ormEntity.inventory) : null,
       ormEntity.returns ? ormEntity.returns.map(item => ReturnsMapper.toDomain(item)) : null,
+      ormEntity.unitCostAtSale !== null && ormEntity.unitCostAtSale !== undefined ? Number(ormEntity.unitCostAtSale) : null,
     );
   }
 }

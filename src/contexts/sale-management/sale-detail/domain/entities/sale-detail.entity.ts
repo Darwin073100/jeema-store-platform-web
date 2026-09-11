@@ -38,6 +38,7 @@ export class SaleDetailEntity {
   private _subtotalItem: SaleDetailSubTotalVO;
   private _saleFor: SaleForEnum;
   private _notes: SaleDetailNotesVO;
+  private _unitCostAtSale: number | null;
 
   // Relaciones
   private _sale: SaleEntity | null;
@@ -75,6 +76,7 @@ export class SaleDetailEntity {
     product: ProductEntity | null,
     inventory: InventoryEntity | null,
     returns: ReturnsEntity[] | null,
+    unitCostAtSale: number | null,
   ) {
     this._saleDetailId = saleDetailId;
     this._saleId = saleId;
@@ -100,6 +102,7 @@ export class SaleDetailEntity {
     this._product = product;
     this._inventory = inventory;
     this._returns = returns;
+    this._unitCostAtSale = unitCostAtSale;
   }
 
   // Getters
@@ -203,6 +206,19 @@ export class SaleDetailEntity {
     this._notes = SaleDetailNotesVO.create(notes);
   }
 
+  get unitCostAtSale(): number | null {
+    return this._unitCostAtSale;
+  }
+
+  /**
+   * Congela el costo promedio móvil del producto (Product.averageCost) en el momento de la venta.
+   * No se vuelve a recalcular después: los reportes financieros ya cerrados no deben moverse
+   * con el tiempo aunque el costo promedio actual del producto cambie más adelante.
+   */
+  public updateUnitCostAtSale(unitCostAtSale: number | null): void {
+    this._unitCostAtSale = unitCostAtSale;
+  }
+
   get sale(): SaleEntity | null {
     return this._sale;
   }
@@ -247,6 +263,7 @@ export class SaleDetailEntity {
     productBrandAtSale: string | null,
     productCategoryAtSale: string | null,
     notes: string | null,
+    unitCostAtSale: number | null = null,
   ): SaleDetailEntity {
     const saleDetail = new SaleDetailEntity(
       BigInt(0), // Generar un ID único (esto es solo un ejemplo, en un entorno real usarías un generador de IDs adecuado)
@@ -272,7 +289,8 @@ export class SaleDetailEntity {
       null,
       null,
       null,
-      null
+      null,
+      unitCostAtSale
     );
 
     return saleDetail;
@@ -303,6 +321,7 @@ export class SaleDetailEntity {
     product: ProductEntity | null,
     inventory: InventoryEntity | null,
     returns: ReturnsEntity[] | null,
+    unitCostAtSale: number | null = null,
   ): SaleDetailEntity {
     return new SaleDetailEntity(
       saleDetailId,
@@ -328,7 +347,8 @@ export class SaleDetailEntity {
       sale,
       product,
       inventory,
-      returns
+      returns,
+      unitCostAtSale
     );
   }
 }

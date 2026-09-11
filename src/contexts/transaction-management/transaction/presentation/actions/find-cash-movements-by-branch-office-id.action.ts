@@ -8,7 +8,6 @@ import { IBranchOffice } from '@/contexts/establishment-management/branch-office
 import { Result } from '@/shared/lib/utils/result';
 import { TransactionMapper } from '../../application/mappers/transaction.mapper';
 import { TypeormSaleRepository } from 'src/contexts/sale-management/sale/infraestructure/persistence/typeorm/repositories/typeorm-sale.repository';
-import { TypeOrmLotRepository } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/repositories/typeorm-lot.repository';
 import { GetTransactionsFinancialSummaryUseCase } from '../../application/use-cases/get-transactions-financial-summary.use-case';
 
 export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTransactionsDTO, 'establishmentId'|'branchOfficeId'>){
@@ -42,8 +41,7 @@ export async function findAllManyFilterTransactionsAction(dto: Omit<ManyFilterTr
 
         // Inyeccion de las dependencias del resumen financiero usando Factory
         const saleRepository = await TypeormSaleRepository.create();
-        const lotRepository = await TypeOrmLotRepository.create();
-        const financialSummaryUseCase = new GetTransactionsFinancialSummaryUseCase(saleRepository, lotRepository);
+        const financialSummaryUseCase = new GetTransactionsFinancialSummaryUseCase(saleRepository);
         const financialSummary = await financialSummaryUseCase.execute(result);
 
         return {

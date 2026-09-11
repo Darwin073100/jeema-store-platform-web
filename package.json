@@ -31,7 +31,8 @@
     "test": "jest --watchAll",
     "migration:generate": "tsx src/configuration/databases/typeorm/scripts/create.migration.ts",
     "migration:run": "tsx src/configuration/databases/typeorm/scripts/run.migration.ts",
-    "migration:revert": "tsx src/configuration/databases/typeorm/scripts/revert.migration.ts"
+    "migration:revert": "tsx src/configuration/databases/typeorm/scripts/revert.migration.ts",
+    "backfill:average-cost": "tsx src/configuration/databases/typeorm/scripts/backfill-average-cost.ts"
   },
   "dependencies": {
     "@bwip-js/browser": "^4.11.2",

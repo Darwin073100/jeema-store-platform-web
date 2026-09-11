@@ -37,6 +37,8 @@ export class ProductOrmEntity {
     minStockGlobal: string | null;
     @Column({ type: 'varchar', length: 255, name: 'image_url', nullable: true })
     imageUrl: string | null;
+    @Column({ type: 'decimal', precision: 14, scale: 4, name: 'average_cost', default: 0 })
+    averageCost: string;
 
     @ManyToOne(() => EstablishmentOrmEntity, (establishment) => establishment.products)
     @JoinColumn({ name: 'establishment_id' })

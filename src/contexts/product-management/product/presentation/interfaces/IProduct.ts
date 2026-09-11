@@ -18,6 +18,7 @@ export interface IProduct {
   unitOfMeasure: string;
   minStockGlobal: number | null;
   imageUrl: string | null;
+  averageCost: number;
   season: ISeason | null;
   brand: IBrand | null;
   category: ICategory | null;

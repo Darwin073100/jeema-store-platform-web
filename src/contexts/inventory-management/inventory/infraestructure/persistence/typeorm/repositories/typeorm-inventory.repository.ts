@@ -164,4 +164,12 @@ export class TypeormInventoryRepository implements InventoryRepository{
         return result.map(item => InventoryMapper.toDomain(item));
     }
 
+    async findAllByProductId(productId: bigint): Promise<InventoryEntity[]> {
+        const result = await this.inventoryRepository.find({
+            where: { productId },
+            relations: ['inventoryItems'],
+        });
+        return result.map(item => InventoryMapper.toDomain(item));
+    }
+
 }

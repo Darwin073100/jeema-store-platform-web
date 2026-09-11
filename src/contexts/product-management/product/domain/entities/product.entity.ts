@@ -25,6 +25,7 @@ export class ProductEntity {
   private _unitOfMeasure: ForSaleEnum;
   private _minStockGlobal: number | null;
   private _imageUrl: string | null;
+  private _averageCost: number;
   private readonly _createdAt: Date;
   private _updatedAt: Date | null;
   private _deletedAt: Date | null;
@@ -61,6 +62,7 @@ export class ProductEntity {
     lots?: LotEntity[] | null,
     inventory?: InventoryEntity|null,
     saleDetails?: SaleDetailEntity[]|null,
+    averageCost?: number,
   ) {
     this._productId = productId;
     this._establishmentId = establishmentId;
@@ -74,6 +76,7 @@ export class ProductEntity {
     this._unitOfMeasure = unitOfMeasure;
     this._minStockGlobal = minStockGlobal;
     this._imageUrl = imageUrl;
+    this._averageCost = averageCost ?? 0;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
@@ -99,6 +102,7 @@ export class ProductEntity {
     unitOfMeasure: ForSaleEnum,
     minStockGlobal: number | null,
     imageUrl: string | null,
+    averageCost?: number,
   ): ProductEntity {
     const now = new Date();
     return new ProductEntity(
@@ -123,7 +127,8 @@ export class ProductEntity {
       null,
       null,
       null,
-      null
+      null,
+      averageCost ?? 0
     );
   }
 
@@ -150,6 +155,7 @@ export class ProductEntity {
     lots?: LotEntity[] | null,
     inventory?: InventoryEntity|null,
     saleDetails?: SaleDetailEntity[]|null,
+    averageCost?: number,
   ): ProductEntity {
     return new ProductEntity(
       productId,
@@ -174,6 +180,7 @@ export class ProductEntity {
       lots ?? null,
       inventory ?? null,
       saleDetails ?? null,
+      averageCost ?? 0,
     );
   }
 
@@ -213,6 +220,9 @@ export class ProductEntity {
   }
   get imageUrl(): string | null {
     return this._imageUrl;
+  }
+  get averageCost(): number {
+    return this._averageCost;
   }
   get createdAt(): Date {
     return this._createdAt;
@@ -287,6 +297,18 @@ export class ProductEntity {
   public updateImageUrl(newUrl: string | null): void {
     if (this._imageUrl === newUrl) return;
     this._imageUrl = newUrl;
+    this._updatedAt = new Date();
+  }
+
+  /**
+   * Actualiza el costo promedio móvil del producto (costo corriente por unidad).
+   * Se recalcula al comprar (incremental) y también manualmente vía
+   * RecalculateProductAverageCostUseCase. No se congela hasta la venta:
+   * eso lo hace SaleDetail.unitCostAtSale.
+   */
+  public updateAverageCost(newAverageCost: number): void {
+    if (this._averageCost === newAverageCost) return;
+    this._averageCost = newAverageCost;
     this._updatedAt = new Date();
   }
 

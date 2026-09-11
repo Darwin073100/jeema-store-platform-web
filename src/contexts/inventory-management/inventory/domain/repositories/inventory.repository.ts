@@ -16,4 +16,12 @@ export interface InventoryRepository extends TemplateRepository<InventoryEntity>
      * @param dto
      */
     findSellableWithoutItemsByBranchOffice(branchOfficeId: bigint, dto: FilterProductListDTO): Promise<InventoryEntity[]>;
+    /**
+     * Todos los Inventory de un producto en todas las sucursales, con sus InventoryItem cargados.
+     * Usado para sumar el quantityOnHand total de un producto (stock global) al recalcular
+     * Product.averageCost — el stock es por sucursal pero el promedio de costo es global por producto.
+     * @param {bigint} productId
+     * @returns {Promise<InventoryEntity[]>}
+     */
+    findAllByProductId(productId: bigint): Promise<InventoryEntity[]>;
 }

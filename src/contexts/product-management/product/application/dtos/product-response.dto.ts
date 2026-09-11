@@ -17,6 +17,7 @@ export class ProductResponseDto {
   unitOfMeasure: string;
   minStockGlobal: number | null;
   imageUrl: string | null;
+  averageCost: number;
   season?: SeasonResponseDto | null;
   brand?: BrandResponseDto | null;
   category?: CategoryResponseDto | null;

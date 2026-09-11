@@ -4,6 +4,7 @@ import { RegisterLotDto } from "../../application/dtos/register-lot.dto";
 import { TypeOrmLotRepository } from "../../infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
 import { RegisterLotUseCase } from "../../application/use-case/register-lot.use-case";
 import { TypeOrmProductRepository } from "@/contexts/product-management/product/infraestructure/persistence/typeorm/repositories/typeorm-product.repository";
+import { TypeormInventoryRepository } from "@/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository";
 import { Result } from "@/shared/lib/utils/result";
 import { LotMapper } from "../../application/mappers/lot.mapper";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
@@ -12,8 +13,9 @@ export async function registerLotAction(dto: RegisterLotDto) {
     try {
         const lotRepository = await TypeOrmLotRepository.create();
         const productRepository = await TypeOrmProductRepository.create();
+        const inventoryRepository = await TypeormInventoryRepository.create();
 
-        const registerLotUseCase = new RegisterLotUseCase(lotRepository, productRepository);
+        const registerLotUseCase = new RegisterLotUseCase(lotRepository, productRepository, inventoryRepository);
 
         const result = await registerLotUseCase.execute(dto);
 

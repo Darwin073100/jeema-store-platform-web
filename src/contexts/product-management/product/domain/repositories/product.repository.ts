@@ -16,4 +16,13 @@ export interface ProductRepository extends TemplateRepository<ProductEntity>{
   findAllByBranchOffice(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<ProductEntity[]>;
   existById(productId: bigint):Promise<ProductEntity | null>;
   findAllByEstablishmentAndName(establishmentId: bigint, dto: FilterProductListDTO): Promise<ProductEntity[]>;
+  /**
+   * Actualiza únicamente el costo promedio móvil (Product.averageCost) de un producto,
+   * sin tocar el resto de sus campos. Usado por RecalculateProductAverageCostUseCase y por
+   * los hooks de compra de lote (mantenimiento incremental del promedio).
+   * @param {bigint} productId
+   * @param {number} averageCost
+   * @returns {Promise<ProductEntity>}
+   */
+  updateAverageCost(productId: bigint, averageCost: number): Promise<ProductEntity>;
 }

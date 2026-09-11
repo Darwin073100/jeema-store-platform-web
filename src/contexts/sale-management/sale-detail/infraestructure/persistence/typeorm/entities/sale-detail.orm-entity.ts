@@ -40,6 +40,8 @@ export class SaleDetailOrmEntity {
   saleFor: SaleForEnum
   @Column({ type: 'decimal', precision: 14, scale: 2, name: 'subtotal_item' })
   subtotalItem: number;
+  @Column({ type: 'decimal', precision: 14, scale: 4, name: 'unit_cost_at_sale', nullable: true })
+  unitCostAtSale: number | null;
   @Column({ type: 'text', name: 'notes', nullable: true })
   notes: string | null;
   

@@ -2,14 +2,14 @@
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement'
 import { Button } from '@/shared/ui/components/buttons'
 import React, { useEffect } from 'react'
-import { HiOutlineCalendar, HiOutlineCube, HiOutlineQrcode, HiOutlineTag, HiOutlineTicket, HiPencil, HiTrash } from 'react-icons/hi'
+import { HiOutlineCalendar, HiOutlineCube, HiOutlineQrcode, HiOutlineRefresh, HiOutlineTag, HiOutlineTicket, HiPencil, HiTrash } from 'react-icons/hi'
 import { UpdateProductModal } from './UpdateProductModal'
 import { DeleteProductModal } from './DeleteProductModal'
 import { TbPackage } from 'react-icons/tb'
 import Barcode from 'react-barcode'
 import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { useDeleteProductModal } from '../../hooks/useDeleteProductModal'
-import { useUpdateProductModal } from '../../hooks'
+import { useUpdateProductModal, useRecalculateProductAverageCost } from '../../hooks'
 import { FloatMessage } from '@/shared/ui/components/messages'
 import { useRegisterInventoryItemStore } from '@/contexts/inventory-management/inventory/presentation/stores/register-inventory-item.store'
 import { useInventoryItemUIStore } from '@/contexts/inventory-management/inventory/presentation/stores/inventory-item-ui.store'
@@ -20,6 +20,7 @@ import { HiOutlinePhotograph } from 'react-icons/hi'
 import { CardGrid } from '@/shared/ui/components/grids/CardGrid'
 import { ImageUploader } from '@/contexts/image-management/image/presentation/ui'
 import { ImageOwnerType } from '@/contexts/image-management/image/domain/enums/image-owner-type.enum'
+import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 interface Props {
     product: IProduct;
 }
@@ -29,6 +30,7 @@ const ProductDetail = ({ product }: Props) => {
     const { setInventoryItems } = useRegisterInventoryItemStore();
     const { floatMessageState } = useInventoryItemUIStore();
     const { setProduct } = useProductStore();
+    const { onRecalculate, isLoading: isRecalculating, floatMessageState: recalculateFloatMessageState } = useRecalculateProductAverageCost();
 
     useEffect(() => {
         setProduct(product);
@@ -41,6 +43,9 @@ const ProductDetail = ({ product }: Props) => {
                 <FloatMessage
                     key='product-details-general'
                     {...floatMessageState} />
+                <FloatMessage
+                    key='product-details-average-cost'
+                    {...recalculateFloatMessageState} />
                 <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
                     <Button color='yellow' onClick={() => handleOpenUpdateProductModal(product)}>
                         <HiPencil className="w-4 h-4" />
@@ -111,6 +116,18 @@ const ProductDetail = ({ product }: Props) => {
                         children={formatDate(product.updatedAt)}
                         icon={<HiOutlineCalendar className="w-4 h-4" />}
                     />
+                    <CardGrid
+                        title="Costo promedio (móvil)"
+                        icon={<HiOutlineRefresh className="w-4 h-4" />}
+                    >
+                        <div className="flex items-center justify-between gap-2">
+                            <span>{numberMoneyFormat(product.averageCost)}</span>
+                            <Button color='blue' onClick={onRecalculate} disabled={isRecalculating}>
+                                <HiOutlineRefresh className={`w-4 h-4 ${isRecalculating ? 'animate-spin' : ''}`} />
+                                Recalcular costo
+                            </Button>
+                        </div>
+                    </CardGrid>
                 </div>
                 <div className="grid grid-cols-1 gap-4 mt-4">
                     <CardGrid

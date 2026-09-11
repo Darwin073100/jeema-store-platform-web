@@ -264,6 +264,11 @@ export class TypeOrmProductRepository implements ProductRepository {
         productExisting.unitOfMeasure = product.unitOfMeasure;
         productExisting.minStockGlobal = product.minStockGlobal !== null ? product.minStockGlobal.toString() : null;
         productExisting.imageUrl = product.imageUrl;
+        // NOTA: averageCost NO se sobrescribe aquí a propósito. save() lo usan flujos de edición
+        // de producto (UpdateProductUseCase) que reconstruyen la entidad desde un DTO sin costo
+        // promedio, y aquí pisarían el valor real con el default 0 de ProductEntity.create().
+        // El costo promedio se persiste exclusivamente vía updateAverageCost() (usado por
+        // RecalculateProductAverageCostUseCase y los hooks de compra).
 
         const result = await this.productRepository.save(productExisting);
         return ProductTypeOrmMapper.toDomain(result);
@@ -422,6 +427,16 @@ async findAllByEstablishmentAndName(
     const result = await this.productRepository.findOneBy({ productId });
     return result? ProductTypeOrmMapper.toDomain(result): null
   }
+  async updateAverageCost(productId: bigint, averageCost: number): Promise<ProductEntity> {
+    const productExisting = await this.productRepository.findOne({ where: { productId } });
+    if (!productExisting) {
+      throw new ProductNotFoundException('El producto que buscas no existe');
+    }
+    productExisting.averageCost = averageCost.toString();
+    const result = await this.productRepository.save(productExisting);
+    return ProductTypeOrmMapper.toDomain(result);
+  }
+
   async findByIdCategoryBrandSeason(entityId: bigint): Promise<ProductEntity | null> {
     try {
       const result = await this.productRepository.findOne({
