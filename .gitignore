@@ -11,6 +11,9 @@ prompt.xml
 !.yarn/releases
 !.yarn/versions
 
+# Ignorar el certificado de public
+/public/qz
+
 # testing
 /coverage
 
