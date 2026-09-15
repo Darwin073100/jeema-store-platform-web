@@ -35,10 +35,10 @@ const CashSalesSummary = ({ summary }: Props) => {
                 )}
             </div>
             <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)} title="Costo estimado (promedio ponderado de compra) de los productos que el cliente se quedó en esta caja">
-                <Badge type="purple">Monto Invertido</Badge>
+                <Badge type="yellow">Monto Invertido</Badge>
                 <div className="flex justify-between items-center gap-2">
                     <FcMoneyTransfer size={30} />
-                    <div className="flex justify-between gap-2 text-purple-700 items-center font-bold text-lg">
+                    <div className="flex justify-between gap-2 text-yellow-700 items-center font-bold text-lg">
                         <span>Total:</span>
                         <span>{numberMoneyFormat(totalInvested)}</span>
                     </div>

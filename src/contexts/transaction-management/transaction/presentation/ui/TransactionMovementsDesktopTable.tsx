@@ -20,11 +20,20 @@ const TransactionMovementsDesktopTable = ({ }: Props) => {
             {(!transactionsFiltered || transactionsFiltered.length === 0) && (
                 <PTableEmpty colsNumber={headTable.length + 1} />
             )}
-            {transactionsFiltered.map(item => (
+            {transactionsFiltered.map(item => {
+                const isReturn = item.transactionType?.name === 'Devolución por Venta al Cliente';
+                const isIncome = item.transactionType?.accountType === 'Ingreso';
+                return (
                 <PRow key={item.transactionId}>
                     <PCol>{item.transactionId}</PCol>
                     <PCol>{numberMoneyFormat(item.amount ?? 0)}</PCol>
-                    <PCol><Badge type={item.transactionType?.accountType==='Ingreso'? 'green': 'red'}>{item.transactionType?.accountType}</Badge></PCol>
+                    <PCol>
+                        <span title={isReturn ? 'No se cuenta como egreso: su monto ya se descontó de los ingresos de la venta.' : undefined}>
+                            <Badge type={isReturn ? 'purple' : isIncome ? 'green' : 'red'}>
+                                {item.transactionType?.accountType}
+                            </Badge>
+                        </span>
+                    </PCol>
                     <PCol>{item.transactionType?.name}</PCol>
                     <PCol>{item.description}</PCol>
                     <PCol>{item.employee?.firstName}</PCol>
@@ -36,7 +45,8 @@ const TransactionMovementsDesktopTable = ({ }: Props) => {
                         </Button>
                     </PCol>
                 </PRow>
-            ))}
+                );
+            })}
         </PrimaryTable>
     )
 }

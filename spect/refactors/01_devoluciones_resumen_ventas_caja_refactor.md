@@ -1,8 +1,10 @@
 # Refactor: Descontar devoluciones del resumen de ventas/ganancia en el corte de caja
 
-> Documento de planeación (pre-implementación). A diferencia de los `*_spect.md` de la carpeta padre, este
-> describe un **bug** en una feature ya construida (`03_resumen_ventas_caja_spect.md`) y el plan para
-> corregirlo, no una feature terminada.
+> **Implementado.** A diferencia de los `*_spect.md` de la carpeta padre, este documento describe un
+> **bug** que había en una feature ya construida (`03_resumen_ventas_caja_spect.md`) y el plan que se siguió
+> para corregirlo. Durante la implementación se detectó y corrigió el mismo bug en una segunda pantalla
+> (`/configurations/transactions`) — ver "Extensión implementada: paridad en Movimientos Financieros" al
+> final del documento.
 
 ## Problema
 
@@ -182,6 +184,75 @@ Ya está correcto; se usa como referencia, no como archivo a modificar.
 7. Verificar visualmente en `/cash/session/[cashSessionId]` contra una sesión con devoluciones reales (la
    de la captura, sesión 258, sirve como caso de prueba manual: se espera "Ventas del día" = $260.00).
 
+## Extensión implementada: paridad en "Movimientos Financieros" (`/configurations/transactions`)
+
+Durante la implementación se corroboró, a pedido del usuario, si `GetTransactionsFinancialSummaryUseCase`
+(la tarjeta "Ingresos"/"Invertido"/"Ganancia..." de `/configurations/transactions`) tenía el mismo bug que
+el resumen de caja. **Sí lo tenía**, con el agravante de que ese use-case sí trata explícitamente los
+egresos (a diferencia de la tarjeta de caja, que ni los mostraba): contaba el ingreso bruto de la venta,
+el costo de **todas** las unidades vendidas (sin descontar las devueltas), y además restaba el monto
+devuelto **otra vez** como un egreso normal (`Devolución por Venta al Cliente` es `accountType = 'Egreso'`
+y no estaba en `EXCLUDED_EXPENSE_TRANSACTION_TYPE_NAMES`) — es decir, `profitAfterExpenses` penalizaba el
+costo de la mercancía devuelta dos veces (una vía costo no descontado, otra vía el egreso) sin nunca
+devolver ese costo a "lo que el negocio realmente conservó".
+
+Se corrigió con el mismo patrón que el resumen de caja, más un cambio adicional que resuelve directamente
+los dos pedidos del usuario ("que el egreso se reste en automático a ingresos" y "ocultar esa transacción,
+que sólo se vea en caja y en detalle de venta"):
+
+1. **`TypeormSaleRepository.findManyWithDetailsByIds`**: se agregó `saleDetails.returns` a `relations`
+   (antes sólo cargaba `saleDetails: true`, sin `returns` — no había forma de netear).
+2. **`GetTransactionsFinancialSummaryUseCase`**: `totalIncomes` ahora es `grossIncomes - returnsAmount`
+   (neteado contra `saleDetail.returns[].amountReturn`, igual que en caja) y `totalInvested` se calcula
+   sobre `quantity - quantityReturn` por detalle, en vez de `quantity` completo.
+3. **`RETURN_TRANSACTION_TYPE_NAMES`** (constante nueva, mismo archivo): `['devolución por venta al
+   cliente']`. Primer intento de este refactor fue reutilizar `EXCLUDED_EXPENSE_TRANSACTION_TYPE_NAMES`
+   para además ocultar la devolución de la lista/tabla/Excel de `/configurations/transactions` — el
+   usuario pidió revertir esa parte: **quiere seguir viendo la fila en la lista/tabla**, sólo que no se
+   trate como un egreso más en los totales ni visualmente. Por eso se separó en dos constantes:
+   - `EXCLUDED_EXPENSE_TRANSACTION_TYPE_NAMES` queda como estaba originalmente (sólo `'retiro de
+     efectivo/corte de caja'`) — sigue afectando tanto la lista (`FindAllManyFilterTransactionsUseCase`)
+     como los totales.
+   - `RETURN_TRANSACTION_TYPE_NAMES` sólo la usa `GetTransactionsFinancialSummaryUseCase`, únicamente para
+     excluir la devolución de `expenseTransactions`/`totalExpenses` (evita el doble conteo descrito
+     arriba, ya que su monto se restó de `totalIncomes` en el paso 2) — **no** afecta la lista, por lo que
+     la fila sigue apareciendo en la tabla, tarjetas y export a Excel de esta pantalla.
+   - Tampoco afecta al detalle de caja (`/cash/session/[id]`) ni al detalle de venta
+     (`ReturnsProductsModal.tsx`, `FinancialSummary.tsx`, `SaleDetailList.tsx`): ninguno lee estas
+     constantes, la devolución se sigue viendo igual ahí.
+4. **UI — distinguir visualmente la fila sin tratarla como egreso**: en
+   `TransactionMovementsDesktopTable.tsx` y `TransactionMovementsCardList.tsx`, la fila de una transacción
+   con `transactionType.name === 'Devolución por Venta al Cliente'` usa `Badge type="purple"` (con un
+   `title` explicando por qué) en vez del `red` que usan los demás Egresos, y en la tarjeta móvil el monto
+   también se pinta en morado en vez de rojo. El resto de la fila (folio, monto, descripción, etc.) no
+   cambia.
+5. **DTO/interfaz**: `TransactionsFinancialSummaryResponseDTO` e `ITransactionsFinancialSummary` ganaron
+   `grossIncomes`/`returnsAmount`, igual que se hizo en `CashSessionSalesSummaryResponseDTO`.
+6. **`TransactionInformation.tsx`**: la tarjeta "Ingresos" gana el mismo subtítulo informativo que
+   "Ventas del día" en caja (`$350.00 - $100.00 devuelto`) cuando `returnsAmount > 0`, para que no se lea
+   como que "falta dinero".
+
+### Pregunta del usuario: ¿los ingresos sin `saleId` cuentan como ganancia pura?
+
+**Sí, confirmado en el código** (y esto no se tocó en este refactor — se deja documentado porque el
+usuario preguntó explícitamente). El propio código ya tenía esta nota antes de este refactor:
+
+> "los ingresos manuales (sin saleId) cuentan en totalIncomes pero no aportan aquí a totalInvested, ya que
+> no tienen costo atribuible"
+
+Es decir: cualquier `TransactionEntity` de tipo `Ingreso` sin `saleId` (p. ej. `Intereses Ganados`, `Venta
+de Activo Fijo`, `Devolución de Compra a Proveedor`) entra 100% a `profitBeforeExpenses`/`profitAfterExpenses`
+sin costo asociado, porque `totalInvested` sólo se calcula a partir de `saleDetails` de ventas con
+`saleId`. Para tipos como "Intereses Ganados" esto es correcto (no tienen costo real). Pero se encontró un
+**riesgo concreto no pedido para corregir ahora**: en el modal de movimiento manual de caja
+(`useCashTransactionModal.ts`), el tipo `'Ingreso por Venta de Mercancía'` **no está excluido** de las
+opciones seleccionables manualmente (línea comentada: `// .filter(item => item.name !== 'Ingreso por
+Venta de Mercancía')`), y ese flujo siempre manda `saleId: null`. Si un cajero registra ahí un ingreso de
+ese tipo (en vez de hacerlo por el flujo real de venta), se contará como ganancia 100% sin costo,
+exactamente el escenario que preocupa al usuario. **Queda pendiente de decisión**: ¿ocultar esa opción del
+modal (como ya se hizo con "Devolución por Venta al Cliente" en el mismo archivo), o dejarlo así porque
+hay un caso de uso legítimo para registrarlo manualmente?
+
 ## Fuera de alcance / limitaciones conocidas (heredadas o nuevas)
 
 - **Devolución en una sesión de caja distinta a la de la venta**: con el criterio elegido (netear contra la
@@ -200,3 +271,40 @@ Ya está correcto; se usa como referencia, no como archivo a modificar.
 - **Costeo aproximado**: hereda la misma limitación de `03_resumen_ventas_caja_spect.md` —
   `unitCostAtSale` es un snapshot de `Product.averageCost` al momento de la venta, no costeo FIFO exacto
   por lote.
+- **`'Ingreso por Venta de Mercancía'` manual sin `saleId`**: ver sección anterior — riesgo detectado pero
+  no corregido en este refactor, requiere decisión del usuario.
+
+## Archivos modificados (implementación)
+
+- `src/contexts/cash-management/cash-session/infraestructure/repositories/typeorm-cash-session.repository.ts`
+- `src/contexts/cash-management/cash-session/application/use-cases/get-cash-session-sales-summary.use-case.ts`
+- `src/contexts/cash-management/cash-session/application/dtos/cash-session-sales-summary-response.dto.ts`
+- `src/contexts/cash-management/cash-session/presentation/interfaces/ICashSessionSalesSummary.ts`
+- `src/contexts/cash-management/cash-session/presentation/ui/close/CashSalesSummary.tsx`
+- `src/contexts/sale-management/sale/infraestructure/persistence/typeorm/repositories/typeorm-sale.repository.ts`
+- `src/contexts/transaction-management/transaction-type/domain/constants/excluded-transaction-type-names.constant.ts`
+- `src/contexts/transaction-management/transaction/application/use-cases/get-transactions-financial-summary.use-case.ts`
+- `src/contexts/transaction-management/transaction/application/dtos/transactions-financial-summary-response.dto.ts`
+- `src/contexts/transaction-management/transaction/presentation/interfaces/ITransactionsFinancialSummary.ts`
+- `src/contexts/transaction-management/transaction/presentation/ui/TransactionInformation.tsx`
+- `src/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsDesktopTable.tsx`
+- `src/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsCardList.tsx`
+
+## Archivos de test creados
+
+- `test/contexts/cash-management/cash-session/application/use-cases/get-cash-session-sales-summary.use-case.test.ts`
+- `test/contexts/transaction-management/transaction/application/use-cases/get-transactions-financial-summary.use-case.test.ts`
+
+## Verificación realizada
+
+1. **`tsc --noEmit`**: sin errores nuevos en ningún archivo tocado (67 errores preexistentes en el
+   proyecto, ninguno relacionado a este cambio — mismo tipo de baseline que documentan los demás `*_spect.md`).
+2. **`pnpm test` (jest) sobre los archivos nuevos**: 5/5 tests pasan, cubriendo devolución parcial (10
+   agujas, devuelven 5), venta sin devolución, sesión/lista vacía (sin dividir por cero), venta no
+   `COMPLETED` excluida, e ingreso manual sin `saleId` (`Apertura de Caja`) excluido del cálculo.
+3. **Suite completa (`npx jest --watchAll=false`)**: sin regresiones — 32/32 tests individuales pasan; la
+   única suite que falla (`findAllProductsByEstablishmentFilterAction.test.ts`, `Request is not defined`)
+   es un problema de entorno de Next/jsdom preexistente, no relacionado a los archivos de este refactor.
+4. **Verificación visual en navegador**: pendiente — no se levantó `pnpm run dev` contra datos reales en
+   esta sesión. La sesión de caja 258 de la captura original sirve como caso manual esperado: "Ventas del
+   día" debería pasar de $290.00 a $260.00.

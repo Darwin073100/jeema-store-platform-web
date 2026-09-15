@@ -170,7 +170,9 @@ export class TypeormSaleRepository implements SaleRepository{
                 saleId: In(saleIds)
             },
             relations: {
-                saleDetails: true
+                saleDetails: {
+                    returns: true,
+                },
             },
         });
         return results.map(item => SaleMapper.toDomainEntity(item));

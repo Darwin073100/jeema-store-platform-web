@@ -23,6 +23,7 @@ const TransactionMovementsCardList = () => {
     return (
         <>
             {transactionsFiltered.map(item => {
+                const isReturn = item.transactionType?.name === 'Devolución por Venta al Cliente';
                 const isIncome = item.transactionType?.accountType === 'Ingreso';
                 return (
                     <Card key={item.transactionId.toString()} className="w-full">
@@ -30,9 +31,11 @@ const TransactionMovementsCardList = () => {
                             <p className="text-lg font-bold text-gray-900">
                                 Folio: <span className="text-blue-600">#{item.transactionId}</span>
                             </p>
-                            <Badge type={isIncome ? 'green' : 'red'}>
-                                {item.transactionType?.accountType}
-                            </Badge>
+                            <span title={isReturn ? 'No se cuenta como egreso: su monto ya se descontó de los ingresos de la venta.' : undefined}>
+                                <Badge type={isReturn ? 'purple' : isIncome ? 'green' : 'red'}>
+                                    {item.transactionType?.accountType}
+                                </Badge>
+                            </span>
                         </div>
 
                         <div className="grid grid-cols-2 gap-y-2 text-sm">
@@ -63,7 +66,7 @@ const TransactionMovementsCardList = () => {
                         <div className="mt-3 pt-3 border-t border-gray-100">
                             <p className="text-sm text-gray-500 font-medium">
                                 Monto:
-                                <span className={`text-lg font-extrabold ml-1 ${isIncome ? 'text-green-500' : 'text-red-500'}`}>
+                                <span className={`text-lg font-extrabold ml-1 ${isReturn ? 'text-purple-500' : isIncome ? 'text-green-500' : 'text-red-500'}`}>
                                     {numberMoneyFormat(item.amount ?? 0)}
                                 </span>
                             </p>

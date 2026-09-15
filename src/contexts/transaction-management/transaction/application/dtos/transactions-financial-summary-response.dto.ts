@@ -1,4 +1,6 @@
 export interface TransactionsFinancialSummaryResponseDTO {
+    grossIncomes: number;
+    returnsAmount: number;
     totalIncomes: number;
     totalInvested: number;
     profitBeforeExpenses: number;

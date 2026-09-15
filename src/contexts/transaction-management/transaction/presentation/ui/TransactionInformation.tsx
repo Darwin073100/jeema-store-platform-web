@@ -9,7 +9,9 @@ import { useTransactionStore } from "../stores/transaction.store"
 export const TransactionInformation = () => {
     const { financialSummary } = useTransactionStore();
 
+    const returnsAmount = financialSummary?.returnsAmount ?? 0;
     const totalIncomes = financialSummary?.totalIncomes ?? 0;
+    const hasReturns = returnsAmount > 0;
     const totalInvested = financialSummary?.totalInvested ?? 0;
     const profitBeforeExpenses = financialSummary?.profitBeforeExpenses ?? 0;
     const totalExpenses = financialSummary?.totalExpenses ?? 0;
@@ -23,7 +25,7 @@ export const TransactionInformation = () => {
         <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 my-4">
             <div
                 className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)}
-                title="Suma de los ingresos netos del periodo (excluye Apertura de Caja y Aumento de efectivo en caja)">
+                title="Suma de los ingresos netos del periodo (excluye Apertura de Caja, Aumento de efectivo en caja, y ya descuenta las devoluciones a clientes)">
                 <Badge type="green">Ingresos</Badge>
                 <div className="flex justify-between items-center gap-2">
                     <FcBullish size={30} />
@@ -32,14 +34,19 @@ export const TransactionInformation = () => {
                         <span>{numberMoneyFormat(totalIncomes)}</span>
                     </div>
                 </div>
+                {hasReturns && (
+                    <span className="text-xs text-gray-500 text-right">
+                        {numberMoneyFormat(totalIncomes + returnsAmount)} - {numberMoneyFormat(returnsAmount)} devuelto
+                    </span>
+                )}
             </div>
             <div
                 className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)}
                 title={`Costo estimado (promedio ponderado por lote) de las ${salesCountConsidered} venta(s) completada(s) consideradas`}>
-                <Badge type="purple">Invertido</Badge>
+                <Badge type="yellow">Invertido</Badge>
                 <div className="flex justify-between items-center gap-2">
                     <FcMoneyTransfer size={30} />
-                    <div className="flex justify-between gap-2 text-purple-700 items-center font-bold text-lg">
+                    <div className="flex justify-between gap-2 text-yellow-700 items-center font-bold text-lg">
                         <span>Total:</span>
                         <span>{numberMoneyFormat(totalInvested)}</span>
                     </div>
