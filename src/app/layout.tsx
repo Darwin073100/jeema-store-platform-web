@@ -1,6 +1,6 @@
+import { AuthProvider } from '@/shared/ui/providers/auth-provider';
 import 'reflect-metadata';
 import "src/shared/ui/styles/globals.css";
-import { AuthProvider } from "@/shared/presentation/providers/auth-provider";
 
 export default async function RootLayout({
   children,
@@ -9,9 +9,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased bg-gradient-to-br from-blue-50 to-indigo-100`}
-      >
+      <body className={`antialiased bg-gradient-to-br from-blue-50 to-indigo-100`} >
         <AuthProvider>
           {children}
         </AuthProvider>
