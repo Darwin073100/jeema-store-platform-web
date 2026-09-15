@@ -2,7 +2,7 @@
 import { RegisterCloudBranchDto } from '@/contexts/establishment-management/branch-office/application/dtos/register-cloud-branch.dto';
 import { registerCloudBranchOfficeAction } from '@/contexts/establishment-management/branch-office/presentation/actions/register-cloud-branch.action';
 import { useTransactionUIStore } from '@/contexts/transaction-management/transaction/presentation/stores/transaction-ui.store';
-import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
+import { useWorkspace } from '@/shared/ui/hooks/auth/useAuth';
 import { useFloatMessageStore } from '@/shared/ui/components/messages/stores/useFloatMessageStore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';

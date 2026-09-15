@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { TemplateModal } from '@/shared/ui/components/modals/TemplateModal';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose } from 'react-icons/io5';
-import { useBarcodeScanner } from '@/shared/presentation/hooks/useBarcodeScanner';
+import { useBarcodeScanner } from '@/shared/ui/hooks/useBarcodeScanner';
 
 interface Props {
     isOpen: boolean;

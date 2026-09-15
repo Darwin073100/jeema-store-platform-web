@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Logo from "../../assets/images/logologo.png";
 import { IoChevronDownSharp, IoNotifications } from 'react-icons/io5'
 import { LogoutModal } from '../modals/LogoutModal';
-import { useAuth, useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
+import { useAuth, useWorkspace } from '@/shared/ui/hooks/auth/useAuth';
 import { Button } from '../buttons';
 import { useSideStore } from '../side-bar/side.store';
 import clsx from 'clsx';

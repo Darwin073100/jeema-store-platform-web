@@ -1,6 +1,6 @@
 'use client'
 import { IUserWorkspace } from "@/contexts/authentication-management/auth/application/dtos/IUserWorkspace";
-import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
+import { useWorkspace } from "@/shared/ui/hooks/auth/useAuth";
 import { Badge } from "@/shared/ui/components/badges/Badge";
 import { BiCloud } from "react-icons/bi";
 import { BsCloudCheck, BsCloudSlash } from "react-icons/bs";

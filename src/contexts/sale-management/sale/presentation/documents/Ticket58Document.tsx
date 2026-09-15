@@ -6,7 +6,7 @@ import logo from 'src/shared/ui/assets/images/logologo.png';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { EstablishmentDetailTypeEnum } from '@/contexts/establishment-management/establishment-detail/domain/enums/establishment-detail-type.enum';
 import { getDetailsByType, getFirstDetailByType } from '@/contexts/establishment-management/establishment-detail/presentation/lib/get-details-by-type';
-import { useGenerateBarcode } from '@/shared/presentation/hooks/useGenerateBarcode';
+import { useGenerateBarcode } from '@/shared/ui/hooks/useGenerateBarcode';
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
 const mmToPt = (mm: number) => mm * 2.83465;

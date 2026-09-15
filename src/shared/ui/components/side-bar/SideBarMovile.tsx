@@ -5,7 +5,7 @@ import { FcConferenceCall, FcCurrencyExchange, FcMindMap, FcOrgUnit, FcPaid, FcS
 import { SideMovileLink } from './SideMovileLink';
 import { useSideStore } from './side.store';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
-import { useAuth, useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
+import { useAuth, useWorkspace } from '@/shared/ui/hooks/auth/useAuth';
 
 const DEFAULT_NAV_HEIGHT = 64;
 

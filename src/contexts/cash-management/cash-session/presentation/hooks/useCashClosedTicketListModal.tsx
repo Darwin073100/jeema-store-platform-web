@@ -5,7 +5,7 @@ import { useCashStore } from "../stores/cash.store";
 import { ICashSession } from "../interfaces/ICashSession";
 import { TicketCloseCashSessionList58Document } from "../documents/TicketCloseCashSessionList58Document";
 import { pdf } from "@react-pdf/renderer";
-import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
+import { useWorkspace } from "@/shared/ui/hooks/auth/useAuth";
 import { IBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice";
 import { usePrintTicket } from "@/contexts/configuration-management/printer-configuration/presentation/hooks/usePrintTicket";
 interface Props {

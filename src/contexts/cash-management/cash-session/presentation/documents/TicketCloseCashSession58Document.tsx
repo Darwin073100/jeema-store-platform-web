@@ -1,6 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { useGenerateBarcode } from '@/shared/presentation/hooks/useGenerateBarcode';
+import { useGenerateBarcode } from '@/shared/ui/hooks/useGenerateBarcode';
 import { ICashSession } from '../interfaces/ICashSession';
 import { formatDate, formatDateShort, formatDateTimeForInput } from '@/shared/lib/utils/date-formatter';
 import { IBranchOffice } from '@/contexts/establishment-management/branch-office/presentation/interfaces/IBranchOffice';

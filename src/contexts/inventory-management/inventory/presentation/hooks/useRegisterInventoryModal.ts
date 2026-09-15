@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
 import { registerInventoryAction } from "../actions/register-inventory.action";
-import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
+import { useWorkspace } from "@/shared/ui/hooks/auth/useAuth";
 import { useProductUIStore } from "@/contexts/product-management/product/presentation/stores/product-ui.store";
 import { generateBarcodeAction } from "../actions/generate-barcode.action";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";

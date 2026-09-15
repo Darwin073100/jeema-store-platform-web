@@ -1,6 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { useGenerateBarcode } from '@/shared/presentation/hooks/useGenerateBarcode';
+import { useGenerateBarcode } from '@/shared/ui/hooks/useGenerateBarcode';
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
 const mmToPt = (mm: number) => mm * 2.83465;

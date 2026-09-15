@@ -1,5 +1,5 @@
 import { useSaleStore } from "../stores/sale.store";
-import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
+import { useWorkspace } from "@/shared/ui/hooks/auth/useAuth";
 import { useSaleUIStore } from "../stores/sale.ui.store";
 import { useSaleProcessStore } from "../stores/sale.process.store";
 import { finishSaleAction } from "../actions/finish-sale.action";

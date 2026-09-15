@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
+import { useWorkspace } from "@/shared/ui/hooks/auth/useAuth";
 import { finishSaleAction } from "../actions/finish-sale.action";
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 import { useSaleUIStore } from "../stores/sale.ui.store";

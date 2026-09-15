@@ -17,7 +17,7 @@ import { Button } from '@/shared/ui/components/buttons';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { FloatMessage } from '@/shared/ui/components/messages';
 import { FloatMessageType } from '@/shared/ui/types/FloatMessageType';
-import { useWorkspace } from '@/shared/presentation/hooks/auth/useAuth';
+import { useWorkspace } from '@/shared/ui/hooks/auth/useAuth';
 import { useQzTray, blobToBase64 } from '../hooks/useQzTray';
 import { IPrinterConfiguration, PrinterConnectionTypeView } from '../interfaces/IPrinterConfiguration';
 import { registerPrinterConfigurationAction } from '../actions/register-printer-configuration.action';

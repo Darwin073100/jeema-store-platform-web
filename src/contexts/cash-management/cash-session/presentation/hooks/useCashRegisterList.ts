@@ -1,7 +1,7 @@
 'use client'
 
 import { ICashRegister } from "@/contexts/cash-management/cash-register/presentation/interfaces/ICashRegister";
-import { useAuth, useWorkspace } from "@/shared/presentation/hooks/auth/useAuth";
+import { useAuth, useWorkspace } from "@/shared/ui/hooks/auth/useAuth";
 
 interface Props{
     cashRegisters: ICashRegister[]
