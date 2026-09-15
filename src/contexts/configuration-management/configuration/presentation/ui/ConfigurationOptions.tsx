@@ -2,8 +2,8 @@
 import React from 'react'
 import { useWorkspace } from '@/shared/ui/hooks/auth/useAuth';
 import { FcCollaboration, FcComboChart, FcConferenceCall, FcDepartment, FcPrint, FcReadingEbook, FcSerialTasks, FcSettings} from 'react-icons/fc';
-import { ContainerConfig } from './ContainerConfig';
-import { ItemConfig } from './ItemConfig';
+import { LinkCardGrid } from './LinkCardGrid';
+import { LinkCard } from './LinkCard';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
 
 const ConfigurationOptions = () => {
@@ -15,56 +15,54 @@ const ConfigurationOptions = () => {
                     <FcSettings className="text-xl" />
                     <h2 className="text-lg">General</h2>
                 </div>
-                <ContainerConfig>
+                <LinkCardGrid>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <ItemConfig link='/configurations/establishment'>
-                            <FcDepartment className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                            <span>Establecimiento</span>
-                        </ItemConfig>
+                        <LinkCard 
+                            Icon={FcDepartment}
+                            value='Establecimiento'
+                            link='/configurations/establishment'/>
+                        <LinkCard
+                            value='Mi perfil'
+                            Icon={FcReadingEbook}
+                            link={`configurations/employees/${employee?.employeeId}`}/>
+                        <LinkCard 
+                            value='Usuarios'
+                            Icon={FcConferenceCall}
+                            link='/configurations/users' />
+                        <LinkCard
+                            value='Empleados'
+                            Icon={FcCollaboration} 
+                            link='/configurations/employees' />
                     </HideElement>
-                    <ItemConfig link={`configurations/employees/${employee?.employeeId}`}>
-                        <FcReadingEbook className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                        <span>Mi perfil</span>
-                    </ItemConfig>
-                    <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <ItemConfig link='/configurations/users'>
-                            <FcConferenceCall className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                            <span>Usuarios</span>
-                        </ItemConfig>
-                        <ItemConfig link='/configurations/employees'>
-                            <FcCollaboration className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                            <span>Empleados</span>
-                        </ItemConfig>
-                    </HideElement>
-                </ContainerConfig>
+                </LinkCardGrid>
             </div>
             <div className="w-full">
                 <div className="flex gap-4 items-center mb-4">
                     <FcSerialTasks className="text-xl" />
                     <h2 className="text-lg">Información financiera</h2>
                 </div>
-                <ContainerConfig>
+                <LinkCardGrid>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <ItemConfig link='/configurations/transactions'>
-                            <FcComboChart className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                            <span>Movimientos Generales</span>
-                        </ItemConfig>
+                        <LinkCard
+                            value='Movimientos generales'
+                            Icon={FcComboChart} 
+                            link='/configurations/transactions' />
                     </HideElement>
-                </ContainerConfig>
+                </LinkCardGrid>
             </div>
             <div className="w-full mt-8">
                 <div className="flex gap-4 items-center mb-4">
                     <FcPrint className="text-xl" />
                     <h2 className="text-lg">Impresiones</h2>
                 </div>
-                <ContainerConfig>
+                <LinkCardGrid>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <ItemConfig link='/configurations/printer'>
-                            <FcPrint className="w-[50px] h-[50px] max-sm:h-[30px] max-sm:w-[30px]" />
-                            <span>Impresora térmica</span>
-                        </ItemConfig>
+                        <LinkCard
+                            value='Impresora térmica'
+                            Icon={FcPrint} 
+                            link='/configurations/printer' />
                     </HideElement>
-                </ContainerConfig>
+                </LinkCardGrid>
             </div>
         </>
     )

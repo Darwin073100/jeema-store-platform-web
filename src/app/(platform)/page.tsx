@@ -19,7 +19,7 @@ const homeCards = [
   {
     title: 'Traspasos',
     description: 'Historial de traspasos',
-    to: '/',
+    to: '/transfers',
     image: Inventory
   },
   {
