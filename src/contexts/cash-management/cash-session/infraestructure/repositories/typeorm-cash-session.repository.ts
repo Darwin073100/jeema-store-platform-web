@@ -126,7 +126,9 @@ export class TypeormCashSessionRepository implements CashSessionRepository {
                 employee: true,
                 cashRegister: true,
                 sales: {
-                    saleDetails: true
+                    saleDetails: {
+                        returns: true,
+                    },
                 },
             }
         });

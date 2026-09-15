@@ -11,13 +11,15 @@ interface Props {
 
 const CashSalesSummary = ({ summary }: Props) => {
     const totalSales = summary?.totalSales ?? 0;
+    const returnsAmount = summary?.returnsAmount ?? 0;
     const totalInvested = summary?.totalInvested ?? 0;
     const profit = summary?.profit ?? 0;
     const isProfit = profit >= 0;
+    const hasReturns = returnsAmount > 0;
 
     return (
         <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
-            <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)} title="Suma de las ventas completadas registradas en esta caja">
+            <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)} title="Ventas completadas de esta caja, menos lo devuelto por los clientes">
                 <Badge type="blue">Ventas del día</Badge>
                 <div className="flex justify-between items-center gap-2">
                     <FcSalesPerformance size={30} />
@@ -26,8 +28,13 @@ const CashSalesSummary = ({ summary }: Props) => {
                         <span>{numberMoneyFormat(totalSales)}</span>
                     </div>
                 </div>
+                {hasReturns && (
+                    <span className="text-xs text-gray-500 text-right">
+                        {numberMoneyFormat(totalSales + returnsAmount)} - {numberMoneyFormat(returnsAmount)} devuelto
+                    </span>
+                )}
             </div>
-            <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)} title="Costo estimado (promedio ponderado de compra) de los productos vendidos en esta caja">
+            <div className={clsx(`p-4 rounded-2xl bg-white shadow-lg flex flex-col gap-3`)} title="Costo estimado (promedio ponderado de compra) de los productos que el cliente se quedó en esta caja">
                 <Badge type="purple">Monto Invertido</Badge>
                 <div className="flex justify-between items-center gap-2">
                     <FcMoneyTransfer size={30} />
