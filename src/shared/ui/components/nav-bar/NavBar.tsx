@@ -13,10 +13,11 @@ import { NavLink } from './NavLink';
 import { FcMindMap, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
 import { FloatMessage } from '../messages';
 import { useFloatMessageStore } from '../messages/stores/useFloatMessageStore';
+import { Badge } from '../badges/Badge';
 
 export const NavBar = () => {
   const { user } = useAuth();
-  const { establishment, branchOffice } = useWorkspace();
+  const { establishment, branchOffice, employee } = useWorkspace();
   const { floatMessageState } = useFloatMessageStore();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { onToggelSideBar, sideBar } = useSideStore();
@@ -81,9 +82,9 @@ export const NavBar = () => {
 
         {/* User Section */}
         <div className="flex items-center gap-4">
-          <span className='text-sm text-blue-800 font-semibold'>
-            {user?.email ?? '--'}
-          </span>
+          <Badge className='font-medium' size='md'>
+            { employee?.firstName?? '--'} { employee?.lastName?? '--'}
+          </Badge>
 
           <Button
             color='red'

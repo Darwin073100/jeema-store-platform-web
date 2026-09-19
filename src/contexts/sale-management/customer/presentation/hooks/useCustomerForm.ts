@@ -13,7 +13,6 @@ export const schema = yup.object().shape({
         .min(3, 'El nombre debe tener mínimo 3 caracteres.')
         .max(100, 'El nombre debe tener máximo 100 caracteres.')
         .typeError('Asegurate de ingresar la información correcta.'),
-    saleDefault: yup.boolean().required(),
     lastName: yup.string()
         .required('Los apellidos son obligatorios.')
         .min(3, 'Los apellidos debe tener mínimo 3 caracteres.')
@@ -135,7 +134,7 @@ const useCustomerForm = () => {
             addressCheck: false, addressCity: undefined, addressCountry: undefined, addressExteriorNumber: undefined,
             addressInteriorNumber: undefined, addressMunicipality: undefined, addressNighborhood: undefined, addressPostalCode: undefined,
             addressReference: undefined, addressState: undefined, addressStreet: undefined, email: '', firstName: '',
-            customerType: '',  lastName: '', phoneNumber: '', companyName: '', rfc: '', saleDefault: false
+            customerType: '',  lastName: '', phoneNumber: '', companyName: '', rfc: ''
         });
     }
 
@@ -165,7 +164,7 @@ const useCustomerForm = () => {
         }
 
         const registerCustomerDTO: RegisterCustomerDto = {
-            saleDefault: data.saleDefault,
+            saleDefault: false,
             email: data.email ?? null,
             firstName: data.firstName,
             lastName: data.lastName ?? null,

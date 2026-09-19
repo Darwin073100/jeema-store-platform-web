@@ -15,11 +15,6 @@ const CustomerUpdateModal = () => {
     return (
         <TemplateModal isOpen={customerModal === 'editCustomer'} onClose={closeCustomerModal}>
             <form onSubmit={handleSubmit(onSubmit)} className='p-4'>
-                <div className=' flex items-center gap-4 bg-amber-100 rounded-xl p-2 shadow-md'>
-                    <LabelInput value="Habilitar para usarlo por defecto en ventas" />
-                    <input type='checkbox' {...register('saleDefault')} name="saleDefault" id="saleDefault"
-                        className='w-5 h-5' />
-                </div>
                 <div>
                     <LabelInput value="Nombre" required="yes" />
                     <TextInput

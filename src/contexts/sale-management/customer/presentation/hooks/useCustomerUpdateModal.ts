@@ -15,7 +15,6 @@ export const schema = yup.object().shape({
         .min(3, 'El nombre debe tener mínimo 3 caracteres.')
         .max(100, 'El nombre debe tener máximo 100 caracteres.')
         .typeError('Asegurate de ingresar la información correcta.'),
-    saleDefault: yup.boolean().required(),
     lastName: yup.string()
         .required('Los apellidos son obligatorios.')
         .min(3, 'Los apellidos debe tener mínimo 3 caracteres.')
@@ -61,7 +60,7 @@ const useCustomerUpdateModal = () => {
     const handleResetForm = ()=> {
         reset({
             email: customer?.email, firstName: customer?.firstName, lastName: customer?.lastName ?? 'N/A', phoneNumber: customer?.phoneNumber, companyName: customer?.companyName,
-            customerType: customer?.customerType,   rfc: customer?.rfc, saleDefault: customer?.saleDefault
+            customerType: customer?.customerType,   rfc: customer?.rfc
         });
     }
 
@@ -80,7 +79,6 @@ const useCustomerUpdateModal = () => {
 
         const registerCustomerDTO: UpdateCustomerDto = {
             customerId: customer?.customerId ?? BigInt(0),
-            saleDefault: data.saleDefault,
             firstName: data.firstName,
             lastName: data.lastName ?? null,
             email: data.email ?? null,
