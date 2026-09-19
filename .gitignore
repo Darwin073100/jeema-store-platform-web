@@ -13,7 +13,7 @@ prompt.xml
 
 # Ignorar el certificado de public
 /public/qz
-
+/qz-certificate
 # testing
 /coverage
 
