@@ -43,5 +43,5 @@ pnpm run build
 # Corre la aplicación de producción
 pnpm run start
 # Corre la aplicacion en desarrollo
-pnpm run build
+pnpm run dev
 ```

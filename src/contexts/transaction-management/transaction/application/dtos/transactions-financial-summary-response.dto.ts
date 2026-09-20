@@ -1,4 +1,5 @@
 export interface TransactionsFinancialSummaryResponseDTO {
+    grossTotal: number;
     grossIncomes: number;
     returnsAmount: number;
     totalIncomes: number;

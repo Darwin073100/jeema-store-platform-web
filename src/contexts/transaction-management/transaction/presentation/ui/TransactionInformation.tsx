@@ -15,7 +15,8 @@ export const TransactionInformation = () => {
         salesCountConsidered,
         totalExpenses,
         totalIncomes,
-        totalInvested
+        totalInvested,
+        totalGross
     } = useTransactionInformation();
 
     return (
@@ -35,8 +36,8 @@ export const TransactionInformation = () => {
                 description={`Total: ${numberMoneyFormat(totalInvested)}`}
                 Icon={FcMoneyTransfer} />
             <ReportCard
-                tooltip={`Ingresos menos lo invertido, sin descontar egresos (margen ${marginBeforeExpensesPercent.toFixed(1)}%)`}
-                title="Ganancia antes de egresos"
+                tooltip={`Ingresos menos lo invertido (margen ${marginBeforeExpensesPercent.toFixed(1)}%)`}
+                title="Ganancia"
                 description={`Total: ${numberMoneyFormat(profitBeforeExpenses)}`}
                 Icon={FcSalesPerformance} />
             <ReportCard
@@ -46,10 +47,10 @@ export const TransactionInformation = () => {
                 description={`Total: -${numberMoneyFormat(totalExpenses)}`}
                 Icon={FcBearish} />
             <ReportCard
-                type={isProfitAfterExpenses ? 'green' : 'red'}
+                type={totalGross >= 0 ? 'purple' : 'red'}
                 tooltip={`Ganancia antes de egresos menos los egresos del periodo: resultado neto final (margen ${marginAfterExpensesPercent.toFixed(1)}%)`}
-                title={`${isProfitAfterExpenses ? 'Ganancia después de egresos' : 'Pérdida después de egresos'}`}
-                description={`Total: ${numberMoneyFormat(profitAfterExpenses)}`}
+                title={`Ingreso bruto - Egresos`}
+                description={`Total: ${numberMoneyFormat(totalGross)}`}
                 Icon={isProfitAfterExpenses ? FcBullish : FcBearish } />
         </ReportCardGrid>
     )

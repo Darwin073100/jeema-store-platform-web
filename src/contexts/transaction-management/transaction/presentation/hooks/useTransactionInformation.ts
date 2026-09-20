@@ -14,7 +14,9 @@ export const useTransactionInformation = () => {
         const marginAfterExpensesPercent = financialSummary?.marginAfterExpensesPercent ?? 0;
         const salesCountConsidered = financialSummary?.salesCountConsidered ?? 0;
         const isProfitAfterExpenses = profitAfterExpenses >= 0;
+        const totalGross = financialSummary?.grossTotal ?? 0;
   return {
+    totalGross,
     returnsAmount,
     totalIncomes,
     hasReturns,

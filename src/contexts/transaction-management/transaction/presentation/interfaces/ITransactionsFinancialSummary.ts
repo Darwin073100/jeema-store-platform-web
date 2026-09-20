@@ -1,4 +1,5 @@
 export interface ITransactionsFinancialSummary {
+    grossTotal: number;
     grossIncomes: number;
     returnsAmount: number;
     totalIncomes: number;

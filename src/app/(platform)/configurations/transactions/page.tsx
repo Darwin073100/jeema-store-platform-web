@@ -25,9 +25,9 @@ export default async function SaleInformationPage() {
         saleId: null,
         transactionType: null,
     }
-    const customer = await findAllManyFilterTransactionsAction(dto);
-    const data = customer?.value?.transactions ?? [];
-    const financialSummary = customer?.value?.financialSummary ?? null;
+    const transaction = await findAllManyFilterTransactionsAction(dto);
+    const data = transaction?.value?.transactions ?? [];
+    const financialSummary = transaction?.value?.financialSummary ?? null;
 
     const breadcrumbItems: BreadcrumbItem[] = [
         {

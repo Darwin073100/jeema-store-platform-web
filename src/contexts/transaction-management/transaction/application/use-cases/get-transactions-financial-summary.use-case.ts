@@ -87,7 +87,10 @@ export class GetTransactionsFinancialSummaryUseCase {
         // 14. Cantidad de ventas completadas consideradas
         const salesCountConsidered = completedSales.length;
 
+        // 15. Ingreso bruto - Egresos netos. 
+        const grossTotal = totalIncomes -  totalExpenses;
         return {
+            grossTotal,
             grossIncomes,
             returnsAmount,
             totalIncomes,
