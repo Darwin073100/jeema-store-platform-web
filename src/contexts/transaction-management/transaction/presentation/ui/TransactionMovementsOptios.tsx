@@ -3,7 +3,7 @@ import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { TextInput } from '@/shared/ui/components/inputs';
 import React, { useEffect } from 'react'
-import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { PiMicrosoftExcelLogoFill, PiPrinter } from "react-icons/pi";
 import { FaFilter } from 'react-icons/fa';
 import { useTransactionMovementsOptios } from '../hooks/useTransactionMovementsOptios';
 import { useTransactionStore } from '../stores/transaction.store';
@@ -14,6 +14,7 @@ import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { ITransaction } from '../interfaces/ITransaction';
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
 import { ITransactionsFinancialSummary } from '../interfaces/ITransactionsFinancialSummary';
+import { TransactionMovementsReportModal } from './TransactionMovementsReportModal';
 
 interface Props {
     transactions: ITransaction[]
@@ -23,7 +24,7 @@ interface Props {
 const TransactionMovementsOptios = ({ transactions, financialSummary }: Props) => {
     const { handleExport, errors, handleSubmit, onSubmit, register } = useTransactionMovementsOptios();
     const { setTransactions, setFinancialSummary, transactionsFiltered } = useTransactionStore();
-    const { loading, floatMessageState } = useTransactionUIStore();
+    const { loading, floatMessageState, openTransactionModal } = useTransactionUIStore();
 
     useEffect(() => {
         setTransactions(transactions);
@@ -72,7 +73,12 @@ const TransactionMovementsOptios = ({ transactions, financialSummary }: Props) =
                     {...floatMessageState} />
             </div>
             <div className='flex gap-4'>
+                <Button color='blue' onClick={() => openTransactionModal('transactionMovementsReportTicket')}>
+                    <PiPrinter />
+                    Imprimir reporte
+                </Button>
             </div>
+            <TransactionMovementsReportModal />
         </>
     )
 }

@@ -15,6 +15,10 @@ type State = {
     setOpenModal: (value:boolean)=> void,
     financialSummary: ITransactionsFinancialSummary|null,
     setFinancialSummary: (payload: ITransactionsFinancialSummary|null)=> void,
+    dateInit: Date | null,
+    dateFinish: Date | null,
+    setDateInit: (date: Date | null)=> void,
+    setDateFinish: (date: Date | null)=> void,
 };
 
 export const useTransactionStore = create<State>()((set, get)=>({
@@ -38,4 +42,12 @@ export const useTransactionStore = create<State>()((set, get)=>({
     },
     financialSummary: null,
     setFinancialSummary: (payload)=> set(()=> ({financialSummary: payload})),
+    dateInit: null,
+    dateFinish: null,
+    setDateInit(date) {
+        set(()=> ({dateInit: date}))
+    },
+    setDateFinish(date) {
+        set(()=> ({dateFinish: date}))
+    },
 }));

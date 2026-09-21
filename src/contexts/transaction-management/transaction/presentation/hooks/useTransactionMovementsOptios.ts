@@ -21,7 +21,7 @@ const schema = yup.object().shape({
 type FormData = yup.InferType<typeof schema>;
 
 const useTransactionMovementsOptios = () => {
-    const { transactions, setTransactions, setTransactionsFiltered, setFinancialSummary } = useTransactionStore();
+    const { transactions, setTransactions, setTransactionsFiltered, setFinancialSummary, setDateInit, setDateFinish } = useTransactionStore();
     const { initLoading, finishLoading } = useTransactionUIStore();
     const { register, handleSubmit, reset, setValue, watch, clearErrors, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -55,6 +55,8 @@ const useTransactionMovementsOptios = () => {
             setTransactionsFiltered(lotsResponse.value.transactions);
             setTransactions(lotsResponse.value.transactions);
             setFinancialSummary(lotsResponse.value.financialSummary);
+            setDateInit(info.dateInit ?? null);
+            setDateFinish(info.dateFinish ?? null);
         }
     }
     return {

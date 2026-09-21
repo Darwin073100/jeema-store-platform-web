@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { FloatMessageType } from "@/shared/ui/types/FloatMessageType";
-type TransactionLoadingsType = 'none' | 'downloadListTransaction' |  'filterTransaction' | 'generate-enrollment-key' | 
+type TransactionLoadingsType = 'none' | 'downloadListTransaction' |  'filterTransaction' | 'generate-enrollment-key' |
     'register-cloud-branch-and-establishment' | 'register-cloud-branch';
+type TransactionModalType = 'none' | 'transactionMovementsReportTicket';
 type State = {
     //? Messages
     floatMessageState    : FloatMessageType;
@@ -11,6 +12,10 @@ type State = {
     initLoading          : (payload: TransactionLoadingsType) => void;
     finishLoading        : ()=> void;
     resetModals          : () => void;
+    //? Modals
+    transactionModal      : TransactionModalType,
+    openTransactionModal   : (modalType: TransactionModalType) => void,
+    closeTransactionModal  : () => void,
 };
 
 const initialState = {
@@ -18,6 +23,8 @@ const initialState = {
     floatMessageState : {},
     //? Loadings
     loading           : 'none' as TransactionLoadingsType,
+    //? Modals
+    transactionModal  : 'none' as TransactionModalType,
 };
 
 export const useTransactionUIStore = create<State>()((set, get)=>({
@@ -27,6 +34,9 @@ export const useTransactionUIStore = create<State>()((set, get)=>({
     //? Loadings
     initLoading          : (payload: TransactionLoadingsType) => set({ loading: payload }),
     finishLoading        : () => set({ loading: 'none' }),
-    //? Reset Store 
+    //? Modals
+    openTransactionModal : (modalType) => set(()=>({ transactionModal: modalType })),
+    closeTransactionModal: () => set(()=>({ transactionModal: 'none' })),
+    //? Reset Store
     resetModals          : () => set(initialState),
 }));
