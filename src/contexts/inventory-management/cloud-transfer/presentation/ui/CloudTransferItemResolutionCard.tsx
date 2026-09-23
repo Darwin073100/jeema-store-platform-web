@@ -180,6 +180,11 @@ const CloudTransferItemResolutionCard = ({ item, onResolved }: Props) => {
                 onClose={closeResolutionModal}
                 incomingCategoryName={item.productCategoryName}
                 incomingCategoryDescription={item.productCategoryDescription}
+                incomingBarCode={item.productUniversalBarCode}
+                incomingSuggestedSalePriceOne={item.inventorySuggestedSalePriceOne}
+                incomingSuggestedSalePriceMany={item.inventorySuggestedSalePriceMany}
+                incomingSuggestedSaleQuantityMany={item.inventorySuggestedSaleQuantityMany}
+                incomingSuggestedSalePriceSpecial={item.inventorySuggestedSalePriceSpecial}
                 submitting={resolving}
                 onSubmit={(dto) => { handleResolveAsNewProduct(dto); closeResolutionModal(); }} />
         </div>

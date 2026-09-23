@@ -94,6 +94,13 @@ const useCloudTransferItemResolution = (item: ICloudTransferItem, onResolved: ()
         newCategoryName?: string;
         newCategoryDescription?: string | null;
         localBrandId?: bigint;
+        internalBarCode?: string | null;
+        salePriceOne?: number | null;
+        salePriceMany?: number | null;
+        saleQuantityMany?: number | null;
+        salePriceSpecial?: number | null;
+        minStockBranch?: number | null;
+        maxStockBranch?: number | null;
     }) => {
         runCloudTransferLoading('resolving-item');
         try {
@@ -108,6 +115,13 @@ const useCloudTransferItemResolution = (item: ICloudTransferItem, onResolved: ()
                 cloudTransferItemId: item.cloudTransferItemId,
                 localCategoryId: categoryResult.value.categoryId,
                 localBrandId: dto.localBrandId,
+                internalBarCode: dto.internalBarCode,
+                salePriceOne: dto.salePriceOne,
+                salePriceMany: dto.salePriceMany,
+                saleQuantityMany: dto.saleQuantityMany,
+                salePriceSpecial: dto.salePriceSpecial,
+                minStockBranch: dto.minStockBranch,
+                maxStockBranch: dto.maxStockBranch,
             });
             if (!resolveResult.ok) { showError(resolveResult.error); return; }
             showSuccess('¡Producto nuevo creado y vinculado!');

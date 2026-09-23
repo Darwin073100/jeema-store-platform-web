@@ -9,26 +9,60 @@ import { Spinner } from "@/shared/ui/components/loadings/Spinner";
 import { findAllCategoriesByEstablishmentAction } from "@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action";
 import { ICategory } from "@/contexts/product-management/category/presentation/interfaces/ICategory";
 
+interface InventoryFormValues {
+    internalBarCode: string | null;
+    salePriceOne: number | null;
+    salePriceMany: number | null;
+    saleQuantityMany: number | null;
+    salePriceSpecial: number | null;
+    minStockBranch: number | null;
+    maxStockBranch: number | null;
+}
+
 interface Props {
     isOpen: boolean;
     onClose: () => void;
     incomingCategoryName: string;
     incomingCategoryDescription: string | null;
+    /** Sugerencias de precio del origen (A) — la nube nunca envía min/max stock, son metas locales de B. */
+    incomingBarCode: string | null;
+    incomingSuggestedSalePriceOne: number | null;
+    incomingSuggestedSalePriceMany: number | null;
+    incomingSuggestedSaleQuantityMany: number | null;
+    incomingSuggestedSalePriceSpecial: number | null;
     submitting: boolean;
-    onSubmit: (dto: { localCategoryId?: bigint; newCategoryName?: string; newCategoryDescription?: string | null }) => void;
+    onSubmit: (dto: { localCategoryId?: bigint; newCategoryName?: string; newCategoryDescription?: string | null } & InventoryFormValues) => void;
 }
+
+const toNumberOrNull = (value: string): number | null => (value.trim() === '' ? null : Number(value));
 
 /** Paso humano requerido antes de crear un producto nuevo (ver spect/08 sección 3.6/5.9): las categorías son
  * establishment-scoped, así que el nombre de categoría que llegó de A no es garantía de que exista igual en
  * B. El usuario decide: mapear a una categoría local existente, o crear una nueva con ese nombre (prellenado,
- * editable) o cualquier otro. */
-const CategoryMappingModal = ({ isOpen, onClose, incomingCategoryName, incomingCategoryDescription, submitting, onSubmit }: Props) => {
+ * editable) o cualquier otro.
+ * También pide la configuración de inventario de ESTA sucursal (precios, stock mín/máx): la nube solo trae
+ * "sugerencias" de precio del origen (A), nunca min/max stock (son metas puramente locales de cada
+ * sucursal) — sin este paso, el producto se creaba con toda esta info en cero/vacío. */
+const CategoryMappingModal = ({
+    isOpen, onClose, incomingCategoryName, incomingCategoryDescription,
+    incomingBarCode, incomingSuggestedSalePriceOne, incomingSuggestedSalePriceMany,
+    incomingSuggestedSaleQuantityMany, incomingSuggestedSalePriceSpecial,
+    submitting, onSubmit,
+}: Props) => {
     const [mode, setMode] = useState<'existing' | 'new'>('existing');
     const [categories, setCategories] = useState<ICategory[]>([]);
     const [loadingCategories, setLoadingCategories] = useState(false);
     const [localCategoryId, setLocalCategoryId] = useState('');
     const [newCategoryName, setNewCategoryName] = useState(incomingCategoryName);
     const [newCategoryDescription, setNewCategoryDescription] = useState(incomingCategoryDescription ?? '');
+
+    const [internalBarCode, setInternalBarCode] = useState(incomingBarCode ?? '');
+    const [salePriceOne, setSalePriceOne] = useState(incomingSuggestedSalePriceOne?.toString() ?? '');
+    const [salePriceMany, setSalePriceMany] = useState(incomingSuggestedSalePriceMany?.toString() ?? '');
+    const [saleQuantityMany, setSaleQuantityMany] = useState(incomingSuggestedSaleQuantityMany?.toString() ?? '');
+    const [salePriceSpecial, setSalePriceSpecial] = useState(incomingSuggestedSalePriceSpecial?.toString() ?? '');
+    const [minStockBranch, setMinStockBranch] = useState('');
+    const [maxStockBranch, setMaxStockBranch] = useState('');
 
     useEffect(() => {
         if (!isOpen) return;
@@ -43,14 +77,36 @@ const CategoryMappingModal = ({ isOpen, onClose, incomingCategoryName, incomingC
         setNewCategoryDescription(incomingCategoryDescription ?? '');
     }, [incomingCategoryName, incomingCategoryDescription]);
 
+    useEffect(() => {
+        setInternalBarCode(incomingBarCode ?? '');
+        setSalePriceOne(incomingSuggestedSalePriceOne?.toString() ?? '');
+        setSalePriceMany(incomingSuggestedSalePriceMany?.toString() ?? '');
+        setSaleQuantityMany(incomingSuggestedSaleQuantityMany?.toString() ?? '');
+        setSalePriceSpecial(incomingSuggestedSalePriceSpecial?.toString() ?? '');
+        setMinStockBranch('');
+        setMaxStockBranch('');
+    }, [incomingBarCode, incomingSuggestedSalePriceOne, incomingSuggestedSalePriceMany, incomingSuggestedSaleQuantityMany, incomingSuggestedSalePriceSpecial]);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!salePriceOne.trim()) return;
+
+        const inventoryValues: InventoryFormValues = {
+            internalBarCode: internalBarCode.trim() || null,
+            salePriceOne: Number(salePriceOne),
+            salePriceMany: toNumberOrNull(salePriceMany),
+            saleQuantityMany: toNumberOrNull(saleQuantityMany),
+            salePriceSpecial: toNumberOrNull(salePriceSpecial),
+            minStockBranch: toNumberOrNull(minStockBranch),
+            maxStockBranch: toNumberOrNull(maxStockBranch),
+        };
+
         if (mode === 'existing') {
             if (!localCategoryId) return;
-            onSubmit({ localCategoryId: BigInt(localCategoryId) });
+            onSubmit({ localCategoryId: BigInt(localCategoryId), ...inventoryValues });
         } else {
             if (!newCategoryName.trim()) return;
-            onSubmit({ newCategoryName: newCategoryName.trim(), newCategoryDescription: newCategoryDescription.trim() || null });
+            onSubmit({ newCategoryName: newCategoryName.trim(), newCategoryDescription: newCategoryDescription.trim() || null, ...inventoryValues });
         }
     };
 
@@ -94,6 +150,46 @@ const CategoryMappingModal = ({ isOpen, onClose, incomingCategoryName, incomingC
                         </div>
                     </div>
                 )}
+
+                <div className="flex flex-col gap-4 border-t border-gray-200 pt-4">
+                    <p className="text-gray-600 text-sm">
+                        Configura el inventario de este producto para tu sucursal. Los precios se prellenaron con lo
+                        que cobraba la sucursal origen (editable); el stock mínimo/máximo es una meta local, no viene
+                        de la nube.
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <LabelInput value="Precio de venta por menudeo" required="yes" htmlFor="salePriceOne" />
+                            <TextInput id="salePriceOne" type="number" step="0.01" placeholder="0.00" value={salePriceOne} onChange={(e) => setSalePriceOne(e.target.value)} />
+                        </div>
+                        <div>
+                            <LabelInput value="Código de barras interno" required="no" htmlFor="internalBarCode" />
+                            <TextInput id="internalBarCode" value={internalBarCode} onChange={(e) => setInternalBarCode(e.target.value)} />
+                        </div>
+                        <div>
+                            <LabelInput value="Precio de venta por mayoreo" required="no" htmlFor="salePriceMany" />
+                            <TextInput id="salePriceMany" type="number" step="0.01" placeholder="0.00" value={salePriceMany} onChange={(e) => setSalePriceMany(e.target.value)} />
+                        </div>
+                        <div>
+                            <LabelInput value="Cantidad para mayoreo" required="no" htmlFor="saleQuantityMany" />
+                            <TextInput id="saleQuantityMany" type="number" step="0.01" placeholder="Cantidad por mayoreo" value={saleQuantityMany} onChange={(e) => setSaleQuantityMany(e.target.value)} />
+                        </div>
+                        <div>
+                            <LabelInput value="Precio especial" required="no" htmlFor="salePriceSpecial" />
+                            <TextInput id="salePriceSpecial" type="number" step="0.01" placeholder="0.00" value={salePriceSpecial} onChange={(e) => setSalePriceSpecial(e.target.value)} />
+                        </div>
+                        <div />
+                        <div>
+                            <LabelInput value="Stock mínimo en sucursal" required="no" htmlFor="minStockBranch" />
+                            <TextInput id="minStockBranch" type="number" step="0.001" placeholder="Cantidad mínima" value={minStockBranch} onChange={(e) => setMinStockBranch(e.target.value)} />
+                        </div>
+                        <div>
+                            <LabelInput value="Stock máximo en sucursal" required="no" htmlFor="maxStockBranch" />
+                            <TextInput id="maxStockBranch" type="number" step="0.001" placeholder="Cantidad máxima" value={maxStockBranch} onChange={(e) => setMaxStockBranch(e.target.value)} />
+                        </div>
+                    </div>
+                </div>
 
                 <div className="flex justify-end gap-3 pt-2">
                     <Button type="submit" color="purple" disabled={submitting}>

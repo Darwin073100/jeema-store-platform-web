@@ -14,7 +14,18 @@ import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 
 export async function resolveCloudTransferItemAsNewProductAction(
-    dto: { cloudTransferItemId: bigint; localCategoryId: bigint; localBrandId?: bigint },
+    dto: {
+        cloudTransferItemId: bigint;
+        localCategoryId: bigint;
+        localBrandId?: bigint;
+        internalBarCode?: string | null;
+        salePriceOne?: number | null;
+        salePriceMany?: number | null;
+        saleQuantityMany?: number | null;
+        salePriceSpecial?: number | null;
+        minStockBranch?: number | null;
+        maxStockBranch?: number | null;
+    },
 ): Promise<{ ok: boolean; value?: ICloudTransferItem; error?: ErrorEntity }> {
     try {
         const cloudTransferItemRepository = await TypeormCloudTransferItemRepository.create();
