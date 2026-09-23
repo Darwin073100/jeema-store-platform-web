@@ -11,8 +11,13 @@ export class ApiCloudTransferConfigImpl implements ApiConfig {
 
     constructor() {
         // Configuracion de las variables de entorno
-        const baseApiUrl = process.env.URL_JEEMA_TRANSFER_PLATFORM_API || 'http://localhost:3001';
-        const apiPrefix = process.env.PREFIX_JEEMA_TRANSFER_PLATFORM_API || '/api';
+        // NOTA: nombres corregidos para que coincidan con .env.template (URL_EDYOF_PLATFORM_API /
+        // PREFIX_EDYOF_PLATFORM_API). Antes se leían nombres inexistentes
+        // (URL_JEEMA_TRANSFER_PLATFORM_API/PREFIX_JEEMA_TRANSFER_PLATFORM_API) con un default de prefijo
+        // incorrecto ('/api' en vez de '/api/v1'), lo que hacía que cualquier llamada apuntara a la ruta
+        // equivocada del servidor EDYOF. Ver spect/08_cloud_transfer_spect.md sección 8.1.
+        const baseApiUrl = process.env.URL_EDYOF_PLATFORM_API || 'http://localhost:3001';
+        const apiPrefix = process.env.PREFIX_EDYOF_PLATFORM_API || '/api/v1';
         
         this.baseUrl = `${baseApiUrl}${apiPrefix}`;
         this.timeout = 30000; // 30 segundos

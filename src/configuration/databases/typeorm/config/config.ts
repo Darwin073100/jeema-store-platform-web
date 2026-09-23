@@ -34,6 +34,8 @@ import { AddressOrmEntity } from 'src/contexts/establishment-management/address/
 import { ImageOrmEntity } from 'src/contexts/image-management/image/infraestructura/persistence/typeorm/entities/image.orm-entity';
 import { EstablishmentDetailOrmEntity } from 'src/contexts/establishment-management/establishment-detail/infraestructure/persistence/typeorm/entities/establishment-detail.orm-entity';
 import { PrinterConfigurationOrmEntity } from 'src/contexts/configuration-management/printer-configuration/infraestructura/persistence/typeorm/entities/printer-configuration.orm-entity';
+import { CloudTransferOrmEntity } from 'src/contexts/inventory-management/cloud-transfer/infraestructure/entities/cloud-transfer.orm-entity';
+import { CloudTransferItemOrmEntity } from 'src/contexts/inventory-management/cloud-transfer/infraestructure/entities/cloud-transfer-item.orm-entity';
 
 
 // Cargar variables de entorno
@@ -52,7 +54,7 @@ export const dbOptions: DataSourceOptions = {
     InventoryItemOrmEntity, CustomerOrmEntity, LotUnitPurchaseOrmEntity, PaymentMethodOrmEntity, SaleOrmEntity, 
     SaleDetailOrmEntity, SalePaymentOrmEntity, TransactionTypeOrmEntity, TransactionOrmEntity, TransferOrmEntity,
     CashRegisterOrmEntity, CashSessionOrmEntity, ReturnsOrmEntity, ImageOrmEntity, EstablishmentDetailOrmEntity,
-    PrinterConfigurationOrmEntity
+    PrinterConfigurationOrmEntity, CloudTransferOrmEntity, CloudTransferItemOrmEntity
   ],
   synchronize: false,
   logging: process.env.DB_LOGGING === 'true',

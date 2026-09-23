@@ -96,6 +96,18 @@ export class TypeOrmLotRepository implements LotRepository {
     }
   }
 
+  /**
+   * Inserta un lote nuevo participando de la transacción activa (sin abrir su propio `queryRunner`, a
+   * diferencia de `saveWithItems`). Usado por `ApproveCloudTransferUseCase`. El repositorio transaccional se
+   * resuelve DENTRO del método, en cada llamada (ver spect/08_cloud_transfer_spect.md sección 5.5).
+   */
+  async saveTransactional(entity: LotEntity): Promise<LotEntity> {
+    const transactionalRepository = this.transactionDB.getManager().getRepository(LotOrmEntity);
+    const ormEntity = LotMapper.toOrm(entity);
+    const saved = await transactionalRepository.save({ ...ormEntity, lotUnitPurchases: undefined });
+    return LotMapper.toDomain(saved);
+  }
+
   async save(entity: LotEntity): Promise<LotEntity> {
     try {
       let lotExist = await this.ormLotRepository.findOneBy({

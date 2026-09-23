@@ -18,6 +18,7 @@ export class RegisterCloudBranchUseCase {
 
   // TODO: Debemos eliminar los cambios en la nube por si hay un error en el sistema local
   async execute(dto: RegisterCloudBranchDto): Promise<Result<ICloudBranchOffice, ErrorEntity>> {
+    console.log(dto);
     // Verificar la existencia de la sucursal
     const branchExist = await this.branchOfficeRepository.existById(dto.branchOfficeId);
     if (!branchExist) {

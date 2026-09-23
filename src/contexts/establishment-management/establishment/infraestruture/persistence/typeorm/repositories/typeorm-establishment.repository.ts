@@ -95,6 +95,7 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
       const savedOrmEntity = await this.establishmentTransactionDB.save(ormEntity);
       return EstablishmentMapper.toDomainEntity(savedOrmEntity);
     } catch (error) {
+      console.log(error)
       if(error instanceof QueryFailedError){
         const  pgError = error as any;
         if(pgError.code === '23505'){

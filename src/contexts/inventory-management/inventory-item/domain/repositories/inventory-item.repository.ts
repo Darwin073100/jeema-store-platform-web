@@ -45,4 +45,12 @@ export interface InventoryItemRepository extends TemplateRepository<InventoryIte
      * @param inventoryId
      */
     existsAnyForInventory(inventoryId: bigint): Promise<boolean>;
+    /**
+     * Variante transaccional de `save()`, añadida para `ApproveCloudTransferUseCase`
+     * (contexts/inventory-management/cloud-transfer). El manager transaccional se resuelve DENTRO del
+     * cuerpo del método en cada llamada (no cacheado en el constructor) — ver
+     * spect/08_cloud_transfer_spect.md sección 5.5.
+     * @param entity
+     */
+    saveTransactional(entity: InventoryItemEntity): Promise<InventoryItemEntity>;
 }

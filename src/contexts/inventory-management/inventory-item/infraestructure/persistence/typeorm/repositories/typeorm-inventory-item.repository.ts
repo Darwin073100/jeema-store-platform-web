@@ -74,6 +74,20 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository {
         return InventoryItemMapper.toDomain(result);
     }
 
+    /**
+     * Variante transaccional simple de `save()`, usada por `ApproveCloudTransferUseCase`. A diferencia de
+     * `save()` (que valida duplicados de ubicación con una lectura fuera de la transacción activa), aquí el
+     * caller ya resolvió la ubicación correcta (find-or-create) antes de llamar — este método solo persiste.
+     * El repositorio transaccional se resuelve DENTRO del método, en cada llamada (ver
+     * spect/08_cloud_transfer_spect.md sección 5.5).
+     */
+    async saveTransactional(entity: InventoryItemEntity): Promise<InventoryItemEntity> {
+        const transactionalRepository = this.transactionDB.getManager().getRepository(InventoryItemOrmEntity);
+        const ormEntity = InventoryItemMapper.toOrmEntity(entity);
+        const saved = await transactionalRepository.save(ormEntity);
+        return InventoryItemMapper.toDomain(saved);
+    }
+
     async update(entity: InventoryItemEntity): Promise<InventoryItemEntity> {
         try {
             // Buscamos el registro existente con sus relaciones

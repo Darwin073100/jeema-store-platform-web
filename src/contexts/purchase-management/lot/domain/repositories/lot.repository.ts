@@ -15,4 +15,12 @@ export interface LotRepository extends TemplateRepository<LotEntity>{
      * @returns {Promise<LotEntity[]>}
      */
     findAllByProductId(productId: bigint, dateInit?: Date, dateFinish?: Date): Promise<LotEntity[]>;
+    /**
+     * Inserta un lote nuevo (sin `lotUnitPurchases`) participando de la transacción activa. Añadido para
+     * `ApproveCloudTransferUseCase` (contexts/inventory-management/cloud-transfer): el manager transaccional
+     * se resuelve DENTRO del cuerpo del método en cada llamada, no cacheado en el constructor — ver
+     * spect/08_cloud_transfer_spect.md sección 5.5.
+     * @param entity
+     */
+    saveTransactional(entity: LotEntity): Promise<LotEntity>;
 }
