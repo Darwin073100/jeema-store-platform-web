@@ -41,7 +41,10 @@ export class RefreshPendingCloudTransfersUseCase {
 
     private async upsertMirror(remote: ICloudTransferApiResponse, localBranchOfficeId: bigint): Promise<void> {
         const remoteCloudTransferId = BigInt(remote.cloudTransferId);
-        const existing = await this.cloudTransferRepository.findByRemoteCloudTransferId(remoteCloudTransferId);
+        // Escopado por INCOMING: si A y B comparten base de datos, A ya tiene su propia fila OUTGOING con
+        // este mismo remoteCloudTransferId — sin este filtro, `existing` la encontraría por accidente y B
+        // nunca crearía (ni actualizaría) su propio espejo entrante.
+        const existing = await this.cloudTransferRepository.findByRemoteCloudTransferId(remoteCloudTransferId, CloudTransferDirectionEnum.INCOMING);
         const freshStatus = CloudTransferApiMapper.toDomainStatus(remote.status);
 
         if (!existing) {

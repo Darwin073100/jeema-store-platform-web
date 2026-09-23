@@ -9,10 +9,15 @@ import { CloudTransferItemOrmEntity } from "./cloud-transfer-item.orm-entity";
 @Index(['fromBranchOfficeId', 'status'])
 @Index(['toBranchOfficeId', 'status'])
 @Index(['direction'])
+// Compuesto en vez de único simple sobre `remoteCloudTransferId`: cuando A y B comparten la misma base de
+// datos (instalación single-tenant multi-sucursal, sin un DataSource separado por sucursal), el emisor (A,
+// OUTGOING) y el receptor (B, INCOMING) del MISMO traspaso remoto necesitan coexistir como dos filas con el
+// mismo `remoteCloudTransferId` — una por dirección. Ver RefreshPendingCloudTransfersUseCase.upsertMirror.
+@Index(['remoteCloudTransferId', 'direction'], { unique: true })
 export class CloudTransferOrmEntity {
     @PrimaryGeneratedColumn('increment', { type: 'bigint', name: 'cloud_transfer_id' })
     cloudTransferId: bigint;
-    @Column({ type: 'bigint', name: 'remote_cloud_transfer_id', nullable: true, unique: true })
+    @Column({ type: 'bigint', name: 'remote_cloud_transfer_id', nullable: true })
     remoteCloudTransferId: bigint | null;
     @Column({ type: 'enum', enum: CloudTransferDirectionEnum, name: 'direction' })
     direction: CloudTransferDirectionEnum;

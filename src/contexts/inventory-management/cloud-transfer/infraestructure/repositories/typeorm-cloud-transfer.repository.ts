@@ -105,9 +105,9 @@ export class TypeormCloudTransferRepository implements CloudTransferRepository {
         throw new Error('Método no implementado.');
     }
 
-    async findByRemoteCloudTransferId(remoteCloudTransferId: bigint): Promise<CloudTransferEntity | null> {
+    async findByRemoteCloudTransferId(remoteCloudTransferId: bigint, direction: CloudTransferDirectionEnum): Promise<CloudTransferEntity | null> {
         const result = await this.repository.findOne({
-            where: { remoteCloudTransferId },
+            where: { remoteCloudTransferId, direction },
             relations: { items: true },
         });
         return result ? CloudTransferMapper.toDomain(result) : null;

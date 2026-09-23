@@ -56,6 +56,7 @@ import { MapCloudCategoryToLocalCategoryUseCase } from "@/contexts/inventory-man
 
 import { CloudTransferItemResolutionStatusEnum } from "@/contexts/inventory-management/cloud-transfer/domain/enums/cloud-transfer-item-resolution-status.enum";
 import { CloudTransferStatusEnum } from "@/contexts/inventory-management/cloud-transfer/domain/enums/cloud-transfer-status.enum";
+import { CloudTransferDirectionEnum } from "@/contexts/inventory-management/cloud-transfer/domain/enums/cloud-transfer-direction.enum";
 import { CloudTransferItemNotResolvedException } from "@/contexts/inventory-management/cloud-transfer/domain/exceptions/cloud-transfer-item-not-resolved.exception";
 import { CloudTransferEntity } from "@/contexts/inventory-management/cloud-transfer/domain/entities/cloud-transfer.entity";
 import { CloudTransferItemEntity } from "@/contexts/inventory-management/cloud-transfer/domain/entities/cloud-transfer-item.entity";
@@ -288,6 +289,58 @@ describe('cloud-transfer integration (pg-mem)', () => {
             expect(itemAfter?.quantityOnHand.value).toBe(14); // 20 - 6, el descuento no depende de tener lote
         } finally {
             await destroy(a);
+        }
+    });
+
+    it('cuando A y B comparten la misma base de datos, B ve el traspaso como entrante tras Actualizar (no lo confunde con la fila OUTGOING de A)', async () => {
+        // A diferencia del resto de tests de este archivo (que usan DOS DataSources pg-mem separados para
+        // modelar A y B como instalaciones realmente distintas), este test crea DOS sucursales dentro de UN
+        // solo `Installation` — el deployment single-tenant multi-sucursal real de este repo (un único
+        // `DATABASE_URL`/DataSource sirviendo a todas las sucursales de un establecimiento, ver config.ts).
+        // Reproduce el bug real: `RefreshPendingCloudTransfersUseCase.upsertMirror` (lado B) hacía
+        // `findByRemoteCloudTransferId` sin escopar por `direction`, así que encontraba la fila OUTGOING que
+        // A ya había insertado para el mismo `remoteCloudTransferId` y nunca creaba la fila INCOMING de B —
+        // "Entrantes" quedaba vacío en la UI de B aunque EDYOF sí tuviera el traspaso.
+        const shared = await createInstallation({ branchName: 'Sucursal A (Matriz)', cloudBranchOfficeId: BigInt(2001), city: 'CDMX' });
+        try {
+            const addressB = await shared.dataSource.getRepository(AddressOrmEntity).save({
+                municipality: 'Centro', city: 'GDL', state: 'GDL', postalCode: '00000', country: 'MX',
+            });
+            const branchOfficeB = await shared.dataSource.getRepository(BranchOfficeOrmEntity).save({
+                establishmentId: shared.establishmentId, addressId: addressB.addressId,
+                name: 'Sucursal B', cloudBranchOfficeId: BigInt(2002),
+            });
+
+            const origin = await seedProductWithStock(shared, { name: 'Producto Compartido', barcode: 'BC-SHARED', stock: 30 });
+
+            const createUseCase = buildCreateUseCase(shared);
+            const created = await createUseCase.execute({
+                fromBranchOfficeId: shared.branchOfficeId,
+                toCloudBranchOfficeId: branchOfficeB.cloudBranchOfficeId!,
+                shipmentNotes: null,
+                requestedByEmployeeId: shared.employeeId,
+                items: [{
+                    originLocalProductId: origin.productId, originLocalLotId: origin.lotId,
+                    originLocalInventoryItemId: origin.inventoryItemId, quantityToTransfer: 4,
+                }],
+            });
+            expect(created.sendResult.ok).toBe(true);
+
+            const refreshUseCase = new RefreshPendingCloudTransfersUseCase(shared.cloudTransferRepository, fakeApi, shared.branchOfficeRepository);
+            const refreshResult = await refreshUseCase.execute(branchOfficeB.branchOfficeId);
+
+            expect(refreshResult.ok).toBe(true);
+            expect(refreshResult.value).toHaveLength(1); // antes del fix: 0 (encontraba y "reciclaba" la fila OUTGOING de A)
+            expect(refreshResult.value![0].direction).toBe(CloudTransferDirectionEnum.INCOMING);
+            expect(refreshResult.value![0].toBranchOfficeId?.toString()).toBe(branchOfficeB.branchOfficeId.toString());
+            expect(refreshResult.value![0].remoteCloudTransferId?.toString()).toBe(created.transfer.remoteCloudTransferId?.toString());
+
+            // La fila OUTGOING original de A sigue intacta y sin mezclarse con la de B.
+            const outgoingList = await shared.cloudTransferRepository.findAllByBranchOffice(shared.branchOfficeId, CloudTransferDirectionEnum.OUTGOING);
+            expect(outgoingList).toHaveLength(1);
+            expect(outgoingList[0].direction).toBe(CloudTransferDirectionEnum.OUTGOING);
+        } finally {
+            await destroy(shared);
         }
     });
 
