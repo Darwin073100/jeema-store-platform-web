@@ -13,7 +13,9 @@ export interface CreateCloudTransferDto {
 
 export interface CreateCloudTransferItemDto {
     originLocalProductId: bigint;
-    originLocalLotId: bigint;
+    /** Null cuando el producto no tiene lotes registrados: el traspaso procede igual (ver
+     * `CreateAndSendCloudTransferUseCase`, que sintetiza el snapshot de lote en ese caso). */
+    originLocalLotId: bigint | null;
     originLocalInventoryItemId: bigint;
     quantityToTransfer: number;
 }

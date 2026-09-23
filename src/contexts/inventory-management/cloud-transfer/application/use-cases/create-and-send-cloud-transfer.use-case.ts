@@ -7,6 +7,7 @@ import { ProductRepository } from "src/contexts/product-management/product/domai
 import { CategoryRepository } from "src/contexts/product-management/category/domain/repositories/category.repository";
 import { BrandRepository } from "src/contexts/product-management/brand/domain/repositories/brand.repository";
 import { LotRepository } from "src/contexts/purchase-management/lot/domain/repositories/lot.repository";
+import { LotEntity } from "src/contexts/purchase-management/lot/domain/entities/lot.entity";
 import { InventoryRepository } from "src/contexts/inventory-management/inventory/domain/repositories/inventory.repository";
 import { InventoryItemRepository } from "src/contexts/inventory-management/inventory-item/domain/repositories/inventory-item.repository";
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
@@ -74,9 +75,16 @@ export class CreateAndSendCloudTransferUseCase {
             if (!product) {
                 throw new CloudTransferItemNotFoundException(`El producto de origen (${itemDto.originLocalProductId}) no existe.`);
             }
-            const lot = await this.lotRepository.existById(itemDto.originLocalLotId);
-            if (!lot) {
-                throw new CloudTransferItemNotFoundException(`El lote de origen (${itemDto.originLocalLotId}) no existe.`);
+            // El lote es opcional: un producto puede transferirse sin lote registrado (ver
+            // spect/08_cloud_transfer_spect.md 3.6 y nota de deviación en el reporte final). Cuando
+            // `originLocalLotId` viene null, el snapshot de lote se sintetiza más abajo a partir del
+            // producto/inventario en vez de leerlo de un `Lot` real.
+            let lot: LotEntity | null = null;
+            if (itemDto.originLocalLotId !== null) {
+                lot = await this.lotRepository.existById(itemDto.originLocalLotId);
+                if (!lot) {
+                    throw new CloudTransferItemNotFoundException(`El lote de origen (${itemDto.originLocalLotId}) no existe.`);
+                }
             }
             const inventoryItem = await this.inventoryItemRepository.findById(itemDto.originLocalInventoryItemId);
             if (!inventoryItem) {
@@ -105,7 +113,7 @@ export class CreateAndSendCloudTransferUseCase {
                 cloudTransferId: BigInt(0),
                 lineNumber: index + 1,
                 originLocalProductId: product.productId,
-                originLocalLotId: lot.lotId,
+                originLocalLotId: lot?.lotId ?? null,
                 originLocalInventoryItemId: inventoryItem.inventoryItemId,
                 productUniversalBarCode: product.universalBarCode.value,
                 productName: product.name.value,
@@ -116,13 +124,16 @@ export class CreateAndSendCloudTransferUseCase {
                 productDescription: product.description.value,
                 productUnitOfMeasure: product.unitOfMeasure,
                 productImageUrl: product.imageUrl,
-                lotNumber: lot.lotNumber,
-                lotPurchasePrice: lot.purchasePrice,
-                lotPurchaseUnit: lot.purchaseUnit,
+                // Sin lote real: snapshot sintético a partir del producto (costo promedio como precio de
+                // compra) para seguir cumpliendo el contrato de EDYOF, que exige el bloque `lot` completo
+                // (ver spect/08_cloud_transfer_spect.md sección 4.3, `TransferItemHttpDto.lot`).
+                lotNumber: lot?.lotNumber ?? 'SIN-LOTE',
+                lotPurchasePrice: lot?.purchasePrice ?? product.averageCost,
+                lotPurchaseUnit: lot?.purchaseUnit ?? product.unitOfMeasure,
                 lotTransferredQuantity: itemDto.quantityToTransfer,
-                lotExpirationDate: lot.expirationDate,
-                lotManufacturingDate: lot.manufacturingDate,
-                lotOriginReceivedDate: lot.receivedDate,
+                lotExpirationDate: lot?.expirationDate ?? null,
+                lotManufacturingDate: lot?.manufacturingDate ?? null,
+                lotOriginReceivedDate: lot?.receivedDate ?? null,
                 // NOTA: lotSupplierName queda null — SuplierRepository no forma parte del constructor de
                 // este use-case per spect/08_cloud_transfer_spect.md sección 5.1 (campo puramente
                 // informativo, ver sección 3.6). Ver nota de deviación en el reporte final.

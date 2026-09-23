@@ -359,6 +359,7 @@ async findAllByEstablishmentAndName(
     .leftJoinAndSelect('product.season', 'season')
     .leftJoinAndSelect('product.inventory', 'inventory')
     .leftJoinAndSelect('inventory.inventoryItems', 'inventoryItems')
+    .leftJoinAndSelect('product.lots', 'lots')
     .where('product.establishmentId = :establishmentId', { establishmentId });
 
   if (searchTerm && searchTerm.trim()) {

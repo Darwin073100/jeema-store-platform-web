@@ -5,9 +5,10 @@ import { LocationEnum } from "@/contexts/inventory-management/inventory-item/dom
 /** Línea del carrito de creación (pantalla "Nuevo traspaso"). Solo existe en el cliente, nunca se persiste
  * tal cual — `createAndSendCloudTransferAction` solo recibe ids + cantidad (ver CreateCloudTransferDto). */
 export interface DraftCloudTransferItem {
-    key: string; // `${productId}-${lotId}-${inventoryItemId}`, para el key de React y evitar duplicados
+    key: string; // `${productId}-${lotId ?? 'sin-lote'}-${inventoryItemId}`, para el key de React y evitar duplicados
     originLocalProductId: bigint;
-    originLocalLotId: bigint;
+    /** Null cuando el producto no tiene lotes registrados — el traspaso procede igual sin lote. */
+    originLocalLotId: bigint | null;
     originLocalInventoryItemId: bigint;
     productName: string;
     productUniversalBarCode: string | null;

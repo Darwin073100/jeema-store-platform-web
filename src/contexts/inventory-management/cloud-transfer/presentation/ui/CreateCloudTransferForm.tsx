@@ -35,15 +35,18 @@ const CreateCloudTransferForm = () => {
     };
 
     const handleConfirmAdd = () => {
-        if (!selectedProduct || !selectedLot || !selectedInventoryItem || quantity <= 0) return;
+        // El lote es opcional: un producto sin lotes registrados igual puede transferirse por su
+        // ubicación/stock. Ver CreateAndSendCloudTransferUseCase, que sintetiza el snapshot de lote
+        // cuando `originLocalLotId` llega null.
+        if (!selectedProduct || !selectedInventoryItem || quantity <= 0) return;
         handleAddDraftItem({
-            key: `${selectedProduct.productId}-${selectedLot.lotId}-${selectedInventoryItem.inventoryItemId}`,
+            key: `${selectedProduct.productId}-${selectedLot?.lotId ?? 'sin-lote'}-${selectedInventoryItem.inventoryItemId}`,
             originLocalProductId: selectedProduct.productId,
-            originLocalLotId: selectedLot.lotId,
+            originLocalLotId: selectedLot?.lotId ?? null,
             originLocalInventoryItemId: selectedInventoryItem.inventoryItemId,
             productName: selectedProduct.name,
             productUniversalBarCode: selectedProduct.universalBarCode,
-            lotNumber: selectedLot.lotNumber,
+            lotNumber: selectedLot?.lotNumber ?? 'Sin lote',
             location: selectedInventoryItem.location,
             availableQuantity: selectedInventoryItem.quantityOnHan,
             quantityToTransfer: quantity,
@@ -131,18 +134,19 @@ const CreateCloudTransferForm = () => {
                             <Button type="button" size="sm" color="gray" onClick={() => { setSelectedProduct(null); resetPicker(); }}>Cambiar producto</Button>
                         </div>
                         {(!selectedProduct.lots || selectedProduct.lots.length === 0) && (
-                            <p className="text-red-600 text-sm">Este producto no tiene lotes registrados, no se puede transferir.</p>
+                            <p className="text-amber-600 text-sm">Este producto no tiene lotes registrados; se transferirá sin lote.</p>
                         )}
                         {(!selectedProduct.inventory || (selectedProduct.inventory.inventoryItems ?? []).length === 0) && (
                             <p className="text-red-600 text-sm">Este producto no tiene stock en ninguna ubicación de esta sucursal.</p>
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <LabelInput value="Lote" required="yes" htmlFor="lotId" />
+                                <LabelInput value="Lote" required="no" htmlFor="lotId" />
                                 <SelectMenu
                                     id="lotId"
                                     items={(selectedProduct.lots ?? []).map(lot => ({ value: lot.lotId.toString(), text: `${lot.lotNumber} ($${lot.purchasePrice})` }))}
                                     value={lotId}
+                                    disabled={!selectedProduct.lots || selectedProduct.lots.length === 0}
                                     onChange={(e) => setLotId(e.target.value)} />
                             </div>
                             <div>
@@ -169,7 +173,7 @@ const CreateCloudTransferForm = () => {
                             type="button"
                             color="green"
                             className="self-end"
-                            disabled={!selectedLot || !selectedInventoryItem || quantity <= 0 || quantity > (selectedInventoryItem?.quantityOnHan ?? 0)}
+                            disabled={!selectedInventoryItem || quantity <= 0 || quantity > (selectedInventoryItem?.quantityOnHan ?? 0)}
                             onClick={handleConfirmAdd}>
                             <HiPlus className="w-4 h-4" /> Agregar al traspaso
                         </Button>
@@ -187,7 +191,7 @@ const CreateCloudTransferForm = () => {
                             <div key={item.key} className="flex max-md:flex-col md:items-center justify-between gap-2 border border-gray-200 rounded-xl p-3">
                                 <div>
                                     <span className="font-semibold">{item.productName}</span>
-                                    <span className="text-gray-500 text-sm ml-2">Lote {item.lotNumber} · {item.location.toUpperCase()}</span>
+                                    <span className="text-gray-500 text-sm ml-2">{item.originLocalLotId ? `Lote ${item.lotNumber}` : 'Sin lote'} · {item.location.toUpperCase()}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <TextInput

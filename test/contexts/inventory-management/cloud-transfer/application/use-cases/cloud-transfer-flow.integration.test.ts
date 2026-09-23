@@ -142,6 +142,27 @@ async function createInstallation(params: {
     };
 }
 
+/** Crea Product + Inventory + InventoryItem(STOCK) SIN lote — cubre el traspaso de productos que nunca
+ * tuvieron un lote de compra registrado (ver CreateAndSendCloudTransferUseCase, que sintetiza el snapshot
+ * de lote a partir del producto cuando `originLocalLotId` llega null). */
+async function seedProductWithStockNoLot(side: Installation, params: { name: string; barcode: string | null; stock: number; averageCost?: number }) {
+    const product = await side.dataSource.getRepository(ProductOrmEntity).save({
+        establishmentId: side.establishmentId, categoryId: side.categoryId, brandId: side.brandId,
+        name: params.name, sku: null, universalBarCode: params.barcode, description: null,
+        unitOfMeasure: ForSaleEnum.PC, minStockGlobal: null, imageUrl: null,
+        averageCost: (params.averageCost ?? 12.5).toString(),
+    });
+    const inventory = await side.dataSource.getRepository(InventoryOrmEntity).save({
+        productId: product.productId, branchOfficeId: side.branchOfficeId, isSellable: true,
+        salePriceOne: 15, salePriceMany: null, saleQuantityMany: null, salePriceSpecial: null,
+        minStockBranch: null, maxStockBranch: null,
+    });
+    const inventoryItem = await side.dataSource.getRepository(InventoryItemOrmEntity).save({
+        inventoryId: inventory.inventoryId, location: LocationEnum.STOCK, quantityOnHand: params.stock,
+    });
+    return { productId: product.productId, inventoryId: inventory.inventoryId, inventoryItemId: inventoryItem.inventoryItemId };
+}
+
 /** Crea Product + Lot + Inventory + InventoryItem(STOCK) en la instalación dada, con stock inicial. */
 async function seedProductWithStock(side: Installation, params: { name: string; barcode: string | null; stock: number }) {
     const product = await side.dataSource.getRepository(ProductOrmEntity).save({
@@ -233,6 +254,38 @@ describe('cloud-transfer integration (pg-mem)', () => {
             const persisted = await a.cloudTransferRepository.findById(first.transfer.cloudTransferId);
             expect(persisted?.status).toBe(CloudTransferStatusEnum.PENDING);
             expect(persisted?.remoteCloudTransferId).toBe(retried.transfer.remoteCloudTransferId);
+        } finally {
+            await destroy(a);
+        }
+    });
+
+    it('crea el traspaso con un producto sin lote registrado, sintetizando el snapshot de lote desde el producto', async () => {
+        const a = await createInstallation({ branchName: 'Sucursal A', cloudBranchOfficeId: BigInt(1001), city: 'CDMX' });
+        try {
+            const origin = await seedProductWithStockNoLot(a, { name: 'Producto Sin Lote', barcode: 'BC-NO-LOT', stock: 20, averageCost: 7.5 });
+
+            const useCase = buildCreateUseCase(a);
+            const result = await useCase.execute({
+                fromBranchOfficeId: a.branchOfficeId,
+                toCloudBranchOfficeId: BigInt(1002),
+                shipmentNotes: 'Traspaso sin lote',
+                requestedByEmployeeId: a.employeeId,
+                items: [{
+                    originLocalProductId: origin.productId, originLocalLotId: null,
+                    originLocalInventoryItemId: origin.inventoryItemId, quantityToTransfer: 6,
+                }],
+            });
+
+            expect(result.sendResult.ok).toBe(true);
+            expect(result.transfer.items).toHaveLength(1);
+            const item = result.transfer.items[0];
+            expect(item.originLocalLotId).toBeNull();
+            expect(item.lotNumber).toBe('SIN-LOTE');
+            expect(item.lotPurchasePrice).toBe(7.5); // = product.averageCost, no hay lote real del que leerlo
+            expect(item.lotTransferredQuantity).toBe(6);
+
+            const itemAfter = await a.inventoryItemRepository.findById(origin.inventoryItemId);
+            expect(itemAfter?.quantityOnHand.value).toBe(14); // 20 - 6, el descuento no depende de tener lote
         } finally {
             await destroy(a);
         }
