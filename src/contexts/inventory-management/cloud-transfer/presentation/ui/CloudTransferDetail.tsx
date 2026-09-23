@@ -24,7 +24,7 @@ interface Props {
 
 const CloudTransferDetail = ({ transfer: initialTransfer }: Props) => {
     const {
-        transfer, refresh, loading, reasonPrompt, setReasonPrompt,
+        transfer, refresh, handleRefresh, loading, reasonPrompt, setReasonPrompt,
         handleStartProcessing, handleReceive, handleApprove, handleCancel, handleReportError, handleRetrySend,
         isIncoming, isOutgoing, hasUnresolvedItems,
         canStartProcessing, canRetryProcessing, canReceive, canApprove, canReportError, canCancel, canRetrySend,
@@ -55,7 +55,22 @@ const CloudTransferDetail = ({ transfer: initialTransfer }: Props) => {
                             {transfer.remoteCloudTransferId && <> · ID en la nube: {transfer.remoteCloudTransferId.toString()}</>}
                         </p>
                     </div>
-                    <CloudTransferStatusBadge status={transfer.status} size="md" />
+                    <div className="flex items-center gap-2">
+                        <CloudTransferStatusBadge status={transfer.status} size="md" />
+                        {isOutgoing && transfer.remoteCloudTransferId && (
+                            <Button
+                                type="button"
+                                color="teal"
+                                size="sm"
+                                onClick={handleRefresh}
+                                disabled={isBusy}
+                                title="Consulta a la nube el avance de este traspaso"
+                            >
+                                {loading === 'refreshing' ? <Spinner /> : <HiOutlineRefresh className="w-4 h-4" />}
+                                Actualizar
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

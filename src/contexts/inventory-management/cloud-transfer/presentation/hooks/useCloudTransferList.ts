@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { listCloudTransfersForBranchAction } from "../actions/list-cloud-transfers-for-branch.action";
 import { refreshPendingCloudTransfersAction } from "../actions/refresh-pending-cloud-transfers.action";
+import { refreshOutgoingCloudTransfersAction } from "../actions/refresh-outgoing-cloud-transfers.action";
 import { useCloudTransferStore } from "../stores/cloud-transfer.store";
 import { useCloudTransferUIStore } from "../stores/cloud-transfer-ui.store";
+import { ErrorEntity } from "@/shared/lib/utils/error.entity";
 
-/** Lógica de la pantalla de lista (`/transfers/list`): trae saliente + entrante, permite refrescar
- * lo entrante contra la nube (`refreshPendingCloudTransfersAction`) y filtra por pestaña activa. */
+/** Lógica de la pantalla de lista (`/transfers/list`): trae saliente + entrante, permite refrescar lo
+ * entrante contra la nube (`refreshPendingCloudTransfersAction`, descubre traspasos nuevos), permite
+ * refrescar lo saliente contra la nube (`refreshOutgoingCloudTransfersAction`, trae el avance de lo ya
+ * enviado: recepción/aprobación hecha por la sucursal destino) y filtra por pestaña activa. */
 const useCloudTransferList = () => {
     const { transfers, setTransfers } = useCloudTransferStore();
     const {
@@ -39,14 +43,17 @@ const useCloudTransferList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleRefreshIncoming = async () => {
+    const runRefresh = async (
+        action: () => Promise<{ ok: boolean; error?: ErrorEntity }>,
+        successMessage: string,
+    ) => {
         runCloudTransferLoading('refreshing');
         try {
-            const result = await refreshPendingCloudTransfersAction();
+            const result = await action();
             if (result.ok) {
                 setFloatMessageState({
                     summary: '¡Correcto!',
-                    description: '¡Lista de traspasos entrantes actualizada!',
+                    description: successMessage,
                     isActive: true,
                     type: 'green',
                 });
@@ -65,6 +72,10 @@ const useCloudTransferList = () => {
         }
     };
 
+    const handleRefreshIncoming = () => runRefresh(refreshPendingCloudTransfersAction, '¡Lista de traspasos entrantes actualizada!');
+
+    const handleRefreshOutgoing = () => runRefresh(refreshOutgoingCloudTransfersAction, '¡Estado de traspasos salientes actualizado!');
+
     const filteredTransfers = useMemo(
         () => transfers.filter(t => t.direction === listTab),
         [transfers, listTab],
@@ -76,6 +87,7 @@ const useCloudTransferList = () => {
         setListTab,
         loading: cloudTransferLoading,
         handleRefreshIncoming,
+        handleRefreshOutgoing,
         loadTransfers,
     };
 };

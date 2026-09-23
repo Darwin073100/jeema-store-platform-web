@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { findCloudTransferByIdAction } from "../actions/find-cloud-transfer-by-id.action";
+import { refreshCloudTransferFromCloudAction } from "../actions/refresh-cloud-transfer-from-cloud.action";
 import { startProcessingCloudTransferAction } from "../actions/start-processing-cloud-transfer.action";
 import { receiveCloudTransferAction } from "../actions/receive-cloud-transfer.action";
 import { approveCloudTransferAction } from "../actions/approve-cloud-transfer.action";
@@ -30,12 +31,23 @@ const useCloudTransferDetail = (initialTransfer: ICloudTransfer) => {
 
     const transfer = selectedTransfer ?? initialTransfer;
 
+    /** Para un OUTGOING ya enviado a la nube, resincroniza contra EDYOF antes de leer (así se ve el avance
+     * que hizo la sucursal destino: recepción/aprobación). Para todo lo demás, lectura local simple. */
     const refresh = useCallback(async () => {
-        const result = await findCloudTransferByIdAction(transfer.cloudTransferId);
+        const result = (transfer.direction === CloudTransferDirectionEnum.OUTGOING && transfer.remoteCloudTransferId)
+            ? await refreshCloudTransferFromCloudAction(transfer.cloudTransferId)
+            : await findCloudTransferByIdAction(transfer.cloudTransferId);
         if (result.ok && result.value) {
             setSelectedTransfer(result.value);
         }
-    }, [transfer.cloudTransferId, setSelectedTransfer]);
+    }, [transfer.cloudTransferId, transfer.direction, transfer.remoteCloudTransferId, setSelectedTransfer]);
+
+    useEffect(() => {
+        if (initialTransfer.direction === CloudTransferDirectionEnum.OUTGOING && initialTransfer.remoteCloudTransferId) {
+            refresh();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialTransfer.cloudTransferId]);
 
     const showError = (error?: ErrorEntity) => {
         setFloatMessageState({
@@ -107,6 +119,15 @@ const useCloudTransferDetail = (initialTransfer: ICloudTransfer) => {
         '¡Traspaso enviado a la nube!',
     );
 
+    const handleRefresh = async () => {
+        runCloudTransferLoading('refreshing');
+        try {
+            await refresh();
+        } finally {
+            stopCloudTransferLoading();
+        }
+    };
+
     const isIncoming = transfer.direction === CloudTransferDirectionEnum.INCOMING;
     const isOutgoing = transfer.direction === CloudTransferDirectionEnum.OUTGOING;
     const hasUnresolvedItems = transfer.items.some(i => i.resolutionStatus === CloudTransferItemResolutionStatusEnum.PENDING);
@@ -124,6 +145,7 @@ const useCloudTransferDetail = (initialTransfer: ICloudTransfer) => {
     return {
         transfer,
         refresh,
+        handleRefresh,
         loading: cloudTransferLoading,
         reasonPrompt,
         setReasonPrompt,

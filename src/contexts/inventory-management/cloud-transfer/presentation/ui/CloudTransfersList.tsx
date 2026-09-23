@@ -15,7 +15,7 @@ import { CloudTransferDirectionEnum } from "../../domain/enums/cloud-transfer-di
 const theadList = ['Traspaso', 'Sucursal (cloud)', 'Items', 'Notas de envío', 'Fecha', 'Estado'];
 
 const CloudTransfersList = () => {
-    const { transfers, listTab, setListTab, loading, handleRefreshIncoming } = useCloudTransferList();
+    const { transfers, listTab, setListTab, loading, handleRefreshIncoming, handleRefreshOutgoing } = useCloudTransferList();
     const { floatMessageState } = useCloudTransferUIStore();
 
     return (
@@ -50,6 +50,18 @@ const CloudTransfersList = () => {
                             onClick={handleRefreshIncoming}
                             disabled={loading === 'refreshing'}
                             title="Consulta a la nube si hay traspasos entrantes nuevos"
+                        >
+                            {loading === 'refreshing' ? <Spinner /> : <HiOutlineRefresh className="w-4 h-4" />}
+                            Actualizar
+                        </Button>
+                    )}
+                    {listTab === CloudTransferDirectionEnum.OUTGOING && (
+                        <Button
+                            type="button"
+                            color="teal"
+                            onClick={handleRefreshOutgoing}
+                            disabled={loading === 'refreshing'}
+                            title="Consulta a la nube el avance de los traspasos que ya enviaste"
                         >
                             {loading === 'refreshing' ? <Spinner /> : <HiOutlineRefresh className="w-4 h-4" />}
                             Actualizar
