@@ -2,19 +2,16 @@ import { useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { searchCandidateProductsForCloudTransferItemAction } from "../actions/search-candidate-products-for-cloud-transfer-item.action";
 import { createAndSendCloudTransferAction } from "../actions/create-and-send-cloud-transfer.action";
+import { listCloudBranchOfficesForTransferAction } from "../actions/list-cloud-branch-offices-for-transfer.action";
 import { useCloudTransferStore, DraftCloudTransferItem } from "../stores/cloud-transfer.store";
 import { useCloudTransferUIStore } from "../stores/cloud-transfer-ui.store";
 import { IProduct } from "@/contexts/product-management/product/presentation/interfaces/IProduct";
+import { ICloudBranchOffice } from "@/contexts/establishment-management/branch-office/presentation/interfaces/ICloudBranchOffice";
 
 const registerFormData = yup.object().shape({
-    toCloudBranchOfficeId: yup
-        .number()
-        .typeError('Ingresa el id de sucursal en la nube (número) de la sucursal destino.')
-        .required('El id de sucursal destino en la nube es obligatorio.')
-        .positive('Debe ser un número positivo.'),
     shipmentNotes: yup
         .string()
         .max(500, 'Las notas de envío no pueden superar los 500 caracteres.')
@@ -25,7 +22,8 @@ type RegisterFormData = yup.InferType<typeof registerFormData>;
 
 /** Lógica de la pantalla de creación (`/transfers/new`): A busca productos de su propio catálogo/stock,
  * arma un carrito de líneas (producto + lote + ubicación de inventario + cantidad) y envía el traspaso.
- * No hay directorio de sucursales en la nube (ver spect/08 sección 8.4) — el id destino es texto libre. */
+ * La sucursal destino se elige de un directorio real (`listCloudBranchOfficesForTransferAction`, todas las
+ * sucursales inscritas con la misma clave de inscripción), no se captura como id libre. */
 const useCreateCloudTransfer = () => {
     const router = useRouter();
     const { draftItems, addDraftItem, updateDraftItemQuantity, removeDraftItem, clearDraftItems } = useCloudTransferStore();
@@ -35,6 +33,25 @@ const useCreateCloudTransfer = () => {
     const [searchResults, setSearchResults] = useState<IProduct[]>([]);
     const [searching, setSearching] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+
+    const [cloudBranchOffices, setCloudBranchOffices] = useState<ICloudBranchOffice[]>([]);
+    const [loadingDirectory, setLoadingDirectory] = useState(true);
+    const [directoryError, setDirectoryError] = useState<string | null>(null);
+    const [toCloudBranchOfficeId, setToCloudBranchOfficeId] = useState('');
+
+    useEffect(() => {
+        setLoadingDirectory(true);
+        listCloudBranchOfficesForTransferAction()
+            .then((result) => {
+                if (result.ok) {
+                    setCloudBranchOffices(result.value ?? []);
+                    setDirectoryError(null);
+                } else {
+                    setDirectoryError(result.error?.message?.toString() || 'No se pudo cargar el directorio de sucursales.');
+                }
+            })
+            .finally(() => setLoadingDirectory(false));
+    }, []);
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm<RegisterFormData>({
         resolver: yupResolver(registerFormData) as any,
@@ -68,6 +85,16 @@ const useCreateCloudTransfer = () => {
     };
 
     const onSubmit = async (data: RegisterFormData) => {
+        if (!toCloudBranchOfficeId) {
+            setFloatMessageState({
+                summary: 'Falta la sucursal destino',
+                description: 'Elige a qué sucursal quieres enviar este traspaso.',
+                isActive: true,
+                type: 'yellow',
+            });
+            setTimeout(() => setFloatMessageState({}), 4000);
+            return;
+        }
         if (draftItems.length === 0) {
             setFloatMessageState({
                 summary: 'Faltan productos',
@@ -93,7 +120,7 @@ const useCreateCloudTransfer = () => {
         runCloudTransferLoading('creating');
         try {
             const result = await createAndSendCloudTransferAction({
-                toCloudBranchOfficeId: BigInt(data.toCloudBranchOfficeId),
+                toCloudBranchOfficeId: BigInt(toCloudBranchOfficeId),
                 shipmentNotes: data.shipmentNotes || null,
                 items: draftItems.map(i => ({
                     originLocalProductId: i.originLocalProductId,
@@ -146,6 +173,11 @@ const useCreateCloudTransfer = () => {
         handleSubmit,
         onSubmit,
         errors,
+        cloudBranchOffices,
+        loadingDirectory,
+        directoryError,
+        toCloudBranchOfficeId,
+        setToCloudBranchOfficeId,
         searchText,
         setSearchText,
         searchResults,

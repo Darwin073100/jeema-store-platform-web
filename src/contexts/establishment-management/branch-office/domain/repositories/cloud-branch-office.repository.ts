@@ -7,4 +7,6 @@ import { RegisterCloudBranchDto } from "../../application/dtos/register-cloud-br
 export interface CloudBranchOfficeRepository {
     registerCloudBranchAndCloudEstablishment(dto: RegisterCloudBranchAndCloudEstablishmentDto): Promise<Result<ICloudBranchOffice, ErrorEntity>>;
     registerCloudBranch(dto: RegisterCloudBranchDto): Promise<Result<ICloudBranchOffice, ErrorEntity>>;
+    /** Directorio de sucursales inscritas con la misma clave (usado para elegir destino de un traspaso). */
+    findAllByEnrollmentKey(enrollmentKey: string): Promise<Result<ICloudBranchOffice[], ErrorEntity>>;
 }

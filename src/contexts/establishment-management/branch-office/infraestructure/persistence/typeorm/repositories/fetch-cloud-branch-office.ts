@@ -51,4 +51,16 @@ export class FetchCloudBranchOffice implements CloudBranchOfficeRepository {
             return handleError(error, 'generateEnrollmentKey');
         }
     }
+
+    async findAllByEnrollmentKey(enrollmentKey: string): Promise<Result<ICloudBranchOffice[], ErrorEntity>> {
+        try {
+            const response = await this.httpClient.get<ICloudBranchOffice[]>(
+                `${this.apiConfig.baseUrl}/cloud-branch-offices/by-enrollment-key/${encodeURIComponent(enrollmentKey)}`
+            );
+
+            return Result.success(response.data);
+        } catch (error) {
+            return handleError(error, 'findAllByEnrollmentKey');
+        }
+    }
 }

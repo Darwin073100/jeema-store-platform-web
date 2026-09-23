@@ -13,6 +13,7 @@ import { useCloudTransferUIStore } from "../stores/cloud-transfer-ui.store";
 const CreateCloudTransferForm = () => {
     const {
         register, handleSubmit, onSubmit, errors,
+        cloudBranchOffices, loadingDirectory, directoryError, toCloudBranchOfficeId, setToCloudBranchOfficeId,
         searchText, setSearchText, searchResults, searching, handleSearchProducts,
         selectedProduct, setSelectedProduct, handleSelectProduct,
         draftItems, handleAddDraftItem, updateDraftItemQuantity, removeDraftItem,
@@ -59,17 +60,23 @@ const CreateCloudTransferForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <LabelInput
-                            value="Id de sucursal destino (en la nube)"
+                            value="Sucursal destino"
                             required="yes"
                             htmlFor="toCloudBranchOfficeId"
-                            description="No existe todavía un directorio de sucursales en la nube: pide este id a la otra tienda por fuera del sistema." />
-                        <TextInput
-                            id="toCloudBranchOfficeId"
-                            type="number"
-                            placeholder="Ej. 12"
-                            error={!!errors.toCloudBranchOfficeId}
-                            errorMessage={errors.toCloudBranchOfficeId?.message}
-                            {...register('toCloudBranchOfficeId')} />
+                            description="Sucursales inscritas con tu misma clave de inscripción." />
+                        {loadingDirectory ? (
+                            <Spinner color="blue" />
+                        ) : directoryError ? (
+                            <p className="text-red-600 text-sm">{directoryError}</p>
+                        ) : cloudBranchOffices.length === 0 ? (
+                            <p className="text-gray-500 text-sm">No hay otras sucursales inscritas todavía con tu clave de inscripción.</p>
+                        ) : (
+                            <SelectMenu
+                                id="toCloudBranchOfficeId"
+                                items={cloudBranchOffices.map(b => ({ value: b.cloudBranchOfficeId, text: b.name }))}
+                                value={toCloudBranchOfficeId}
+                                onChange={(e) => setToCloudBranchOfficeId(e.target.value)} />
+                        )}
                     </div>
                     <div className="md:col-span-2">
                         <LabelInput value="Notas de envío" required="no" htmlFor="shipmentNotes" />
