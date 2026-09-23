@@ -23,6 +23,20 @@ export class CloudTransferApiMapper {
         return String(value).slice(0, 10);
     }
 
+    /**
+     * `product.imageUrl` en modo de almacenamiento local (`LocalFilesystemImageStorageAdapter`, el modo
+     * on-premise por defecto de esta tienda) guarda una ruta relativa (`/uploads/...`), servida solo por el
+     * propio servidor de ESTA tienda — EDYOF (la nube) no puede resolverla ni validarla como URL. Enviarla
+     * tal cual hace que el `ProductBlockCommand.imageUrl` de EDYOF rechace el traspaso completo con 400
+     * (visto en producción: falla siempre que el producto tiene imagen, nunca cuando no la tiene). Se omite
+     * el campo salvo que ya sea una URL absoluta http(s) real (p. ej. `CloudImageStorageAdapter`/Cloudinary
+     * en modo cloud) — mismo tratamiento que un producto sin imagen, en vez de bloquear todo el envío.
+     */
+    private static toAbsoluteUrlOrUndefined(url: string | null | undefined): string | undefined {
+        if (!url) return undefined;
+        return /^https?:\/\//i.test(url) ? url : undefined;
+    }
+
     static toCreateHttpDto(header: CloudTransferEntity): CreateCloudTransferHttpDto {
         return {
             fromCloudBranchId: header.fromCloudBranchOfficeId.toString(),
@@ -47,7 +61,7 @@ export class CloudTransferApiMapper {
                 brandName: item.productBrandName ?? undefined,
                 description: item.productDescription ?? undefined,
                 unitOfMeasure: item.productUnitOfMeasure,
-                imageUrl: item.productImageUrl ?? undefined,
+                imageUrl: this.toAbsoluteUrlOrUndefined(item.productImageUrl),
             },
             lot: {
                 lotNumber: item.lotNumber,

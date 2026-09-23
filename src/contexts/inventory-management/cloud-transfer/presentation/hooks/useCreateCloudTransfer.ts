@@ -146,10 +146,16 @@ const useCreateCloudTransfer = () => {
 
             if (result.sendError) {
                 // El stock ya se descontó localmente en A; solo falló el POST a la nube. Se puede reintentar
-                // desde el detalle (retrySendCloudTransferAction).
+                // desde el detalle (retrySendCloudTransferAction). Se muestra el motivo real devuelto por
+                // EDYOF (p. ej. un 400 de validación) en vez de un mensaje genérico, para no obligar a leer
+                // los logs del servidor para saber qué falló — mismo tratamiento que `showError` en
+                // useCloudTransferDetail.ts.
+                const reason = Array.isArray(result.sendError.message)
+                    ? result.sendError.message.join(', ')
+                    : (result.sendError.message?.toString() || 'No se pudo notificar a la nube.');
                 setFloatMessageState({
                     summary: 'Traspaso guardado, no se pudo enviar',
-                    description: 'El traspaso se guardó localmente y el stock ya se descontó, pero no se pudo notificar a la nube. Podrás reintentar el envío desde el detalle.',
+                    description: `El traspaso se guardó localmente y el stock ya se descontó, pero no se pudo notificar a la nube: ${reason}. Podrás reintentar el envío desde el detalle.`,
                     isActive: true,
                     type: 'yellow',
                 });
