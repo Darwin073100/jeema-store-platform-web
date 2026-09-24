@@ -5,20 +5,19 @@ import React, { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { IconType } from 'react-icons';
 import { Spinner } from '../loadings/Spinner'
-// import { Spinner } from './tu/ruta/al/Spinner';
 
 interface Props{
-    hover?: string;
     Icon: IconType;
     href: string;
     value: string;
 }
 
+/** Fila del sidebar de escritorio: el icono queda fijo a la izquierda; el texto se revela junto a él cuando el cursor pasa sobre todo el sidebar (clase `group` en SideBar). */
 export const SideLink = ({Icon, href, value}:Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
 
-  // 1. Verificamos si la ruta actual coincide con el href de este enlace
+  // Verificamos si la ruta actual coincide con el href de este enlace
   const isActive = pathname === href;
 
   useEffect(() => {
@@ -26,38 +25,46 @@ export const SideLink = ({Icon, href, value}:Props) => {
   }, [pathname]);
 
   return (
-    <Link 
-        href={href} 
-        onClick={(e) => {
-            // 2. Solo activamos el estado de carga si NO estamos ya en esa página
+    <Link
+        href={href}
+        onClick={() => {
+            // Solo activamos el estado de carga si NO estamos ya en esa página
             if (!isActive) {
                 setIsLoading(true);
             }
         }}
         className={clsx(
-            // Clases base que siempre se aplican
-            "w-[75px] h-[75px] transition-all duration-300 flex flex-col items-center justify-center rounded-2xl gap-1 cursor-pointer shadow border-2",
-            // 3. Estilos si el enlace está ACTIVO
-            isActive 
-                ? "bg-blue-200 border-blue-700 text-blue-900 shadow-xl font-semibold" 
-            // 4. Estilos si el enlace INACTIVO (con sus efectos hover)
-                : "bg-white border-white text-gray-700 hover:shadow-xl hover:bg-blue-200 hover:border-blue-700 hover:border-2"
+            'relative flex items-center gap-3 px-4 py-2.5 transition-colors duration-150',
+            isActive
+                ? 'bg-blue-50 text-blue-700'
+                : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'
         )}
     >
-        <span>
-            {isLoading ? (
-                <Spinner color='blue' /> 
-            ) : (
-                <Icon className="text-2xl"/>
-            )}
-        </span>
+        {/* Barra de acento pegada al borde izquierdo del sidebar cuando está activo */}
         <span
             className={clsx(
-                "transition-all duration-1000 max-sm:hidden text-sm",
-                // Hacemos el texto un poco más grueso si está activo
-                isActive ? "font-bold" : "font-normal"
-            )}>
-                {value}
+                'absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-blue-600 transition-opacity',
+                isActive ? 'opacity-100' : 'opacity-0'
+            )}
+        />
+
+        {/* El icono nunca cambia de tamaño ni posición entre colapsado/expandido */}
+        <span className="flex w-6 shrink-0 items-center justify-center">
+            {isLoading ? (
+                <Spinner color='blue' />
+            ) : (
+                <Icon className="text-2xl" />
+            )}
+        </span>
+
+        {/* Texto: oculto por defecto, se revela junto al icono al pasar el cursor por el sidebar */}
+        <span
+            className={clsx(
+                'max-w-0 overflow-hidden whitespace-nowrap text-sm opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:opacity-100',
+                isActive && 'font-semibold'
+            )}
+        >
+            {value}
         </span>
     </Link>
   )
