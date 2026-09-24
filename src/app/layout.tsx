@@ -9,7 +9,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased bg-gradient-to-br from-blue-50 to-indigo-100`} >
+      <body className={`antialiased bg-gray-50`} >
         <AuthProvider>
           {children}
         </AuthProvider>
