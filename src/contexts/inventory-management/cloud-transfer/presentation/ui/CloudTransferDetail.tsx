@@ -60,7 +60,7 @@ const CloudTransferDetail = ({ transfer: initialTransfer }: Props) => {
                         {isOutgoing && transfer.remoteCloudTransferId && (
                             <Button
                                 type="button"
-                                color="teal"
+                                color="blue"
                                 size="sm"
                                 onClick={handleRefresh}
                                 disabled={isBusy}
@@ -109,7 +109,7 @@ const CloudTransferDetail = ({ transfer: initialTransfer }: Props) => {
                         </Button>
                     )}
                     {canReceive && (
-                        <Button type="button" color="teal" onClick={handleReceive} disabled={isBusy} title={hasUnresolvedItems ? 'Puedes confirmar la recepción física aunque falten líneas por resolver' : undefined}>
+                        <Button type="button" color="blue" onClick={handleReceive} disabled={isBusy} title={hasUnresolvedItems ? 'Puedes confirmar la recepción física aunque falten líneas por resolver' : undefined}>
                             {loading === 'receiving' ? <Spinner /> : <HiOutlineCheckCircle className="w-4 h-4" />}
                             Confirmar recepción física
                         </Button>
@@ -121,7 +121,7 @@ const CloudTransferDetail = ({ transfer: initialTransfer }: Props) => {
                         </Button>
                     )}
                     {canReportError && (
-                        <Button type="button" color="orange" onClick={() => setReasonPrompt('error')} disabled={isBusy}>
+                        <Button type="button" color="yellow" onClick={() => setReasonPrompt('error')} disabled={isBusy}>
                             {loading === 'reporting-error' ? <Spinner /> : <HiOutlineExclamationCircle className="w-4 h-4" />}
                             Reportar error
                         </Button>

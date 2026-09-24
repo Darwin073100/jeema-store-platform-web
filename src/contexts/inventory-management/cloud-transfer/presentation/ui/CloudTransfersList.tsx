@@ -11,6 +11,7 @@ import { CloudTransferStatusBadge } from "./CloudTransferStatusBadge";
 import { formatDate } from "@/shared/lib/utils/date-formatter";
 import { useCloudTransferUIStore } from "../stores/cloud-transfer-ui.store";
 import { CloudTransferDirectionEnum } from "../../domain/enums/cloud-transfer-direction.enum";
+import { IoMdArrowDown, IoMdArrowUp } from "react-icons/io";
 
 const theadList = ['Traspaso', 'Sucursal (cloud)', 'Items', 'Notas de envío', 'Fecha', 'Estado'];
 
@@ -30,6 +31,7 @@ const CloudTransfersList = () => {
                         color={listTab === CloudTransferDirectionEnum.INCOMING ? 'blue' : 'gray'}
                         onClick={() => setListTab(CloudTransferDirectionEnum.INCOMING)}
                     >
+                        <IoMdArrowDown />
                         Entrantes
                     </Button>
                     <Button
@@ -39,6 +41,7 @@ const CloudTransfersList = () => {
                         color={listTab === CloudTransferDirectionEnum.OUTGOING ? 'blue' : 'gray'}
                         onClick={() => setListTab(CloudTransferDirectionEnum.OUTGOING)}
                     >
+                        <IoMdArrowUp />
                         Salientes
                     </Button>
                 </div>
@@ -46,7 +49,7 @@ const CloudTransfersList = () => {
                     {listTab === CloudTransferDirectionEnum.INCOMING && (
                         <Button
                             type="button"
-                            color="teal"
+                            color="blue"
                             onClick={handleRefreshIncoming}
                             disabled={loading === 'refreshing'}
                             title="Consulta a la nube si hay traspasos entrantes nuevos"
@@ -58,7 +61,7 @@ const CloudTransfersList = () => {
                     {listTab === CloudTransferDirectionEnum.OUTGOING && (
                         <Button
                             type="button"
-                            color="teal"
+                            color="blue"
                             onClick={handleRefreshOutgoing}
                             disabled={loading === 'refreshing'}
                             title="Consulta a la nube el avance de los traspasos que ya enviaste"

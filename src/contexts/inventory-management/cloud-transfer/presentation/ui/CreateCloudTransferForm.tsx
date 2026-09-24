@@ -9,6 +9,7 @@ import { FloatMessage } from "@/shared/ui/components/messages/FloatMessage";
 import { HiOutlineSearch, HiPlus, HiTrash } from "react-icons/hi";
 import { useCreateCloudTransfer } from "../hooks/useCreateCloudTransfer";
 import { useCloudTransferUIStore } from "../stores/cloud-transfer-ui.store";
+import { IoIosPaperPlane } from "react-icons/io";
 
 const CreateCloudTransferForm = () => {
     const {
@@ -215,7 +216,7 @@ const CreateCloudTransferForm = () => {
 
             <div className="flex justify-end gap-3">
                 <Button type="submit" disabled={loading === 'creating' || draftItems.length === 0}>
-                    {loading === 'creating' ? <Spinner /> : null}
+                    {loading === 'creating' ? <Spinner /> : <IoIosPaperPlane />}
                     Enviar traspaso
                 </Button>
             </div>
