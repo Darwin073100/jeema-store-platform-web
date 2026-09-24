@@ -15,7 +15,9 @@ export function LayoutContent({ children }: LayoutContentProps) {
       <main className="flex py-4 bg-gradient-to-br from-blue-50 to-indigo-100">
         <SideBar />
         <SideBarMovile />
-        {children}
+        <div className="min-w-0 flex-1">
+          {children}
+        </div>
       </main>
     </>
   );

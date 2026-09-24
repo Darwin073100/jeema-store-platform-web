@@ -17,9 +17,9 @@ export const SideBar = () => {
     const workspaceLabel = [establishment?.name, branchOffice?.name].filter(Boolean).join(' · ');
 
     return (
-        <nav className="group sticky top-0 -my-4 max-md:hidden flex w-20 shrink-0 flex-col self-stretch overflow-hidden border-r border-gray-100 bg-white shadow-md transition-[width] duration-300 ease-out hover:w-64">
+        <nav className="group sticky top-0 -my-4 max-md:hidden flex w-20 shrink-0 flex-col self-stretch overflow-hidden border-r border-gray-100 bg-white transition-[width] duration-300 ease-out hover:w-64">
             {/* Identidad del usuario: avatar fijo, texto se revela con el mismo hover del sidebar */}
-            <div className="flex items-center gap-3 border-b border-gray-100 px-4 py-4">
+            {/* <div className="flex items-center gap-3 border-b border-gray-100 py-4 pl-5 pr-4">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
                     {(user?.email?.[0] ?? '?').toUpperCase()}
                 </div>
@@ -31,7 +31,7 @@ export const SideBar = () => {
                         {workspaceLabel || '--'}
                     </span>
                 </div>
-            </div>
+            </div> */}
 
             {/* Navegación */}
             <div className="flex flex-1 flex-col gap-2 py-4">

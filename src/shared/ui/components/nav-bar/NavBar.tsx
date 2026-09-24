@@ -2,10 +2,9 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import Logo from "../../assets/images/logologo.png";
-import { IoChevronDownSharp, IoNotifications } from 'react-icons/io5'
+import { IoChevronDownSharp } from 'react-icons/io5'
 import { LogoutModal } from '../modals/LogoutModal';
 import { useAuth, useWorkspace } from '@/shared/ui/hooks/auth/useAuth';
-import { Button } from '../buttons';
 import { useSideStore } from '../side-bar/side.store';
 import clsx from 'clsx';
 import { HideElement } from '@/contexts/authentication-management/auth/presentation/ui/HideElement';
@@ -13,8 +12,12 @@ import { NavLink } from './NavLink';
 import { FcMindMap, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
 import { FloatMessage } from '../messages';
 import { useFloatMessageStore } from '../messages/stores/useFloatMessageStore';
-import { Badge } from '../badges/Badge';
 
+/**
+ * Navbar de escritorio/móvil: mismo lenguaje visual que el SideBar — fondo blanco plano,
+ * borde sutil en vez de sombra pesada, filas de navegación en `bg-blue-50`/`text-blue-700`
+ * cuando están activas y hover gris cuando no.
+ */
 export const NavBar = () => {
   const { user } = useAuth();
   const { establishment, branchOffice, employee } = useWorkspace();
@@ -30,69 +33,74 @@ export const NavBar = () => {
     setIsLogoutModalOpen(false);
   };
 
+  const userInitial = (employee?.firstName?.[0] ?? user?.email?.[0] ?? '?').toUpperCase();
+  const employeeName = [employee?.firstName, employee?.lastName].filter(Boolean).join(' ');
+
   return (
-    <nav className="flex justify-between items-center py-1.5 px-4 bg-white shadow-md hover:shadow-lg transition-all w-full">
+    <nav className="sticky top-0 z-30 flex w-full items-center justify-between gap-4 border-b border-gray-100 bg-white px-4 py-2.5">
       {/* Brand Section */}
       <div className='flex items-center gap-4'>
-        <div className={clsx(`relative group ${sideBar ? 'rotate-90' : 'rotate-0'} transition-all duration-300 md:rotate-0`)} onClick={() => onToggelSideBar()}>
+        <button
+          type="button"
+          onClick={() => onToggelSideBar()}
+          aria-label={sideBar ? 'Cerrar menú' : 'Abrir menú'}
+          className="shrink-0 rounded-lg p-1 transition-colors duration-150 hover:bg-gray-100 md:cursor-default md:hover:bg-transparent"
+        >
           <Image
-            className="rounded-lg shadow-sm group-hover:shadow-md transition-all max-sm:w-10 max-sm:h-10"
+            className={clsx(
+              'max-sm:h-9 max-sm:w-9 rounded-lg transition-transform duration-300',
+              sideBar ? 'rotate-90' : 'rotate-0',
+              'md:rotate-0'
+            )}
             src={Logo}
             alt="Logo de la empresa"
-            width={50}
-            height={50}
+            width={42}
+            height={42}
             style={{width: 'auto'}}
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-700/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" />
-        </div>
-        <div className="flex flex-col max-sm:hidden max-md:hidden max-lg:hidden">
-          <h1 className='text-lg font-semibold text-gray-800 max-lg:text-sm'>
+        </button>
+        <div className='hidden flex-col lg:flex'>
+          <h1 className='truncate text-sm font-semibold text-gray-800'>
             {establishment?.name ?? '--'}
           </h1>
-          <span className="text-sm text-gray-500">
+          <span className="truncate text-xs text-gray-500">
             {branchOffice?.name}
           </span>
         </div>
-        <div className='max-md:hidden flex gap-2'>
-          <NavLink hover='' Icon={FcPaid} href='/sale/new' value='Nueva Venta' />
+        <div className='hidden items-center gap-1 md:flex'>
+          <NavLink Icon={FcPaid} href='/sale/new' value='Nueva Venta' />
           <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
-            <NavLink hover='' Icon={FcShop} href='/sale' value='Ventas' />
+            <NavLink Icon={FcShop} href='/sale' value='Ventas' />
           </HideElement>
           <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
-            <NavLink hover='' Icon={FcShipped} href='/purchases' value='Compras' />
+            <NavLink Icon={FcShipped} href='/purchases' value='Compras' />
           </HideElement>
-          <NavLink hover='' Icon={FcMindMap} href='/products' value='Productos' />
+          <NavLink Icon={FcMindMap} href='/products' value='Productos' />
         </div>
       </div>
 
       {/* Actions Section */}
-      <div className="flex items-center gap-6">
-        {/* Notifications */}
-        {/* <div className="relative">
-          <RoundedButton
-            color='blue'
-          >
-            <IoNotifications className="text-xl" />
-          </RoundedButton>
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center shadow-sm">
-            3
-          </span>
-        </div> */}
-
-        {/* User Section */}
-        <div className="flex items-center gap-4">
-          <Badge className='font-medium' size='md'>
-            { employee?.firstName?? '--'} { employee?.lastName?? '--'}
-          </Badge>
-
-          <Button
-            color='red'
-            onClick={handleOpenLogoutModal}
-          >
-            <IoChevronDownSharp className="text-lg" />
-          </Button>
-        </div>
+      <div className="flex shrink-0 items-center gap-3">
+        <button
+          type="button"
+          onClick={handleOpenLogoutModal}
+          aria-label="Cerrar sesión"
+          className="flex items-center gap-2 rounded-lg py-1.5 pl-1.5 pr-2 transition-colors duration-150 hover:bg-gray-100"
+        >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+            {userInitial}
+          </div>
+          <div className="hidden flex-col items-start sm:flex">
+            <span className="truncate text-sm font-medium text-gray-800">
+              {employeeName || '--'}
+            </span>
+            <span className="text-xs text-gray-500">
+              Cerrar sesión
+            </span>
+          </div>
+          <IoChevronDownSharp className="hidden text-gray-400 sm:block" />
+        </button>
       </div>
 
       {/* Modal de Logout */}
@@ -100,7 +108,7 @@ export const NavBar = () => {
         isOpen={isLogoutModalOpen}
         onClose={handleCloseLogoutModal}
       />
-      <FloatMessage 
+      <FloatMessage
         key='nav-bar'
         {...floatMessageState} />
     </nav>
