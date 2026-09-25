@@ -29,7 +29,11 @@ export class TypeormSaleRepository implements SaleRepository{
     }
 
     async findById(saleId: bigint): Promise<SaleEntity | null> {
-        const ormEntity = await this.repository.findOne({
+        //* Igual que en save(): usamos el manager transaccional para que, si findById() se llama
+        //* dentro de un runInTransaction(...) (p.ej. RegisterSalePaymentUseCase invocado desde
+        //* CalculateSaleUseCase), vea los cambios aún no confirmados de esa misma transacción en
+        //* vez de leer por this.repository (otra conexión) y obtener el estado viejo.
+        const ormEntity = await this.transactionDB.getManager().findOne(SaleOrmEntity, {
             where: {
                 saleId: saleId
             },
