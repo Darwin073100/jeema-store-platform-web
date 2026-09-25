@@ -5,6 +5,7 @@ import { InventoryItemRepository } from "src/contexts/inventory-management/inven
 import { SaleStatusEnum } from "../../domain/enums/sale-status.enum";
 import { LocationEnum } from "src/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 import { DiscountInventoryItemUseCase } from "src/contexts/inventory-management/inventory-item/application/use-case/discount-inventory-item.use-case";
+import { InsufficientInventoryStockException } from "src/contexts/inventory-management/inventory-item/domain/exceptions/insufficient-inventory-stock.exception";
 import { CashSessionRepository } from "src/contexts/cash-management/cash-session/domain/repositories/cash-session.repository";
 import { SaleConflictException } from "../../domain/exceptions/sale-conflict.exception";
 import { RegisterSalePaymentUseCase } from "src/contexts/sale-management/sale-payment/application/use-cases/register-sale-payment.use-case";
@@ -118,7 +119,18 @@ export class CalculateSaleUseCase {
                                 if (!item?.inventoryItemId) {
                                     throw new SaleConflictException('No pudimos finalizar la venta.');
                                 }
-                                await this.discountInventoryItem.execute(item.inventoryItemId, Number(saleResult.saleDetails[i].quantity));
+                                try {
+                                    await this.discountInventoryItem.execute(item.inventoryItemId, Number(saleResult.saleDetails[i].quantity));
+                                } catch (error) {
+                                    if (error instanceof InsufficientInventoryStockException) {
+                                        //* Enriquecemos el error con el producto: DiscountInventoryItemUseCase (inventory-management)
+                                        //* no conoce el nombre/código del producto, solo el saleDetail desnormalizado lo tiene.
+                                        throw new SaleConflictException(
+                                            `Stock insuficiente para "${saleResult.saleDetails[i].productNameAtSale}" (Código: ${saleResult.saleDetails[i].productBarCodeAtSale}). Disponible: ${error.availableQuantity}, solicitado: ${error.requestedQuantity}.`
+                                        );
+                                    }
+                                    throw error;
+                                }
                             }
                         } else {
                             throw new SaleConflictException('No pudimos finalizar la venta.');
