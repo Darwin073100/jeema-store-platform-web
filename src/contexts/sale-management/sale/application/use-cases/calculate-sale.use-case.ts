@@ -39,9 +39,13 @@ export class CalculateSaleUseCase {
                 throw new SaleNotFoundException(`El empleado con id ${dto.employeeId} no existe.`);
             }
 
-            const isCustomer = await this.customerRepository.existById(dto.customerId);
-            if (!isCustomer) {
+            const customer = await this.customerRepository.existById(dto.customerId);
+            if (!customer) {
                 throw new SaleNotFoundException(`El cliente con id ${dto.customerId} no existe.`);
+            }
+
+            if (dto.status === SaleStatusEnum.CREDIT && customer.saleDefault) {
+                throw new SaleConflictException('Selecciona un cliente para registrar una venta a crédito.');
             }
 
             const cashSession = await this.cashSessionRepo.isClosedCashSession(dto.cashRegisterId);
@@ -88,14 +92,19 @@ export class CalculateSaleUseCase {
                     outAmount=0;
                 }
                 sale.updateOutAmount(outAmount);
-    
+                if(dto.status === SaleStatusEnum.CREDIT){
+                    //* Crédito no acepta abono inicial en este paso (ver decisión 4 del spec): el saldo
+                    //* completo queda pendiente y se cobra después vía RegisterCreditPaymentUseCase.
+                    sale.updatePaidAmount(0);
+                }
+
                 const saleResult = await this.saleRepository.save(sale);
-    
+
                 if (!saleResult) throw new SaleNotFoundException('No se pudo finalizar la venta.');
-                
-                if(dto.status === SaleStatusEnum.COMPLETED){
+
+                if(dto.status === SaleStatusEnum.COMPLETED || dto.status === SaleStatusEnum.CREDIT){
                     if (saleResult.saleDetails && saleResult.saleDetails.length > 0) {
-                        if ((saleResult.status === SaleStatusEnum.INITIALIZED || saleResult.status === SaleStatusEnum.COMPLETED || saleResult.status === SaleStatusEnum.PENDING)) {
+                        if ((saleResult.status === SaleStatusEnum.INITIALIZED || saleResult.status === SaleStatusEnum.COMPLETED || saleResult.status === SaleStatusEnum.PENDING || saleResult.status === SaleStatusEnum.CREDIT)) {
                             //* ✅ OPTIMIZACIÓN: Cargar items de inventario ANTES de la transacción si es posible
                             //* Pero como estamos dentro de transacción, al menos reducimos queries
                             for (let i = 0; i < (saleResult.saleDetails?.length ?? 0); i++) {
@@ -117,11 +126,13 @@ export class CalculateSaleUseCase {
                     } else {
                         throw new SaleConflictException('No pudimos finalizar la venta.');
                     }
-                    if(dto.salePayments.length > 0){
-                        await this.registerSalePaymentUseCase.execute(dto.salePayments);
+                    //* Crédito no registra pagos en este paso (ver decisión 4 del spec) — los abonos se
+                    //* registran por separado vía RegisterCreditPaymentUseCase.
+                    if(dto.status === SaleStatusEnum.COMPLETED && dto.salePayments.length > 0){
+                        await this.registerSalePaymentUseCase.execute(dto.salePayments, dto.employeeId);
                     }
                 }
-                
+
                 return saleResult;
             });
         } catch (error) {

@@ -13,6 +13,9 @@ import { TransactionRepository } from "src/contexts/transaction-management/trans
 import { TransactionEntity } from "src/contexts/transaction-management/transaction/domain/entities/transaction.entity";
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 import { PaymentMethodRepository } from "@/contexts/sale-management/payment-method/domain/repositories/payment-method.repository";
+import { TransactionTypeRepository } from "src/contexts/transaction-management/transaction-type/domain/repositories/transaction-type.repository";
+import { TransactionTypeInvalidException } from "src/contexts/transaction-management/transaction-type/domain/exceptions/transaction-type-invalid.exception";
+import { SALE_PAYMENT_TRANSACTION_TYPE_NAME } from "src/contexts/transaction-management/transaction-type/domain/constants/transaction-type-names.constant";
 
 export class RegisterSalePaymentUseCase {
     constructor(
@@ -20,10 +23,11 @@ export class RegisterSalePaymentUseCase {
         private readonly saleRepository: SaleRepository,
         private readonly paymentMethodRepository: PaymentMethodRepository,
         private readonly transactionRepository: TransactionRepository,
+        private readonly transactionTypeRepository: TransactionTypeRepository,
         private readonly connection: TransactionDBRepository
     ){}
 
-    async execute(dtos: RegisterSalePaymentDTO[]){
+    async execute(dtos: RegisterSalePaymentDTO[], employeeId: bigint){
         let amountPaid = 0;
         let saleId: bigint = dtos[0].saleId;
 
@@ -62,8 +66,12 @@ export class RegisterSalePaymentUseCase {
 
         const totalAmount = Number(sale.totalAmount);
         if(amountPaid >= totalAmount){
+            const transactionType = await this.transactionTypeRepository.findByName(SALE_PAYMENT_TRANSACTION_TYPE_NAME);
+            if(!transactionType){
+                throw new TransactionTypeInvalidException(`No existe el tipo de transacción '${SALE_PAYMENT_TRANSACTION_TYPE_NAME}'.`);
+            }
             const transaction = TransactionEntity.create(
-                BigInt(1),
+                transactionType.transactionTypeId,
                 sale.branchOfficeId,
                 null,
                 sale.saleId,
@@ -86,6 +94,7 @@ export class RegisterSalePaymentUseCase {
              return SalePaymentEntity.create(
                 dto.saleId,
                 dto.paymentMethodId,
+                employeeId,
                 SaleTotalAmountVO.create(dto.amountPaid),
                 SalePaymentReferenceNumberVO.create(dto.referenceNumber),
             );

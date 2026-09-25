@@ -1,5 +1,6 @@
 import { PaymentMethodOrmEntity } from "src/contexts/sale-management/payment-method/infraestructure/persistence/typeorm/entities/payment-method.orm-entity";
 import { SaleOrmEntity } from "src/contexts/sale-management/sale/infraestructure/persistence/typeorm/entities/sale.orm-entity";
+import { EmployeeOrmEntity } from "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('sale_payment')
@@ -10,6 +11,8 @@ export class SalePaymentOrmEntity {
     saleId: bigint;
     @Column({type: 'bigint', name: 'payment_method_id', nullable: false})
     paymentMethodId: bigint;
+    @Column({type: 'bigint', name: 'employee_id', nullable: false})
+    employeeId: bigint;
     @Column({ type: 'decimal', precision: 18, scale: 2, name: 'amount_paid' })
     amountPaid: number;
     @Column({ type: 'varchar', length: 100, name: 'reference_number', nullable: true })
@@ -26,4 +29,7 @@ export class SalePaymentOrmEntity {
     @ManyToOne(()=> PaymentMethodOrmEntity, paymentMethod => paymentMethod.salePayments)
     @JoinColumn({name: 'payment_method_id'})
     paymentMethod?: PaymentMethodOrmEntity | null;
+    @ManyToOne(() => EmployeeOrmEntity)
+    @JoinColumn({name: 'employee_id'})
+    employee?: EmployeeOrmEntity | null;
 }

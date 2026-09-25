@@ -76,7 +76,7 @@ function buildSale(params: {
         BigInt(1),
         BigInt(1),
         CASH_SESSION_ID,
-        params.totalAmount, 0, 0, params.totalAmount, 0, 0,
+        params.totalAmount, 0, 0, params.totalAmount, 0, 0, 0,
         params.status,
         null,
         new Date(),

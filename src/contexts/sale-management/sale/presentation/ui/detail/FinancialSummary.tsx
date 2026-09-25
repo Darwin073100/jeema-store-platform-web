@@ -2,6 +2,7 @@ import React from 'react'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { FcBullish } from 'react-icons/fc';
 import { ISale } from '../../interfaces/ISale';
+import { SaleStatusEnum } from '../../../domain/enums/sale-status.enum';
 
 interface Props {
     data: ISale
@@ -55,6 +56,15 @@ const FinancialSummary = ({ data }: Props) => {
                         {numberMoneyFormat(data.totalAmount-totalAmountReturns)}
                     </span>
                 </div>
+                {
+                    data.status === SaleStatusEnum.CREDIT &&
+                        <div className="pt-3 mt-3 border-t border-orange-300 flex justify-between items-center">
+                            <span className="text-xl font-bold text-orange-700">Saldo pendiente:</span>
+                            <span className="text-3xl font-extrabold text-orange-700">
+                                {numberMoneyFormat(data.balanceAmount)}
+                            </span>
+                        </div>
+                }
             </div>
         </div>
     )

@@ -18,6 +18,8 @@ export interface ISale {
     totalAmount: number,
     inAmount: number,
     outAmount: number,
+    paidAmount: number,
+    balanceAmount: number,
     status: SaleStatusEnum,
     notes: string |null,
     createdAt: Date,

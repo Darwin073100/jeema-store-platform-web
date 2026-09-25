@@ -8,6 +8,7 @@ import { useSaleStore } from "../stores/sale.store";
 import { CalculateSaleDTO } from "../../application/dtos/calculate-sale.dto";
 import { RegisterSalePaymentDTO } from "@/contexts/sale-management/sale-payment/application/dtos/register-sale-payment.dto";
 import useTicketSale from "./useTicketSale";
+import { numberBasicFormat } from "@/shared/lib/utils/number-formatter";
 
 
 const useSalePayment = () => {
@@ -187,6 +188,94 @@ const useSalePayment = () => {
         }
     }
 
+    // Marca la venta como crédito: descuenta inventario igual que "Cobrar", pero sin registrar
+    // pago (paidAmount queda en 0). Exige un cliente real (distinto del de saleDefault), el
+    // backend también lo valida pero aquí evitamos el viaje al servidor si ya sabemos que fallará.
+    const handleCreditSale = async () => {
+        if(!cashSessionActive){
+            setFloatMessageState({
+                summary: '404: ¡Error! 😢',
+                description: 'Debes aperturar caja para poder vender',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
+        if(!customerSelected || customerSelected.saleDefault){
+            setFloatMessageState({
+                summary: '¡Selecciona un cliente!',
+                description: 'Selecciona un cliente para registrar una venta a crédito.',
+                type: 'red',
+                isActive: true
+            });
+            setTimeout(() => {
+                setFloatMessageState({});
+            }, 4000);
+            return;
+        }
+        initLoading('creditSaleLoading');
+        try {
+            const currentSaleId = saleId ?? BigInt(0);
+            const currentEmployeeId = BigInt(employee?.employeeId ?? 0);
+            const currentCustomerId = BigInt(customerSelected.customerId);
+
+            const result = await finishSaleAction({
+                saleId: currentSaleId,
+                customerId: currentCustomerId,
+                employeeId: currentEmployeeId,
+                cashRegisterId: cashSessionActive.cashRegisterId,
+                status: SaleStatusEnum.CREDIT,
+                inAmount: paidAmount,
+                notes: null,
+                salePayments: []
+            });
+
+            finishLoading();
+            if (!result.ok) {
+                setFloatMessageState({
+                    type: 'red',
+                    isActive: true,
+                    summary: `${result.error?.statusCode}: ${result.error?.error ?? '¡Ha ocurrido un error!'}`,
+                    description: result.error?.message ?? 'Error al registrar la venta a crédito'
+                });
+                setTimeout(() => {
+                    setFloatMessageState({});
+                }, 2000);
+            } else {
+                setFloatMessageState({
+                    type: 'yellow',
+                    isActive: true,
+                    summary: 'Venta a crédito',
+                    description: `Venta registrada a crédito. Saldo pendiente: $${numberBasicFormat(result.value.balanceAmount)}`
+                });
+                resetSaleStore();
+                resetSaleProcessStore();
+                setTimeout(() => {
+                    closeSaleModal();
+                    //! Ejecutar el ticket, indicando que quedó a crédito con su saldo pendiente
+                    handlePrint(result.value.saleId);
+                }, 1500);
+            }
+            setTimeout(()=>{
+                setFloatMessageState({});
+            }, 2000);
+        } catch (error) {
+            setFloatMessageState({
+                type: 'red',
+                isActive: true,
+                summary: '¡Ha ocurrido un error inesperado!',
+                description: 'Error al registrar la venta a crédito'
+            });
+            setTimeout(() => {
+                finishLoading();
+                setFloatMessageState({});
+            }, 4000);
+        }
+    }
+
     // Finaliza la venta, registrando los pagos dependiendo el metodo de pago
     const handlePaidSale = async () => {
         if(!cashSessionActive){
@@ -273,8 +362,10 @@ const useSalePayment = () => {
         handleFinishSale,
         loading,
         handlePaidSale,
+        handleCreditSale,
         handleCheckerOpenModalFinishSale,
         paidAmountMessage,
+        customerSelected,
     }
 }
 

@@ -3,6 +3,7 @@ import { SalePaymentEntity } from "../../domain/entities/sale-payment.entity";
 import { SalePaymentResponseDTO } from "../dtos/sale-payment-response.dto";
 import { ISalePayment } from "../../presentation/interfaces/ISalePayment";
 import { SaleMapper } from "@/contexts/sale-management/sale/application/mappers/sale-mapper";
+import { EmployeeMapper } from "src/contexts/employee-management/employee/application/mappers/employee.mapper";
 
 export class SalePaymentMapper{
     static toResponseDto(entity: SalePaymentEntity): SalePaymentResponseDTO {
@@ -10,12 +11,14 @@ export class SalePaymentMapper{
             salePaymentId: entity.salePaymentId,
             paymentMethodId: entity.paymentMethodId,
             saleId: entity.saleId,
+            employeeId: entity.employeeId,
             amountPaid: Number(entity.amountPaid.value),
             referenceNumber: entity.referenceNumber?.value,
             createdAt: entity.createdAt,
             updatedAt: entity.updatedAt,
             deletedAt: entity.deletedAt,
             paymentMethod:entity.paymentMethod?  PaymentMethodMapper.toResponseDto(entity.paymentMethod): null,
+            employee: entity.employee? EmployeeMapper.toResponseDto(entity.employee): null,
         };
     }
     static toIResponse(entity: SalePaymentEntity): ISalePayment {
@@ -23,6 +26,7 @@ export class SalePaymentMapper{
             salePaymentId: entity.salePaymentId,
             paymentMethodId: entity.paymentMethodId,
             saleId: entity.saleId,
+            employeeId: entity.employeeId,
             amountPaid: Number(entity.amountPaid.value),
             referenceNumber: entity.referenceNumber?.value ?? null,
             createdAt: entity.createdAt,
@@ -30,6 +34,7 @@ export class SalePaymentMapper{
             deletedAt: entity.deletedAt ?? null,
             sale: entity.sale ? SaleMapper.toIResponse(entity.sale): null,
             paymentMethod:entity.paymentMethod?  PaymentMethodMapper.toIResponse(entity.paymentMethod): null,
+            employee: entity.employee? EmployeeMapper.toIResponse(entity.employee): null,
         };
     }
 }

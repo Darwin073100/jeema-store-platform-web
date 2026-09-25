@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import { SaleEntity } from "../../../../../../features/sale/domain/entities/sale-entity"
 import { useSaleProcessStore } from "../../stores/sale.process.store";
 import { useSaleStore } from "../../stores/sale.store";
 import { useSaleUIStore } from "../../stores/sale.ui.store"
-import { PaymentMethodEntity } from "@/features/payment-method/domain/entities/payment-method-entity";
+import { ISale } from "../../interfaces/ISale";
+import { IPaymentMethod } from "@/contexts/sale-management/payment-method/presentation/interfaces/IPaymentMethod";
 
 interface Props{
-    sale: SaleEntity;
-    paymentMethods: PaymentMethodEntity[];
+    sale: ISale;
+    paymentMethods: IPaymentMethod[];
 }
 
 const usePayment = ({ sale, paymentMethods }: Props) => {

@@ -60,7 +60,8 @@ export class TypeormSaleRepository implements SaleRepository{
                 customer: true,
                 employee: true,
                 salePayments: {
-                    paymentMethod: true
+                    paymentMethod: true,
+                    employee: true
                 },
             },
         });
@@ -79,7 +80,8 @@ export class TypeormSaleRepository implements SaleRepository{
                 customer: true,
                 employee: true,
                 salePayments: {
-                    paymentMethod: true
+                    paymentMethod: true,
+                    employee: true
                 },
                 branchOffice:{
                     address: true,
@@ -194,6 +196,7 @@ export class TypeormSaleRepository implements SaleRepository{
                 ormEntity.cashSessionId = entity.cashSessionId;
                 ormEntity.inAmount = entity.inAmount;
                 ormEntity.outAmount = entity.outAmount;
+                ormEntity.paidAmount = entity.paidAmount;
                 ormEntity.status = entity.status;
                 ormEntity.notes = entity.notes;
                 ormEntity.createdAt = entity.createdAt;

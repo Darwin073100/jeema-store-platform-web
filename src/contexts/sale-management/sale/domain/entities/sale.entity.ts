@@ -14,6 +14,7 @@ import { TransactionEntity } from "src/contexts/transaction-management/transacti
 import { SaleInAmountVO } from "../value-objects/sale-in-amount.vo";
 import { SaleOutAmountVO } from "../value-objects/sale-out-amount.vo";
 import { CashSessionEntity } from "src/contexts/cash-management/cash-session/domain/entities/cash-session.entity";
+import { SalePaidAmountVO } from "../value-objects/sale-paid-amount.vo";
 
 export class SaleEntity {
   private readonly _saleId: bigint;
@@ -27,6 +28,7 @@ export class SaleEntity {
   private _totalAmount: SaleTotalAmountVO;
   private _inAmount: SaleInAmountVO;
   private _outAmount: SaleOutAmountVO;
+  private _paidAmount: SalePaidAmountVO;
   private _status: SaleStatusEnum;
   private _notes: SaleNotesVO;
   private _createdAt: Date;
@@ -52,6 +54,7 @@ export class SaleEntity {
     totalAmount: SaleTotalAmountVO,
     inAmount: SaleInAmountVO,
     outAmount: SaleOutAmountVO,
+    paidAmount: SalePaidAmountVO,
     status: SaleStatusEnum,
     notes: SaleNotesVO,
     createdAt: Date,
@@ -76,6 +79,7 @@ export class SaleEntity {
     this._totalAmount = totalAmount;
     this._inAmount = inAmount;
     this._outAmount = outAmount;
+    this._paidAmount = paidAmount;
     this._status = status;
     this._notes = notes;
     this._createdAt = createdAt;
@@ -101,6 +105,7 @@ export class SaleEntity {
     totalAmount: number,
     inAmount: number,
     outAmount: number,
+    paidAmount: number,
     status: SaleStatusEnum,
     notes: string | null,
     saleDetails: SaleDetailEntity[] | null,
@@ -118,6 +123,7 @@ export class SaleEntity {
       SaleTotalAmountVO.create(totalAmount),
       SaleInAmountVO.create(inAmount),
       SaleOutAmountVO.create(outAmount),
+      SalePaidAmountVO.create(paidAmount),
       status,
       SaleNotesVO.create(notes),
       new Date(),
@@ -146,6 +152,7 @@ export class SaleEntity {
     totalAmount: number,
     inAmount: number,
     outAmount: number,
+    paidAmount: number,
     status: SaleStatusEnum,
     notes: string |null,
     createdAt: Date,
@@ -171,6 +178,7 @@ export class SaleEntity {
       SaleTotalAmountVO.create(totalAmount),
       SaleInAmountVO.create(inAmount),
       SaleOutAmountVO.create(outAmount),
+      SalePaidAmountVO.create(paidAmount),
       status,
       SaleNotesVO.create(notes),
       createdAt,
@@ -216,6 +224,15 @@ export class SaleEntity {
   }
   get outAmount(){
     return this._outAmount.value;
+  }
+  get paidAmount(){
+    return this._paidAmount.value;
+  }
+  /**
+   * Getter derivado (no persistido): saldo pendiente de cobro.
+   */
+  get balanceAmount(){
+    return this._totalAmount.value - this._paidAmount.value;
   }
   get taxAmount(){
     return this._taxAmount.value;
@@ -280,6 +297,9 @@ export class SaleEntity {
   }
   updateOutAmount(value: number){
     this._outAmount = SaleOutAmountVO.create(value);
+  }
+  updatePaidAmount(value: number){
+    this._paidAmount = SalePaidAmountVO.create(value);
   }
   updateTaxAmount(value: number){
     this._taxAmount = SaleTaxAmountVO.create(value);

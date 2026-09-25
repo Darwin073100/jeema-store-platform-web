@@ -22,7 +22,9 @@ const SalePaymentModal = () => {
     cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount,
     transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
   } = useSaleProcessStore();
-  const { handleFinishSale, loading, handlePaidSale, paidAmountMessage, saleModals, closeSaleModal } = useSalePayment();
+  const { handleFinishSale, loading, handlePaidSale, handleCreditSale, paidAmountMessage, saleModals, closeSaleModal, customerSelected } = useSalePayment();
+
+  const isDefaultCustomer = !customerSelected || customerSelected.saleDefault;
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -35,6 +37,12 @@ const SalePaymentModal = () => {
           event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
           // tu función personalizada
           handleFinishSale();
+      } else if (event.key === 'F4') {
+          event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
+          // tu función personalizada
+          if(!isDefaultCustomer){
+            handleCreditSale();
+          }
       }
     }
     };
@@ -43,7 +51,7 @@ const SalePaymentModal = () => {
     return () => {
     window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [customerChange, saleModals, sale]);
+  }, [customerChange, saleModals, sale, isDefaultCustomer]);
 
   return (
     <TemplateModal isOpen={saleModals==='paymentModal'} size='xl' onClose={closeSaleModal} title='Cobro de la venta'>
@@ -110,7 +118,13 @@ const SalePaymentModal = () => {
           </div>
         </div>
         {/* Botones del formulario */}
-        <div className="flex justify-end gap-2 pt-4">
+        {
+          isDefaultCustomer &&
+            <p className='text-xs text-orange-600 text-right'>
+              Selecciona un cliente distinto de "Público en General" para poder vender a crédito.
+            </p>
+        }
+        <div className="flex justify-end gap-2 pt-4 flex-wrap">
           <Button
             onClick={()=> handleFinishSale()}
             type="button"
@@ -127,6 +141,22 @@ const SalePaymentModal = () => {
               </div>
           </Button>
           <Button
+            onClick={()=> handleCreditSale()}
+            type="button"
+            color='orange'
+            className='flex justify-center items-center min-w-[120px]'
+            disabled={isDefaultCustomer}
+            title={isDefaultCustomer ? 'Selecciona un cliente distinto de "Público en General" para vender a crédito' : undefined}
+          >
+            { loading === 'creditSaleLoading'
+              ? <><Spinner/></>
+              : <MdOutlinePaid className="w-4 h-4" /> }
+              <span className='max-sm:hidden'>{`Crédito`}</span>
+              <div className="h-full flex items-start">
+                <span className="text-sm p-1 rounded-sm bg-orange-200 text-orange-600">F4</span>
+              </div>
+          </Button>
+          <Button
             onClick={()=> handlePaidSale()}
             type="submit"
             className='flex justify-center items-center min-w-[120px]'
@@ -138,7 +168,7 @@ const SalePaymentModal = () => {
               <span className='max-sm:hidden'>{`Cobrar`}</span>
               <div className="h-full flex items-start">
                 <span className="text-sm p-1 rounded-sm bg-blue-200 text-blue-600">F2</span>
-              </div>            
+              </div>
           </Button>
           <Button
             type="button"

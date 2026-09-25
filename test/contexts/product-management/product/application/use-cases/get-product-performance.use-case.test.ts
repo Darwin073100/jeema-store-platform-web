@@ -81,7 +81,7 @@ function buildSale(createdAt: Date) {
         BigInt(1),
         BigInt(1),
         BigInt(1),
-        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0,
         SaleStatusEnum.COMPLETED,
         null,
         createdAt,

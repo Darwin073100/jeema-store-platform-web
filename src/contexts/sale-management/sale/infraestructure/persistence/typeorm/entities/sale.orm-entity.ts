@@ -32,6 +32,8 @@ export class SaleOrmEntity{
     inAmount: number;
     @Column({type: 'decimal', precision: 14, scale: 2, nullable: false, name: 'out_amount', default: 0})
     outAmount: number;
+    @Column({type: 'numeric', precision: 14, scale: 4, nullable: false, name: 'paid_amount', default: 0})
+    paidAmount: number;
     @Column({type: 'enum', enum: SaleStatusEnum, nullable: false, name: 'status' })
     status: SaleStatusEnum;
     @Column({type: 'text', name: 'notes', nullable: true})

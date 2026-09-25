@@ -13,6 +13,8 @@ import { useSaleContinue } from '../../hooks/details/useSaleContinue';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { SaleReprintTicketModal } from '../SaleReprintTicketModal';
 import { ISale } from '../../interfaces/ISale';
+import { getSaleStatusBadge } from '../../utils/sale-status-badge';
+import { CreditPaymentModal } from './CreditPaymentModal';
 
 interface Props {
     sale: ISale;
@@ -23,6 +25,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
     const { openSaleModal } = usePayment({sale, paymentMethods});
     const { handleSaleContinue, loading} = useSaleContinue({sale});
     const { floatMessageState } = useSaleUIStore();
+    const statusBadge = getSaleStatusBadge(sale.status);
     return (
         <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-200">
             <div className="w-full flex items-center justify-between">
@@ -36,38 +39,32 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                             </Button>
                     }
                     {
-                        (sale.status == SaleStatusEnum.PENDING || sale.status == SaleStatusEnum.INITIALIZED) && 
+                        (sale.status == SaleStatusEnum.PENDING || sale.status == SaleStatusEnum.INITIALIZED) &&
                         <>
                             <Button color="green" onClick={()=> handleSaleContinue()} disabled={loading==='saleContinue'}>
                                 {loading==='saleContinue'? <Spinner/>: <IoBagHandle />}
                                 Reanudar venta
                             </Button>
-                            {/* {
-                                sale.status === SaleStatusEnum.PENDING &&<>
-                                    <Button color="yellow" onClick={()=> openSaleModal('paymentModal')}>
-                                        <IoWalletSharp />
-                                        Pagar venta
-                                    </Button>
-                                </>
-                            } */}
                         </>
                     }
+                    {
+                        sale.status === SaleStatusEnum.CREDIT &&
+                            <Button color="orange" onClick={()=> openSaleModal('creditPaymentModal')}>
+                                <IoWalletSharp />
+                                Abonar a crédito
+                            </Button>
+                    }
                 </div>
-                <Badge 
-                    type={
-                        sale.status === SaleStatusEnum.COMPLETED 
-                            ? 'green' : sale.status === SaleStatusEnum.CANCELLED 
-                            ? 'red' : sale.status === SaleStatusEnum.PENDING 
-                            ? 'blue' : sale.status === SaleStatusEnum.INITIALIZED
-                            ? 'yellow' : 'red'
-                    } 
+                <Badge
+                    type={statusBadge.color}
                     size='xl'>
-                    {sale.status}
+                    {statusBadge.label}
                 </Badge>
             </div>
             <SalePaymentDetailModal />
+            <CreditPaymentModal sale={sale} paymentMethods={paymentMethods} />
             <SaleReprintTicketModal saleId={sale?.saleId ?? BigInt(0)} />
-            <FloatMessage 
+            <FloatMessage
                 {...floatMessageState} />
         </div>
     )

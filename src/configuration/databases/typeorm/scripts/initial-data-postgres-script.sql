@@ -113,6 +113,8 @@ INSERT INTO transaction_type (name, description, account_type) VALUES
 ('Ingreso por Sobrante en caja', 'Ingreso por algun sobrante al hacer corte de caja.', 'Ingreso');
 INSERT INTO transaction_type (name, description, account_type) VALUES
 ('Aumento de efectivo en caja', 'Iingreso en caso de que caja se quede en 0 o con saldo insuficiente.', 'Ingreso');
+INSERT INTO transaction_type (name, description, account_type) VALUES
+('Abono a un Credito', 'Cuando un cliente abna a un credito que ha solicitado de mercancía.', 'Ingreso');
 --?-----------------------------------------------END----Insersion de los TIPOS DE TRANSACCIONES para ingresos y egresos---------------------------------------------------------------------
 /*====*/
 --?-----------------------------------------------GO----Insersion de los METODOS DE PAGO de los usuarios---------------------------------------------------------------------

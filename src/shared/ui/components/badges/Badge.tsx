@@ -3,7 +3,7 @@ import React from 'react'
 
 interface Props {
     children?: any;
-    type?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple';
+    type?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'purple' | 'orange';
     size?: 'xs'| 'sm' | 'md' | 'lg' | 'xl';
     className?: string;
 }

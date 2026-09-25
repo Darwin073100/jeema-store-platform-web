@@ -12,6 +12,7 @@ import { TypeormTransactionDBRepository } from "@/configuration/databases/typeor
 import { TypeormSalePaymentRepository } from "@/contexts/sale-management/sale-payment/infraestructure/repositories/typeorm-sale-payment.repository";
 import { TypeormPaymentMethodRepository } from "@/contexts/sale-management/payment-method/infraestructure/persistence/typeorm/repositories/typeorm-payment-method.repository";
 import { TypeormTransactionRepository } from "@/contexts/transaction-management/transaction/infraestructure/repositories/typeorm-transaction.repository";
+import { TypeormTransactionTypeRepository } from "@/contexts/transaction-management/transaction-type/infraestructure/repositories/typeorm-transaction-type.repository";
 import { CalculateSaleDTO } from "../../application/dtos/calculate-sale.dto";
 import { handleError } from "@/shared/infrastructure/http/handlers/handleError";
 import { Result } from "@/shared/lib/utils/result";
@@ -29,8 +30,9 @@ export async function finishSaleAction(dto: CalculateSaleDTO) {
         const salePaymentRepo = await TypeormSalePaymentRepository.create();
         const paymentMethodRepo = await TypeormPaymentMethodRepository.create();
         const transactionRepo = await TypeormTransactionRepository.create();
+        const transactionTypeRepo = await TypeormTransactionTypeRepository.create();
         const transactionDB = await TypeormTransactionDBRepository.create();
-        const registerSalePaymentUseCase = new RegisterSalePaymentUseCase(salePaymentRepo, repository, paymentMethodRepo, transactionRepo, transactionDB);
+        const registerSalePaymentUseCase = new RegisterSalePaymentUseCase(salePaymentRepo, repository, paymentMethodRepo, transactionRepo, transactionTypeRepo, transactionDB);
         const useCase = new CalculateSaleUseCase(repository, employeeRepository, customerRepository, inventoryItemRepository, discountInventoryItem, cashSessionRepo, registerSalePaymentUseCase, transactionDB);
 
         const result = await useCase.execute(dto);

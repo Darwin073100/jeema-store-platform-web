@@ -54,6 +54,7 @@ export class RegisterSaleUseCase {
         0,
         0,
         0,
+        0,
         SaleStatusEnum.INITIALIZED,
         null,
         null,

@@ -1,8 +1,8 @@
 'use client'
-import { SaleStatusEnum } from '@/contexts/sale-management/sale/domain/enums/sale-status.enum'
 import { formatDate } from '@/shared/lib/utils/date-formatter'
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter'
 import { Badge } from '@/shared/ui/components/badges/Badge'
+import { getSaleStatusBadge } from '@/contexts/sale-management/sale/presentation/utils/sale-status-badge'
 import { Button } from '@/shared/ui/components/buttons'
 import { Spinner } from '@/shared/ui/components/loadings/Spinner'
 import { useRouter } from 'next/navigation'
@@ -31,13 +31,8 @@ const CustomerSaleList = ({ data }: Props) => {
                             <p className="text-sm text-gray-500 flex items-center gap-2">
                                 <span>{formatDate(sale.createdAt)}</span>
                                 <span className="mx-2 text-gray-300">|</span>
-                                <Badge type={
-                                    sale.status === SaleStatusEnum.COMPLETED
-                                        ? 'green' : sale.status === SaleStatusEnum.CANCELLED
-                                            ? 'red' : sale.status === SaleStatusEnum.PENDING
-                                                ? 'yellow' : 'red'
-                                }>
-                                    {sale.status}
+                                <Badge type={getSaleStatusBadge(sale.status).color}>
+                                    {getSaleStatusBadge(sale.status).label}
                                 </Badge>
                             </p>
                         </div>

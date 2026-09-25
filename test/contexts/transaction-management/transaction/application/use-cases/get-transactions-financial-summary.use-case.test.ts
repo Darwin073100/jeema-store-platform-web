@@ -70,7 +70,7 @@ function buildSale(params: {
     );
     return SaleEntity.reconstitute(
         params.saleId, BigInt(1), BigInt(1), BigInt(1), BigInt(1),
-        params.subtotalItem, 0, 0, params.subtotalItem, 0, 0,
+        params.subtotalItem, 0, 0, params.subtotalItem, 0, 0, 0,
         params.status, null, new Date(), null, null,
         null, null, null, null,
         [saleDetail], null, null,

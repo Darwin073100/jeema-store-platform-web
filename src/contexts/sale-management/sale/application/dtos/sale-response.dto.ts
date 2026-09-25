@@ -18,6 +18,8 @@ export class SaleResponseDto {
   readonly totalAmount: number;
   readonly inAmount: number;
   readonly outAmount: number;
+  readonly paidAmount: number;
+  readonly balanceAmount: number;
   readonly status: SaleStatusEnum;
   readonly notes: string |null;
   readonly createdAt: Date;
@@ -42,6 +44,8 @@ export class SaleResponseDto {
     totalAmount: number,
     inAmount: number,
     outAmount: number,
+    paidAmount: number,
+    balanceAmount: number,
     status: SaleStatusEnum,
     notes: string |null,
     createdAt: Date,
@@ -65,6 +69,8 @@ export class SaleResponseDto {
     this.totalAmount = totalAmount;
     this.inAmount = inAmount;
     this.outAmount = outAmount;
+    this.paidAmount = paidAmount;
+    this.balanceAmount = balanceAmount;
     this.status = status;
     this.notes = notes;
     this.createdAt = createdAt;

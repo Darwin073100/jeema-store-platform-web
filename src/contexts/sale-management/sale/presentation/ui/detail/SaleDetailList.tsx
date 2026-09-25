@@ -57,7 +57,7 @@ const SaleDetailList = ({ data }: Props) => {
                             </td>
                             <td className="px-2 py-3 text-center font-bold text-gray-900">
                                 <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                                    { data.status === SaleStatusEnum.COMPLETED && 
+                                    { (data.status === SaleStatusEnum.COMPLETED || data.status === SaleStatusEnum.CREDIT) &&
                                         (
                                             <RoundedButton onClick={()=> handleSelectDetailToReturn(item)} title='Devolución de producto' color='yellow'>
                                                 <IoReturnDownForward/>

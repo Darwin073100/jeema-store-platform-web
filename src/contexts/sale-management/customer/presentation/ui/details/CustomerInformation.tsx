@@ -23,18 +23,22 @@ const CustomerInformation = ({ customer }:Props) => {
     const totalSalesAmount = (sales: ISale[])=> {
         let completeSales = 0;
         let pendingSales = 0;
+        let creditBalance = 0;
 
         sales.forEach(item => {
             if(item.status === SaleStatusEnum.COMPLETED){
                 completeSales = completeSales + item.totalAmount;
             } else if(item.status === SaleStatusEnum.PENDING){
                 pendingSales = pendingSales + item.totalAmount;
+            } else if(item.status === SaleStatusEnum.CREDIT){
+                creditBalance = creditBalance + item.balanceAmount;
             }
         });
 
         return {
             completeSales,
-            pendingSales
+            pendingSales,
+            creditBalance,
         }
 
     }
@@ -92,7 +96,7 @@ const CustomerInformation = ({ customer }:Props) => {
                 <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4">
                     <FcComboChart /> <span>Estadísticas</span>
                 </h2>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                         <p className="text-xs text-blue-700 font-semibold">No. Compras</p>
                         <p className="text-2xl font-extrabold text-blue-900">{customer?.sales?.length ?? 0}</p>
@@ -104,6 +108,10 @@ const CustomerInformation = ({ customer }:Props) => {
                     <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
                         <p className="text-xs text-orange-700 font-semibold">Pendiente</p>
                         <p className="text-lg font-extrabold text-orange-900">{numberMoneyFormat(totalSalesAmount(customer.sales?? []).pendingSales)}</p>
+                    </div>
+                    <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                        <p className="text-xs text-amber-700 font-semibold">Por Cobrar</p>
+                        <p className="text-lg font-extrabold text-amber-900">{numberMoneyFormat(totalSalesAmount(customer.sales?? []).creditBalance)}</p>
                     </div>
                 </div>
             </Card>

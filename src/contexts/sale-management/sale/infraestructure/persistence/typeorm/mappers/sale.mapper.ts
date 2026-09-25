@@ -23,6 +23,7 @@ export class SaleMapper {
         typeOrmEntity.totalAmount = domainEntity.totalAmount;
         typeOrmEntity.inAmount = domainEntity.inAmount;
         typeOrmEntity.outAmount = domainEntity.outAmount;
+        typeOrmEntity.paidAmount = domainEntity.paidAmount;
         typeOrmEntity.notes = domainEntity.notes;
         typeOrmEntity.status = domainEntity.status;
         typeOrmEntity.createdAt = domainEntity.createdAt;
@@ -52,6 +53,7 @@ export class SaleMapper {
             typeOrmEntity.totalAmount,
             typeOrmEntity.inAmount,
             typeOrmEntity.outAmount,
+            typeOrmEntity.paidAmount,
             typeOrmEntity.status,
             typeOrmEntity.notes,
             typeOrmEntity.createdAt,
