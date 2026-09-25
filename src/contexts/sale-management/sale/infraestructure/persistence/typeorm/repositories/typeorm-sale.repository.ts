@@ -9,14 +9,12 @@ import { getDataSource } from "@/configuration/databases/typeorm/config";
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
 export class TypeormSaleRepository implements SaleRepository{
-    private readonly transactionRepository: Repository<SaleOrmEntity>;
     private readonly repository: Repository<SaleOrmEntity>;
 
     constructor(
         private readonly datasource: DataSource,
         private readonly transactionDB: TransactionDBRepository
     ){
-        this.transactionRepository = this.transactionDB.getManager().getRepository(SaleOrmEntity);
         this.repository = this.datasource.getRepository(SaleOrmEntity);
     }
 
@@ -212,8 +210,15 @@ export class TypeormSaleRepository implements SaleRepository{
                 ormEntity = SaleMapper.toTypeOrmEntity(entity);
             }
 
-            const savedOrmEntity = await this.transactionRepository.save(ormEntity);
-            const currentSale = await this.repository.findOne({
+            //* El repositorio transaccional se resuelve DENTRO del método (no en el constructor):
+            //* así save() participa en el runInTransaction(...) que envuelve el descuento de
+            //* inventario y el registro de pago en CalculateSaleUseCase, en vez de hacer commit
+            //* inmediato e independiente (ver TypeormInventoryItemRepository.saveTransactional).
+            const transactionRepository = this.transactionDB.getManager().getRepository(SaleOrmEntity);
+            const savedOrmEntity = await transactionRepository.save(ormEntity);
+            //* Relectura con el MISMO manager transaccional: una consulta por this.repository (otra
+            //* conexión) no vería el UPDATE recién hecho hasta que la transacción haga commit.
+            const currentSale = await this.transactionDB.getManager().findOne(SaleOrmEntity, {
                 where: {
                     saleId: savedOrmEntity.saleId
                 },

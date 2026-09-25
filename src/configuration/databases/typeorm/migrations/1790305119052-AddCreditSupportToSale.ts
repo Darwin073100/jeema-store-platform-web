@@ -19,15 +19,15 @@ export class AddCreditSupportToSale1790305119052 implements MigrationInterface {
         // texto de "description" se copia tal cual del script (incluye el typo "abna" en vez de "abona") para
         // que ambas fuentes queden idénticas y TransactionTypeRepository.findByName('Abono a un Credito')
         // resuelva siempre la misma fila sin importar por cuál de las dos vías se sembró.
-        await queryRunner.query(
-            `INSERT INTO "transaction_type" ("name", "description", "account_type")
-             SELECT 'Abono a un Credito', 'Cuando un cliente abna a un credito que ha solicitado de mercancía.', 'Ingreso'
-             WHERE NOT EXISTS (SELECT 1 FROM "transaction_type" WHERE "name" = 'Abono a un Credito')`
-        );
+        // await queryRunner.query(
+        //     `INSERT INTO "transaction_type" ("name", "description", "account_type")
+        //      SELECT 'Abono a un Credito', 'Cuando un cliente abna a un credito que ha solicitado de mercancía.', 'Ingreso'
+        //      WHERE NOT EXISTS (SELECT 1 FROM "transaction_type" WHERE "name" = 'Abono a un Credito')`
+        // );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DELETE FROM "transaction_type" WHERE "name" = 'Abono a un Credito'`);
+        // await queryRunner.query(`DELETE FROM "transaction_type" WHERE "name" = 'Abono a un Credito'`);
 
         await queryRunner.query(`CREATE TYPE "public"."sale_status_enum_old" AS ENUM('inicializada', 'pendiente', 'completada', 'cancelada', 'reembolsada')`);
         // Nota: Postgres no soporta quitar un valor de un enum sin recrear el tipo, y este ALTER falla si
