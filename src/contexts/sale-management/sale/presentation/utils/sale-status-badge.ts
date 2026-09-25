@@ -26,3 +26,7 @@ const DEFAULT_BADGE: SaleStatusBadge = { label: 'Desconocido', color: 'gray' };
 export function getSaleStatusBadge(status: SaleStatusEnum): SaleStatusBadge {
     return SALE_STATUS_BADGE_MAP[status] ?? DEFAULT_BADGE;
 }
+
+export function canReprintSaleTicket(status: SaleStatusEnum): boolean {
+    return status === SaleStatusEnum.COMPLETED || status === SaleStatusEnum.PENDING || status === SaleStatusEnum.CREDIT;
+}

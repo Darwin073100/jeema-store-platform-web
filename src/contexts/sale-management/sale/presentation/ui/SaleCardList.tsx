@@ -7,15 +7,19 @@ import { formatDate } from '@/shared/lib/utils/date-formatter';
 import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { useRouter } from 'next/navigation';
 import { FiExternalLink } from 'react-icons/fi';
+import { IoPrintSharp } from 'react-icons/io5';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { Card } from '@/shared/ui/components/cards';
 import { useSaleStore } from '../stores/sale.store';
+import { useSaleUIStore } from '../stores/sale.ui.store';
+import { canReprintSaleTicket } from '../utils/sale-status-badge';
 
 const SaleCardList = () => {
     const router = useRouter();
     const [saleId, setSaleId] = useState(BigInt(0));
     const { sales } = useSaleStore();
     const { handleBadgeType } = useSaleListBranch();
+    const { setReprintTargetSaleId, openSaleModal } = useSaleUIStore();
     const handleRouter = (id: bigint)=> {
         setSaleId(id);
         router.push(`/sale/${id.toString()}`);
@@ -56,10 +60,17 @@ const SaleCardList = () => {
                     <p className="text-sm text-gray-500 font-medium">Total: <span className="text-lg font-extrabold text-gray-900 ml-1">{numberMoneyFormat(sale.totalAmount)}</span></p>
                 </div>
 
-                {/* Botón de Acción (Detalles, usando tu color de acento Naranja) */}
-                <Button className='w-full mt-3' onClick={()=> handleRouter(sale.saleId)} disabled={saleId===sale.saleId}>
-                    {saleId===sale.saleId? <Spinner size={14}/>: <FiExternalLink />} Ver Detalles
-                </Button>
+                {/* Botones de Acción (Reimprimir, Detalles) */}
+                <div className="flex gap-2 mt-3">
+                    {canReprintSaleTicket(sale.status) &&
+                        <Button className='flex-1' color='gray' onClick={() => { setReprintTargetSaleId(sale.saleId); openSaleModal('saleTicketReprintModal'); }}>
+                            <IoPrintSharp /> Reimprimir
+                        </Button>
+                    }
+                    <Button className='flex-1' onClick={()=> handleRouter(sale.saleId)} disabled={saleId===sale.saleId}>
+                        {saleId===sale.saleId? <Spinner size={14}/>: <FiExternalLink />} Ver Detalles
+                    </Button>
+                </div>
             </Card>
         ))}
     </>);

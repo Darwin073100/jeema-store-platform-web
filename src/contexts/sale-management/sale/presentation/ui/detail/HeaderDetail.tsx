@@ -13,7 +13,7 @@ import { useSaleContinue } from '../../hooks/details/useSaleContinue';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { SaleReprintTicketModal } from '../SaleReprintTicketModal';
 import { ISale } from '../../interfaces/ISale';
-import { getSaleStatusBadge } from '../../utils/sale-status-badge';
+import { canReprintSaleTicket, getSaleStatusBadge } from '../../utils/sale-status-badge';
 import { CreditPaymentModal } from './CreditPaymentModal';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
 const HeaderDetail = ({ sale, paymentMethods }: Props) => {
     const { openSaleModal } = usePayment({sale, paymentMethods});
     const { handleSaleContinue, loading} = useSaleContinue({sale});
-    const { floatMessageState } = useSaleUIStore();
+    const { floatMessageState, setReprintTargetSaleId } = useSaleUIStore();
     const statusBadge = getSaleStatusBadge(sale.status);
     return (
         <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-200">
@@ -32,8 +32,8 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
                 {/* Botones de acción */}
                 <div className='flex gap-4 items-center'>
                     {
-                        (sale.status === SaleStatusEnum.COMPLETED || sale.status === SaleStatusEnum.PENDING) &&
-                            <Button onClick={()=> openSaleModal('saleTicketReprintModal')}>
+                        canReprintSaleTicket(sale.status) &&
+                            <Button onClick={()=> { setReprintTargetSaleId(sale.saleId); openSaleModal('saleTicketReprintModal'); }}>
                                 <IoPrintSharp />
                                 Reimprimir ticket
                             </Button>
@@ -63,7 +63,7 @@ const HeaderDetail = ({ sale, paymentMethods }: Props) => {
             </div>
             <SalePaymentDetailModal />
             <CreditPaymentModal sale={sale} paymentMethods={paymentMethods} />
-            <SaleReprintTicketModal saleId={sale?.saleId ?? BigInt(0)} />
+            <SaleReprintTicketModal />
             <FloatMessage
                 {...floatMessageState} />
         </div>

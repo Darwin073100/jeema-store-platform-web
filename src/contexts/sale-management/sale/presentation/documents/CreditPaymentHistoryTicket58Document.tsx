@@ -75,11 +75,6 @@ const styles = StyleSheet.create({
     borderTop: '0.5 solid #000',
     marginBottom: 2,
   },
-  tableHeader: {
-    fontSize: 7,
-    fontWeight: 'bold',
-    textAlign: 'left',
-  },
   paymentRowHead: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -243,12 +238,6 @@ export const CreditPaymentHistoryTicket58Document: React.FC<Prop> = ({ sale }) =
         {/* Divider */}
         <View style={styles.divider} />
 
-        {/* Headers de tabla */}
-        <Text style={styles.tableDivider}>_________________________________________________________</Text>
-        <View style={{ flexDirection: 'row', width: '100%', marginBottom: 2, justifyContent: 'space-between' }}>
-          <Text style={styles.tableHeader}>FECHA / EMPLEADO / MÉTODO</Text>
-          <Text style={styles.tableHeader}>MONTO</Text>
-        </View>
         <Text style={styles.tableDivider}>_________________________________________________________</Text>
 
         {/* Abonos */}

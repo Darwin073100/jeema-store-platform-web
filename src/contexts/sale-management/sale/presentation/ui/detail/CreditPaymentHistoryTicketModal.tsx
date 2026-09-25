@@ -6,16 +6,15 @@ import { useSaleUIStore } from '../../stores/sale.ui.store';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose, IoPrint } from 'react-icons/io5';
 import useCreditPaymentHistoryTicket from '../../hooks/details/useCreditPaymentHistoryTicket';
-import { ISale } from '../../interfaces/ISale';
 
 interface Props {
-    sale: ISale,
+    saleId: bigint,
 }
 
-const CreditPaymentHistoryTicketModal = ({ sale }: Props) => {
+const CreditPaymentHistoryTicketModal = ({ saleId }: Props) => {
     const { saleModals, closeSaleModal } = useSaleUIStore();
     const isOpen = saleModals === 'creditPaymentHistoryModal';
-    const { pdfUrl, generatePreview, printTicket, loading, error, printing, printError } = useCreditPaymentHistoryTicket({ sale });
+    const { pdfUrl, generatePreview, printTicket, loading, error, printing, printError } = useCreditPaymentHistoryTicket({ saleId });
 
     useEffect(() => {
         if (isOpen) {

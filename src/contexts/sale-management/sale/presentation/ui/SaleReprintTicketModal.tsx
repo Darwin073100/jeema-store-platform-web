@@ -5,12 +5,9 @@ import { useSaleUIStore } from '../stores/sale.ui.store';
 import { Button } from '@/shared/ui/components/buttons';
 import { IoClose, IoPrint } from 'react-icons/io5';
 import useReprintTicketSale from '../hooks/useReprintTicketSale';
-interface Props {
-    saleId: bigint,
-}
-const SaleReprintTicketModal = ({ saleId }: Props) => {
-    const { saleModals, closeSaleModal } = useSaleUIStore();
-    const { error, loading, pdfUrl, printTicket, printing, printError } = useReprintTicketSale({ saleId });
+const SaleReprintTicketModal = () => {
+    const { saleModals, closeSaleModal, reprintTargetSaleId } = useSaleUIStore();
+    const { error, loading, pdfUrl, printTicket, printing, printError } = useReprintTicketSale({ saleId: reprintTargetSaleId });
 
     return (
         <TemplateModal isOpen={saleModals === 'saleTicketReprintModal'} size='xl' onClose={closeSaleModal} title='Vista previa del ticket'>

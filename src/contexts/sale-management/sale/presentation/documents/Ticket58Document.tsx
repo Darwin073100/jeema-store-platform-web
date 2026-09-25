@@ -7,6 +7,8 @@ import { numberMoneyFormat } from '@/shared/lib/utils/number-formatter';
 import { EstablishmentDetailTypeEnum } from '@/contexts/establishment-management/establishment-detail/domain/enums/establishment-detail-type.enum';
 import { getDetailsByType, getFirstDetailByType } from '@/contexts/establishment-management/establishment-detail/presentation/lib/get-details-by-type';
 import { useGenerateBarcode } from '@/shared/ui/hooks/useGenerateBarcode';
+import { SaleStatusEnum } from '../../domain/enums/sale-status.enum';
+import { getSaleStatusBadge } from '../utils/sale-status-badge';
 
 // Conversión de mm a puntos de PDF (1mm = 2.83465 pts)
 const mmToPt = (mm: number) => mm * 2.83465;
@@ -75,6 +77,29 @@ const styles = StyleSheet.create({
   divider: {
     borderTop: '0.5 solid #000',
     marginBottom: 2,
+  },
+  reprintBanner: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 3,
+    borderTop: '1 solid #000',
+    borderBottom: '1 solid #000',
+    paddingTop: 2,
+    paddingBottom: 2,
+  },
+  statusBanner: {
+    fontSize: 8,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 2,
+    marginBottom: 1,
+  },
+  statusBannerSubtext: {
+    fontSize: 7,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 3,
   },
   tableHeader: {
     fontSize: 7,
@@ -147,10 +172,17 @@ const styles = StyleSheet.create({
 
 interface Prop {
   sale: ISale;
+  isReprint?: boolean;
 }
 
-export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
+export const Ticket58Document: React.FC<Prop> = ({ sale, isReprint = false }) => {
   const address = `${sale.branchOffice?.address.city ?? ''} ${sale.branchOffice?.address.state ?? ''}, ${sale.branchOffice?.address.country ?? ''}, ${sale.branchOffice?.address.neighborhood ?? ''}, ${sale.branchOffice?.address.postalCode ?? ''}, ${sale.branchOffice?.address.street ?? ''}`;
+
+  // Una venta no completada (pendiente o crédito) debe decirlo en el propio ticket, tanto en la
+  // impresión original como en cualquier reimpresión — a diferencia del banner de REIMPRESIÓN, esto
+  // no depende de `isReprint`.
+  const isNonCompleted = sale.status !== SaleStatusEnum.COMPLETED;
+  const statusBadge = getSaleStatusBadge(sale.status);
 
   const establishmentDetails = sale.branchOffice?.establishment?.details;
   const slogan = getFirstDetailByType(establishmentDetails, EstablishmentDetailTypeEnum.SLOGAN);
@@ -176,7 +208,12 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
 
   const sizeAdd = ()=> {
     const contactLinesCount = (phoneAndWhatsappValues.length > 0 ? 1 : 0) + singleLineDetails.length + (slogan ? 1 : 0);
-    return (mmToPt(3) * sale.saleDetails.length) + (mmToPt(3) * contactLinesCount);
+    // Banner de reimpresión ocupa 1 línea; banner de estado ocupa 1 línea (pendiente) o 2 (crédito,
+    // que además imprime el saldo pendiente) — se reserva mmToPt(4) por línea de banner en vez de
+    // mmToPt(3) porque van en negritas/con caja alrededor.
+    const reprintLines = isReprint ? 1 : 0;
+    const statusLines = !isNonCompleted ? 0 : (sale.status === SaleStatusEnum.CREDIT ? 2 : 1);
+    return (mmToPt(3) * sale.saleDetails.length) + (mmToPt(3) * contactLinesCount) + (mmToPt(4) * (reprintLines + statusLines));
   }
 
   const { generateBarcode } = useGenerateBarcode();
@@ -211,11 +248,28 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
           style={styles.logo}
         />
 
+        {/* Reimpresión */}
+        {isReprint && (
+          <Text style={styles.reprintBanner}>*** REIMPRESIÓN ***</Text>
+        )}
+
         {/* Encabezado */}
         <Text style={styles.header}>
           {sale.branchOffice?.establishment?.name.toUpperCase() ?? 'ESTABLECIMIENTO'}
         </Text>
         {slogan && <Text style={styles.subheader}>{slogan.value}</Text>}
+
+        {/* Estado de la venta, si no está completada */}
+        {isNonCompleted && (
+          <View>
+            <Text style={styles.statusBanner}>ESTADO: {statusBadge.label.toUpperCase()}</Text>
+            {sale.status === SaleStatusEnum.CREDIT && (
+              <Text style={styles.statusBannerSubtext}>
+                SALDO PENDIENTE: {numberMoneyFormat(sale.balanceAmount)}
+              </Text>
+            )}
+          </View>
+        )}
 
         {/* Folio y Fecha */}
         <Text style={styles.folio}>FOLIO: {sale.saleId}</Text>
@@ -270,12 +324,12 @@ export const Ticket58Document: React.FC<Prop> = ({ sale }) => {
 
         <View style={styles.totalColumn}>
           <Text style={{ width: '60%', textAlign: 'right' }}>RECIBIDO:</Text>
-          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(sale.inAmount)}</Text>
+          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(isNonCompleted ? 0 : sale.inAmount)}</Text>
         </View>
 
         <View style={{ ...styles.totalColumn, marginBottom: 5 }}>
           <Text style={{ width: '60%', textAlign: 'right' }}>CAMBIO:</Text>
-          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(sale.outAmount)}</Text>
+          <Text style={{ width: '40%', textAlign: 'right' }}>{numberMoneyFormat(isNonCompleted ? 0 : sale.outAmount)}</Text>
         </View>
 
         {/* Divider */}

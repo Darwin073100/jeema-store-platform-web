@@ -4,22 +4,24 @@ import { pdf } from "@react-pdf/renderer";
 import { CreditPaymentHistoryTicket58Document } from "../../documents/CreditPaymentHistoryTicket58Document";
 import { usePrintTicket } from "@/contexts/configuration-management/printer-configuration/presentation/hooks/usePrintTicket";
 import { findCashSessionByEmployeeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-session-by-employee-id.action";
-import { ISale } from "../../interfaces/ISale";
+import { findTicketBySaleIdAction } from "../../actions/find-ticket-by-sale-id.action";
 
 interface Props {
-    sale: ISale;
+    saleId: bigint;
 }
 
 /**
- * A diferencia de useReprintTicketSale.tsx, este hook no hace fetch propio: la página de detalle
- * de venta ya tiene la ISale completa (incluido salePayments hidratado con employee) en memoria,
- * así que solo genera el PDF de vista previa y, al confirmar, lo imprime.
+ * A diferencia de un uso ingenuo del `sale` que ya tiene la página de detalle en memoria, este hook
+ * SÍ hace su propio fetch (findTicketBySaleIdAction, la misma acción que usa useReprintTicketSale.tsx)
+ * porque la página de detalle carga la venta con `findFinishSaleById`, que no incluye `branchOffice`
+ * (ni `establishment` ni `address`) — el ticket quedaba sin esos datos. `findTicketBySaleIdAction` sí
+ * carga branchOffice.address y branchOffice.establishment.details.
  *
  * El comprobante se imprime en la caja activa de quien lo solicita (sesión de caja del empleado
  * actual, misma fuente que CreditPaymentModal), no en la caja donde se originó la venta — el
  * historial de pagos se puede consultar/imprimir desde cualquier caja abierta.
  */
-const useCreditPaymentHistoryTicket = ({ sale }: Props) => {
+const useCreditPaymentHistoryTicket = ({ saleId }: Props) => {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -43,9 +45,15 @@ const useCreditPaymentHistoryTicket = ({ sale }: Props) => {
             }
             cashRegisterIdRef.current = cashRegisterId;
 
+            const ticketResult = await findTicketBySaleIdAction(saleId);
+            if (!ticketResult.ok || !ticketResult.value) {
+                setError('No se pudo cargar la información de la venta.');
+                return;
+            }
+
             const doc = (
                 <CreditPaymentHistoryTicket58Document
-                    sale={sale}
+                    sale={ticketResult.value}
                 />
             );
             const blob = await pdf(doc).toBlob();

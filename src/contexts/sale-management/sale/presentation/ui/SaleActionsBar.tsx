@@ -14,6 +14,7 @@ import { useSaleStore } from '../stores/sale.store';
 import { useSaleActionsBar } from '../hooks/useSaleActionsBar';
 import { useSaleUIStore } from '../stores/sale.ui.store';
 import { ButtonOutLine } from '@/shared/ui/components/buttons/ButtonOutLine';
+import { SaleReprintTicketModal } from './SaleReprintTicketModal';
 interface Props {
     data: ISale[]
 }
@@ -87,6 +88,7 @@ const SaleActionsBar = ({ data }: Props) => {
                     <span className='max-sm:hidden'>Ver devoluciones</span>
                 </Button>
             </div>
+            <SaleReprintTicketModal />
         </div>
     )
 }

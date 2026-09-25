@@ -21,6 +21,11 @@ interface UIState {
     setPdfUrl: (payload: string | null)=> void;
     viewTicket: boolean;
     setViewTicket: (payload: boolean)=> void;
+    // Venta objetivo de una reimpresión disparada desde una pantalla con múltiples ventas en
+    // contexto (listado de ventas) — el detalle de venta también la usa para mantener una sola
+    // fuente de verdad en vez de pasar saleId por prop. BigInt(0) = "ninguna seleccionada".
+    reprintTargetSaleId: bigint;
+    setReprintTargetSaleId: (payload: bigint) => void;
 }
 
 const initialState = {
@@ -33,6 +38,7 @@ const initialState = {
     //? Ticket
     viewTicket        : false,
     pdfUrl: null,
+    reprintTargetSaleId: BigInt(0),
 };
 
 export const useSaleUIStore = create<UIState>()((set, get) => ({
@@ -52,6 +58,7 @@ export const useSaleUIStore = create<UIState>()((set, get) => ({
         }))
     },
     setViewTicket        : (payload)=> set(()=>({viewTicket: payload})),
+    setReprintTargetSaleId: (payload) => set({ reprintTargetSaleId: payload }),
     //? Reset Store 
     resetModals          : () => set(initialState),
 }));

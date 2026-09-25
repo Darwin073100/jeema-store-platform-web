@@ -20,6 +20,19 @@ const sizeConfig = {
   '2xl': { txt: 'text-2xl', space: 8 },
 } as const
 
+// Mismo problema que Button.tsx: `text-${color}-600` construido en runtime nunca queda en el CSS
+// final para colores que no aparecen como literal en otro archivo. Mapa estático.
+const colorClasses: Record<NonNullable<Props['color']>, string> = {
+  blue: 'text-blue-600 hover:text-blue-950',
+  green: 'text-green-600 hover:text-green-950',
+  yellow: 'text-yellow-600 hover:text-yellow-950',
+  red: 'text-red-600 hover:text-red-950',
+  gray: 'text-gray-600 hover:text-gray-950',
+  purple: 'text-purple-600 hover:text-purple-950',
+  amber: 'text-amber-600 hover:text-amber-950',
+  teal: 'text-teal-600 hover:text-teal-950',
+}
+
 export function ButtonOutLine({
   children,
   color = 'blue',
@@ -39,7 +52,7 @@ export function ButtonOutLine({
           fullWidth && 'w-full',
           txt,
           `gap-${space} px-${space} py-${space}`,
-          `text-${color}-600 hover:text-${color}-950`,
+          colorClasses[color],
           className // lo último para que pueda sobrescribir
         )
       )}

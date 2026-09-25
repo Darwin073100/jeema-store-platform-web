@@ -50,6 +50,7 @@ const useTicketSale = ({}: Props) => {
             const doc = (
                 <Ticket58Document
                     sale={result.value}
+                    isReprint={false}
                 />
             );
             const blob = await pdf(doc).toBlob();

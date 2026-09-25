@@ -5,17 +5,21 @@ import { formatDateShort } from '@/shared/lib/utils/date-formatter';
 import { Badge } from '@/shared/ui/components/badges/Badge';
 import { Button } from '@/shared/ui/components/buttons';
 import { FiExternalLink } from 'react-icons/fi';
+import { IoPrintSharp } from 'react-icons/io5';
 import { useSaleListBranch } from '../hooks/useSaleList';
 import { BCol, BRow, BTableEmpty } from '@/shared/ui/components/tables/BasicTable';
 import { useRouter } from 'next/navigation';
 import { PrimaryTable } from '@/shared/ui/components/tables/PrimaryTable';
 import { useSaleStore } from '../stores/sale.store';
+import { useSaleUIStore } from '../stores/sale.ui.store';
+import { canReprintSaleTicket } from '../utils/sale-status-badge';
 
 
 const SaleDesktopTable = () => {
     const tableColumns = ['Folio', 'Cliente', 'Empleado', 'Status', 'Total', 'Fecha'];
     const { handleBadgeType } = useSaleListBranch();
     const { sales } = useSaleStore();
+    const { setReprintTargetSaleId, openSaleModal } = useSaleUIStore();
     const router = useRouter();
     return (
         <PrimaryTable theadList={tableColumns} isActions={true}>
@@ -32,7 +36,12 @@ const SaleDesktopTable = () => {
                     </BCol>
                     <BCol>{numberMoneyFormat(sale.totalAmount)}</BCol>
                     <BCol>{formatDateShort(sale.updatedAt ?? sale.createdAt)}</BCol>
-                    <BCol className="text-right flex justify-end">
+                    <BCol className="text-right flex justify-end gap-2">
+                        {canReprintSaleTicket(sale.status) &&
+                            <Button size='sm' color='gray' onClick={() => { setReprintTargetSaleId(sale.saleId); openSaleModal('saleTicketReprintModal'); }}>
+                                <IoPrintSharp size={14} />
+                            </Button>
+                        }
                         <Button size='sm' onClick={() => router.push(`/sale/${sale.saleId}`)}>
                             <FiExternalLink size={14} /><span>Detalles</span>
                         </Button>

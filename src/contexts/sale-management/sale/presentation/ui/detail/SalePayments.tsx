@@ -60,7 +60,7 @@ const SalePayments = ({ data }: Props) => {
                 </div>
             ))}
         </div>
-        {hasPayments && <CreditPaymentHistoryTicketModal sale={data} />}
+        {hasPayments && <CreditPaymentHistoryTicketModal saleId={data.saleId} />}
         </>
     )
 }
