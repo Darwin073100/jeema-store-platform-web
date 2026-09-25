@@ -21,7 +21,7 @@ export default function CloudTransfersListPage() {
         <ProtectedRoute>
             <TemplateHeader
                 title="Traspasos a la nube"
-                detail="Traspasos de mercancía enviados y recibidos entre sucursales a través de la nube (EDYOF)."
+                detail="Traspasos de mercancía enviados y recibidos entre sucursales a través de la nube (JEEMA Transfer)."
                 breadcrumbItems={breadcrumbItems}>
                 <CloudTransfersList />
             </TemplateHeader>
