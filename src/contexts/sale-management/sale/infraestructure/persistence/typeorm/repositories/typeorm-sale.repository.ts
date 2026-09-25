@@ -150,12 +150,20 @@ export class TypeormSaleRepository implements SaleRepository{
             }
 
             if(search){
+                // El folio de venta es el propio saleId (bigint) — BigInt() revienta con texto no
+                // numérico, así que la condición por folio solo se agrega si el término de búsqueda
+                // es puramente numérico (ver "search por folio").
+                const trimmedSearch = search.trim();
+                const isNumericSearch = /^\d+$/.test(trimmedSearch);
+
                 query.andWhere(new Brackets((qb)=>{
                     qb.where('employee.firstName ILIKE :textSearch', {textSearch: `%${search}%`})
                     .orWhere('employee.lastName ILIKE :textSearch', {textSearch: `%${search}%`})
                     .orWhere('customer.firstName ILIKE :textSearch', {textSearch: `%${search}%`})
-                    .orWhere('customer.lastName ILIKE :textSearch', {textSearch: `%${search}%`})
-                    // .orWhere('sale.saleId = :numSearch', {numSearch: BigInt(search)})
+                    .orWhere('customer.lastName ILIKE :textSearch', {textSearch: `%${search}%`});
+                    if(isNumericSearch){
+                        qb.orWhere('sale.saleId = :numSearch', {numSearch: BigInt(trimmedSearch)});
+                    }
                 }));
             }
         const result = await query.orderBy('sale.createdAt', 'DESC').getMany();

@@ -78,7 +78,7 @@ const SaleActionsBar = ({ data }: Props) => {
                             error={!!errors.search?.message}
                             errorMessage={errors.search?.message}
                             name='search'
-                            placeholder="Filtrar por cliente o empleado, separados por nombres o apellidos." />
+                            placeholder="Filtrar por folio de venta, cliente o empleado, separados por nombres o apellidos." />
                     </div>
                 </form>
             </div>
