@@ -13,12 +13,22 @@ import { SaleTicketModal } from "./SaleTicketModal";
 import { SaleDetailItemMovile } from "./SaleDetailItemMovile";
 import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
 import { useEffect } from "react";
-const SaleProductList = () => {
-
+import { FaCashRegister } from "react-icons/fa";
+import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
+import { useRouter } from "next/navigation";
+interface Props {
+    cashSession: ICashSession | null;
+}
+const SaleProductList = ({ cashSession }: Props) => {
+    const router = useRouter();
     const { sale } = useSaleStore();
     const { openSaleModal } = useInventoryListModal();
     const { handleCheckerOpenModalCancelSale } = useCancelSale();
-
+    const viewCashSession = ()=> {
+        if(cashSession){
+            router.push(`/cash/session/${cashSession.cashSessionId.toString()}`)
+        }
+    }
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             if (event.key === 'F4') {
@@ -26,6 +36,10 @@ const SaleProductList = () => {
                 // tu función personalizada
                 openSaleModal('inventoryListModal');
             } else if (event.key === 'F5') {
+                event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
+                // tu función personalizada
+                viewCashSession();
+            } else if (event.key === 'F6') {
                 event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
                 // tu función personalizada
                 handleCheckerOpenModalCancelSale();
@@ -48,11 +62,18 @@ const SaleProductList = () => {
                         <span className="text-sm p-1 rounded-sm bg-blue-600 text-blue-100">F4</span>
                     </div>
                 </ButtonOutLine>
+                <Button onClick={() => viewCashSession()} color="yellow" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                    <FaCashRegister className="text-lg" />
+                    <span className="max-sm:hidden">Caja</span>
+                    <div className="h-full flex items-start max-sm:hidden">
+                        <span className="text-sm p-1 rounded-sm bg-yellow-200 text-yellow-600">F5</span>
+                    </div>
+                </Button>
                 <Button onClick={() => handleCheckerOpenModalCancelSale()} color="red" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosTrash className="text-lg" />
                     <span className="max-sm:hidden">Cancelar venta</span>
                     <div className="h-full flex items-start max-sm:hidden">
-                        <span className="text-sm p-1 rounded-sm bg-red-200 text-red-600">F5</span>
+                        <span className="text-sm p-1 rounded-sm bg-red-200 text-red-600">F6</span>
                     </div>
                 </Button>
                 <SaleTicketModal />

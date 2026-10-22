@@ -1,5 +1,4 @@
 import { findCashSessionByEmployeeIdAction } from "@/contexts/cash-management/cash-session/presentation/actions/find-cash-session-by-employee-id.action";
-import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/contexts/inventory-management/inventory-item/presentation/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { findAllCustomerByEstablishmentAction } from "@/contexts/sale-management/customer/presentation/actions/find-all-customer-by-establishment.action";
 import { findAllPaymentMethodAction } from "@/contexts/sale-management/payment-method/presentation/actions/find-all-payment-method.action";
 import { SaleMessages } from "@/contexts/sale-management/sale/presentation/ui/SaleMessages";
@@ -42,7 +41,8 @@ export default async function() {
                     cashSession={currentCashSession} />
                 <article className="flex gap-6 items-start w-full mt-6">
                     {/* Potential Component: SaleProductList */}
-                    <SaleProductList />
+                    <SaleProductList 
+                        cashSession={currentCashSession ?? null}/>
                     {/* Potential Component: SaleSummary */}
                     <SaleSummary 
                         customers={currentCustomers}
