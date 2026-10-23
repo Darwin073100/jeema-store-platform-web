@@ -17,6 +17,8 @@ export const useSaleProductList = ({ cashSession}:Props) => {
     const viewCashSession = () => {
         if (cashSession) {
             router.push(`/cash/session/${cashSession.cashSessionId.toString()}`)
+        } else {
+            router.push(`/cash`)
         }
     }
     

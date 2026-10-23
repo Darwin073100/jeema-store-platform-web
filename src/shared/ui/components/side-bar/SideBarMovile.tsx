@@ -96,7 +96,7 @@ export const SideBarMovile = () => {
                     <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
                         <SideMovileLink Icon={FcConferenceCall} href='/customers' value='Clientes' onNavigate={closeSideBar} />
                     </HideElement>
-                    <SideMovileLink Icon={FcServices} href='/configurations' value='Config.' onNavigate={closeSideBar} />
+                    <SideMovileLink Icon={FcServices} href='/configurations' value='Configuración' onNavigate={closeSideBar} />
                     <SideMovileLink Icon={FcCurrencyExchange} href='/cash' value='Caja' onNavigate={closeSideBar} />
                     <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
                         <SideMovileLink Icon={FcSerialTasks} href='/transfers' value='Traspasos' onNavigate={closeSideBar} />

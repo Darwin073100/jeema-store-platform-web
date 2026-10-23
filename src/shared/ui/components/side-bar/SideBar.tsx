@@ -39,7 +39,7 @@ export const SideBar = () => {
                 <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
                     <SideLink Icon={FcConferenceCall} href='/customers' value='Clientes'/>
                 </HideElement>
-                <SideLink Icon={FcServices} href='/configurations' value='Config.'/>
+                <SideLink Icon={FcServices} href='/configurations' value='Configuración'/>
                 <SideLink Icon={FcCurrencyExchange} href='/cash' value='Caja'/>
                 <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
                     <SideLink Icon={FcSerialTasks} href='/transfers' value='Traspasos'/>

@@ -31,7 +31,7 @@ const SaleProductList = ({ cashSession }: Props) => {
                 </ButtonOutLine>
                 <Button onClick={() => viewCashSession()} color="yellow" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <FaCashRegister className="text-lg" />
-                    <span className="max-sm:hidden">Caja</span>
+                    <span className="max-sm:hidden">{cashSession? 'Caja': 'Aperturar caja'}</span>
                     <div className="h-full flex items-start max-sm:hidden">
                         <span className="text-sm p-1 rounded-sm bg-yellow-200 text-yellow-600">F5</span>
                     </div>
