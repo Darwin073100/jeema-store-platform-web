@@ -1,57 +1,24 @@
 'use client';
 import { Button } from "@/shared/ui/components/buttons";
 import { IoIosSearch, IoIosTrash } from "react-icons/io";
-import { useSaleStore } from "../stores/sale.store";
 import { SaleDetailItem } from "./SaleDetailItem";
 import { DeleteDetailConfirmModal } from "./DeleteDetailConfirmModal";
 import { SaleInventoryListModal } from "./SaleInventoryListModal";
 import { CancelSaleConfirmModal } from "./CancelSaleConfirmModal";
-import { useCancelSale } from "../hooks/useCancelSale";
 import { UpdateDetailModal } from "./UpdateDetailModal";
-import { useInventoryListModal } from "../hooks/useInventoryListModal";
 import { SaleTicketModal } from "./SaleTicketModal";
 import { SaleDetailItemMovile } from "./SaleDetailItemMovile";
 import { ButtonOutLine } from "@/shared/ui/components/buttons/ButtonOutLine";
-import { useEffect } from "react";
 import { FaCashRegister } from "react-icons/fa";
 import { ICashSession } from "@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession";
-import { useRouter } from "next/navigation";
+import { useSaleProductList } from "../hooks/useSaleProductList";
 interface Props {
     cashSession: ICashSession | null;
 }
 const SaleProductList = ({ cashSession }: Props) => {
-    const router = useRouter();
-    const { sale } = useSaleStore();
-    const { openSaleModal } = useInventoryListModal();
-    const { handleCheckerOpenModalCancelSale } = useCancelSale();
-    const viewCashSession = ()=> {
-        if(cashSession){
-            router.push(`/cash/session/${cashSession.cashSessionId.toString()}`)
-        }
-    }
-    useEffect(() => {
-        const handleKeyDown = (event: any) => {
-            if (event.key === 'F4') {
-                event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
-                // tu función personalizada
-                openSaleModal('inventoryListModal');
-            } else if (event.key === 'F5') {
-                event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
-                // tu función personalizada
-                viewCashSession();
-            } else if (event.key === 'F6') {
-                event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
-                // tu función personalizada
-                handleCheckerOpenModalCancelSale();
-            }
-        }
-        window.addEventListener('keydown', handleKeyDown);
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [sale]);
-
+    const {sale, handleCheckerOpenModalCancelSale, openSaleModal,viewCashSession} = useSaleProductList({cashSession});
+    
     return (
         <section className="flex-1">
             <div className="flex gap-4 mb-4">
