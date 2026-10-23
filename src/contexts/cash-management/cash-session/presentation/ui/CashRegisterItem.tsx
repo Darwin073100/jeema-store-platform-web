@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/shared/ui/components/buttons'
-import React, { useState } from 'react'
-import { FaCashRegister, FaCircle } from 'react-icons/fa'
+import { useState } from 'react'
+import { FaCircle } from 'react-icons/fa'
 import { MdClosedCaption, MdClosedCaptionDisabled } from 'react-icons/md'
 import { TbCashRegister } from 'react-icons/tb'
 import clsx from 'clsx'
@@ -62,7 +62,7 @@ const CashRegisterItem = ({ cashRegister }: Props) => {
                 </HideElement>
             </div>
             <figure className="flex justify-center text-purple-700">
-                <FaCashRegister size={50} />
+                <TbCashRegister size={50} />
             </figure>
             <div className="flex justify-center">
                 <h2 className="font-semibold text-lg">{cashRegister.name}</h2>

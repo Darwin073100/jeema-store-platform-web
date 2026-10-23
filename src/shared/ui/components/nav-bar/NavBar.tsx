@@ -12,6 +12,8 @@ import { NavLink } from './NavLink';
 import { FcMindMap, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
 import { FloatMessage } from '../messages';
 import { useFloatMessageStore } from '../messages/stores/useFloatMessageStore';
+import { useRouter } from 'next/navigation';
+import { useKeyDown } from '../../hooks/useKeyDown';
 
 /**
  * Navbar de escritorio/móvil: mismo lenguaje visual que el SideBar — fondo blanco plano,
@@ -19,12 +21,17 @@ import { useFloatMessageStore } from '../messages/stores/useFloatMessageStore';
  * cuando están activas y hover gris cuando no.
  */
 export const NavBar = () => {
+  const router = useRouter();
   const { user } = useAuth();
   const { establishment, branchOffice, employee } = useWorkspace();
   const { floatMessageState } = useFloatMessageStore();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { onToggelSideBar, sideBar } = useSideStore();
-
+  
+  useKeyDown({
+    F7: ()=> router.push('/sale/new'),
+  });
+  
   const handleOpenLogoutModal = () => {
     setIsLogoutModalOpen(true);
   };
@@ -37,7 +44,7 @@ export const NavBar = () => {
   const employeeName = [employee?.firstName, employee?.lastName].filter(Boolean).join(' ');
 
   return (
-    <nav className="sticky top-0 z-30 flex w-full items-center justify-between gap-4 border-b border-gray-100 bg-white px-4 py-2.5">
+    <nav className="sticky top-0 z-30 flex w-full items-center justify-between gap-4 border-b border-gray-100 bg-white px-4 py-1">
       {/* Brand Section */}
       <div className='flex items-center gap-4'>
         <button
@@ -69,7 +76,7 @@ export const NavBar = () => {
           </span>
         </div>
         <div className='hidden items-center gap-1 md:flex'>
-          <NavLink Icon={FcPaid} href='/sale/new' value='Nueva Venta' />
+          <NavLink Icon={FcPaid} href='/sale/new' value='Nueva Venta' keyPressValue='F7'/>
           <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
             <NavLink Icon={FcShop} href='/sale' value='Ventas' />
           </HideElement>

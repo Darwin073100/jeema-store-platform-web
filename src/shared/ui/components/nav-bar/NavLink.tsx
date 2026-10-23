@@ -1,7 +1,7 @@
 'use client'
 import clsx from 'clsx'
 import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { IconType } from 'react-icons';
 import { Spinner } from '../loadings/Spinner'
@@ -11,10 +11,11 @@ interface Props{
     href: string;
     value: string;
     className?: string;
+    keyPressValue?: string;
 }
 
 /** Enlace del navbar horizontal: mismo lenguaje visual plano que SideLink (pill azul cuando está activo, hover gris sutil, sin bordes ni sombras propias). */
-export const NavLink = ({Icon, href, value, className}:Props) => {
+export const NavLink = ({Icon, href, value, className, keyPressValue}:Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
 
@@ -53,6 +54,10 @@ export const NavLink = ({Icon, href, value, className}:Props) => {
         <span className="whitespace-nowrap">
             {value}
         </span>
+        {keyPressValue!! &&  
+            <span className={clsx(`p-1 bg-blue-${isActive? '200':'50'} rounded-sm text-blue-700 text-sm`)} >
+                {keyPressValue}
+            </span>}
     </Link>
   )
 }
