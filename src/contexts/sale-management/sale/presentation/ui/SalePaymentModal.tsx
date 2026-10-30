@@ -12,12 +12,10 @@ import { numberBasicFormat } from '@/shared/lib/utils/number-formatter';
 import { useSaleStore } from '../stores/sale.store';
 import { Spinner } from '@/shared/ui/components/loadings/Spinner';
 import { useSaleProcessStore } from '../stores/sale.process.store';
-import { useEffect } from 'react';
-import { useSale } from '../hooks/useSale';
-import { SaleStatusEnum } from '../../domain/enums/sale-status.enum';
+import { useKeyDown } from '@/shared/ui/hooks/useKeyDown';
 
 const SalePaymentModal = () => {
-  const { total, sale } = useSaleStore();
+  const { total } = useSaleStore();
   const { 
     cashAmount, customerChange, paidAmount, setCashAmount, setPaidAmount,
     transferAmount, setTransferAmount, transferNumberRef, setTransferNumberRef
@@ -25,33 +23,12 @@ const SalePaymentModal = () => {
   const { handleFinishSale, loading, handlePaidSale, handleCreditSale, paidAmountMessage, saleModals, closeSaleModal, customerSelected } = useSalePayment();
 
   const isDefaultCustomer = !customerSelected || customerSelected.saleDefault;
-
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if(saleModals==='paymentModal' && sale?.status !== SaleStatusEnum.COMPLETED){
-      if (event.key === 'F2') {
-          event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
-          // tu función personalizada
-          handlePaidSale();
-      } else if (event.key === 'F3') {
-          event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
-          // tu función personalizada
-          handleFinishSale();
-      } else if (event.key === 'F4') {
-          event.preventDefault(); // anula el comportamiento por defecto (ayuda del navegador)
-          // tu función personalizada
-          if(!isDefaultCustomer){
-            handleCreditSale();
-          }
-      }
-    }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-    window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [customerChange, saleModals, sale, isDefaultCustomer]);
+  
+  useKeyDown({
+    F2: ()=> handlePaidSale(),
+    F3: ()=> handleFinishSale(),
+    F4: ()=> {if(!isDefaultCustomer){ handleCreditSale()}},
+  });
 
   return (
     <TemplateModal isOpen={saleModals==='paymentModal'} size='xl' onClose={closeSaleModal} title='Cobro de la venta'>
@@ -72,6 +49,7 @@ const SalePaymentModal = () => {
               <span className='text-gray-600 font-bold'>Efectivo</span>
               <TextInput
                 autoFocus
+                onFocus={(e)=> e.currentTarget.select() }
                 onChange={(e)=> setCashAmount(Number(e.target.value))}
                 value={cashAmount}
                 type='number'
@@ -86,6 +64,7 @@ const SalePaymentModal = () => {
               <TextInput
                 min={0}
                 value={transferAmount}
+                onFocus={(e)=> e.currentTarget.select() }
                 onChange={(e)=> setTransferAmount(Number(e.target.value))}
                 type='number'
                 placeholder='Monto'/>
