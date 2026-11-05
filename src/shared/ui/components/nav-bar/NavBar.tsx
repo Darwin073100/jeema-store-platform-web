@@ -41,7 +41,7 @@ export const NavBar = () => {
   };
 
   const userInitial = (employee?.firstName?.[0] ?? user?.email?.[0] ?? '?').toUpperCase();
-  const employeeName = [employee?.firstName, employee?.lastName].filter(Boolean).join(' ');
+  // const employeeName = [employee?.firstName, employee?.lastName].filter(Boolean).join(' ');
 
   return (
     <nav className="sticky top-0 z-30 flex w-full items-center justify-between gap-4 border-b border-gray-100 bg-white px-4 py-1">
@@ -100,13 +100,10 @@ export const NavBar = () => {
           </div>
           <div className="hidden flex-col items-start sm:flex">
             <span className="truncate text-sm font-medium text-gray-800">
-              {employeeName || '--'}
-            </span>
-            <span className="text-xs text-gray-500">
-              Cerrar sesión
+              {employee?.firstName || '--'}
             </span>
           </div>
-          <IoChevronDownSharp className="hidden text-gray-400 sm:block" />
+          <IoChevronDownSharp className={clsx(`hidden text-gray-400 sm:block duration-200 ${isLogoutModalOpen? 'rotate-180': ''}`)} />
         </button>
       </div>
 
