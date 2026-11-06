@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-skeleton-reveal: skeleton-reveal 150ms ease-out 150ms both;
+
+  @keyframes skeleton-reveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #364153 ;
