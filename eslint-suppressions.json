@@ -1,0 +1,945 @@
+{
+  "src/app/(platform)/branch-office/create/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/branch-office/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/cash/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/cash/session/[cashSessionId]/page.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 10
+    }
+  },
+  "src/app/(platform)/configurations/employees/[employeeId]/page.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 25
+    }
+  },
+  "src/app/(platform)/configurations/employees/new/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/configurations/employees/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/configurations/establishment/branches/new/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/configurations/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/configurations/users/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/customers/[customerId]/page.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 10
+    }
+  },
+  "src/app/(platform)/customers/new/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/products/[productId]/page.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 9
+    }
+  },
+  "src/app/(platform)/products/list/page.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 13
+    }
+  },
+  "src/app/(platform)/products/new/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/products/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/purchases/list/page.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 10
+    }
+  },
+  "src/app/(platform)/purchases/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/purchases/supliers/new/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/purchases/supliers/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/sale/new/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/sale/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/sale/returns/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/transfers/[productId]/page.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 8
+    }
+  },
+  "src/app/(platform)/transfers/configuration/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/(platform)/transfers/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/auth/login/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/initial/establishment/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/initial/first-branch-office/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/app/initial/first-user/page.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/auth/application/dtos/IUserWorkspace.ts": {
+    "no-restricted-imports": {
+      "count": 4
+    }
+  },
+  "src/contexts/authentication-management/auth/application/mapper/user-role.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/auth/application/mapper/user.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/auth/infraestructure/mappers/user-role.mapper.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/auth/presentation/actions/update-user.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/auth/presentation/ui/InitAcountForm.tsx": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/permission/application/mappers/permission-mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/role/application/mappers/role-permission.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/role/application/mappers/role.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/role/domain/repositories/role-permission.repositoy.ts": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/mappers/role-permission.mapper.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-register/application/mappers/cash-register.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-register/presentation/actions/find-all-cash-register-by-branch-office-id.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-register/presentation/actions/register-cash-register.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/application/mappers/cash-session.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/actions/close-cash-session.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/actions/find-cash-movements-by-branch-office-id.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/actions/find-cash-session-by-employee-id.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/actions/open-cash-session.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/hooks/useCashClosedTicketListModal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/hooks/useCashClosedTicketModal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/hooks/useCashRegisterList.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/ui/EditCashRegisterModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/ui/OpenCashSessionModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/ui/RegisterCashRegisterModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/cash-management/cash-session/presentation/ui/close/CashSessionCloseModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/configuration-management/printer-configuration/application/mappers/printer-configuration.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/configuration-management/printer-configuration/presentation/hooks/useQzTray.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee-role/application/mappers/employee-role.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee/application/mappers/employee.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/repositories/typeorm-employee.repository.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee/presentation/actions/save-employee.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee/presentation/ui/details/EmployeeAddressCard.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee/presentation/ui/details/EmployeeUserInformation.tsx": {
+    "react/jsx-key": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee/presentation/ui/register/EmployeeDeleteUserRoleModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/employee-management/employee/presentation/ui/register/EmployeeUpdateUserModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/address/application/mappers/address.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/branch-office/application/mappers/branch-office.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/branch-office/application/use-cases/register-cloud-branch-and-cloud-establishment.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/branch-office/application/use-cases/register-cloud-branch.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/branch-office/domain/repositories/cloud-branch-office.repository.ts": {
+    "no-restricted-imports": {
+      "count": 3
+    }
+  },
+  "src/contexts/establishment-management/branch-office/presentation/actions/create.new.branch-office.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/branch-office/presentation/ui/CreateBranchForm.tsx": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/establishment-detail/application/mappers/establishment-detail.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/establishment/application/mappers/establishment.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/repositories/typeorm-establishment.repository.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/establishment/presentation/actions/find-establishment-by-id.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/establishment/presentation/actions/update-establishment.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/establishment-management/establishment/presentation/ui/CreateEstablishmentForm.tsx": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/image-management/image/application/mappers/image.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/image-management/image/presentation/hooks/useOwnerImages.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/application/mappers/cloud-transfer.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 2
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/application/use-cases/create-and-send-cloud-transfer.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/application/use-cases/list-cloud-branch-offices-for-transfer.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/application/use-cases/refresh-cloud-transfer-from-cloud.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/application/use-cases/refresh-outgoing-cloud-transfers.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/application/use-cases/refresh-pending-cloud-transfers.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/application/use-cases/retry-send-cloud-transfer.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/domain/repositories/cloud-transfer-api.repository.ts": {
+    "no-restricted-imports": {
+      "count": 2
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/presentation/hooks/useCloudTransferItemResolution.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/presentation/hooks/useCreateCloudTransfer.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/cloud-transfer/presentation/ui/CategoryMappingModal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 3
+    },
+    "react/no-unescaped-entities": {
+      "count": 2
+    }
+  },
+  "src/contexts/inventory-management/inventory-item/application/mapper/inventory-item.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/inventory-item/domain/repositories/inventory-item.repository.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/inventory/application/mapper/inventory.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/inventory/domain/repositories/inventory.repository.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/repositories/typeorm-inventory.repository.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/inventory/presentation/actions/generate-barcode.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/inventory-management/inventory/presentation/documents/Ticket58Document.tsx": {
+    "react/no-unescaped-entities": {
+      "count": 2
+    }
+  },
+  "src/contexts/inventory-management/transfer/application/mappers/transfer.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/inventory-management/transfer/presentation/actions/local-transfer.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/product-management/brand/application/mappers/brand.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/brand/presentation/actions/find-all-brands-by-establishment.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/brand/presentation/actions/register-brand.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/category/application/mappers/category-mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/category/presentation/actions/register-category.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/application/mappers/product.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/application/use-cases/delete-product.use-case.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/domain/repositories/product.repository.ts": {
+    "no-restricted-imports": {
+      "count": 2
+    }
+  },
+  "src/contexts/product-management/product/infraestructure/persistence/typeorm/repositories/typeorm-product.repository.ts": {
+    "prefer-const": {
+      "count": 8
+    }
+  },
+  "src/contexts/product-management/product/presentation/actions/find-all-products-by-establishment-filter.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/actions/find-all-products-by-establishment.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/actions/find-top-products-by-branch-office.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/actions/register-complete-product.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/product-management/product/presentation/actions/update-product.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/hooks/useProductBarCodes51x25Modal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/hooks/useProductBarCodesModal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/hooks/useProductPrice27x13Modal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/hooks/useProductPriceOne27x13Modal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/hooks/useRegisterCompleteProduct.ts": {
+    "prefer-const": {
+      "count": 3
+    }
+  },
+  "src/contexts/product-management/product/presentation/hooks/useUpdateProductModal.ts": {
+    "react-hooks/immutability": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/ui/product-catalog/ListMovileProducts.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/ui/product-catalog/TableProducts.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    },
+    "react-hooks/purity": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/product/presentation/ui/product-detail/InventoryDetail.tsx": {
+    "react/no-children-prop": {
+      "count": 5
+    }
+  },
+  "src/contexts/product-management/product/presentation/ui/product-detail/ProductDetail.tsx": {
+    "react/no-children-prop": {
+      "count": 7
+    }
+  },
+  "src/contexts/product-management/season/application/mappers/season-mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/season/presentation/actions/delete-season.action.ts": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/season/presentation/actions/find-all-seasons-by-establishment.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/product-management/season/presentation/actions/register-season.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/lot/application/mappers/lot-unit-purchase.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/lot/application/mappers/lot.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/lot/domain/repositories/lot-unit-purchase.repository.ts": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/repositories/typeorm-lot-unit-purchase.repository.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/repositories/typeorm-lot.repository.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/purchase-management/lot/presentation/actions/find-report-lots.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/lot/presentation/ui/lot-catalog/ListMovileLots.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/lot/presentation/ui/lot-catalog/TableLotDesktop.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    },
+    "react-hooks/purity": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/suplier/application/mappers/suplier.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/suplier/presentation/actions/find-all-suplier-by-establishment.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/suplier/presentation/actions/register-suplier.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/purchase-management/suplier/presentation/ui/SuplierDesktopTable.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    },
+    "react-hooks/purity": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/customer/application/mappers/customer.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/customer/presentation/actions/register-customer.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/payment-method/application/mappers/payment-method-mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/returns/application/mappers/returns-app.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/returns/application/use-cases/returns-products.use-case.ts": {
+    "prefer-const": {
+      "count": 3
+    }
+  },
+  "src/contexts/sale-management/returns/presentation/actions/find-returns-by-branch-office.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/returns/presentation/actions/returns-products.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/sale-management/sale-detail/application/mappers/sale-detail.app-mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale-detail/application/use-case/register-sale-detail.use-case.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/sale-management/sale-detail/infraestructure/persistence/typeorm/repositories/typeorm-sale-detail.repository.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/sale-management/sale-payment/application/mappers/sale-payment.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale-payment/infraestructure/repositories/typeorm-sale-payment.repository.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/sale-management/sale/application/mappers/sale-mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/application/use-cases/calculate-sale.use-case.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/actions/find-all-sale-by-branch-office-and-filter.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/actions/find-all-sale-by-branch-office.action.ts": {
+    "prefer-const": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/hooks/useInventoryListModal.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 3
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/hooks/useReprintTicketSale.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/hooks/useSalePayment.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 2
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/hooks/useTicketSale.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/hooks/useUpdateDetailModal.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 3
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/ui/SalePaymentModal.tsx": {
+    "react/no-unescaped-entities": {
+      "count": 2
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/ui/SaleTicketModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/ui/detail/CreditPaymentModal.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/ui/detail/ReturnsProductsModal.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/contexts/sale-management/sale/presentation/ui/detail/SaleDetailList.tsx": {
+    "react/jsx-key": {
+      "count": 1
+    }
+  },
+  "src/contexts/transaction-management/transaction/application/mappers/transaction.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/transaction-management/transaction/domain/repositories/transaction.repository.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/contexts/transaction-management/transaction/presentation/actions/find-cash-movements-by-branch-office-id.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/transaction-management/transaction/presentation/actions/register-transaction.action.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/contexts/transaction-management/transaction/presentation/hooks/useTransactionMovementsReportTicket.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/contexts/transaction-management/transaction/presentation/ui/TransactionMovementsDesktopTable.tsx": {
+    "@typescript-eslint/no-empty-object-type": {
+      "count": 1
+    }
+  },
+  "src/shared/application/mappers/address.mapper.ts": {
+    "no-restricted-imports": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/inputs/TextInput copy.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/inputs/TextInput.tsx": {
+    "react/display-name": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/loadings/Spinner.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/messages/FloatMessage.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 2
+    },
+    "react/jsx-key": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/nav-bar/NavLink.tsx": {
+    "@typescript-eslint/no-extra-non-null-assertion": {
+      "count": 1
+    },
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/side-bar/SideBarMovile.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/side-bar/SideLink.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/components/side-bar/SideMovileLink.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/shared/ui/hooks/useGenerateBarcode.ts": {
+    "prefer-const": {
+      "count": 2
+    }
+  },
+  "src/shared/ui/hooks/useKeyDown.ts": {
+    "react-hooks/refs": {
+      "count": 1
+    }
+  }
+}

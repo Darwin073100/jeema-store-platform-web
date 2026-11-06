@@ -1,0 +1,9 @@
+.next
+node_modules
+coverage
+public
+storage
+pnpm-lock.yaml
+eslint-suppressions.json
+src/configuration/databases/typeorm/migrations
+*.sql
