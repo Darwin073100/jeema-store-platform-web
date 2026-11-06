@@ -14,6 +14,7 @@ import { FloatMessage } from '../messages';
 import { useFloatMessageStore } from '../messages/stores/useFloatMessageStore';
 import { useRouter } from 'next/navigation';
 import { useKeyDown } from '../../hooks/useKeyDown';
+import { Skeleton } from '../loadings/Skeleton';
 
 /**
  * Navbar de escritorio/móvil: mismo lenguaje visual que el SideBar — fondo blanco plano,
@@ -23,7 +24,7 @@ import { useKeyDown } from '../../hooks/useKeyDown';
 export const NavBar = () => {
   const router = useRouter();
   const { user } = useAuth();
-  const { establishment, branchOffice, employee } = useWorkspace();
+  const { establishment, branchOffice, employee, isLoaded, error } = useWorkspace();
   const { floatMessageState } = useFloatMessageStore();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { onToggelSideBar, sideBar } = useSideStore();
@@ -40,6 +41,8 @@ export const NavBar = () => {
     setIsLogoutModalOpen(false);
   };
 
+  // Si la carga falla no hay datos que esperar: se muestran los valores por defecto.
+  const isWorkspacePending = !isLoaded && !error;
   const userInitial = (employee?.firstName?.[0] ?? user?.email?.[0] ?? '?').toUpperCase();
   // const employeeName = [employee?.firstName, employee?.lastName].filter(Boolean).join(' ');
 
@@ -68,12 +71,21 @@ export const NavBar = () => {
           />
         </button>
         <div className='hidden flex-col lg:flex'>
-          <h1 className='truncate text-sm font-semibold text-gray-800'>
-            {establishment?.name ?? '--'}
-          </h1>
-          <span className="truncate text-xs text-gray-500">
-            {branchOffice?.name}
-          </span>
+          {isWorkspacePending ? (
+            <>
+              <Skeleton className="my-0.5 h-4 w-32" />
+              <Skeleton className="my-0.5 h-3 w-20" />
+            </>
+          ) : (
+            <>
+              <h1 className='truncate text-sm font-semibold text-gray-800'>
+                {establishment?.name ?? '--'}
+              </h1>
+              <span className="truncate text-xs text-gray-500">
+                {branchOffice?.name}
+              </span>
+            </>
+          )}
         </div>
         <div className='hidden items-center gap-1 md:flex'>
           <NavLink Icon={FcPaid} href='/sale/new' value='Nueva Venta' keyPressValue='F7'/>
@@ -95,13 +107,21 @@ export const NavBar = () => {
           aria-label="Cerrar sesión"
           className="flex items-center gap-2 rounded-lg py-1.5 pl-1.5 pr-2 transition-colors duration-150 hover:bg-gray-100"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-            {userInitial}
-          </div>
+          {isWorkspacePending ? (
+            <Skeleton className="h-9 w-9 shrink-0 rounded-full" />
+          ) : (
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+              {userInitial}
+            </div>
+          )}
           <div className="hidden flex-col items-start sm:flex">
-            <span className="truncate text-sm font-medium text-gray-800">
-              {employee?.firstName || '--'}
-            </span>
+            {isWorkspacePending ? (
+              <Skeleton className="my-0.5 h-4 w-16" />
+            ) : (
+              <span className="truncate text-sm font-medium text-gray-800">
+                {employee?.firstName || '--'}
+              </span>
+            )}
           </div>
           <IoChevronDownSharp className={clsx(`hidden text-gray-400 sm:block duration-200 ${isLogoutModalOpen? 'rotate-180': ''}`)} />
         </button>
