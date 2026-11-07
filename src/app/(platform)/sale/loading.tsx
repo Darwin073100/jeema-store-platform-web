@@ -18,7 +18,7 @@ export default function Loading() {
                 <Skeleton className="h-8 w-40 max-sm:w-10" />
             </div>
             <div className="hidden md:block">
-                <TableSkeleton theadList={['Folio', 'Cliente', 'Empleado', 'Status', 'Total', 'Fecha']} />
+                <TableSkeleton theadList={['', '', '', '', '', '']} isActions={false} />
             </div>
             <div className="md:hidden mt-2 flex flex-col items-center gap-2 w-full">
                 <CardListSkeleton />
