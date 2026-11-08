@@ -23,8 +23,11 @@ import { ForSaleEnum } from "@/shared/domain/enums/for-sale.enum";
 
 /**
  * Los detalles se insertan con ids fuera de orden (3, 1, 2). Sin `ORDER BY` la consulta devolvería el orden
- * físico (el de inserción); con el orden explícito deben salir 1, 2, 3, que es el orden de llegada a la venta.
+ * físico (el de inserción); con el orden explícito deben salir 3, 2, 1: el último en llegar primero.
  */
+// Sincronizar en pg-mem el grafo completo de entidades tarda varios segundos.
+jest.setTimeout(30000);
+
 describe("TypeormSaleRepository: orden de los detalles de venta", () => {
     let dataSource: DataSource;
     let repository: TypeormSaleRepository;
@@ -96,18 +99,18 @@ describe("TypeormSaleRepository: orden de los detalles de venta", () => {
     const detailIds = (sale: { saleDetails: { saleDetailId: bigint }[] | null } | null) =>
         (sale?.saleDetails ?? []).map(detail => Number(detail.saleDetailId));
 
-    it("findById devuelve los detalles en orden de llegada", async () => {
-        expect(detailIds(await repository.findById(saleId))).toEqual([1, 2, 3]);
+    it("findById devuelve los detalles del más reciente al más antiguo", async () => {
+        expect(detailIds(await repository.findById(saleId))).toEqual([3, 2, 1]);
     });
 
     it("cambiar la cantidad de un producto no lo mueve de lugar", async () => {
         await dataSource.getRepository(SaleDetailOrmEntity).update({ saleDetailId: BigInt(1) }, { quantity: 5 } as never);
 
-        expect(detailIds(await repository.findById(saleId))).toEqual([1, 2, 3]);
+        expect(detailIds(await repository.findById(saleId))).toEqual([3, 2, 1]);
     });
 
     it("el ticket y el detalle de venta usan el mismo orden", async () => {
-        expect(detailIds(await repository.findSaleTicketById(saleId))).toEqual([1, 2, 3]);
-        expect(detailIds(await repository.findFinishSaleById(saleId))).toEqual([1, 2, 3]);
+        expect(detailIds(await repository.findSaleTicketById(saleId))).toEqual([3, 2, 1]);
+        expect(detailIds(await repository.findFinishSaleById(saleId))).toEqual([3, 2, 1]);
     });
 });

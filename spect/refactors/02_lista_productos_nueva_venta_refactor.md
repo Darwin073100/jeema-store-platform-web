@@ -15,15 +15,15 @@
 | Parte | Estado | Commit |
 |---|---|---|
 | 1. Botones, clic derecho y modal único | Hecho | `197889f` |
-| 2. Orden de la lista por llegada | Implementado, en prueba manual | — |
-| 3. Atajo F8 | Pendiente | — |
+| 2. Orden de la lista por llegada | Hecho (más reciente primero) | `dad5cfe` |
+| 3. Atajo F8 | Implementado, en prueba manual | — |
 
 ## Decisiones del usuario (2026-11-07)
 
 - Se quitan el lápiz y la papelera de cada fila, pero **se deja un botón `⋮`** por fila que abre el mismo
   modal que el clic derecho.
-- La lista se ordena **por el orden en que llega cada producto** a la venta: el primero escaneado arriba y
-  el último abajo.
+- La lista se ordena **por el orden en que llega cada producto** a la venta. Al implementar la Parte 2 el
+  usuario eligió **el más reciente arriba** (`saleDetailId DESC`).
 - **`F8` edita el último producto agregado.**
 
 ## Problema
@@ -289,14 +289,15 @@ implementarla, pero se sube después para no mezclar PRs.
 
 ### Regla
 
-Los productos se muestran en el orden en que **entraron por primera vez** a la venta: el primero escaneado
-arriba y el último abajo. Volver a escanear un producto o cambiar su cantidad **no lo mueve**: se queda en
+Los productos se muestran en el orden en que **entraron por primera vez** a la venta, **el más reciente
+arriba**. Volver a escanear un producto o cambiar su cantidad **no lo mueve**: se queda en
 su posición, la lista se desplaza hasta él y lo resalta (Parte 1, decisión 3).
 
 ### Diseño
 
 - `TypeormSaleRepository.findById` añade
-  `order: { saleDetails: { saleDetailId: 'ASC' } }` al `findOne`. Como `saleDetailId` es un `bigint`
+  `order: { saleDetails: { saleDetailId: 'DESC' } }` al `findOne` (se planeó `ASC`; el usuario lo cambió a
+  `DESC` antes del commit). Como `saleDetailId` es un `bigint`
   autoincremental y el servidor actualiza el detalle existente en lugar de crear otro, ese orden es el de
   llegada.
 - Se ordena en la consulta y no en el cliente, para que el orden sea igual en cualquier pantalla que use
@@ -315,14 +316,14 @@ su posición, la lista se desplaza hasta él y lo resalta (Parte 1, decisión 3)
       `cloud-transfer`, que ya registra todo el grafo de entidades). Inserta los detalles con ids 3, 1, 2;
       comprueba el orden en `findById`, tras actualizar una cantidad, y en el ticket y el detalle. Sin el
       cambio fallaban 2 de los 3 casos: tras el `UPDATE`, pg-mem movía el detalle al final, como puede
-      pasar en Postgres.
-- [ ] Prueba manual del usuario y commit.
+      pasar en Postgres. Con la Parte 3 se ajustó a `DESC` (espera 3, 2, 1) y se subió el timeout a 30 s.
+- [x] Prueba manual del usuario y commit.
 
-### Criterios de aceptación
+### Criterios de aceptación (con el orden final, el más reciente arriba)
 
-1. Escanear A, B y C muestra A, B, C de arriba abajo.
-2. Cambiar la cantidad de A, o escanearlo otra vez, lo deja en primer lugar.
-3. Eliminar B deja A, C.
+1. Escanear A, B y C muestra C, B, A de arriba abajo.
+2. Cambiar la cantidad de A, o escanearlo otra vez, lo deja en su lugar (abajo).
+3. Eliminar B deja C, A.
 4. Recargar la página (o continuar la venta) muestra el mismo orden.
 
 ---
@@ -352,12 +353,13 @@ cuenta como el último agregado, porque es el que acaba de cambiar.
 
 ### Tareas
 
-- [ ] `frontend`: `openLastDetail()` en `useSaleProductList` (o en `useSaleDetailModal`) con la regla de
-      destino y de respaldo; registrar `F8`.
-- [ ] `frontend`: pistas visuales del atajo.
-- [ ] `tester`: con `lastTouchedDetailId` fijado, F8 abre ese detalle; con `null`, abre el de mayor id; sin
-      productos, muestra el aviso; con un modal abierto, no hace nada.
-- [ ] `pnpm validate` y `code-reviewer`.
+- [x] `frontend`: regla de destino en `findLastAddedDetail` (`utils/sale-detail.ts`, función pura) y
+      `openLastAddedDetail()` en `useSaleProductList`; `F8` registrado junto a F4/F5/F6.
+- [x] `frontend`: pistas visuales: `F8` en la pista bajo la tabla y «(F8)» en el `title` del `⋮` de la fila
+      destino.
+- [x] `tester`: `utils/sale-detail.test.ts` (4 casos de la regla) y `hooks/useSaleProductList.test.tsx`
+      (4 casos del atajo: último tocado, respaldo al de mayor id, sin productos, modal abierto).
+- [ ] Prueba manual del usuario y commit.
 
 ### Criterios de aceptación
 
@@ -365,7 +367,7 @@ cuenta como el último agregado, porque es el que acaba de cambiar.
    pulsar `Enter` la aplica, sin tocar el ratón.
 2. Volver a escanear un producto que ya estaba y pulsar F8 abre ese producto, aunque no sea el último de la
    lista.
-3. Tras recargar la página, F8 abre el último producto de la lista.
+3. Tras recargar la página, F8 abre el último producto en llegar (el primero de la lista).
 4. Con el modal de pago abierto, F8 no hace nada.
 
 ---

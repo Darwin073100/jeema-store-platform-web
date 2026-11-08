@@ -7,6 +7,7 @@ import { useSaleProcessStore } from '../stores/sale.process.store';
 import { useCancelSale } from './useCancelSale';
 import { ICashSession } from '@/contexts/cash-management/cash-session/presentation/interfaces/ICashSession';
 import { ISaleDetail } from '@/contexts/sale-management/sale-detail/presentation/interfaces/ISaleDetail';
+import { findLastAddedDetail } from '../utils/sale-detail';
 
 /** Tiempo que una fila queda resaltada después de agregarla o modificarla. */
 const HIGHLIGHT_MS = 1500;
@@ -15,13 +16,20 @@ const TABLE_BOTTOM_GAP_PX = 16;
 /** Alto mínimo de la tabla en pantallas muy bajas. */
 const TABLE_MIN_HEIGHT_PX = 240;
 
+/** Desplaza la lista hasta un producto. Existen la fila de escritorio y la tarjeta móvil; solo una es visible. */
+const scrollToDetail = (saleDetailId: bigint) => {
+    const target = Array.from(document.querySelectorAll<HTMLElement>(`[data-sale-detail-id="${saleDetailId.toString()}"]`))
+        .find(el => el.offsetParent !== null);
+    target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+};
+
 interface Props {
     cashSession: ICashSession | null;
 }
 export const useSaleProductList = ({ cashSession}:Props) => {
     const router = useRouter();
     const { sale } = useSaleStore();
-    const { openSaleModal } = useSaleUIStore();
+    const { openSaleModal, saleModals, setFloatMessageState } = useSaleUIStore();
     const { setDetailSelected, setItemMatchDetail, lastTouchedDetail } = useSaleProcessStore();
     const { handleCheckerOpenModalCancelSale } = useCancelSale();
     const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -64,19 +72,38 @@ export const useSaleProductList = ({ cashSession}:Props) => {
     // Lleva a la vista el producto recién agregado o modificado y lo resalta un momento.
     useEffect(() => {
         if (!lastTouchedDetail) return;
-        const id = lastTouchedDetail.saleDetailId.toString();
-        // Existen la fila de escritorio y la tarjeta móvil; solo una es visible (la otra tiene display: none).
-        const target = Array.from(document.querySelectorAll<HTMLElement>(`[data-sale-detail-id="${id}"]`))
-            .find(el => el.offsetParent !== null);
-        target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        scrollToDetail(lastTouchedDetail.saleDetailId);
         const timeout = setTimeout(() => setExpiredTouchAt(lastTouchedDetail.touchedAt), HIGHLIGHT_MS);
         return () => clearTimeout(timeout);
     }, [lastTouchedDetail]);
 
+    // Producto que abriría F8; la fila lo indica en el título de su botón ⋮.
+    const lastAddedDetailId = findLastAddedDetail(sale?.saleDetails, lastTouchedDetail?.saleDetailId)?.saleDetailId ?? null;
+
+    /** F8: abre el modal del último producto agregado, sin tocar el ratón. */
+    const openLastAddedDetail = () => {
+        // Con otro modal abierto (pago, catálogo, el propio detalle) el atajo no hace nada.
+        if (saleModals !== 'none') return;
+        const detail = findLastAddedDetail(sale?.saleDetails, lastTouchedDetail?.saleDetailId);
+        if (!detail) {
+            setFloatMessageState({
+                type: 'yellow',
+                summary: 'Sin productos',
+                description: 'No hay productos en la venta.',
+                isActive: true,
+            });
+            setTimeout(() => setFloatMessageState({}), 2000);
+            return;
+        }
+        scrollToDetail(detail.saleDetailId);
+        handleOpenDetail(detail);
+    };
+
     useKeyDown({
         F4: () => openSaleModal('inventoryListModal'),
         F5: () => viewCashSession(),
-        F6: () => handleCheckerOpenModalCancelSale()
+        F6: () => handleCheckerOpenModalCancelSale(),
+        F8: () => openLastAddedDetail(),
     })
 
     return {
@@ -86,6 +113,7 @@ export const useSaleProductList = ({ cashSession}:Props) => {
         viewCashSession,
         handleOpenDetail,
         highlightedDetailId,
+        lastAddedDetailId,
         tableContainerRef,
     }
 }

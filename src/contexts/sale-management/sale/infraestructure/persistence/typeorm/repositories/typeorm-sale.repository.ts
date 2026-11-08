@@ -9,9 +9,10 @@ import { getDataSource } from "@/configuration/databases/typeorm/config";
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
 
 /**
- * Los productos de una venta se muestran en el orden en que llegaron. Volver a escanear un producto
- * actualiza su detalle (no crea otro), así que `saleDetailId` autoincremental es el orden de llegada.
- * Sin `ORDER BY` Postgres no garantiza el orden: tras un UPDATE la fila podía moverse al final.
+ * Los productos de una venta se muestran por orden de llegada, el más reciente primero. Volver a escanear
+ * un producto actualiza su detalle (no crea otro), así que `saleDetailId` autoincremental es el orden de
+ * llegada y el producto conserva su lugar. Sin `ORDER BY` Postgres no garantiza el orden: tras un UPDATE la
+ * fila podía moverse al final.
  */
 const SALE_DETAILS_IN_ARRIVAL_ORDER: FindOptionsOrder<SaleOrmEntity> = {
     saleDetails: { saleDetailId: 'DESC' },

@@ -18,7 +18,7 @@ const SaleProductList = ({ cashSession }: Props) => {
 
     const {
         sale, handleCheckerOpenModalCancelSale, openSaleModal, viewCashSession, handleOpenDetail,
-        highlightedDetailId, tableContainerRef,
+        highlightedDetailId, lastAddedDetailId, tableContainerRef,
     } = useSaleProductList({cashSession});
     const saleDetails = sale?.saleDetails ?? [];
 
@@ -97,7 +97,8 @@ const SaleProductList = ({ cashSession }: Props) => {
                                         key={detail.saleDetailId}
                                         saleDetail={detail}
                                         onOpen={handleOpenDetail}
-                                        highlighted={highlightedDetailId === detail.saleDetailId} />
+                                        highlighted={highlightedDetailId === detail.saleDetailId}
+                                        isLastAdded={lastAddedDetailId === detail.saleDetailId} />
                                 ))
                                 : (
                                     <tr>
@@ -110,8 +111,10 @@ const SaleProductList = ({ cashSession }: Props) => {
                     </table>
                 </div>
                 {saleDetails.length > 0 && (
-                    <p className="mt-2 text-xs text-gray-500">
+                    <p className="mt-2 flex flex-wrap items-center gap-x-1 text-xs text-gray-500">
                         Clic derecho o <span className="font-bold">⋮</span> sobre un producto para editar la cantidad o eliminarlo.
+                        <span className="ml-2">Último producto agregado:</span>
+                        <kbd className="rounded-sm bg-purple-100 px-1 py-0.5 font-sans text-purple-700">F8</kbd>
                     </p>
                 )}
             </div>

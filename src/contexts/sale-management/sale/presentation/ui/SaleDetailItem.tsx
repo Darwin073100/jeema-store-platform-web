@@ -15,13 +15,15 @@ interface Props {
     onOpen: (saleDetail: ISaleDetail) => void;
     /** Resalta la fila tras agregarla o modificarla. */
     highlighted?: boolean;
+    /** Es el producto que abre el atajo F8. */
+    isLastAdded?: boolean;
 }
 
 /**
  * Fila de un producto en la tabla de la venta (escritorio). El modal se abre con clic derecho, doble
  * clic, `Enter` sobre la fila enfocada (la tecla de menú y `Shift+F10` emiten `contextmenu`) o con ⋮.
  */
-const SaleDetailItem = memo(function SaleDetailItem({ saleDetail, onOpen, highlighted = false }: Props) {
+const SaleDetailItem = memo(function SaleDetailItem({ saleDetail, onOpen, highlighted = false, isLastAdded = false }: Props) {
     const open = () => onOpen(saleDetail);
 
     const handleContextMenu = (e: React.MouseEvent<HTMLTableRowElement>) => {
@@ -99,7 +101,7 @@ const SaleDetailItem = memo(function SaleDetailItem({ saleDetail, onOpen, highli
                     onDoubleClick={(e) => e.stopPropagation()}
                     aria-label={`Opciones de ${saleDetail.productNameAtSale}`}
                     aria-haspopup="dialog"
-                    title="Editar cantidad o eliminar"
+                    title={isLastAdded ? "Editar cantidad o eliminar (F8)" : "Editar cantidad o eliminar"}
                 >
                     <HiEllipsisVertical className="text-lg" />
                 </ButtonOutLine>
