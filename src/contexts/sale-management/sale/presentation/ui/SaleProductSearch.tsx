@@ -1,5 +1,7 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useScannerFocus } from "../hooks/useScannerFocus";
+import { useSaleUIStore } from "../stores/sale.ui.store";
 import { Button } from "@/shared/ui/components/buttons";
 import { TextInput } from "@/shared/ui/components/inputs";
 import { IoIosBarcode, IoMdCheckmark } from "react-icons/io";
@@ -13,9 +15,12 @@ interface Props {
     cashSession: ICashSession | null;
 }
 const SaleProductSearch = ({ cashSession }: Props) => {
-    const { handleSubmit, inputRef, handleChangeSearch, handleSearchInventory, searchValue, loading } = useSale();
+    const { handleSubmit, handleChangeSearch, handleSearchInventory, searchValue, loading } = useSale();
     const { setCashSessionActive } = useSaleStore();
+    const { saleModals } = useSaleUIStore();
     const [isScannerOpen, setIsScannerOpen] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    useScannerFocus({ inputRef, enabled: saleModals === 'none' && !isScannerOpen });
 
     useEffect(()=> {
         setCashSessionActive(cashSession);

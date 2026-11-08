@@ -1,3 +1,3 @@
-export type SaleModalsType = 'none' | 'cancelSaleModal' | 'deleteDetailModal' | 'customerListModal' | 'saleTicketModal' |
-    'saleTicketReprintModal' | 'inventoryListModal' | 'paymentModal' | 'updateDetailModal' | 'returnsModal' | 'cashTransaction' |
+export type SaleModalsType = 'none' | 'cancelSaleModal' | 'customerListModal' | 'saleTicketModal' |
+    'saleTicketReprintModal' | 'inventoryListModal' | 'paymentModal' | 'saleDetailModal' | 'returnsModal' | 'cashTransaction' |
     'creditPaymentModal' | 'creditPaymentHistoryModal';

@@ -29,6 +29,10 @@ interface State {
     itemMatchDetail: null| IInventoryItem,
     setItemMatchDetail: (payload: null| IInventoryItem)=> void,
     setDetailSelected: (payload: null | ISaleDetail)=> void,
+    // Último detalle agregado o modificado (escáner, catálogo o modal). `touchedAt` cambia en cada toque,
+    // aunque sea el mismo detalle, para que la lista vuelva a desplazarse y resaltarlo.
+    lastTouchedDetail: { saleDetailId: bigint, touchedAt: number } | null,
+    setLastTouchedDetail: (detail: ISaleDetail | null)=> void,
     resetSaleProcessStore: () => void,
     //? Customer List
     customerSelected: ICustomer | null,
@@ -65,6 +69,7 @@ const initialValues = {
     //? Update Detail
     detailSelected: null,
     itemMatchDetail: null,
+    lastTouchedDetail: null,
     //? Customer List
     filterCustomers: [],
     customerSelected: null,
@@ -143,6 +148,11 @@ export const useSaleProcessStore = create<State>()((set, get) => ({
     setDetailSelected: (payload: null | ISaleDetail)=>{
         set(()=>({
             detailSelected: payload
+        }));
+    },
+    setLastTouchedDetail: (detail: ISaleDetail | null)=>{
+        set(()=>({
+            lastTouchedDetail: detail ? { saleDetailId: detail.saleDetailId, touchedAt: Date.now() } : null
         }));
     },
     //? Customer List

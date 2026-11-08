@@ -10,11 +10,12 @@ import { ISale } from "../interfaces/ISale";
 import { findAllInventoryItemsByLocationAndBranchOfficeAction } from "@/contexts/inventory-management/inventory-item/presentation/actions/find-all-inventory-items-by-location-and-branch-office.action";
 import { LocationEnum } from "@/contexts/inventory-management/inventory-item/domain/enums/location.enum";
 import { findSellableInventoriesWithoutItemsAction } from "@/contexts/inventory-management/inventory/presentation/actions/find-sellable-inventories-without-items.action";
+import { findDetailByBarCode } from "../utils/sale-detail";
 
 const useInventoryListModal = () => {
     const { inventoryItems, itemSelected, setItemSelected,
         setFilterInventoryItems, filterInventoryItems, customers,
-        filterUntrackedInventories, setFilterUntrackedInventories,
+        filterUntrackedInventories, setFilterUntrackedInventories, setLastTouchedDetail,
     } = useSaleProcessStore();
     const { saleId, setSale, setSaleId, sale, cashSessionActive } = useSaleStore();
     const { hancleCalculateDetailPrice } = useSale();
@@ -118,6 +119,7 @@ const useInventoryListModal = () => {
                     setSale(result.value) : null;
                 result.value ?
                     setSaleId(result.value.saleId) : null;
+                setLastTouchedDetail(findDetailByBarCode(result.value, addDetailToSaleDTO.productBarCodeAtSale));
 
                 setFloatMessageState({
                     type: 'green',

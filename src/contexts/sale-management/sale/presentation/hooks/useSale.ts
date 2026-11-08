@@ -1,6 +1,7 @@
 'use client';
 import { findInventoryByBarCodeAction } from "@/contexts/inventory-management/inventory/presentation/actions/find-inventory-by-bar-code.action";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { findDetailByBarCode } from "../utils/sale-detail";
 import { useSaleStore } from "../stores/sale.store";
 import { findSaleWithDetailAction } from "../actions/find-sale-by-id-with-detail.action";
 import { useSaleUIStore } from "../stores/sale.ui.store";
@@ -16,41 +17,10 @@ const useSale = () => {
     const [searchValue, setSearchValue] = useState<string>('');
     const { setFloatMessageState, loading, initLoading, finishLoading } = useSaleUIStore();
     const { sale, setSale, saleId, setSaleId, cashSessionActive } = useSaleStore();
-    const { customers, setCustomerSelected } = useSaleProcessStore();
+    const { customers, setCustomerSelected, setLastTouchedDetail } = useSaleProcessStore();
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    useEffect(() => {
-        // Función que mantiene el foco en el input
-        const maintainFocus = (e?: Event) => {
-            // Permitir interacción normal con botones y otros inputs
-            if (e?.target instanceof HTMLElement) {
-                const tagName = e.target.tagName.toLowerCase();
-                if (tagName === 'button' || (tagName === 'input' && e.target !== inputRef.current)) {
-                    return;
-                }
-            }
-
-            // Asegurar que el foco vuelva al input principal
-            if (document.activeElement !== inputRef.current) {
-                inputRef.current?.focus();
-            }
-        };
-
-        // Aplicar foco inicial
-        maintainFocus();
-
-        // Event listeners para mantener el foco
-        document.addEventListener('mousedown', maintainFocus);
-        document.addEventListener('mouseup', maintainFocus);
-        window.addEventListener('focus', maintainFocus);
-
-        // Cleanup al desmontar
-        return () => {
-            document.removeEventListener('mousedown', maintainFocus);
-            document.removeEventListener('mouseup', maintainFocus);
-            window.removeEventListener('focus', maintainFocus);
-        };
-    }, []);
+    // El foco del input del escáner lo mantiene `useScannerFocus` en `SaleProductSearch`. No va aquí:
+    // este hook también lo usan los modales, y cada instancia registraba sus propios listeners.
     /**
      * Calculo de precios por:
      * - Mayore
@@ -154,6 +124,7 @@ const useSale = () => {
                     setSale(resultSale.value) : null;
                 resultSale.value ?
                     setSaleId(resultSale.value.saleId) : null;
+                setLastTouchedDetail(findDetailByBarCode(resultSale.value, detailDto.productBarCodeAtSale));
 
                 setFloatMessageState({
                     type: 'green',
@@ -194,7 +165,6 @@ const useSale = () => {
         handleSearchInventory,
         searchValue,
         handleSubmit,
-        inputRef,
         loading,
     }
 }
