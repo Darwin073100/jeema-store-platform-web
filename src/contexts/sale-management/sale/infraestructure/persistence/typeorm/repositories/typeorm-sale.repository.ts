@@ -1,4 +1,4 @@
-import { Brackets, DataSource, In, Repository } from "typeorm";
+import { Brackets, DataSource, FindOptionsOrder, In, Repository } from "typeorm";
 import { SaleOrmEntity } from "../entities/sale.orm-entity";
 import { SaleMapper } from "../mappers/sale.mapper";
 import { PaymentMethodNotFoundException } from "src/contexts/sale-management/payment-method/domain/exceptions/payment-method-not-found.exception";
@@ -7,6 +7,15 @@ import { SaleEntity } from "src/contexts/sale-management/sale/domain/entities/sa
 import { TransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/domain/repositories/transaction-db-repository";
 import { getDataSource } from "@/configuration/databases/typeorm/config";
 import { TypeormTransactionDBRepository } from "@/configuration/databases/typeorm/transaction-db/infraestructure/repositories/TypeormTransactionDBRepository";
+
+/**
+ * Los productos de una venta se muestran en el orden en que llegaron. Volver a escanear un producto
+ * actualiza su detalle (no crea otro), así que `saleDetailId` autoincremental es el orden de llegada.
+ * Sin `ORDER BY` Postgres no garantiza el orden: tras un UPDATE la fila podía moverse al final.
+ */
+const SALE_DETAILS_IN_ARRIVAL_ORDER: FindOptionsOrder<SaleOrmEntity> = {
+    saleDetails: { saleDetailId: 'DESC' },
+};
 
 export class TypeormSaleRepository implements SaleRepository{
     private readonly repository: Repository<SaleOrmEntity>;
@@ -42,6 +51,7 @@ export class TypeormSaleRepository implements SaleRepository{
                     product: true
                 },
             },
+            order: SALE_DETAILS_IN_ARRIVAL_ORDER,
         });
         if (!ormEntity) {
             return Promise.resolve(null);
@@ -66,6 +76,7 @@ export class TypeormSaleRepository implements SaleRepository{
                     employee: true
                 },
             },
+            order: SALE_DETAILS_IN_ARRIVAL_ORDER,
         });
         if (!ormEntity) {
             return Promise.resolve(null);
@@ -96,6 +107,7 @@ export class TypeormSaleRepository implements SaleRepository{
                 // (ver spect/06_impresora_por_caja_spect.md).
                 cashSession: true,
             },
+            order: SALE_DETAILS_IN_ARRIVAL_ORDER,
         });
         if (!ormEntity) {
             return Promise.resolve(null);
@@ -228,7 +240,8 @@ export class TypeormSaleRepository implements SaleRepository{
                 },
                 relations: {
                     saleDetails: true
-                }
+                },
+                order: SALE_DETAILS_IN_ARRIVAL_ORDER,
             });
             return currentSale? SaleMapper.toDomainEntity(currentSale) :SaleMapper.toDomainEntity(savedOrmEntity);
         } catch (error) {

@@ -14,8 +14,8 @@
 
 | Parte | Estado | Commit |
 |---|---|---|
-| 1. Botones, clic derecho y modal único | Implementado, en prueba manual | — |
-| 2. Orden de la lista por llegada | Pendiente | — |
+| 1. Botones, clic derecho y modal único | Hecho | `197889f` |
+| 2. Orden de la lista por llegada | Implementado, en prueba manual | — |
 | 3. Atajo F8 | Pendiente | — |
 
 ## Decisiones del usuario (2026-11-07)
@@ -231,7 +231,7 @@ clave con la que el servidor decide si actualiza o crea.
 - [x] `tester`: `useScannerFocus.test.tsx` (5 casos).
 - [x] `tester`: `SaleDetailItem.test.tsx` (fila y tarjeta móvil, 7 casos).
 - [x] `tester`: `SaleDetailModal.test.tsx` (5 casos).
-- [ ] Prueba manual del usuario y commit.
+- [x] Prueba manual del usuario y commit.
 
 ### Cambios respecto al plan (durante la implementación)
 
@@ -302,18 +302,21 @@ su posición, la lista se desplaza hasta él y lo resalta (Parte 1, decisión 3)
 - Se ordena en la consulta y no en el cliente, para que el orden sea igual en cualquier pantalla que use
   `findById` (por ejemplo, al continuar una venta).
 - Sin migración: `sale_detail_id` es la clave primaria y ya tiene índice.
-- Se revisan los otros métodos que cargan `saleDetails` (`findFinishSaleById`, `findSaleTicketById`): si el
-  ticket impreso lista los productos, conviene el mismo orden para que coincida con la pantalla. Esto se
-  decide al implementar, según dónde se use cada método.
+- El mismo orden se aplica en `findSaleTicketById` (ticket impreso), `findFinishSaleById` (detalle de una
+  venta terminada) y la relectura de `save()`, para que el ticket y el detalle coincidan con la pantalla.
+  Se define una sola vez como la constante `SALE_DETAILS_IN_ARRIVAL_ORDER`.
+- `findManyWithDetailsByIds` se deja igual: solo alimenta cálculos de resúmenes, donde el orden no importa.
 
 ### Tareas
 
-- [ ] `backend`: `order` en `TypeormSaleRepository.findById` (y en los métodos del ticket si aplica).
-- [ ] `tester`: test sobre pg-mem en
-      `test/contexts/sale-management/sale/infraestructure/persistence/typeorm/repositories/typeorm-sale.repository.test.ts`.
-      Insertar tres detalles, actualizar la cantidad del primero y comprobar que `findById` los devuelve en
-      el orden de inserción.
-- [ ] `pnpm validate` y `code-reviewer`.
+- [x] `backend`: `SALE_DETAILS_IN_ARRIVAL_ORDER` en `findById`, `findSaleTicketById`, `findFinishSaleById` y
+      `save()`.
+- [x] `tester`: `typeorm-sale.repository.test.ts` sobre pg-mem (reutiliza el `DataSource` de
+      `cloud-transfer`, que ya registra todo el grafo de entidades). Inserta los detalles con ids 3, 1, 2;
+      comprueba el orden en `findById`, tras actualizar una cantidad, y en el ticket y el detalle. Sin el
+      cambio fallaban 2 de los 3 casos: tras el `UPDATE`, pg-mem movía el detalle al final, como puede
+      pasar en Postgres.
+- [ ] Prueba manual del usuario y commit.
 
 ### Criterios de aceptación
 
