@@ -1,8 +1,13 @@
 // ESLint flat config (ESLint 10 + eslint-config-next 16).
 // `next lint` ya no existe en Next 16: el lint se corre con `pnpm lint` (eslint .).
 // El formateo NO pasa por ESLint: lo hace Prettier (`pnpm format`), mucho más rápido.
+import { createRequire } from "node:module";
 import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 import nextTypescript from "eslint-config-next/typescript";
+
+// eslint-plugin-react 7.x "detecta" React con context.getFilename(), que ESLint 10 eliminó, y tumba el lint.
+// Fijar la versión evita esa ruta; se lee del paquete instalado para no mantenerla a mano.
+const reactVersion = createRequire(import.meta.url)("react/package.json").version;
 
 /** Carpetas de infraestructura (existen 4 grafías en el repo; todas cuentan). */
 const INFRA = [
@@ -38,6 +43,7 @@ export default [
   },
   ...nextCoreWebVitals,
   ...nextTypescript,
+  { settings: { react: { version: reactVersion } } },
 
   // ---- Reglas generales -------------------------------------------------
   {

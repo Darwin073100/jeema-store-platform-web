@@ -567,11 +567,6 @@
       "count": 1
     }
   },
-  "src/contexts/product-management/product/presentation/actions/find-top-products-by-branch-office.action.ts": {
-    "prefer-const": {
-      "count": 1
-    }
-  },
   "src/contexts/product-management/product/presentation/actions/register-complete-product.action.ts": {
     "prefer-const": {
       "count": 2
@@ -819,11 +814,6 @@
   "src/contexts/sale-management/sale/presentation/hooks/useTicketSale.tsx": {
     "@typescript-eslint/no-empty-object-type": {
       "count": 1
-    }
-  },
-  "src/contexts/sale-management/sale/presentation/hooks/useUpdateDetailModal.ts": {
-    "react-hooks/set-state-in-effect": {
-      "count": 3
     }
   },
   "src/contexts/sale-management/sale/presentation/ui/SalePaymentModal.tsx": {
