@@ -507,7 +507,7 @@ const FormRegisterCompleteProduct = ({ categoryList, brandList, seasonList, supl
                                                 </div>
 
                                                 <div>
-                                                    <div className='flex gap-4'>
+                                                    <div className='flex gap-4 max-sm:flex-col'>
                                                         <LabelInput 
                                                             value="Cantidad de stock en esta ubicación" 
                                                             required='yes'
