@@ -166,12 +166,18 @@ requiere rol `ADMIN`, el resto requiere sesión. La sesión incluye `id`, `roles
 **Configuración por máquina.** SSL de BD con `DB_SSL`, IPs de red local con `ALLOWED_DEV_ORIGINS`. No
 editar `config.ts` ni `next.config.ts` para eso.
 
+**Tooling (ESLint 10, Windows).** No quitar `settings.react.version` de `eslint.config.mjs`: sin ella,
+`eslint-plugin-react` 7.x intenta detectar React con una API que ESLint 10 eliminó y el lint se cae en todo el
+repo. En scripts y hooks, ejecutar herramientas con `process.execPath` + la ruta de su script, no con `npx`
+(en Windows es `npx.cmd` y `execFileSync` falla con `ENOENT`). Detalle en
+`spect/refactors/03_lint_hooks_y_validate_refactor.md`.
+
 ## Deuda conocida (no la agraves; redúcela cuando toques el archivo)
 
 | Deuda | Estado | Guardia |
 |---|---|---|
 | Server Actions sin `requireSession` | ~132 de 133 | Revisión (`code-reviewer`, `security-auditor`) |
-| Errores de TypeScript ocultos por `ignoreBuildErrors` | 75 | `pnpm typecheck:ci` (trinquete `.tsc-baseline`) |
-| Errores de lint históricos | ~320 | `eslint-suppressions.json` (`pnpm lint:prune` al arreglar) |
+| Errores de TypeScript ocultos por `ignoreBuildErrors` | 57 (+9 en `.next/types`, no cuentan) | `pnpm typecheck:ci` (trinquete `.tsc-baseline`, baja solo) |
+| Errores de lint históricos | 319 | `eslint-suppressions.json` (`pnpm lint:prune` al arreglar) |
 | `application/` importa `presentation/interfaces` | ~50 imports | regla de capas en ESLint |
 | Inputs de Server Actions sin validar | casi todos | revisión |

@@ -155,7 +155,8 @@ y así los cambios de rol y las desactivaciones aplican de inmediato.
 - [ ] Resto de actions.
 - [ ] Usar el empleado de la sesión en lugar del que venga en el DTO.
 - [ ] Agregar un test que falle si un `*.action.ts` no llama a `requireSession`, con una lista explícita de
-  excepciones. No depender de ESLint mientras `pnpm lint` siga roto.
+  excepciones. (`pnpm lint` ya funciona desde `refactors/03_lint_hooks_y_validate_refactor.md`; puede ser
+  una regla de ESLint o un test.)
 
 ### Fase 5: cierre
 
@@ -185,5 +186,5 @@ y así los cambios de rol y las desactivaciones aplican de inmediato.
 - Las imágenes optimizadas con `next/image` desde `/uploads` pueden fallar si esa ruta exige sesión.
 - Reemplazar las cookies afecta a los 52 actions que las leen; conviene migrarlos en lotes pequeños y probar cada
   flujo.
-- `pnpm validate` hoy falla por motivos ajenos (ver `11_skeletons_ui_asincrona_spect.md`). Conviene arreglar
-  ESLint y `typecheck:ci` antes de la migración masiva de la fase 4.
+- ~~`pnpm validate` hoy falla por motivos ajenos~~ Resuelto el 2026-11-09
+  (`refactors/03_lint_hooks_y_validate_refactor.md`): `pnpm validate` pasa y sirve de red para la fase 4.

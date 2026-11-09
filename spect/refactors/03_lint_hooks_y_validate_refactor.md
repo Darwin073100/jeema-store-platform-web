@@ -1,16 +1,50 @@
 # Refactor: ESLint, hook de lint y `pnpm validate`
 
-> **Propuesto, sin implementar.** Redactado el 2026-11-08 a partir de la rama `development`. Todas las pruebas
+> **Implementado el 2026-11-09.** Redactado el 2026-11-08 a partir de la rama `development`. Todas las pruebas
 > descritas se ejecutaron en Windows 11 con Node 24.22.1 y pnpm. No cambia código de producción: solo
 > configuración, scripts, un hook y un test.
 
 ## Estado
 
-- [ ] Parte 1 — ESLint vuelve a funcionar
-- [ ] Parte 2 — Hook de lint en Windows
-- [ ] Parte 3 — Trinquete de tipos (`typecheck:ci`)
-- [ ] Parte 4 — Suite de Jest que no carga
-- [ ] Parte 5 — Documentación
+- [x] Parte 1 — ESLint vuelve a funcionar (`182961e`)
+- [x] Parte 2 — Hook de lint en Windows (`1db3c1b`)
+- [x] Parte 3 — Trinquete de tipos (`typecheck:ci`) (`55634aa`, `e78f931`)
+- [x] Parte 4 — Suite de Jest que no carga (`3310dc7`)
+- [x] Parte 5 — Documentación
+
+## Decisiones del usuario (2026-11-09)
+
+Se aceptaron las cuatro recomendaciones: las cinco partes; versión de React leída de `react/package.json`;
+eliminar `eslint-plugin-prettier` y declarar `prettier`; un commit `REFACTOR:` por parte.
+
+## Resultado
+
+| Comando | Antes | Después |
+|---|---|---|
+| `pnpm lint` | Se cae al cargar `eslint-plugin-react` | Código 0: 0 errores, 704 warnings, 319 supresiones (antes 323) |
+| Hook de lint | Bloquea todo con un reporte vacío; Prettier nunca corre | Pasa en archivos limpios, bloquea con regla y línea, formatea archivos nuevos y, si la herramienta falla, avisa sin bloquear |
+| `pnpm typecheck:ci` | Script inexistente | Código 0; `.tsc-baseline` bajó de 75 a 57 |
+| `pnpm test:ci` | 1 suite no carga | 23 suites pasan y 1 se omite (requiere `RUN_DB_TESTS=true`); 102 tests pasan |
+| **`pnpm validate`** | Falla | **Código 0**, ~3 min |
+
+## Cambios respecto al plan (durante la implementación)
+
+- **La línea base quedó en 57, no en 66.** De los 66 errores de `tsc`, 9 están en `.next/types/`. Son archivos
+  generados por `next dev`/`build` que no existen en un clon limpio, así que el número cambiaría según el estado
+  de esa carpeta. El script no los cuenta y los muestra aparte. Reflejan problemas reales en el `Props` de
+  algunas páginas, que siguen visibles con `pnpm typecheck`.
+- **Parte 4: el arreglo no fue solo de entorno.** Con `@jest-environment node` la suite carga, pero el test
+  llamaba al action contra la BD real de `DATABASE_URL`, sin aserciones; "pasaba" porque el action atrapa
+  cualquier error y devuelve `[]`. Ahora solo corre con `RUN_DB_TESTS=true`, como pide `AGENTS.md`, y verifica
+  que el resultado sea un arreglo. Es el primer test que usa esa variable.
+- **El diff de `pnpm-lock.yaml` es grande (~590 líneas)**, pero solo desaparecen `eslint-plugin-prettier` y sus
+  dependencias (`@pkgr/core`, `fast-diff`, `prettier-linter-helpers`, `synckit`). El resto es pnpm
+  reetiquetando el peer opcional `supports-color`, sin cambios de versión. Se comprobó comparando las versiones
+  de ambos lados.
+- **`lint:prune` eliminó la supresión de `prefer-const` de `find-top-products-by-branch-office.action.ts`.**
+  Depende de la spec 14, que ya estaba commiteada (`c2c2183`), así que no hubo problema de orden.
+- `AGENTS.md` ganó un gotcha de "Tooling (ESLint 10, Windows)" para que nadie quite `settings.react.version` ni
+  vuelva a usar `npx` en hooks.
 
 ## Problema
 
@@ -129,11 +163,11 @@ export default [
 
 ### Tareas
 
-- [ ] Agregar `settings.react.version` a `eslint.config.mjs`, leída de `react/package.json`.
-- [ ] Ejecutar `pnpm lint:prune` para quitar las supresiones obsoletas y revisar el diff de
+- [x] Agregar `settings.react.version` a `eslint.config.mjs`, leída de `react/package.json`.
+- [x] Ejecutar `pnpm lint:prune` para quitar las supresiones obsoletas y revisar el diff de
   `eslint-suppressions.json`: solo deben **desaparecer** entradas.
-- [ ] Agregar `prettier` a `devDependencies` con la versión fija `3.8.1`, la que ya está instalada.
-- [ ] Según la decisión 3, eliminar `eslint-plugin-prettier` de `devDependencies`.
+- [x] Agregar `prettier` a `devDependencies` con la versión fija `3.8.1`, la que ya está instalada.
+- [x] Según la decisión 3, eliminar `eslint-plugin-prettier` de `devDependencies`.
 
 ### Criterios de aceptación
 
@@ -176,9 +210,9 @@ dependencia: sin eso, la resolución depende del accidente descrito en el hallaz
 
 ### Tareas
 
-- [ ] Reescribir `run` en `.claude/hooks/lint-edited-file.mjs` como se describe arriba.
-- [ ] Separar el error de lint (salida 1) del fallo de la herramienta.
-- [ ] Hacer visible el fallo de Prettier.
+- [x] Reescribir `run` en `.claude/hooks/lint-edited-file.mjs` como se describe arriba.
+- [x] Separar el error de lint (salida 1) del fallo de la herramienta.
+- [x] Hacer visible el fallo de Prettier.
 
 ### Criterios de aceptación
 
@@ -207,16 +241,16 @@ Nuevo `scripts/typecheck-ratchet.mjs`:
      incluye `.tsc-baseline` en el commit"* y sale con 0.
    - **Igual:** sale con 0.
 
-Con 66 errores y una línea base de 75, la primera ejecución bajará `.tsc-baseline` a 66.
+Con 66 errores (9 en `.next/`, que no cuentan) y una línea base de 75, la primera ejecución bajó `.tsc-baseline` a 57.
 
 ### Tareas
 
-- [ ] Crear `scripts/typecheck-ratchet.mjs`.
-- [ ] Ejecutar `pnpm typecheck:ci` y commitear el `.tsc-baseline` actualizado.
+- [x] Crear `scripts/typecheck-ratchet.mjs`.
+- [x] Ejecutar `pnpm typecheck:ci` y commitear el `.tsc-baseline` actualizado.
 
 ### Criterios de aceptación
 
-1. `pnpm typecheck:ci` pasa y deja `.tsc-baseline` en 66.
+1. `pnpm typecheck:ci` pasa y deja `.tsc-baseline` en 57 (ver "Cambios respecto al plan").
 2. Un error de tipos agregado a propósito hace fallar el comando y aparece listado. El cambio se revierte.
 3. Si se corrige un error, la línea base baja sola.
 
@@ -230,8 +264,8 @@ que no usan DOM. Hay que **comprobarlo antes de aplicarlo**. Si la causa es otra
 
 ### Tareas
 
-- [ ] Confirmar la causa ejecutando solo esa suite.
-- [ ] Anotar el entorno `node`, o aplicar el arreglo que resulte.
+- [x] Confirmar la causa ejecutando solo esa suite.
+- [x] Anotar el entorno `node`, o aplicar el arreglo que resulte.
 
 ### Criterios de aceptación
 
@@ -239,11 +273,11 @@ que no usan DOM. Hay que **comprobarlo antes de aplicarlo**. Si la causa es otra
 
 ## Parte 5 — Documentación
 
-- [ ] `AGENTS.md`, tabla "Deuda conocida": errores de TypeScript **75 → 66** y número real de supresiones de lint
+- [x] `AGENTS.md`, tabla "Deuda conocida": errores de TypeScript **75 → 57** y número real de supresiones de lint
   después de `lint:prune`.
-- [ ] `spect/11_skeletons_ui_asincrona_spect.md`: marcar como resueltos los problemas de lint, `typecheck:ci` y
+- [x] `spect/11_skeletons_ui_asincrona_spect.md`: marcar como resueltos los problemas de lint, `typecheck:ci` y
   Jest en su tabla, con referencia a este documento.
-- [ ] `spect/12_seguridad_autorizacion_spect.md`: quitar la advertencia "No depender de ESLint mientras
+- [x] `spect/12_seguridad_autorizacion_spect.md`: quitar la advertencia "No depender de ESLint mientras
   `pnpm lint` siga roto".
 
 ## Decisiones y alternativas
@@ -269,7 +303,7 @@ que no usan DOM. Hay que **comprobarlo antes de aplicarlo**. Si la causa es otra
   archivos nuevos que ya existen sin commit (por ejemplo, los de la spec 14) no se reformatean solos. Si se
   quiere, se pasan por `pnpm format` en un commit aparte.
 
-## Preguntas abiertas para el usuario
+## Preguntas abiertas para el usuario (respondidas el 2026-11-09: ver "Decisiones del usuario")
 
 1. **Alcance:** ¿se implementan las cinco partes para que `pnpm validate` pase completo (recomendado), o solo
    las Partes 1 y 2 (lint y hook)?

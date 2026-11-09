@@ -169,11 +169,12 @@ Ninguno lo causó este trabajo y ninguno se ha corregido.
 |---|---|---|
 | **Alta** | `proxy.ts` no protege las rutas: está en la raíz y la aplicación usa `src/app` | `middleware-manifest.json` sale vacío y `/sale` sin sesión responde 200 |
 | **Alta** | `requireSession` no existe en `src/`, aunque `AGENTS.md` lo describe como la protección de los Server Actions | Búsqueda sin resultados en `src/` |
-| Media | `pnpm lint` falla: `eslint-plugin-react` 7.37.5 no funciona con ESLint 10. El hook de lint también marca error en cada edición | `contextOrFilename.getFilename is not a function` |
-| Media | `pnpm typecheck:ci` falla | No existe `scripts/typecheck-ratchet.mjs` |
-| Baja | `findAllProductsByEstablishmentFilterAction.test.ts` no carga | `Request is not defined` al importar `next/cache` en jsdom |
+| ~~Media~~ Resuelto | `pnpm lint` falla: `eslint-plugin-react` 7.37.5 no funciona con ESLint 10. El hook de lint también marca error en cada edición | `contextOrFilename.getFilename is not a function` |
+| ~~Media~~ Resuelto | `pnpm typecheck:ci` falla | No existe `scripts/typecheck-ratchet.mjs` |
+| ~~Baja~~ Resuelto | `findAllProductsByEstablishmentFilterAction.test.ts` no carga | `Request is not defined` al importar `next/cache` en jsdom |
 
-Con estos fallos, `pnpm validate` no puede pasar hoy.
+Los tres se resolvieron el 2026-11-09 en `refactors/03_lint_hooks_y_validate_refactor.md`; desde entonces
+`pnpm validate` pasa.
 
 Sin sesión, solo `ProtectedRoute` redirige, y lo hace en el navegador, después de que el servidor ya procesó la
 página. Mover el archivo a `src/proxy.ts` afecta a toda la autenticación: debe hacerse en un commit aparte y
