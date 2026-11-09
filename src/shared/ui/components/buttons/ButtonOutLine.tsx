@@ -23,14 +23,14 @@ const sizeConfig = {
 // Mismo problema que Button.tsx: `text-${color}-600` construido en runtime nunca queda en el CSS
 // final para colores que no aparecen como literal en otro archivo. Mapa estático.
 const colorClasses: Record<NonNullable<Props['color']>, string> = {
-  blue: 'text-blue-600 hover:text-blue-950',
-  green: 'text-green-600 hover:text-green-950',
-  yellow: 'text-yellow-600 hover:text-yellow-950',
-  red: 'text-red-600 hover:text-red-950',
-  gray: 'text-gray-600 hover:text-gray-950',
-  purple: 'text-purple-600 hover:text-purple-950',
-  amber: 'text-amber-600 hover:text-amber-950',
-  teal: 'text-teal-600 hover:text-teal-950',
+  blue: 'text-blue-600 hover:text-blue-700',
+  green: 'text-green-600 hover:text-green-700',
+  yellow: 'text-yellow-600 hover:text-yellow-700',
+  red: 'text-red-600 hover:text-red-700',
+  gray: 'text-gray-600 hover:text-gray-700',
+  purple: 'text-purple-600 hover:text-purple-700',
+  amber: 'text-amber-600 hover:text-amber-700',
+  teal: 'text-teal-600 hover:text-teal-700',
 }
 
 export function ButtonOutLine({

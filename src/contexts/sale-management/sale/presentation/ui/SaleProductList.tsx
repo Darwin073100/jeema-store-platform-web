@@ -25,20 +25,20 @@ const SaleProductList = ({ cashSession }: Props) => {
     return (
         <section className="flex-1 min-w-0">
             <div className="flex gap-4 mb-4">
-                <ButtonOutLine onClick={() => openSaleModal('inventoryListModal')} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                <Button onClick={() => openSaleModal('inventoryListModal')} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosSearch className="text-lg" />
                     <span className="max-sm:hidden">Catálogo de productos</span>
                     <div className="h-full flex items-start max-sm:hidden">
-                        <span className="text-sm p-1 rounded-sm bg-blue-600 text-blue-100">F4</span>
+                        <span className="text-sm p-1 rounded-sm bg-white text-blue-600">F4</span>
                     </div>
-                </ButtonOutLine>
-                <Button onClick={() => viewCashSession()} color="yellow" size="sm" className="shadow-sm hover:shadow-md transition-all">
+                </Button>
+                <ButtonOutLine onClick={() => viewCashSession()} color="blue" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <FaCashRegister className="text-lg" />
                     <span className="max-sm:hidden">{cashSession? 'Caja': 'Aperturar caja'}</span>
                     <div className="h-full flex items-start max-sm:hidden">
-                        <span className="text-sm p-1 rounded-sm bg-yellow-200 text-yellow-600">F5</span>
+                        <span className="text-sm p-1 rounded-sm bg-blue-600 text-white">F5</span>
                     </div>
-                </Button>
+                </ButtonOutLine>
                 <Button onClick={() => handleCheckerOpenModalCancelSale()} color="red" size="sm" className="shadow-sm hover:shadow-md transition-all">
                     <IoIosTrash className="text-lg" />
                     <span className="max-sm:hidden">Cancelar venta</span>

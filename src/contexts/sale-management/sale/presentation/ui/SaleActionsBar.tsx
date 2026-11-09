@@ -60,10 +60,10 @@ const SaleActionsBar = ({ data }: Props) => {
                                 </div>
                                 <div className='flex gap-4 items-center'>
                                     <HideElement roles={['global_admin', 'establishment_manager', 'branch_office_management']}>
-                                        <ButtonOutLine disabled={loading === 'exportExcel'} color='green' onClick={() => handleDownloadExcel()}>
+                                        <Button disabled={loading === 'exportExcel'} color='green' onClick={() => handleDownloadExcel()}>
                                             {loading === 'exportExcel' ? <Spinner /> : <PiMicrosoftExcelLogoFill size={14} />}
                                             <span className='max-md:hidden'>Exportar a Excel</span>
-                                        </ButtonOutLine>
+                                        </Button>
                                     </HideElement>
                                     <div>
                                         Ventas<Badge>{sales.length}</Badge>

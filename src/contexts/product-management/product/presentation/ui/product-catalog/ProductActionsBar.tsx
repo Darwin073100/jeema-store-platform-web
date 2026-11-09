@@ -32,31 +32,31 @@ const ProductActionsBar = ({ data }:Props) => {
         <div className="flex justify-between gap-2">
             <div className='flex items-center gap-2'>
                 <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                    <ButtonOutLine size="md" onClick={()=> newProductPage()}>
+                    <Button size="md" onClick={()=> newProductPage()}>
                         {loading? <Spinner color='blue'/>: <IoMdAdd size={14}/>}
                         <span className='max-sm:hidden'>Nuevo Producto</span>
-                    </ButtonOutLine>
-                    <Button size="md" onClick={() => setModalOpen(!modalOpen)}>
+                    </Button>
+                    <ButtonOutLine size="md" onClick={() => setModalOpen(!modalOpen)}>
                         <MdCategory />
                         <span className='max-sm:hidden'>Categorias</span>
-                    </Button>
-                    <Button size="md" onClick={()=> setBrandModalOpen(!brandModalOpen)}>
+                    </ButtonOutLine>
+                    <ButtonOutLine size="md" onClick={()=> setBrandModalOpen(!brandModalOpen)}>
                         <IoMdAdd />
                         <span className='max-sm:hidden'>Marcas</span>
-                    </Button>
-                    <Button size="md" onClick={()=> setSeasonModalOpen(!seasonModalOpen)}>
+                    </ButtonOutLine>
+                    <ButtonOutLine size="md" onClick={()=> setSeasonModalOpen(!seasonModalOpen)}>
                         <MdOutlineViewTimeline />
                         <span className='max-sm:hidden'>Temporadas</span>
-                    </Button>
+                    </ButtonOutLine>
                 </HideElement>
             </div>
             <div className="flex gap-4 items-center justify-between">
                 <div className='flex gap-4 items-center'>
                     <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-                        <ButtonOutLine disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
+                        <Button disabled={loading} color='green' onClick={()=> handleDownloadExcel()}>
                             {loading? <Spinner/>: <PiMicrosoftExcelLogoFill />}
                             <span className='max-md:hidden'>Exportar a Excel</span>
-                        </ButtonOutLine>
+                        </Button>
                     </HideElement>
                     <div>
                         Productos<Badge>{productsFiltered.length}</Badge>
