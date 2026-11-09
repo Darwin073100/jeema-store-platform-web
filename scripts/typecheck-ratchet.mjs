@@ -64,8 +64,8 @@ if (counted.length > baseline) {
 
 if (counted.length < baseline) {
     writeFileSync(baselinePath, `${counted.length}\n`);
-    console.log(`✔ La línea base bajó de ${baseline} a ${counted.length}${note}: incluye .tsc-baseline en el commit.`);
+    process.stdout.write(`✔ La línea base bajó de ${baseline} a ${counted.length}${note}: incluye .tsc-baseline en el commit.\n`);
     process.exit(0);
 }
 
-console.log(`✔ Errores de TypeScript: ${counted.length} (línea base ${baseline})${note}.`);
+process.stdout.write(`✔ Errores de TypeScript: ${counted.length} (línea base ${baseline})${note}.\n`);
