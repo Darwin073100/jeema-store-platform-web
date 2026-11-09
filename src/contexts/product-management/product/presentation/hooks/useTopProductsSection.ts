@@ -1,69 +1,100 @@
 'use client'
-import { useState } from "react";
-import * as yup from 'yup';
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { useRef, useState } from "react";
 import { findTopProductsByBranchOfficeAction } from "../actions/find-top-products-by-branch-office.action";
-import { FilterTopEnum } from "../../domain/enums/FilterTopEnum";
-import { ProductsTopByBranchOfficeResponseDto } from "../../application/dtos/products-top-by-branch-office-response.dto";
+import { TopProductsResponseDto } from "../../application/dtos/products-top-by-branch-office-response.dto";
 
-export const schema = yup.object().shape({
-    dateInit: yup.date()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .optional().notRequired().nullable(),
-    dateFinish: yup.date()
-        .transform((value, originalValue) => originalValue === '' ? null : value)
-        .optional().notRequired().nullable(),
-}).required();
+export const TOP_LIMIT_OPTIONS = [10, 25, 50, 100];
 
-type FormData = yup.InferType<typeof schema>;
+export type PeriodMode = 'month' | 'range';
 
-interface Props {
-    initialTopQuantity: ProductsTopByBranchOfficeResponseDto[];
-    initialTopTotal: ProductsTopByBranchOfficeResponseDto[];
+export interface TopProductsFilters {
+    mode: PeriodMode;
+    /** `YYYY-MM` */
+    month: string;
+    /** `YYYY-MM-DD`, solo en modo rango. */
+    dateInit: string;
+    dateFinish: string;
+    /** "" = todas las categorías. */
+    categoryId: string;
+    limit: number;
 }
 
-const useTopProductsSection = ({ initialTopQuantity, initialTopTotal }: Props) => {
-    const [productsTopQuantity, setProductsTopQuantity] = useState(initialTopQuantity);
-    const [productsTopTotal, setProductsTopTotal] = useState(initialTopTotal);
-    const [loading, setLoading] = useState(false);
+interface Props {
+    initialData: TopProductsResponseDto;
+}
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
-        mode: 'onChange',
-        defaultValues: {}
+const useTopProductsSection = ({ initialData }: Props) => {
+    const [data, setData] = useState(initialData);
+    const [filters, setFilters] = useState<TopProductsFilters>({
+        mode: 'month',
+        // El mes por defecto lo decide el servidor (zona horaria de la tienda), no el navegador.
+        month: initialData.dateInit.slice(0, 7),
+        dateInit: initialData.dateInit,
+        dateFinish: initialData.dateFinish,
+        categoryId: '',
+        limit: TOP_LIMIT_OPTIONS[0],
     });
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    // Solo la última petición actualiza la tabla (evita que una respuesta lenta pise a una nueva).
+    const lastRequestId = useRef(0);
 
-    const onSubmit = async (info: FormData) => {
+    const fetchTop = async (next: TopProductsFilters) => {
+        const requestId = ++lastRequestId.current;
         setLoading(true);
+        setErrorMessage(null);
         try {
-            const [resultTopQuantity, resultTopTotal] = await Promise.all([
-                findTopProductsByBranchOfficeAction({
-                    filterBy: FilterTopEnum.QUANTITY_SALES,
-                    dateInit: info.dateInit ?? null,
-                    dateFinish: info.dateFinish ?? null,
-                }),
-                findTopProductsByBranchOfficeAction({
-                    filterBy: FilterTopEnum.TOTAL_SALES,
-                    dateInit: info.dateInit ?? null,
-                    dateFinish: info.dateFinish ?? null,
-                }),
-            ]);
-            setProductsTopQuantity(resultTopQuantity ?? []);
-            setProductsTopTotal(resultTopTotal ?? []);
+            const result = await findTopProductsByBranchOfficeAction({
+                limit: next.limit,
+                categoryId: next.categoryId || null,
+                ...(next.mode === 'range'
+                    ? { dateInit: next.dateInit, dateFinish: next.dateFinish }
+                    : { month: next.month }),
+            });
+            if (requestId !== lastRequestId.current) return;
+            if (result.ok && result.value) {
+                setData(result.value);
+            } else {
+                const message = result.error?.message;
+                setErrorMessage((Array.isArray(message) ? message.join(' ') : message) || 'No se pudo cargar el top de productos.');
+            }
+        } catch {
+            if (requestId === lastRequestId.current) setErrorMessage('No se pudo conectar con el servidor.');
         } finally {
-            setLoading(false);
+            if (requestId === lastRequestId.current) setLoading(false);
+        }
+    };
+
+    /** Actualiza uno o más filtros y vuelve a consultar en cuanto el periodo está completo. */
+    const updateFilters = (changes: Partial<TopProductsFilters>) => {
+        const next = { ...filters, ...changes };
+        setFilters(next);
+        const periodReady = next.mode === 'month' ? !!next.month : !!next.dateInit && !!next.dateFinish;
+        if (periodReady) {
+            void fetchTop(next);
+        }
+    };
+
+    /**
+     * Cambia entre "mes" y "rango". Al pasar a rango se precarga el periodo que ya se está viendo,
+     * así no hace falta volver a consultar.
+     */
+    const changeMode = (mode: PeriodMode) => {
+        if (mode === filters.mode) return;
+        if (mode === 'range') {
+            setFilters({ ...filters, mode, dateInit: data.dateInit, dateFinish: data.dateFinish });
+        } else {
+            updateFilters({ mode });
         }
     };
 
     return {
-        productsTopQuantity,
-        productsTopTotal,
+        data,
+        filters,
         loading,
-        register,
-        errors,
-        handleSubmit,
-        onSubmit,
+        errorMessage,
+        updateFilters,
+        changeMode,
     }
 }
 

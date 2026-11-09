@@ -4,9 +4,8 @@ import Sale from '../../shared/ui/assets/images/sale.svg';
 import Inventory from '../../shared/ui/assets/images/inventary.svg';
 import Contability from '../../shared/ui/assets/images/payCash.svg';
 import { BreadcrumbItem, TemplateHeader } from "@/shared/ui/components/templates/TemplateHeader";
-import { HideElement } from "@/contexts/authentication-management/auth/presentation/ui/HideElement";
 import { findTopProductsByBranchOfficeAction } from "@/contexts/product-management/product/presentation/actions/find-top-products-by-branch-office.action";
-import { FilterTopEnum } from "@/contexts/product-management/product/domain/enums/FilterTopEnum";
+import { findAllCategoriesByEstablishmentAction } from "@/contexts/product-management/category/presentation/actions/find-all-categories-by-stablishment.action";
 import { TopProductsSection } from "@/contexts/product-management/product/presentation/ui/TopProductsSection";
 
 const homeCards = [
@@ -31,10 +30,11 @@ const homeCards = [
 ];
 
 export default async function Home() {
-  const resultTopQuantity = await findTopProductsByBranchOfficeAction({filterBy: FilterTopEnum.QUANTITY_SALES});
-  const productsTopQuantity = resultTopQuantity ?? []  
-  const resultTopTotal = await findTopProductsByBranchOfficeAction({filterBy: FilterTopEnum.TOTAL_SALES});
-  const productsTopTotal = resultTopTotal ?? []  
+  // El action valida el rol en servidor: si el usuario no puede ver el top, no viaja ningún dato al cliente.
+  const topProducts = await findTopProductsByBranchOfficeAction();
+  const categories = topProducts.ok
+    ? (await findAllCategoriesByEstablishmentAction()).map(item => ({ value: String(item.categoryId), text: item.name }))
+    : [];
 
   const breadCrumbItems: BreadcrumbItem[] = [
     {
@@ -57,11 +57,9 @@ export default async function Home() {
             ))}
           </form>
           
-          <HideElement roles={['global_admin','establishment_manager', 'branch_office_management']}>
-            <TopProductsSection
-              initialTopQuantity={productsTopQuantity}
-              initialTopTotal={productsTopTotal} />
-          </HideElement>
+          {topProducts.ok && topProducts.value && (
+            <TopProductsSection initialData={topProducts.value} categories={categories} />
+          )}
         </div>
       </TemplateHeader>
     </ProtectedRoute>

@@ -11,10 +11,12 @@ export type SelectMenuOption = {
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement>{
     error?: boolean,
     errorMessage?: string,
-    items: SelectMenuOption[]
+    items: SelectMenuOption[],
+    /** Texto de la opción vacía (value ""). `null` la oculta. */
+    placeholder?: string | null,
 }
 
-export const SelectMenu = ({ error = false, errorMessage, items ,...props }: Props) => {
+export const SelectMenu = ({ error = false, errorMessage, items, placeholder = 'Selecciona una opción', ...props }: Props) => {
     return (
         <>
         <select className={
@@ -24,7 +26,7 @@ export const SelectMenu = ({ error = false, errorMessage, items ,...props }: Pro
                             error && 'outline-red-600 focus:outline-red-600'
                         )
                     } {...props}>
-            <option value="">Selecciona una opción</option>
+            {placeholder !== null && <option value="">{placeholder}</option>}
             { items?.map(option => (
                 <option key={ option.value } value={option.value}> { option.text } </option>
             ))}

@@ -1,4 +1,4 @@
-import { Between, Brackets, DataSource, Like, QueryFailedError, Repository } from 'typeorm';
+import { Brackets, DataSource, Like, QueryFailedError, Repository } from 'typeorm';
 import { ProductOrmEntity } from '../entities/product.orm-entity';
 import { ProductTypeOrmMapper } from '../mappers/product.mapper';
 import { ProductRepository } from 'src/contexts/product-management/product/domain/repositories/product.repository';
@@ -15,6 +15,9 @@ import { getDataSource } from '@/configuration/databases/typeorm/config';
 import { PaginationDTO } from '@/shared/application/dtos/pagination.dto';
 import { typeormPagination } from '@/shared/infrastructure/typeorm/typeorm-pagination';
 import { FilterProductListDTO } from '@/contexts/product-management/product/application/dtos/filter-product-list.dto';
+import { SaleDetailOrmEntity } from '@/contexts/sale-management/sale-detail/infraestructure/persistence/typeorm/entities/sale-detail.orm-entity';
+import { FilterTopEnum } from '@/contexts/product-management/product/domain/enums/FilterTopEnum';
+import { TopSellingProduct, TopSellingProductsCriteria } from '@/contexts/product-management/product/domain/read-models/top-selling-product.read-model';
 
 export class TypeOrmProductRepository implements ProductRepository {
   private readonly productRepository: Repository<ProductOrmEntity>;
@@ -385,26 +388,51 @@ async findAllByEstablishmentAndName(
   return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
 }
 
-  async findAllByBranchOffice(branchOfficeId: bigint, dateInit: Date, dateFinish: Date): Promise<ProductEntity[]> {
-    const result = await this.productRepository.find({
-      where: {
-        establishment: {
-          branchOffices: {
-            branchOfficeId,
-          },
-        },
-        saleDetails: {
-          sale: {
-            status: SaleStatusEnum.COMPLETED,
-            createdAt: Between(dateInit, dateFinish),
-          },
-        },
-      },
-      // Cargamos las relaciones necesarias (incluyendo lots) para poder ordenarlas en memoria
-      relations: ['saleDetails'],
-    });
+  async findTopSellingByBranchOffice(branchOfficeId: bigint, criteria: TopSellingProductsCriteria): Promise<TopSellingProduct[]> {
+    // Alias de la columna agregada por la que se ordena (ver los addSelect de abajo).
+    const orderAlias = criteria.orderBy === FilterTopEnum.TOTAL_SALES ? 'totalSales' : 'quantitySales';
 
-    return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));
+    // Se agrega en BD (SUM + GROUP BY + LIMIT) para no cargar todos los detalles de venta a memoria.
+    const query = this.datasource
+      .getRepository(SaleDetailOrmEntity)
+      .createQueryBuilder('saleDetail')
+      .innerJoin('saleDetail.sale', 'sale')
+      .innerJoin('saleDetail.product', 'product')
+      .leftJoin('product.category', 'category')
+      .select('product.productId', 'productId')
+      .addSelect('product.name', 'productName')
+      // Un producto tiene una sola categoría: MAX solo la "arrastra" fuera del GROUP BY. Agrupar también por
+      // category.name es equivalente en Postgres, pero pg-mem confunde dos columnas `name` en el GROUP BY.
+      .addSelect('MAX(category.name)', 'categoryName')
+      .addSelect('SUM(saleDetail.quantity)', 'quantitySales')
+      .addSelect('SUM(saleDetail.subtotalItem)', 'totalSales')
+      .where('sale.branchOfficeId = :branchOfficeId', { branchOfficeId: branchOfficeId.toString() })
+      .andWhere('sale.status = :status', { status: SaleStatusEnum.COMPLETED })
+      .andWhere('sale.createdAt >= :dateInit AND sale.createdAt < :dateFinish', {
+        dateInit: criteria.dateInit,
+        dateFinish: criteria.dateFinish,
+      });
+
+    if (criteria.categoryId !== null) {
+      query.andWhere('product.categoryId = :categoryId', { categoryId: criteria.categoryId.toString() });
+    }
+
+    const rows = await query
+      .groupBy('product.productId')
+      .addGroupBy('product.name')
+      .orderBy(`"${orderAlias}"`, 'DESC')
+      .addOrderBy('product.name', 'ASC')
+      .limit(criteria.limit)
+      .getRawMany<{ productId: string; productName: string; categoryName: string | null; quantitySales: string; totalSales: string }>();
+
+    // pg devuelve bigint y decimal como string.
+    return rows.map((row) => ({
+      productId: BigInt(row.productId),
+      name: row.productName,
+      categoryName: row.categoryName,
+      quantitySales: Number(row.quantitySales),
+      totalSales: Number(row.totalSales),
+    }));
   }
 
   async findById(entityId: bigint): Promise<ProductEntity | null> {
